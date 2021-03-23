@@ -4,8 +4,8 @@ source "https://rubygems.org"
 ## replaced below line due to an error: 'ruby stdout: Ruby ruby-2.6.6 is not installed.''
 ## https://vle.shef.ac.uk/ultra/courses/_90050_1/cl/outline?legacyUrl=%252Fwebapps%252Fblackboard%252Fexecute%252Fannouncement%3Fmethod%3Dsearch%26context%3Dmybb%26course_id%3D_90050_1%26individualAnnouncementId%3D_183481_1
 ## if the server is upgraded to 2.6.6, please uncommented the change
-# ruby '2.6.6'
-ruby '~> 2.6.2'
+ruby '2.6.6'
+# ruby '~> 2.6.2'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 git_source(:gitlab) { |repo_name| "https://git.shefcompsci.org.uk/#{repo_name}.git" }
