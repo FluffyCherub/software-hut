@@ -48,5 +48,5 @@ vendor/webdrivers
 node_modules/
 package-lock.json
 
-bin/database.yml
-bin/database-sample-pg.yml
+# bin/database.yml
+# bin/database-sample-pg.yml
