@@ -4,8 +4,8 @@ development:
   min_messages: warning
   
   # comment/remove these lines if running WSL on Windows
-  # host: localhost
-  # username:
+  host: localhost
+  username:
 
 test:
   adapter: postgresql
@@ -13,5 +13,5 @@ test:
   min_messages: warning
 
   # comment/remove these lines if running WSL on Windows
-  # host: localhost
-  # username:
+  host: localhost
+  username:
