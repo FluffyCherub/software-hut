@@ -21,13 +21,15 @@
   .card-header
     Form Examples
   .card-body
-    - collection = %w(These Are Some Options)
+    - collection = %w(Some options) #Defines the options in radio buttons/dropdowns
 
     = simple_form_for :form_examples do |f|
-      = f.input :string, as: :string
+      //= f.label 'hello'
+      = f.input :string, as: :integer, label: 'false' , required: false
 
       = f.input :text, as: :text
 
+      //select2 is the header of the field, collection specifies options
       = f.input :select2, as: :select, collection: collection, input_html: { class: 'select2' }, include_blank: false
       = f.input :select, as: :select, collection: collection
 
@@ -49,4 +51,4 @@
 :coffee
   $ ->
     $('#show-flash').on 'click', ->
-      $.flashAlert('Hello world!', 'alert-success')
+      $.flashAlert('big pp world!', 'alert-success')
