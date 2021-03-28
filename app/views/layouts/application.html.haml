@@ -36,7 +36,7 @@
 
             .collapse.navbar-collapse#navbar-content
               %ul.nav.navbar-nav
-                = navbar_link_to :root, title: "Go to the home page", identifier: :home do
+                = navbar_link_to :test, title: "Go to the home page", identifier: :home do
                   = icon 'fas', 'home'
                   Home2
                 = navbar_link_to '#', title: "Go to an unavailable page", class: 'disabled', identifier: :unavailable_page do

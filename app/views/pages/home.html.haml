@@ -16,6 +16,10 @@
   .card-body
     %button#show-flash.btn.btn-outline-primary{ type: :button }
       = icon 'fas', 'exclamation-circle', 'Show flash message'
+    %button#show-flash.btn.btn-outline-primary{ type: :button }
+      = navbar_link_to :test, title: "Go to test page", identifier: :home do
+        = icon 'fas', 'exclamation-circle', 'Go to test page'
+      
 
 .card.mb-3
   .card-header
