@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  mount EpiCas::Engine, at: "/"
+  devise_for :users
   match "/403", to: "errors#error_403", via: :all
   match "/404", to: "errors#error_404", via: :all
   match "/422", to: "errors#error_422", via: :all

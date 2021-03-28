@@ -42,15 +42,15 @@
                 = navbar_link_to '#', title: "Go to an unavailable page", class: 'disabled', identifier: :unavailable_page do
                   = icon 'fas', 'ban'
                   Unavailable Page
-              -# - if user_signed_in?
-              -#   %ul.nav.navbar-nav.ml-auto
-              -#     %li.nav-item.dropdown
-              -#       = link_to '#', aria: { haspopup: true, expanded: false }, data: { toggle: :dropdown }, id: 'navbar-user-link', class: 'nav-link dropdown-toggle', role: 'button' do
-              -#         = icon 'fas', 'user', current_user.email
-              -#         %b.caret
-              -#       .dropdown-menu{ aria: { labelledby: '#navbar-user-link' } }
-              -#         = link_to destroy_user_session_path, class: 'dropdown-item', method: :delete, title: "Log out of the system" do
-              -#           = icon 'fas', 'sign-out-alt', 'Log out'
+              - if user_signed_in?
+                %ul.nav.navbar-nav.ml-auto
+                  %li.nav-item.dropdown
+                    = link_to '#', aria: { haspopup: true, expanded: false }, data: { toggle: :dropdown }, id: 'navbar-user-link', class: 'nav-link dropdown-toggle', role: 'button' do
+                      = icon 'fas', 'user', current_user.email
+                      %b.caret
+                    .dropdown-menu{ aria: { labelledby: '#navbar-user-link' } }
+                      = link_to destroy_user_session_path, class: 'dropdown-item', method: :delete, title: "Log out of the system" do
+                        = icon 'fas', 'sign-out-alt', 'Log out'
 
       %main
         #main-container.container

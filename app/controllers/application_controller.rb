@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :authenticate_user!
   # Ensure that CanCanCan is correctly configured
   # and authorising actions on each controller
   # check_authorization
