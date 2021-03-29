@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_234407) do
+ActiveRecord::Schema.define(version: 2021_03_29_152733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,25 @@ ActiveRecord::Schema.define(version: 2021_03_28_234407) do
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "list_modules", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.string "description"
+    t.string "created_by"
+    t.string "semester"
+    t.string "years"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "list_modules_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "list_module_id", null: false
+    t.string "privilege"
+    t.index ["list_module_id", "user_id"], name: "index_list_modules_users_on_list_module_id_and_user_id"
+    t.index ["user_id", "list_module_id"], name: "index_list_modules_users_on_user_id_and_list_module_id"
   end
 
   create_table "sessions", force: :cascade do |t|
