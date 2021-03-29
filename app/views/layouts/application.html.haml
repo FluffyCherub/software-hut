@@ -10,7 +10,7 @@
     = favicon_link_tag '/favicon.ico'
     = csrf_meta_tags
 
-  %body{ class: environment_notice_body_class }
+  %body{ class: environment_notice_body_class , onload: "myFunction()"}
     = render 'layouts/environment_notice'
     .flash-messages
       - flash.each do |name, msg|
@@ -41,7 +41,7 @@
               %ul.nav.navbar-nav
                 = navbar_link_to :test, title: "Go to the home page", identifier: :home do
                   = icon 'fas', 'home'
-                  Home2
+                  Home
                 = navbar_link_to '#', title: "Go to an unavailable page", class: 'disabled', identifier: :unavailable_page do
                   = icon 'fas', 'ban'
                   Unavailable Page

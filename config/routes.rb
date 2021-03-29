@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get :ie_warning, to: 'errors#ie_warning'
   get :javascript_warning, to: 'errors#javascript_warning'
 
-  root to: "pages#home"
+  root to: "pages#test"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

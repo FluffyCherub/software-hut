@@ -46,7 +46,7 @@ html,body {
 }
 
 #main-container {
-  padding-top: 120px;
+  padding-top: $footer-height;
 }
 
 #footer {
@@ -63,7 +63,6 @@ html,body {
   max-width: 17.5%;
   height: auto;
   float:left;
-  //margin-bottom: 0.5%;
   margin-right: 5%;
   margin-left: 0%;
 }
