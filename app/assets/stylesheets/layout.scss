@@ -1,7 +1,40 @@
 @import 'variables';
 
+/////Adding University Fonts/////////////////////////
+@font-face {
+  font-family: 'Blake';
+  src: url('Blake.ttf');
+}
+
+@font-face {
+  font-family: 'BlakeBold';
+  src: url('BlakeBd.ttf');
+}
+
+@font-face {
+  font-family: 'BlakeItalic';
+  src: url('BlakeIt.ttf');
+}
+
+@font-face {
+  font-family: 'Steph';
+  src: url('Steph.ttf');
+}
+
+@font-face {
+  font-family: 'StephBold';
+  src: url('StephBd.ttf');
+}
+
+@font-face {
+  font-family: 'StephItalic';
+  src: url('StephIt.ttf');
+}
+/////////////////////////////////////////////////////
+
 html,body {
   height: 100%;
+  font-family: 'Steph';
 }
 
 #wrap {
@@ -13,13 +46,28 @@ html,body {
 }
 
 #main-container {
-  padding-top: 70px;
+  padding-top: 120px;
 }
 
 #footer {
+  background-color: rgb(31, 20, 93);
   position: relative;
   height: $footer-height;
   padding-top: 20px;
   border-top: 1px solid $gray-300;
   font-size: 0.9 * $font-size-base;
+}
+
+.logo_top_left {
+  border: 1px solid black;
+  max-width: 17.5%;
+  height: auto;
+  float:left;
+  //margin-bottom: 0.5%;
+  margin-right: 5%;
+  margin-left: 0%;
+}
+
+.navbar-logo {
+  text-align: left;
 }

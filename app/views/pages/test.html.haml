@@ -1,1 +1,5 @@
-- content_for :title, "Home"
+- content_for :title, "Test"
+
+%button#show-flash.btn.btn-outline-primary{ type: :button }
+    = navbar_link_to :root, title: "Go to home page", identifier: :home do
+        = icon 'fas', 'exclamation-circle', 'Go to the home page'
