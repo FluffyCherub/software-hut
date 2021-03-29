@@ -4,10 +4,10 @@
 -#     = navbar_link_to :root, title: "Go to home page", identifier: :home do
 -#         = icon 'fas', 'exclamation-circle', 'Go to the home page'
 
-.card.mb-3
-  .card-header
+.card.mb-3.card.mb-3-student
+  .card-header.card-header-student
     Choose module
-  .card-body
+  .card-body.card-body-student
     - collection = %w(Module-1 Module-2 Module-3 Module4 Module-5) #Defines the options in radio buttons/dropdowns
 
     = simple_form_for :form_examples do |f|
@@ -16,14 +16,9 @@
 
       //select2 is the header of the field, collection specifies options
       = f.input :select2, as: :select, collection: collection, input_html: { class: 'module_dropdown', id: 'module_dropdown' }, include_blank: false, label: false, requied: false
-      
-      %select{:id => "tester1"}
-        %option{:value => "volvo1"} Volvo11
-        %option{:value => "volvo2"} Volvo21
-        %option{:value => "volvo3"} Volvo31
-        %option{:value => "volvo4"} Volvo41
+      = f.button :submit, "Select", type:"button", class: "btn btn-primary select_module d-flex justify-content-center", id:"submit_choice", onclick:"getSelectedModule()", "data-disable-with" => "Loading.."
 
-    %button{:class => "btn btn-primary select_module d-flex justify-content-center", :id => "submit_choice", :onclick => "getSelectedModule()"} Select
+    //%button{:class => "btn btn-primary select_module d-flex justify-content-center", :id => "submit_choice", :onclick => "getSelectedModule()"} Select
       
 .container.module_body
   %h1{:id => "module_name"} Choose a module first

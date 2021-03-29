@@ -8,7 +8,7 @@ function myFunction() {
 }
 
 function getSelectedModule() {
-  var choice = document.getElementById("tester1");
+  var choice = document.getElementById("module_dropdown");
   var strUser = choice.options[choice.selectedIndex].text;
   document.getElementById("module_name").innerHTML = strUser;
 

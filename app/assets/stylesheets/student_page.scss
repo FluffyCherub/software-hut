@@ -1,4 +1,4 @@
-.card.mb-3 {
+.card.mb-3-student {
     max-width: 500px;
     height: auto;
     margin: auto;
@@ -6,7 +6,7 @@
     padding: 10px;
 }
 
-.card-body {
+.card-body-student {
     max-width: 500px;
     //min-width: 250px;
     //height: auto;
@@ -16,7 +16,7 @@
     padding: 0px;
 }
 
-.card-header {
+.card-header-student {
     border: 0.1px solid #e6e6e3;
     text-align: center;
     font-size: larger;
