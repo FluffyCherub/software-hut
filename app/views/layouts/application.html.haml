@@ -28,6 +28,9 @@
       %header
         %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top
           .container
+            
+            %img.logo_top_left{:src => "/assets/uni_logo.jpg", :alt => "My Pic"}
+
             .navbar-header
               = link_to :root, class: 'navbar-brand hidden-sm' do
                 Teamworks
@@ -58,6 +61,7 @@
 
     %footer#footer
       .container
-        %p
-          &copy; #{Date.today.year}
-          = link_to 'epiGenesys', 'https://www.epigenesys.org.uk', target: '_blank', title: 'Go to the epiGenesys website'
+        //here was %p
+        //&copy; #{Date.today.year}
+        //= link_to 'epiGenesys', 'https://www.epigenesys.org.uk', target: '_blank', title: 'Go to the epiGenesys website'
+        //%img.logo_footer{:src => "/assets/uni_logo.jpg", :alt => "My Pic"}
