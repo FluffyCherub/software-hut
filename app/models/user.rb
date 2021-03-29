@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                   :bigint           not null, primary key
+#  admin                :boolean          default(FALSE)
 #  confirmation_sent_at :datetime
 #  confirmation_token   :string
 #  confirmed_at         :datetime
@@ -33,6 +34,8 @@
 #
 class User < ApplicationRecord
   include EpiCas::DeviseHelper
-  
+  has_many :user_list_modules
+  has_many :list_modules, through: :user_list_modules  
+
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  end
+end

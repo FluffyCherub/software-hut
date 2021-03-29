@@ -68,7 +68,8 @@ defaults: &defaults
   username_whitelist:
     # - user1
     # - user2
-    # - etc
+    - aca19dl
+
 
 development:
   <<: *defaults
