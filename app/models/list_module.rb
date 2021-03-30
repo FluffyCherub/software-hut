@@ -15,4 +15,6 @@
 class ListModule < ApplicationRecord
     has_many :user_list_modules
     has_many :users, through: :user_list_modules
+
+    has_many :teams
 end
