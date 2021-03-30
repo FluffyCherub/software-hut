@@ -54,6 +54,7 @@
     background-color: rgb(31, 20, 93);
     //background-color: rgb(0, 159, 218);
     height: 50%;
+    margin-bottom: 2%;
 }
 
 .module_info {
@@ -82,7 +83,8 @@
     margin: auto;
     margin-bottom: 0%;
     font-size: 18px;
-    //border-right: 2px solid rgb(31, 20, 93);
+    overflow-y: scroll;
+    //border: 2px solid rgb(31, 20, 93);
 }
 
 .module_feedback {
@@ -93,7 +95,7 @@
     font-size: 18px;
     position: relative;
     top: 0px;
-    border: 1px solid rgb(31, 20, 93);
+    border: 2px solid rgb(31, 20, 93);
 }
 
 .feedback_header {
@@ -102,7 +104,23 @@
 }
 
 .group_header {
-    font-size: 21px;
-    text-decoration: underline;
+    font-size: 23px;
+    //text-decoration: underline;
+}
+
+.group_line {
+    border: 0.5px solid black;
+}
+
+.small {
+    font-size: calc(12px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+.medium {
+    font-size: calc(15px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+.bigger {
+    font-size: calc(34px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important;
 }
 

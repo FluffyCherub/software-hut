@@ -12,7 +12,7 @@
 
 
   // %body{ class: environment_notice_body_class , onload: "myFunction()"}
-  %body{ class: environment_notice_body_class }
+  %body{ class: environment_notice_body_class, onload: "resizeGroup()" }
     = render 'layouts/environment_notice'
     .flash-messages
       - flash.each do |name, msg|
@@ -25,7 +25,7 @@
               = icon('fas', 'exclamation-triangle', class: 'flash-error')
             = msg
             %a{ href: '#', title: 'Hide this message', data: { dismiss: :alert } } Dismiss
-
+  
     #wrap
       %header
         %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top
@@ -60,6 +60,8 @@
       %main
         #main-container.container
           = yield
+  %script
+    setTimeout(sameHeightGroup(),2000);
 
   .container-fluid.pb-0.mb-0.justify-content-center.text-light
     %footer.footer_app
