@@ -24,9 +24,37 @@
   %h1{:id => "module_name"} Choose a module first
   .container.module_info#hider
     .container.module_div.module_group
-      %p group
+      %h.group_header Group XX
+      %p 
+        Member1: FirstName LastName 
+        %br/
+        member1@sheffield.ac.uk
+      %p 
+        Member1: FirstName LastName
+        %br/  
+        member1@sheffield.ac.uk
+      %p 
+        Member1: FirstName LastName
+        %br/  
+        member1@sheffield.ac.uk
+      %p 
+        Member1: FirstName LastName 
+        %br/ 
+        member1@sheffield.ac.uk
     .container.module_div.module_feedback
-      %p feedback  
+      %h.feedback_header
+      %ul
+        %strong.feedback_header
+          Open:
+        %i.feedback_header 
+          date - date 
+        %li Team Meeting Record 
+        %li Peer Feedback Matrix
+      %ul
+        %strong.feedback_header 
+          Additional Info: 
+        %li Team Operating Agreement
+        %li Feedback History
 
 :coffee
   $ ->
