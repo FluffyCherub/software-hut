@@ -37,5 +37,8 @@ class User < ApplicationRecord
   has_many :user_list_modules
   has_many :list_modules, through: :user_list_modules  
 
+  has_many :user_teams
+  has_many :teams, through: :user_teams
+
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 end
