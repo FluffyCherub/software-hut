@@ -11,6 +11,9 @@ class PagesController < ApplicationController
       #redirect to the admin/super admin page
       redirect_to "/admin_page"
     else
+      @modules = ListModule.joins(:users).where("users.username = ?", current_user.username)
+      session[:modules] = @modules
+      
       #redirect to the page for students/TA's/module leaders
       redirect_to "/modules"
     end
