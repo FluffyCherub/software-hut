@@ -61,13 +61,31 @@ html,body {
 
 .logo_top_left {
   border: 1px solid black;
-  max-width: 17.5%;
+  max-width: 100%;
   height: auto;
   float:left;
-  margin-right: 5%;
+  margin-right: 1%;
   margin-left: 0%;
 }
 
 .navbar-logo {
   text-align: left;
+}
+
+.nav_bar_logo {
+  //display: inline-block;
+  width: 12.5%;
+  margin: 0%;
+}
+
+.nav_bar_menu {
+  width: 86.5%;
+  text-align: left;
+  margin: 0%;
+}
+
+@media (min-width: 1200px) {
+  .container.nav_bar_menu {
+    max-width: 1640px;
+  }
 }
