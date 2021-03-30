@@ -6,4 +6,14 @@ class PagesController < ApplicationController
     @current_nav_identifier = :home
   end
 
+  def index
+    if current_user.admin?
+      #redirect to the admin/super admin page
+      redirect_to "/admin_page"
+    else
+      #redirect to the page for students/TA's/module leaders
+      redirect_to "/modules"
+    end
+  end
+
 end
