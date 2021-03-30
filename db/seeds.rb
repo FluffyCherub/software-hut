@@ -8,6 +8,11 @@
 user1 = User.create(username: 'aca19dl', email: 'dlaszczyk1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
 user2 = User.create(username: 'acc19am', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
 
+test_user1 = User.create(username: 'test_user1', email: 'test_user1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user2 = User.create(username: 'test_user2', email: 'test_user2@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user3 = User.create(username: 'test_user3', email: 'test_user3@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user4 = User.create(username: 'test_user4', email: 'test_user4@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user5 = User.create(username: 'test_user5', email: 'test_user5@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
 
 modules = ListModule.create([
   {name: 'Software Hut', code: 'COM3420', description: 'Do software be stronk', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021'},
@@ -39,7 +44,14 @@ teams = Team.create([
 
 
 test2 = UserTeam.create([
-  {team: teams[0], user: user1, signed_agreement: false}
+  {team: teams[0], user: user1, signed_agreement: false},
+  {team: teams[0], user: user2, signed_agreement: false},
+
+  {team: teams[0], user: test_user1, signed_agreement: false},
+  {team: teams[0], user: test_user2, signed_agreement: false},
+  {team: teams[0], user: test_user3, signed_agreement: false},
+  {team: teams[0], user: test_user4, signed_agreement: false},
+  {team: teams[0], user: test_user5, signed_agreement: false}
 ])
 
 
