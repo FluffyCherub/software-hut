@@ -23,10 +23,11 @@ class PagesController < ApplicationController
 
   def show_team
     puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-    if params[:selected_module] != nil
-      puts params[:selected_module].name
+
+    #Ceck if module choice is nill. Otherwise crash
+    if params["module_choice"] != nil
+      puts params["module_choice"]["module_name"]
     end
-    
   end
 
 end

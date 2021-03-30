@@ -10,56 +10,51 @@
   .card-body.card-body-student
     - collection = session[:modules] #Defines the options in radio buttons/dropdowns
 
-    = simple_form_for :form_examples do |f|
+    = simple_form_for :module_choice,:action => show_team do |f|
       //= f.label 'hello'
       //= f.input :string, as: :integer, label: 'false' , required: false
 
       //select2 is the header of the field, collection specifies options
-      = f.input :select2, as: :select, collection: collection, input_html: { class: 'module_dropdown', id: 'module_dropdown' }, include_blank: false, label: false, requied: false
-      = f.button :submit, "Select", type:"button", class: "btn btn-primary select_module d-flex justify-content-center", id:"submit_choice", onclick:"getSelectedModule()", "data-disable-with" => "Loading.."
+      //= f.input :select2, as: :select, collection: collection, input_html: { class: 'module_dropdown', id: 'module_dropdown' , name: 'selected_module'}, include_blank: false, label: false, requied: false
+      = f.collection_select :module_name, collection, :name, :name, {},  {:class=> "module_dropdown form-select", :id=> "module_dropdown"}
+      = f.button :submit, "Select", class: "btn btn-primary select_module d-flex justify-content-center", id:"submit_choice", onclick:"getSelectedModule()", "data-disable-with" => "Loading.."
 
-    //%button{:class => "btn btn-primary select_module d-flex justify-content-center", :id => "submit_choice", :onclick => "getSelectedModule()"} Select
-      
-.container.module_body
-  %h1{:id => "module_name", :class => "bigger"} Choose a module first
-  .container.module_info#hider
-    .container.module_div.module_group#module_group.small
-      %h.group_header.medium Team XX
-      %hr.group_line
-      %p 
-        Member1: FirstName LastName 
-        %br
-        member1@sheffield.ac.uk
+- if params["module_choice"] == nil
+  .container.module_body
+    %h1{:id => "module_name", :class => "bigger"} Choose a module first
+  = puts session[:modules]
+  = puts "here1"
+- else
+  = puts session[:modules]
+  = puts "here2"
+  .container.module_body
+    %h1{:id => "module_name", :class => "bigger"} #{params["module_choice"]["module_name"]}
+    .container.module_info#hider
+      .container.module_div.module_group#module_group.small
+        %h.group_header.medium Team XX
         %hr.group_line
-      %p 
-        Member1: FirstName LastName
-        %br  
-        member1@sheffield.ac.uk
-        %hr.group_line
-      %p 
-        Member1: FirstName LastName
-        %br 
-        member1@sheffield.ac.uk
-        %hr.group_line
-      %p 
-        Member1: FirstName LastName 
-        %br
-        member1@sheffield.ac.uk
-        %hr.group_line
-    .container.module_div.module_feedback#module_feedback.small
-      %h.feedback_header
-      %ul
-        %strong.feedback_header.medium
-          Open:
-        %i.feedback_header.medium
-          date - date 
-        %li Team Meeting Record 
-        %li Peer Feedback Matrix
-      %ul
-        %strong.feedback_header.medium 
-          Additional Info: 
-        %li Team Operating Agreement
-        %li Feedback History
+        - session[:modules].each do |currentModule|
+          %p 
+            Module: #{currentModule.name}
+            %br
+            Code: #{currentModule.code}
+            %br
+            Description: #{currentModule.description}
+            %hr.group_line
+      .container.module_div.module_feedback#module_feedback.small
+        %h.feedback_header
+        %ul
+          %strong.feedback_header.medium
+            Open:
+          %i.feedback_header.medium
+            date - date 
+          %li Team Meeting Record 
+          %li Peer Feedback Matrix
+        %ul
+          %strong.feedback_header.medium 
+            Additional Info: 
+          %li Team Operating Agreement
+          %li Feedback History
 
 :coffee
   $ ->
