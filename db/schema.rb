@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2021_03_30_013928) do
     t.string "name"
     t.string "topic"
     t.integer "size"
-    t.bigint "list_module_id", null: false
+    t.bigint "list_module_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["list_module_id"], name: "index_teams_on_list_module_id"

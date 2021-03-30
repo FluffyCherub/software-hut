@@ -8,7 +8,7 @@
 #  topic          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  list_module_id :bigint           not null
+#  list_module_id :bigint
 #
 # Indexes
 #

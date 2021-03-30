@@ -19,28 +19,28 @@ modules = ListModule.create([
 
 test = UserListModule.create([
   #modules for user1
-  {list_module: modules[0], user: user1,privilege: 'student'},
-  {list_module: modules[1], user: user1,privilege: 'student'},
-  {list_module: modules[2], user: user1,privilege: 'student'},
-  {list_module: modules[3], user: user1,privilege: 'student'},
-  {list_module: modules[4], user: user1,privilege: 'student'},
+  {list_module: modules[0], user: user1, privilege: 'student'},
+  {list_module: modules[1], user: user1, privilege: 'student'},
+  {list_module: modules[2], user: user1, privilege: 'student'},
+  {list_module: modules[3], user: user1, privilege: 'student'},
+  {list_module: modules[4], user: user1, privilege: 'student'},
 
   #modules for user2
-  {list_module: modules[0], user: user2,privilege: 'student'},
-  {list_module: modules[1], user: user2,privilege: 'student'},
-  {list_module: modules[2], user: user2,privilege: 'student'},
-  {list_module: modules[3], user: user2,privilege: 'student'},
-  {list_module: modules[4], user: user2,privilege: 'student'}
+  {list_module: modules[0], user: user2, privilege: 'student'},
+  {list_module: modules[1], user: user2, privilege: 'student'},
+  {list_module: modules[2], user: user2, privilege: 'student'},
+  {list_module: modules[3], user: user2, privilege: 'student'},
+  {list_module: modules[4], user: user2, privilege: 'student'}
 ])
     
-# teams = Teams.create{[
-#   {name: 'Team 22', topic: 'none', size: 6, list_module_id: 1}
-# ]}
+teams = Team.create([
+  {name: 'Team 22', topic: 'none', size: 6, list_module: modules[0]}
+])
 
 
-# test2 = UserTeam.create([
-#   {team: }
-# ])
+test2 = UserTeam.create([
+  {team: teams[0], user: user1, signed_agreement: false}
+])
 
 
 

@@ -4,7 +4,7 @@ class CreateTeams < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :topic
       t.integer :size
-      t.references :list_module, null: false, foreign_key: true
+      t.belongs_to :list_module, index: true, foreign_key: true
 
       t.timestamps
     end
