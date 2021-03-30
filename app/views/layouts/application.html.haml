@@ -10,7 +10,9 @@
     = favicon_link_tag '/favicon.ico'
     = csrf_meta_tags
 
-  %body{ class: environment_notice_body_class , onload: "myFunction()"}
+
+  // %body{ class: environment_notice_body_class , onload: "myFunction()"}
+  %body{ class: environment_notice_body_class }
     = render 'layouts/environment_notice'
     .flash-messages
       - flash.each do |name, msg|
@@ -59,9 +61,45 @@
         #main-container.container
           = yield
 
-    %footer#footer
-      .container
-        //here was %p
-        //&copy; #{Date.today.year}
-        //= link_to 'epiGenesys', 'https://www.epigenesys.org.uk', target: '_blank', title: 'Go to the epiGenesys website'
-        //%img.logo_footer{:src => "/assets/uni_logo.jpg", :alt => "My Pic"}
+  .container-fluid.pb-0.mb-0.justify-content-center.text-light
+    %footer.footer_app
+      .row.my-5.justify-content-center.py-5
+        .col-11
+          .row
+            .col-xl-8.col-md-4.col-sm-4.col-12.my-auto.mx-auto.a
+              %h3.text-muted.mb-md-0.mb-5.bold-text Teamworks
+            .col-xl-2.col-md-4.col-sm-4.col-12
+            .col-xl-2.col-md-4.col-sm-4.col-12
+              %p Engineering Heartspace
+              %p.mb-1 Sir Frederick Mappin Building
+              %p Mappin Street
+              %p Sheffield S1 3JD
+              %p Tel: +44 114 222 7700
+          .row
+            .col-xl-8.col-md-4.col-sm-4.col-auto.my-md-0.mt-5.order-sm-1.order-3.align-self-end
+              %p.social.text-muted.mb-0.pb-0.bold-text
+                %span.mx-2
+                  %i.fa.fa-facebook{"aria-hidden" => "true"}
+                %span.mx-2
+                  %i.fa.fa-linkedin-square{"aria-hidden" => "true"}
+                %span.mx-2
+                  %i.fa.fa-twitter{"aria-hidden" => "true"}
+                %span.mx-2
+                  %i.fa.fa-instagram{"aria-hidden" => "true"}
+              %small.rights
+                %span ®
+                Teamworks All Rights Reserved.
+            .col-xl-2.col-md-4.col-sm-4.col-auto.order-1.align-self-end
+              %h6.mt-55.mt-2.text-muted.bold-text
+                %b Gary C. Wood
+              %small
+                %span
+                  %i.fa.fa-envelope{"aria-hidden" => "true"}
+                g.c.wood@sheffield.ac.uk
+            .col-xl-2.col-md-4.col-sm-4.col-auto.order-2.align-self-end.mt-3
+              %h6.text-muted.bold-text
+                %b CONTACT US AT:
+              %small
+                %span
+                  %i.fa.fa-envelope{"aria-hidden" => "true"}
+                me-enquiries@sheffield.ac.uk
