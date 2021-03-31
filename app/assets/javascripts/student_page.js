@@ -28,7 +28,4 @@ $(function resizeGroup(){
   {
     setInterval(sameHeightGroup, 500);
   }
-  else {
-    alert("yeah no")
-  }
 });
