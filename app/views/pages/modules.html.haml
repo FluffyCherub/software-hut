@@ -20,13 +20,9 @@
       = f.button :submit, "Select", class: "btn btn-primary select_module d-flex justify-content-center", id:"submit_choice", onclick:"getSelectedModule()", "data-disable-with" => "Loading.."
 
 - if params["module_choice"] == nil
-  .container.module_body
-    %h1{:id => "module_name", :class => "bigger"} Choose a module first
-  = puts session[:modules]
-  = puts "here1"
+  .container.module_body.see_trough
+    %img.choose_logo_middle{:src => "/assets/choose_logo.png", :alt => "Please choose"}
 - else
-  = puts session[:modules]
-  = puts "here2"
   .container.module_body
     %h1{:id => "module_name", :class => "bigger"} #{params["module_choice"]["module_name"]}
     .container.module_info#hider
