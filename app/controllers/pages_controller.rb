@@ -49,6 +49,8 @@ class PagesController < ApplicationController
       #store team information and team members information in sessions for use in the view
       session[:team_info] = @team_info
       session[:team_members] = @team_members
+      puts "SOMETHING HERE WRONG"
+      puts session[:team_info]
     end
   end
 

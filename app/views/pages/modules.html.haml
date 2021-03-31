@@ -1,4 +1,4 @@
-- content_for :title, "Test"
+- content_for :title, "Modules"
 
 -# %button#show-flash.btn.btn-outline-primary{ type: :button }
 -#     = navbar_link_to :root, title: "Go to home page", identifier: :home do
@@ -27,14 +27,25 @@
     %h1{:id => "module_name", :class => "bigger"} #{session[:module_name].name}
     .container.module_info#hider
       .container.module_div.module_group#module_group.small
-        %h.group_header.medium #{session[:team_info].name}
-        %hr.group_line
-        - session[:team_members].each do |currentMember|
-          %p 
-            username: #{currentMember.username}
-            %br
-            E-mail: #{currentMember.email}
-            %hr.group_line
+        - if session[:team_info].nil?
+          = puts "BOOIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+          = puts session[:team_info]
+          %h.group_header.medium You are not in a team
+        - elsif session[:team_members] == nil
+          %h.group_header.medium #{session[:team_info].name}
+          %hr.group_line
+          %p Team members unavailable 
+        - else
+          %h.group_header.medium #{session[:team_info].name}
+          - if session[:team_info].topic != "none"
+            %p Team topic: #{session[:team_info].topic}
+          %hr.group_line
+          - session[:team_members].each do |currentMember|
+            %p 
+              username: #{currentMember.username}
+              %br
+              E-mail: #{currentMember.email}
+              %hr.group_line
       .container.module_div.module_feedback#module_feedback.small
         %h.feedback_header
         %ul

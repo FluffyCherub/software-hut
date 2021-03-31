@@ -27,8 +27,8 @@
             %a{ href: '#', title: 'Hide this message', data: { dismiss: :alert } } Dismiss
   
     #wrap
-      %header
-        %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top
+      %header#top_line
+        %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top.top_line
           .container.nav_bar_logo
             %img.logo_top_left{:src => "/assets/uni_logo.jpg", :alt => "University of Sheffield"}
           .container.nav_bar_menu
@@ -55,8 +55,8 @@
                     .dropdown-menu{ aria: { labelledby: '#navbar-user-link' } }
                       = link_to destroy_user_session_path, class: 'dropdown-item', method: :delete, title: "Log out of the system" do
                         = icon 'fas', 'sign-out-alt', 'Log out'
-                        
-        %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top
+      %nav.blue_line.small#bottom_line
+        %p blue line
       %main
         #main-container.container
           = yield

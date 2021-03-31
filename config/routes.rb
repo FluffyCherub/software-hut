@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   match "/422", to: "errors#error_422", via: :all
   match "/500", to: "errors#error_500", via: :all
   match "/modules", to: "pages#modules", via: :all
+  match "/toa", to: "toa#toa_doc", via: :all
 
   get :ie_warning, to: 'errors#ie_warning'
   get :javascript_warning, to: 'errors#javascript_warning'
