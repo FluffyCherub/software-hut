@@ -23,5 +23,12 @@ function sameHeightGroup() {
 }
 
 $(function resizeGroup(){
-  setInterval(sameHeightGroup, 200);
-  });
+  var element =  document.getElementById('module_feedback');
+  if (typeof(element) != 'undefined' && element != null)
+  {
+    setInterval(sameHeightGroup, 500);
+  }
+  else {
+    alert("yeah no")
+  }
+});
