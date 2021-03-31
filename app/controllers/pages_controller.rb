@@ -8,6 +8,9 @@ class PagesController < ApplicationController
     @current_nav_identifier = :home
   end
 
+  #redirect to modules or admin page based on privilege
+  #admin/super admin => admin page
+  #student/TA/module leader => modules page
   def index
     if current_user.admin?
       #redirect to the admin/super admin page
@@ -21,20 +24,25 @@ class PagesController < ApplicationController
     end
   end
 
+  #load the modules again after choosing
   def modules
-    if current_user.admin?
-      #redirect to the admin/super admin page
-      redirect_to "/admin_page"
-    else
-      @modules = ListModule.joins(:users).where("users.username = ?", current_user.username)
-      session[:modules] = @modules
-    end
+    @modules = ListModule.joins(:users).where("users.username = ?", current_user.username)
+    session[:modules] = @modules
   end
 
+  #get information about the team after choosing a module
   def show_team
-    #Check if module choice is nil. Otherwise crash
+    #Check if a module is chosen
     if params["module_choice"] != nil
-      puts params["module_choice"]["module_name"]
+      #get the team name based on the current username and chosen module
+      @team_info = Team.joins(:users, :list_module).where("users.username = ? AND list_modules.id = ?", current_user.username, params["module_choice"]["module_id"]).first
+      
+      #get info about the members of the current team 
+      @team_members = User.joins(:teams).where("teams.name = ? AND teams.list_module_id = ?", @team_name, params["module_choice"]["module_id"])
+      
+      #store team information and team meembers information in sessions for use in view
+      session[:team_info] = @team_info
+      session[:team_members] = @team_members
     end
   end
 
