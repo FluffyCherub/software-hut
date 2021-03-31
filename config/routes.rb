@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  #get 'toa/toa_doc'
   mount EpiCas::Engine, at: "/"
   devise_for :users
   match "/403", to: "errors#error_403", via: :all
