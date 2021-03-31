@@ -21,10 +21,18 @@ class PagesController < ApplicationController
     end
   end
 
-  def show_team
-    puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+  def modules
+    if current_user.admin?
+      #redirect to the admin/super admin page
+      redirect_to "/admin_page"
+    else
+      @modules = ListModule.joins(:users).where("users.username = ?", current_user.username)
+      session[:modules] = @modules
+    end
+  end
 
-    #Ceck if module choice is nill. Otherwise crash
+  def show_team
+    #Check if module choice is nil. Otherwise crash
     if params["module_choice"] != nil
       puts params["module_choice"]["module_name"]
     end
