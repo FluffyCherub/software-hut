@@ -34,13 +34,19 @@ class PagesController < ApplicationController
   def show_team
     #Check if a module is chosen
     if params["module_choice"] != nil
+      #get module name from module id
+      @module_name = ListModule.find(params["module_choice"]["module_id"])
+      session[:module_name] = @module_name
+
       #get the team name based on the current username and chosen module
       @team_info = Team.joins(:users, :list_module).where("users.username = ? AND list_modules.id = ?", current_user.username, params["module_choice"]["module_id"]).first
       
-      #get info about the members of the current team 
-      @team_members = User.joins(:teams).where("teams.name = ? AND teams.list_module_id = ?", @team_name, params["module_choice"]["module_id"])
-      
-      #store team information and team meembers information in sessions for use in view
+      #get info about the members in the current team 
+      if @team_info != nil
+        @team_members = User.joins(:teams).where("teams.name = ? AND teams.list_module_id = ?", @team_info.name, params["module_choice"]["module_id"])
+      end
+
+      #store team information and team members information in sessions for use in the view
       session[:team_info] = @team_info
       session[:team_members] = @team_members
     end
