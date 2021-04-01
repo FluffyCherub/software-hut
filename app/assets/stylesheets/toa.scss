@@ -1,3 +1,117 @@
-// Place all the styles related to the Toa controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: https://sass-lang.com/
+.body_whole {
+  width: 70%;
+  border-radius: 8px;
+  border: 1.5px solid rgb(31, 20, 93);
+  background-color: white;
+  margin-bottom: 3%
+}
+
+.table_main {
+  border: 1px solid black;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 3%;
+}
+
+.column_name {
+  border: 1px solid black;
+  padding: 2px 5px;
+}
+
+.column_content {
+  border: 1px solid black;
+  padding: 2px 10px;
+  color: rgb(75, 70, 70);
+  font-style: italic;
+}
+
+.small {
+  font-size: calc(12px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+.medium {
+  font-size: calc(15px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+.bigger {
+  font-size: calc(34px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+.better_header {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  font-size: 20px;
+  text-align: center;
+}
+
+.only_bold {
+  font-weight: bold;
+}
+
+.thinner_line {
+  border: 0.5px solid rgb(197, 195, 195);
+}
+
+.white_bg {
+  color: black !important;
+  background-color: white;
+}
+
+.text_black {
+  color: black !important;
+}
+
+.small_bottom_margin {
+  margin-bottom: 0.5%;
+}
+
+.header_agreemnet {
+  font-weight: bold;
+}
+
+.push_top {
+  margin-top: 3%;
+}
+
+.div_buttons_1 {
+  margin: 0 auto;
+  display: inline;
+}
+
+.div_buttons_action_1 {
+  margin: 0 auto;
+  display: inline;
+}
+
+.agreement_buttons {
+  float: right;
+  //text-align: center;
+  font-size: larger;
+  color: white;
+  background-color: rgb(31, 20, 93);
+  font-family: 'Blake';
+  width: 35%;
+}
+
+.agreement_buttons:hover {
+  background-color: rgb(0, 159, 218);
+  color: black;
+}
+
+.button_toa_1 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+}
+
+.button_toa_2 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-right: 1%;
+}
+
+.toa_logo {
+  margin-top: 2%;
+  width: 65%;
+  height: auto;
+}
