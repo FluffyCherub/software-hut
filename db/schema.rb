@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_30_013928) do
+ActiveRecord::Schema.define(version: 2021_04_01_161524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,26 @@ ActiveRecord::Schema.define(version: 2021_03_30_013928) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "team_operating_agreements", force: :cascade do |t|
+    t.string "project_name"
+    t.string "module_name"
+    t.string "module_leader"
+    t.string "team_name"
+    t.string "start_date"
+    t.string "end_date"
+    t.string "team_mission"
+    t.string "team_communications"
+    t.string "decision_making"
+    t.string "meetings"
+    t.string "personal_courtesies"
+    t.datetime "last_opened"
+    t.datetime "last_edited"
+    t.bigint "team_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_id"], name: "index_team_operating_agreements_on_team_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -108,6 +128,7 @@ ActiveRecord::Schema.define(version: 2021_03_30_013928) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "team_operating_agreements", "teams"
   add_foreign_key "teams", "list_modules"
   add_foreign_key "user_list_modules", "list_modules"
   add_foreign_key "user_list_modules", "users"

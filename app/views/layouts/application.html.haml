@@ -12,7 +12,7 @@
 
 
   // %body{ class: environment_notice_body_class , onload: "myFunction()"}
-  %body{ class: environment_notice_body_class, onload: "resizeGroup()" }
+  %body{ class: environment_notice_body_class, onload: "resizeGroup()"}
     = render 'layouts/environment_notice'
     .flash-messages
       - flash.each do |name, msg|
@@ -60,8 +60,9 @@
       %main
         #main-container.container
           = yield
-  %script
-    setTimeout(sameHeightGroup(),2000);
+  -# %script
+  -#   setTimeout(sameHeightGroup(),500);
+  -#   setTimeout(createBlueLine(), 500)
 
   .container-fluid.pb-0.mb-0.justify-content-center.text-light
     %footer.footer_app

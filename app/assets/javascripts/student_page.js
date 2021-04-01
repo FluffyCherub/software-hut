@@ -26,13 +26,13 @@ $(function resizeGroup(){
   var element =  document.getElementById('module_feedback');
   if (typeof(element) != 'undefined' && element != null)
   {
-    setInterval(sameHeightGroup, 500);
+    setInterval(sameHeightGroup, 2000);
   }
 
-  var element =  document.getElementById('top_line');
-  if (typeof(element) != 'undefined' && element != null)
+  var myLine =  document.getElementById('top_line');
+  if (typeof(myLine) != 'undefined' && myLine != null)
   {
-    setInterval(createBlueLine, 500);
+    setInterval(createBlueLine, 2000);
   }
 });
 
@@ -58,5 +58,5 @@ $(document).on('click', '.update_form :submit', function () {
   buttons.removeAttr('data-disable-with');
   buttons.attr('disabled', true);
   buttons.style.backgroundColor= rgb(31, 20, 93);
-  buttons.style.color="black");
+  buttons.style.color="black";
 });
