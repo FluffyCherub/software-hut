@@ -16,22 +16,22 @@
       %tbody
         %tr
           %td.column_name Project Name 
-          %td.column_content{:contenteditable => true} Enter project name
+          %td.column_content{:contenteditable => false} Enter project name
         %tr
           %td.column_name Module
-          %td.column_content{:contenteditable => true} Enter module name
+          %td.column_content{:contenteditable => false} Enter module name
         %tr
           %td.column_name Module Leader
-          %td.column_content{:contenteditable => true} Enter module leader
+          %td.column_content{:contenteditable => false} Enter module leader
         %tr
           %td.column_name Team Name
-          %td.column_content{:contenteditable => true} Enter team name
+          %td.column_content{:contenteditable => false} Enter team name
         %tr
           %td.column_name Start Date
-          %td.column_content{:contenteditable => true} Enter start date
+          %td.column_content{:contenteditable => false} Enter start date
         %tr
           %td.column_name End Date
-          %td.column_content{:contenteditable => true} Enter end date
+          %td.column_content{:contenteditable => false} Enter end date
 
     %p.only_bold
       Purpose of the Team Operating Agreement
@@ -48,7 +48,7 @@
     %p.only_bold
       Team Mission
     %P.filler_text.long_content
-      = f.input :text, as: :text, label: false , required: false
+      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -61,7 +61,7 @@
       mobile numbers, Facebook name etc.; their preferred communication method; and 
       any times/days that they are unavailable to be contacted.
     %hr.group_line.thinner_line
-      = f.input :text, as: :text, label: false , required: false
+      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -73,7 +73,7 @@
       decisions, how decisions will be documented, definitions of key terms, and what 
       happens if the team cannot come to a decision.
     %hr.group_line.thinner_line
-      = f.input :text, as: :text, label: false , required: false
+      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -85,7 +85,7 @@
       facilitating, frequency, and scheduling of meetings, and attendance expectations.
     %hr.group_line.thinner_line
     %P.filler_text.long_content
-      = f.input :text, as: :text, label: false , required: false
+      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -106,52 +106,52 @@
       %div.row
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true
+          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4 
           //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true
+          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true
+          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
       
       %hr.group_line.thinner_line
 
       %div.row
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true
+          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4 
           //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true
+          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true
+          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
 
       %hr.group_line.thinner_line
 
       %div.row
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true
+          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4 
           //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true
+          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true
+          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
 
       %hr.group_line.thinner_line
 
       %div.row
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true
+          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4 
           //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true
+          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
         %div.col-xs-6.col-sm-4
           //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true
+          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
 
       %hr.group_line.thinner_line
 
