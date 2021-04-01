@@ -52,3 +52,11 @@ function createBlueLine() {
   bottmLine.style.height = finalHeight;
   bottmLine.style.width = finalWidth;
 }
+
+$(document).on('click', '.update_form :submit', function () {
+  var buttons = $('.update_form :submit').not($(this));
+  buttons.removeAttr('data-disable-with');
+  buttons.attr('disabled', true);
+  buttons.style.backgroundColor= rgb(31, 20, 93);
+  buttons.style.color="black");
+});
