@@ -3,7 +3,6 @@
 .container.body_whole
   .container 
     %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
-  //logo somewhere here later
   = simple_form_for :update_form,:action => update_toa do |f|
     .container.better_header
       %h Team Operating Agreement
@@ -16,22 +15,28 @@
       %tbody
         %tr
           %td.column_name Project Name 
-          %td.column_content{:contenteditable => true} Enter project name
+          %td.column_content
+            = f.input :project_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
         %tr
           %td.column_name Module
-          %td.column_content{:contenteditable => true} Enter module name
+          %td.column_content
+            = f.input :module_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
         %tr
           %td.column_name Module Leader
-          %td.column_content{:contenteditable => true} Enter module leader
+          %td.column_content
+            = f.input :module_leader, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
         %tr
           %td.column_name Team Name
-          %td.column_content{:contenteditable => true} Enter team name
+          %td.column_content
+            = f.input :team_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
         %tr
           %td.column_name Start Date
-          %td.column_content{:contenteditable => true} Enter start date
+          %td.column_content
+            = f.input :start_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
         %tr
           %td.column_name End Date
-          %td.column_content{:contenteditable => true} Enter end date
+          %td.column_content
+            = f.input :end_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
 
     %p.only_bold
       Purpose of the Team Operating Agreement
@@ -96,7 +101,7 @@
       Do not assume that personal behaviors are understood, and pay particular attention 
       to any cultural differences, if you are working in a multicultural team.
     %hr.group_line.thinner_line
-      = f.input :personal_courtesies, as: :text, label: false , required: false, input_html: { readonly: true }
+      = f.input :personal_courtesies, as: :text, label: false , required: false
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -111,19 +116,16 @@
         - date = "member" + memberNumber + "date"
         %div.row
           %div.col-xs-6.col-sm-4
-            //%p.text_black.small_bottom_margin Name: 
             = f.input name, as: :string, label: "Name:" , required: true
           %div.col-xs-6.col-sm-4 
-            //%p.text_black.small_bottom_margin Signature: 
             = f.input signature, as: :string, label: "Signature:" , required: true
           %div.col-xs-6.col-sm-4
-            //%p.text_black.small_bottom_margin Date: 
             = f.input date, as: :string, label: "Date:" , required: true
         
         %hr.group_line.thinner_line
 
 
     .container-fluid.white_bg.push_top
-      = f.button :submit, "Submit", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
-      = f.button :submit, "Save", class: "btn btn-primary agreement_buttons justify-content-center button_toa_2", id:"submit_choice", "data-disable-with" => "Saving.."
+      = f.button :submit, "Submit", name:"submit_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
+      = f.button :submit, "Save", name:"save_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_2", id:"submit_choice", "data-disable-with" => "Saving.."
             

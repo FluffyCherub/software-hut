@@ -16,23 +16,28 @@
       %tbody
         %tr
           %td.column_name Project Name 
-          %td.column_content{:contenteditable => false} Enter project name
+          %td.column_content
+            = f.input :project_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
         %tr
           %td.column_name Module
-          %td.column_content{:contenteditable => false} Enter module name
+          %td.column_content
+            = f.input :module_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
         %tr
           %td.column_name Module Leader
-          %td.column_content{:contenteditable => false} Enter module leader
+          %td.column_content
+            = f.input :module_leader, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
         %tr
           %td.column_name Team Name
-          %td.column_content{:contenteditable => false} Enter team name
+          %td.column_content
+            = f.input :team_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
         %tr
           %td.column_name Start Date
-          %td.column_content{:contenteditable => false} Enter start date
+          %td.column_content
+            = f.input :start_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
         %tr
           %td.column_name End Date
-          %td.column_content{:contenteditable => false} Enter end date
-
+          %td.column_content
+            = f.input :end_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
     %p.only_bold
       Purpose of the Team Operating Agreement
     %P.filler_text

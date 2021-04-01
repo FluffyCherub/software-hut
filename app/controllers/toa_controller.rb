@@ -7,7 +7,15 @@ class ToaController < ApplicationController
 
   def update_toa
     if params["update_form"] != nil
-      puts params["update_form"]["member2signature"]
+      puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+      puts params["submit_button"]
+      puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+      # if params["update_form"]["button_1"] == "Submit"
+      #   puts "BUTTON 1 YOOOOOOOOO"
+      # end
+      # if params["update_form"]["button_2"] == "Save"
+      #   puts "BUTTON 2 BROOOOOOOO"
+      # end
     end
   end
 
