@@ -3,19 +3,20 @@
 # Table name: team_operating_agreements
 #
 #  id                  :bigint           not null, primary key
-#  decision_making     :string
-#  end_date            :string
+#  decision_making     :string           default("")
+#  end_date            :string           default("")
 #  last_edited         :datetime
 #  last_opened         :datetime
-#  meetings            :string
-#  module_leader       :string
-#  module_name         :string
-#  personal_courtesies :string
-#  project_name        :string
-#  start_date          :string
-#  team_communications :string
-#  team_mission        :string
-#  team_name           :string
+#  meetings            :string           default("")
+#  module_leader       :string           default("")
+#  module_name         :string           default("")
+#  personal_courtesies :string           default("")
+#  project_name        :string           default("")
+#  start_date          :string           default("")
+#  status              :string           default("in_progress")
+#  team_communications :string           default("")
+#  team_mission        :string           default("")
+#  team_name           :string           default("")
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  team_id             :bigint
