@@ -50,8 +50,7 @@ test2 = UserTeam.create([
   {team: teams[0], user: test_user1, signed_agreement: false},
   {team: teams[0], user: test_user2, signed_agreement: false},
   {team: teams[0], user: test_user3, signed_agreement: false},
-  {team: teams[0], user: test_user4, signed_agreement: false},
-  {team: teams[0], user: test_user5, signed_agreement: false}
+  {team: teams[0], user: test_user4, signed_agreement: false}
 ])
 
 

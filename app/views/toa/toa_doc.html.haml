@@ -3,7 +3,7 @@
 .container.body_whole
   .container 
     %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
-  = simple_form_for :update_form,:action => update_toa do |f|
+  = simple_form_for :update_form, :url => toa_path(:team_id => @team_id) do |f|
     .container.better_header
       %h Team Operating Agreement
     %table.table_main
@@ -16,27 +16,27 @@
         %tr
           %td.column_name Project Name 
           %td.column_content
-            = f.input :project_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
+            = f.input :project_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.project_name }
         %tr
           %td.column_name Module
           %td.column_content
-            = f.input :module_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
+            = f.input :module_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.module_name }
         %tr
           %td.column_name Module Leader
           %td.column_content
-            = f.input :module_leader, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
+            = f.input :module_leader, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.module_leader }
         %tr
           %td.column_name Team Name
           %td.column_content
-            = f.input :team_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
+            = f.input :team_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.team_name }
         %tr
           %td.column_name Start Date
           %td.column_content
-            = f.input :start_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
+            = f.input :start_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.start_date }
         %tr
           %td.column_name End Date
           %td.column_content
-            = f.input :end_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom" }
+            = f.input :end_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.end_date }
 
     %p.only_bold
       Purpose of the Team Operating Agreement
@@ -53,7 +53,7 @@
     %p.only_bold
       Team Mission
     %P.filler_text.long_content
-      = f.input :team_mission, as: :text, label: false , required: false
+      = f.input :team_mission, as: :text, label: false , required: false, input_html: {:value => @current_toa.team_mission}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -66,7 +66,7 @@
       mobile numbers, Facebook name etc.; their preferred communication method; and 
       any times/days that they are unavailable to be contacted.
     %hr.group_line.thinner_line
-      = f.input :team_communications, as: :text, label: false , required: false
+      = f.input :team_communications, as: :text, label: false , required: false, input_html: {:value => @current_toa.team_communications}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -78,7 +78,7 @@
       decisions, how decisions will be documented, definitions of key terms, and what 
       happens if the team cannot come to a decision.
     %hr.group_line.thinner_line
-      = f.input :decision_making, as: :text, label: false , required: false
+      = f.input :decision_making, as: :text, label: false , required: false, input_html: {:value => @current_toa.decision_making}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -90,7 +90,7 @@
       facilitating, frequency, and scheduling of meetings, and attendance expectations.
     %hr.group_line.thinner_line
     %P.filler_text.long_content
-      = f.input :meetings, as: :text, label: false , required: false
+      = f.input :meetings, as: :text, label: false , required: false, input_html: {:value => @current_toa.meetings}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -101,7 +101,7 @@
       Do not assume that personal behaviors are understood, and pay particular attention 
       to any cultural differences, if you are working in a multicultural team.
     %hr.group_line.thinner_line
-      = f.input :personal_courtesies, as: :text, label: false , required: false
+      = f.input :personal_courtesies, as: :text, label: false , required: false, input_html: {:value => @current_toa.personal_courtesies}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,18 +109,18 @@
     
     .container-fluid.white_bg.push_top
 
-      - for i in 1..4
+      - for i in 1..@current_team_size
         - memberNumber = i.to_s
         - name = "member" + memberNumber + "name"
         - signature = "member" + memberNumber + "signature"
         - date = "member" + memberNumber + "date"
         %div.row
           %div.col-xs-6.col-sm-4
-            = f.input name, as: :string, label: "Name:" , required: true
+            = f.input name, as: :string, label: "Name:" , required: true, input_html: {:value => @current_toa_signatures[i-1].name}
           %div.col-xs-6.col-sm-4 
-            = f.input signature, as: :string, label: "Signature:" , required: true
+            = f.input signature, as: :string, label: "Signature:" , required: true, input_html: {:value => @current_toa_signatures[i-1].signature}
           %div.col-xs-6.col-sm-4
-            = f.input date, as: :string, label: "Date:" , required: true
+            = f.input date, as: :string, label: "Date:" , required: true, input_html: {:value => @current_toa_signatures[i-1].date}
         
         %hr.group_line.thinner_line
 

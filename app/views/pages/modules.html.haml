@@ -28,8 +28,6 @@
     .container.module_info#hider
       .container.module_div.module_group#module_group.small
         - if session[:team_info].nil?
-          = puts "BOOIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-          = puts session[:team_info]
           %h.group_header.medium You are not in a team
         - elsif session[:team_members] == nil
           %h.group_header.medium #{session[:team_info].name}
@@ -58,7 +56,7 @@
         %ul
           %strong.feedback_header.medium 
             Additional Info: 
-          %li Team Operating Agreement
+          %li #{link_to "Team Operating Agreement", toa_path(:team_id => session[:team_info].id)}
           %li Feedback History
 
 :coffee

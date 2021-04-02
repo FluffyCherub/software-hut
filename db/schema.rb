@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_01_161524) do
+ActiveRecord::Schema.define(version: 2021_04_02_002031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,17 +51,18 @@ ActiveRecord::Schema.define(version: 2021_04_01_161524) do
   end
 
   create_table "team_operating_agreements", force: :cascade do |t|
-    t.string "project_name"
-    t.string "module_name"
-    t.string "module_leader"
-    t.string "team_name"
-    t.string "start_date"
-    t.string "end_date"
-    t.string "team_mission"
-    t.string "team_communications"
-    t.string "decision_making"
-    t.string "meetings"
-    t.string "personal_courtesies"
+    t.string "project_name", default: ""
+    t.string "module_name", default: ""
+    t.string "module_leader", default: ""
+    t.string "team_name", default: ""
+    t.string "start_date", default: ""
+    t.string "end_date", default: ""
+    t.string "team_mission", default: ""
+    t.string "team_communications", default: ""
+    t.string "decision_making", default: ""
+    t.string "meetings", default: ""
+    t.string "personal_courtesies", default: ""
+    t.string "status", default: "in_progress"
     t.datetime "last_opened"
     t.datetime "last_edited"
     t.bigint "team_id"
@@ -78,6 +79,16 @@ ActiveRecord::Schema.define(version: 2021_04_01_161524) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["list_module_id"], name: "index_teams_on_list_module_id"
+  end
+
+  create_table "toa_signatures", force: :cascade do |t|
+    t.string "name", default: ""
+    t.string "signature", default: ""
+    t.string "date", default: ""
+    t.bigint "team_operating_agreement_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_operating_agreement_id"], name: "index_toa_signatures_on_team_operating_agreement_id"
   end
 
   create_table "user_list_modules", force: :cascade do |t|
@@ -130,6 +141,7 @@ ActiveRecord::Schema.define(version: 2021_04_01_161524) do
 
   add_foreign_key "team_operating_agreements", "teams"
   add_foreign_key "teams", "list_modules"
+  add_foreign_key "toa_signatures", "team_operating_agreements"
   add_foreign_key "user_list_modules", "list_modules"
   add_foreign_key "user_list_modules", "users"
   add_foreign_key "user_teams", "teams"
