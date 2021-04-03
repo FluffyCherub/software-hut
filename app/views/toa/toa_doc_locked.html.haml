@@ -129,11 +129,7 @@
       - if @signed_status.signed_agreement == false
         = f.button :submit, "Reject", name:"reject_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Rejecting.."
         = f.button :submit, "Accept", name:"accept_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_2", id:"submit_choice", "data-disable-with" => "Accepting.."
-      - elsif @signed_status.signed_agreement == true
+      - elsif (@signed_status.signed_agreement == true) && (@finished_agreement == false)
         = f.button :submit, "Signed", name:"signed_button", class: "btn btn-primary half_button justify-content-center button_toa_1", id:"submit_choice"     
-      
-      
-      -# Put condition below when all group members have signed(accepted)
-      -# css is already written for that button so just change the condition and uncomment
-      -# - elsif @signed_status.signed_agreement == true
-      -#   = f.button :submit, "Agreement accepted", name:"toa_accepted_button", class: "btn btn-primary half_button_50 justify-content-center button_toa_1", id:"submit_choice"   
+      - elsif (@signed_status.signed_agreement == true) && (@finished_agreement == true)
+        = f.button :submit, "Agreement accepted", name:"toa_accepted_button", class: "btn btn-primary half_button_50 justify-content-center button_toa_1", id:"submit_choice"   
