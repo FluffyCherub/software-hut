@@ -6,6 +6,8 @@ class ToaController < ApplicationController
     @current_team_size = Team.find(params['team_id']).size
     @team_id = params['team_id']
 
+    
+
     #redirect_to the locked toa if its already submitted by someone or finished
     if @current_toa.status == "submitted" || @current_toa.status == "finished"
       redirect_to toa_locked_path(team_id: @team_id, team_operating_agreement_id: @current_toa.id)
@@ -58,6 +60,19 @@ class ToaController < ApplicationController
       #locking the toa, so it cannot be edited anymore
       @current_toa.update(:status => "submitted")
 
+      #get the current team members
+      current_team_members = User.joins(:teams).where("teams.id = ?", @current_toa.id)
+
+      #sending an email to all team members to notify them about the submitted toa
+      for i in 0..(current_team_members.length-1)
+        puts "BOIIIIIIIIIIIIIIIIIIII"
+        puts i
+        puts current_team_members[i].email
+        puts current_team_members[i].givenname
+        UserMailer.toa_submitted_email(current_team_members[i].email, current_team_members[i].givenname).deliver
+      end
+      
+
       #redirect_to action: "toa_doc_locked", team_id: @team_id, team_operating_agreement_id: @current_toa.id 
       redirect_to toa_locked_path(team_id: @team_id, team_operating_agreement_id: @current_toa.id)
     end
@@ -74,13 +89,15 @@ class ToaController < ApplicationController
     @finished_agreement = false
     if @current_toa.status == "finished"
       @finished_agreement = true
+    elsif @current_toa.status == "in_progress"
+      redirect_to toa_path(:team_id => @team_id)
     end
 
     #true or false depending on if the current user signed the toa
     @signed_status = UserTeam.where("team_id = ? AND user_id = ?", @team_id, current_user.id).first
 
     
-    #update the last_edited field of toa
+    #update the last_opened field of toa
     @current_toa.update(:last_opened => Time.now)
 
     #get the signature fields for the current team operating agreement
@@ -97,22 +114,19 @@ class ToaController < ApplicationController
     if params['reject_button'] == "Reject"
       @current_toa.update(:status => "in_progress")
       redirect_to toa_path(:team_id => @team_id)
+
     elsif params['accept_button'] == "Accept"
       @signed_status.update(:signed_agreement => true)
 
-      #here check if every team member accpeted the toa
+      #check if every team member accepted the toa
       #get number of team members
       @num_team_members = UserTeam.where("team_id = ?", @team_id)
       @num_signed_toa = UserTeam.where("team_id = ? AND signed_agreement = ?", @team_id, true)
-      puts "BOIIIIIIIIIIIIIIIIIIIIIII"
-      puts @num_team_members.length
-      puts @num_signed_toa.length
+    
       if @num_team_members.length == @num_signed_toa.length
         @current_toa.update(:status => "finished")
       end
       
-      puts "FIIIIIIIIIIIIIIIIIIIINNNIIIISH"
-      puts @finished_agreement
       redirect_to toa_locked_path(team_id: @team_id, team_operating_agreement_id: @current_toa.id)
     end
 
