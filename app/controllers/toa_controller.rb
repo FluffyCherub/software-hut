@@ -65,11 +65,7 @@ class ToaController < ApplicationController
 
       #sending an email to all team members to notify them about the submitted toa
       for i in 0..(current_team_members.length-1)
-        puts "BOIIIIIIIIIIIIIIIIIIII"
-        puts i
-        puts current_team_members[i].email
-        puts current_team_members[i].givenname
-        UserMailer.toa_submitted_email(current_team_members[i].email, current_team_members[i].givenname).deliver
+        UserMailer.toa_submitted_email(current_team_members[i].email, current_team_members[i].givenname, current_user.givenname, current_user.sn).deliver
       end
       
 
