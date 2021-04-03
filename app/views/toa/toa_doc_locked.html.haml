@@ -3,8 +3,7 @@
 .container.body_whole
   .container 
     %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
-  //logo somewhere here later
-  = simple_form_for :form_examples do |f|
+  = simple_form_for :update_form, :url => toa_locked_path(team_id: @team_id, team_operating_agreement_id: @current_toa.id) do |f|
     .container.better_header
       %h Team Operating Agreement
     %table.table_main
@@ -17,27 +16,28 @@
         %tr
           %td.column_name Project Name 
           %td.column_content
-            = f.input :project_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
+            = f.input :project_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.project_name, readonly: true }
         %tr
           %td.column_name Module
           %td.column_content
-            = f.input :module_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
+            = f.input :module_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.module_name, readonly: true }
         %tr
           %td.column_name Module Leader
           %td.column_content
-            = f.input :module_leader, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
+            = f.input :module_leader, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.module_leader, readonly: true }
         %tr
           %td.column_name Team Name
           %td.column_content
-            = f.input :team_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
+            = f.input :team_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.team_name, readonly: true }
         %tr
           %td.column_name Start Date
           %td.column_content
-            = f.input :start_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
+            = f.input :start_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.start_date, readonly: true }
         %tr
           %td.column_name End Date
           %td.column_content
-            = f.input :end_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", readonly: true }
+            = f.input :end_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.end_date, readonly: true }
+
     %p.only_bold
       Purpose of the Team Operating Agreement
     %P.filler_text
@@ -53,7 +53,7 @@
     %p.only_bold
       Team Mission
     %P.filler_text.long_content
-      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
+      = f.input :team_mission, as: :text, label: false , required: false, input_html: {:value => @current_toa.team_mission, readonly: true}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -66,7 +66,7 @@
       mobile numbers, Facebook name etc.; their preferred communication method; and 
       any times/days that they are unavailable to be contacted.
     %hr.group_line.thinner_line
-      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
+      = f.input :team_communications, as: :text, label: false , required: false, input_html: {:value => @current_toa.team_communications, readonly: true}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -78,7 +78,7 @@
       decisions, how decisions will be documented, definitions of key terms, and what 
       happens if the team cannot come to a decision.
     %hr.group_line.thinner_line
-      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
+      = f.input :decision_making, as: :text, label: false , required: false, input_html: {:value => @current_toa.decision_making, readonly: true}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -90,7 +90,7 @@
       facilitating, frequency, and scheduling of meetings, and attendance expectations.
     %hr.group_line.thinner_line
     %P.filler_text.long_content
-      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
+      = f.input :meetings, as: :text, label: false , required: false, input_html: {:value => @current_toa.meetings, readonly: true}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     %p.only_bold
@@ -101,67 +101,34 @@
       Do not assume that personal behaviors are understood, and pay particular attention 
       to any cultural differences, if you are working in a multicultural team.
     %hr.group_line.thinner_line
-      = f.input :text, as: :text, label: false , required: false, input_html: { readonly: true }
+      = f.input :personal_courtesies, as: :text, label: false , required: false, input_html: {:value => @current_toa.personal_courtesies, readonly: true}
     %hr.group_line
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     %h.header_agreemnet Agreement 
-
+    
     .container-fluid.white_bg.push_top
-      %div.row
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4 
-          //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
-      
-      %hr.group_line.thinner_line
 
-      %div.row
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4 
-          //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
-
-      %hr.group_line.thinner_line
-
-      %div.row
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4 
-          //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
-
-      %hr.group_line.thinner_line
-
-      %div.row
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Name: 
-          = f.input :string, as: :string, label: "Name:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4 
-          //%p.text_black.small_bottom_margin Signature: 
-          = f.input :string, as: :string, label: "Signature:" , required: true, input_html: { readonly: true }
-        %div.col-xs-6.col-sm-4
-          //%p.text_black.small_bottom_margin Date: 
-          = f.input :string, as: :string, label: "Date:" , required: true, input_html: { readonly: true }
-
-      %hr.group_line.thinner_line
+      - for i in 1..@current_team_size
+        - memberNumber = i.to_s
+        - name = "member" + memberNumber + "name"
+        - signature = "member" + memberNumber + "signature"
+        - date = "member" + memberNumber + "date"
+        %div.row
+          %div.col-xs-6.col-sm-4
+            = f.input name, as: :string, label: "Name:" , required: true, input_html: {:value => @current_toa_signatures[i-1].name, readonly: true}
+          %div.col-xs-6.col-sm-4 
+            = f.input signature, as: :string, label: "Signature:" , required: true, input_html: {:value => @current_toa_signatures[i-1].signature, readonly: true}
+          %div.col-xs-6.col-sm-4
+            = f.input date, as: :string, label: "Date:" , required: true, input_html: {:value => @current_toa_signatures[i-1].date, readonly: true}
+        
+        %hr.group_line.thinner_line
 
 
     .container-fluid.white_bg.push_top
-      = f.button :submit, "Submit", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", onclick:"getSelectedModule()", "data-disable-with" => "Submitting.."
-      = f.button :submit, "Save", class: "btn btn-primary agreement_buttons justify-content-center button_toa_2", id:"submit_choice", onclick:"getSelectedModule()", "data-disable-with" => "Saving.."
-            
+      - if @signed_status.signed_agreement == false
+        = f.button :submit, "Reject", name:"reject_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Rejecting.."
+        = f.button :submit, "Accept", name:"accept_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_2", id:"submit_choice", "data-disable-with" => "Accepting.."
+      - elsif @signed_status.signed_agreement == true
+        %p 
+          Signed            

@@ -2,4 +2,4 @@ Rails.application.config.session_store :active_record_store, key: (Rails.env.pro
                                                              secure: (Rails.env.demo? || Rails.env.production?),
                                                              httponly: true
 
-ActiveSupport::LoggerSilence
+
