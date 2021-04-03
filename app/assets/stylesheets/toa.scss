@@ -89,7 +89,7 @@
   font-size: larger;
   color: white;
   background-color: rgb(31, 20, 93);
-  font-family: 'Blake';
+  font-family: 'Steph';
   width: 35%;
 }
 
@@ -132,4 +132,32 @@
 
 .form-control {
   border-radius: 0rem;
+}
+
+.half_button {
+  cursor: not-allowed;
+  pointer-events: none;
+  float: right;
+  //text-align: center;
+  font-size: larger;
+  color: GrayText;
+  cursor: inherit;
+  background-color: #ddd;
+  background: #ddd;
+  font-family: 'Steph';
+  width: 35%;
+}
+
+.half_button_50 {
+  cursor: not-allowed;
+  pointer-events: none;
+  float: right;
+  //text-align: center;
+  font-size: larger;
+  color: GrayText;
+  cursor: inherit;
+  background-color: #ddd;
+  background: #ddd;
+  font-family: 'Steph';
+  width: 40%;
 }

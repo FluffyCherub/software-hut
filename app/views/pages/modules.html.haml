@@ -56,7 +56,11 @@
         %ul
           %strong.feedback_header.medium 
             Additional Info: 
-          %li #{link_to "Team Operating Agreement", toa_path(:team_id => session[:team_info].id)}
+          -# Have to make check here if there is team
+          - if session[:team_info].nil?
+            %li Team Operating Agreement Unavailable
+          - else
+            %li #{link_to "Team Operating Agreement", toa_path(:team_id => session[:team_info].id)}
           %li Feedback History
 
 :coffee

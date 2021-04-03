@@ -26,13 +26,13 @@ $(function resizeGroup(){
   var element =  document.getElementById('module_feedback');
   if (typeof(element) != 'undefined' && element != null)
   {
-    setInterval(sameHeightGroup, 2000);
+    setInterval(sameHeightGroup, 500);
   }
 
   var myLine =  document.getElementById('top_line');
   if (typeof(myLine) != 'undefined' && myLine != null)
   {
-    setInterval(createBlueLine, 2000);
+    setInterval(createBlueLine, 500);
   }
 });
 
