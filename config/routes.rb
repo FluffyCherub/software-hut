@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   match "/modules", to: "pages#modules", via: :all
   match "/toa", to: "toa#toa_doc", via: :all
   match "/toa/locked", to: "toa#toa_doc_locked", via: :all
+  match "/admin", to: "admin#admin_page", via: :all
+
 
   get :ie_warning, to: 'errors#ie_warning'
   get :javascript_warning, to: 'errors#javascript_warning'
