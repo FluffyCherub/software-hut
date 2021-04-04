@@ -60,3 +60,8 @@ $(document).on('click', '.update_form :submit', function () {
   buttons.style.backgroundColor= rgb(31, 20, 93);
   buttons.style.color="black";
 });
+
+function userFunction(number) {
+  document.getElementById('form_username').value = "index";
+  document.getElementById("myForm").submit();
+}

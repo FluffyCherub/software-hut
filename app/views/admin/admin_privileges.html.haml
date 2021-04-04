@@ -1,13 +1,13 @@
 - content_for :title, "Admin Privileges"
-
+  
 
 .container.body_whole_custom
   = simple_form_for :search_form do |f|
     .container-fluid.bg_none
       %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
     .container-fluid.bg_none
-      = f.input :project_name, as: :string, label: false , required: false
-      = f.button :submit, "Submit", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
+      = f.input :search_input, as: :string, label: false , required: false
+      = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
 
   = simple_form_for :privilege_form do |f|
     .container-fluid.bg_none
@@ -23,18 +23,28 @@
               %th{:colspan => "1", :style => "width: 10%;"} Admin
               %th{:colspan => "4", :style => "width: 40%;"} Actions
 
-            - for i in 1..5
+            - @users_list.to_a.each_with_index do |user, index|
+              - if user[:givenname] == nil  
+                - user[:givenname] = ""
+              - if user[:sn] == nil 
+                - user[:sn] = ""
+              - whole_name = user[:givenname] + " " + user[:sn]
+              - puts index
+              - test = user[:username]
               %tr.small
-                %td{:colspan => "1", :style => "width: 5%;"} Content
-                %td{:colspan => "1", :style => "width: 25%;"} Content Content Yeah
-                %td{:colspan => "1", :style => "width: 10%;"} Content
-                %td{:colspan => "1", :style => "width: 10%;"} Content
-                %td{:colspan => "1", :style => "width: 10%;"} Content
-                %td{:colspan => "1", :style => "width: 10%;"}
-                  = f.button :submit, "Suspend", name:"suspend_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting.."
+                = f.hidden_field :form_username, :value => index
+                %td{:colspan => "1", :style => "width: 5%;", :id => "#{index}"} #{index+1}
+                %td{:colspan => "1", :style => "width: 25%;"} #{whole_name}
+                %td{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
+                %td{:colspan => "1", :style => "width: 10%;"} #{user[:suspended]}
+                %td{:colspan => "1", :style => "width: 10%;"} #{user[:unsuspended]}
+                %td{:colspan => "1", :style => "width: 10%;"} 
+                  = f.button :submit, "Suspend", name:"suspend_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting..", onclick: "userFunction()"
                 %td{:colspan => "1", :style => "width: 10%;"}
                   = f.button :submit, "Unsuspend", name:"unsuspend_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting.."
                 %td{:colspan => "1", :style => "width: 10%;"} 
                   = f.button :submit, "Make Admin", name:"make_admin_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting.."
                 %td{:colspan => "1", :style => "width: 10%;"} 
                   = f.button :submit, "Remove Admin", name:"remove_admin_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting.."
+
+

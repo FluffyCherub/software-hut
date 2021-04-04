@@ -20,6 +20,7 @@
 #  ou                   :string
 #  sign_in_count        :integer          default(0), not null
 #  sn                   :string
+#  suspended            :boolean          default(FALSE)
 #  uid                  :string
 #  unconfirmed_email    :string
 #  unlock_token         :string
