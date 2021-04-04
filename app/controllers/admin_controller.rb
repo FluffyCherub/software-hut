@@ -27,18 +27,22 @@ class AdminController < ApplicationController
                                givenname LIKE ? OR
                                sn LIKE ?", search_param, search_param, search_param)
     else
-      @users_list = User.all
+      @users_list = User.all.order(:givenname, :sn)
     end
 
-    if params['suspend_button'] == "Suspend"
-      puts "SUUUUUUUUUUUUUUUUUUUUUUUUSPEND"
-      puts params['privilege_form']['form_username']
-    elsif params['unsuspend_button'] == "Unsuspend"
-      puts "UNNNNNSSSSUUUUUSPEEEEEND"
-    elsif params['make_admin_button'] == "Make Admin"
-      puts "MAAAAAAAAAAAAKKKKKKEEEEEE AAAAAAAAADDDDDDDDMMIN"
-    elsif params['remove_admin_button'] == "Remove Admin"
-      puts "REMOOOOOOVVVVVVVEEEEEE AAAAADDDDDDMMIIIINNNNNN"
+    if params['privilege_form'] != nil
+      #get the user to switch his privilege
+      chosen_user = User.find_by(username: params['privilege_form']['form_username'])
+
+      if params['suspend_button'] == "Suspend"
+        chosen_user.update(:suspended => true)
+      elsif params['unsuspend_button'] == "Unsuspend"
+        chosen_user.update(:suspended => false)
+      elsif params['make_admin_button'] == "Make Admin"
+        chosen_user.update(:admin => true)
+      elsif params['remove_admin_button'] == "Remove Admin"
+        chosen_user.update(:admin => false)
+      end
     end
 
   end

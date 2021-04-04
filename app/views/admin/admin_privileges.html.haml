@@ -34,14 +34,14 @@
                   %td{:colspan => "1", :style => "width: 25%;"} #{whole_name}
                   %td{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
                   %td{:colspan => "1", :style => "width: 10%;"} #{user[:suspended]}
-                  %td{:colspan => "1", :style => "width: 10%;"} #{user[:unsuspended]}
+                  %td{:colspan => "1", :style => "width: 10%;"} #{user[:admin]}
                   %td{:colspan => "1", :style => "width: 10%;"} 
                     = f.button :submit, "Suspend", name:"suspend_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting..", onclick: "userFunction('#{user[:username]}')"
                   %td{:colspan => "1", :style => "width: 10%;"}
-                    = f.button :submit, "Unsuspend", name:"unsuspend_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting.."
+                    = f.button :submit, "Unsuspend", name:"unsuspend_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting..", onclick: "userFunction('#{user[:username]}')"
                   %td{:colspan => "1", :style => "width: 10%;"} 
-                    = f.button :submit, "Make Admin", name:"make_admin_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting.."
+                    = f.button :submit, "Make Admin", name:"make_admin_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting..", onclick: "userFunction('#{user[:username]}')"
                   %td{:colspan => "1", :style => "width: 10%;"} 
-                    = f.button :submit, "Remove Admin", name:"remove_admin_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting.."
+                    = f.button :submit, "Remove Admin", name:"remove_admin_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting..", onclick: "userFunction('#{user[:username]}')"
 
 
