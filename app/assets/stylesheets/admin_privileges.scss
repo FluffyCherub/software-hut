@@ -1,0 +1,22 @@
+.body_whole_custom {
+  width: 100%;
+  border-radius: 8px;
+  border: 1.5px solid rgb(31, 20, 93);
+  background-color: white;
+  margin-bottom: 3%
+}
+
+.bg_none {
+  background-color: transparent;
+  border: none;
+}
+
+.action_buttons {
+  float: center;
+  //text-align: center;
+  //font-size: larger;
+  color: white;
+  background-color: rgb(31, 20, 93);
+  font-family: 'Steph';
+  width: 100%;
+}
