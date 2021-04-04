@@ -1,0 +1,47 @@
+.bg_none {
+  background-color: transparent;
+  border: none;
+}
+
+.button_gradient {
+  border-radius: 8px;
+  border: transparent;
+  background-color: transparent;
+  color: white;
+  //background-image: linear-gradient(to bottom right,rgb(31, 20, 93), rgb(0, 159, 218));
+  background-image: linear-gradient(to right, rgba(31, 20, 93, 1), rgba(31, 20, 93, 0));
+}
+
+.button_gradient:hover {
+  border-radius: 8px;
+  background-color: transparent;
+  border: transparent;
+  //background-image: linear-gradient(to bottom right,rgb(0, 159, 218), rgb(31, 20, 93));
+  color: black;
+  background-image: linear-gradient(to right, rgba(90, 82, 135, 1), rgba(90, 82, 135, 0));
+}
+
+.bg_none_margin {
+  background-color: transparent;
+  border: none;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.choose_buttons {
+  float: right;
+  text-align: left;
+  color: white;
+  //background-color: rgb(31, 20, 93);
+  font-family: 'Steph';
+  width: 100%;
+  padding: 50px;
+  padding-left: 30px;
+}
+
+.bigger {
+  font-size: calc(20px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+//rgb(31, 20, 93);
+//rgb(0, 159, 218);
