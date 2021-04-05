@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   match "/toa/locked", to: "toa#toa_doc_locked", via: :all
   match "/admin", to: "admin#admin_page", via: :all
   match "/admin/privileges", to: "admin#admin_privileges", via: :all
-  match "/admin/modules", to: "admin#admin_privileges", via: :all
+  match "/admin/modules", to: "admin#admin_modules", via: :all
 
 
   get :ie_warning, to: 'errors#ie_warning'
