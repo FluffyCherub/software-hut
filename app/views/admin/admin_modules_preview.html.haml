@@ -29,6 +29,7 @@
       .container-fluid.bg_none
         %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
       .container-fluid.bg_none
+        = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
         = f.input :search_input, as: :string, label: false , required: false
         = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
       .container-fluid.bg_none
@@ -45,7 +46,7 @@
             %th{:colspan => "4", :style => "width: 20%;"} Action
             = simple_form_for :privilege_form, :id => 'privilege_form' do |f|
               = f.input :form_username, :as => :hidden, :input_html => {:id => "form_username", :value => "" }
-              - @users_list.to_a.each_with_index do |user, index|
+              - @current_module_users.to_a.each_with_index do |user, index|
                 - if user[:givenname] == nil  
                   - user[:givenname] = ""
                 - if user[:sn] == nil 
@@ -55,8 +56,8 @@
                   %td{:colspan => "1", :style => "width: 5%;"} #{index+1}
                   %td{:colspan => "1", :style => "width: 30%;"} #{whole_name}
                   %td{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
-                  %td{:colspan => "1", :style => "width: 20%;"} #{user[:suspended]}
-                  %td{:colspan => "1", :style => "width: 15%;"} #{user[:admin]}
+                  %td{:colspan => "1", :style => "width: 20%;"} #{user[:email]}
+                  %td{:colspan => "1", :style => "width: 15%;"} #{User.get_module_privilege(user[:id], params[:module_id])}
                   %td{:colspan => "1", :style => "width: 20%;"} 
                     = f.button :submit, "Change Privilege", name:"privilege_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting..", onclick: "userFunction('#{user[:username]}')"
     .container-fluid.bg_none
