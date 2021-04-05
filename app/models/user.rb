@@ -42,4 +42,11 @@ class User < ApplicationRecord
   has_many :teams, through: :user_teams
 
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
+
+
+  def self.get_module_privilege(user_id, module_id)
+    privilege = UserListModule.where("user_id = ? AND list_module_id = ?", user_id, module_id).first.privilege
+    return privilege
+  end
 end

@@ -46,7 +46,36 @@ test = UserListModule.create([
   {list_module: modules[1], user: user2, privilege: 'student'},
   {list_module: modules[2], user: user2, privilege: 'student'},
   {list_module: modules[3], user: user2, privilege: 'student'},
-  {list_module: modules[4], user: user2, privilege: 'student'}
+  {list_module: modules[4], user: user2, privilege: 'student'},
+
+  #modules for test users
+  {list_module: modules[7], user: test_user3, privilege: 'student'},
+  {list_module: modules[7], user: test_user1, privilege: 'student'},
+  {list_module: modules[7], user: test_user2, privilege: 'student'},
+  {list_module: modules[8], user: test_user5, privilege: 'student'},
+  {list_module: modules[8], user: test_user1, privilege: 'student'},
+  {list_module: modules[8], user: test_user3, privilege: 'student'},
+  {list_module: modules[9], user: test_user5, privilege: 'student'},
+  {list_module: modules[10], user: test_user2, privilege: 'student'},
+  {list_module: modules[10], user: test_user4, privilege: 'student'},
+  {list_module: modules[11], user: test_user2, privilege: 'student'},
+  {list_module: modules[11], user: test_user5, privilege: 'student'},
+  {list_module: modules[11], user: test_user3, privilege: 'student'},
+  {list_module: modules[12], user: test_user1, privilege: 'student'},
+  {list_module: modules[12], user: test_user4, privilege: 'student'},
+  {list_module: modules[12], user: test_user2, privilege: 'student'},
+
+  {list_module: modules[0], user: test_user1, privilege: 'student'},
+  {list_module: modules[0], user: test_user2, privilege: 'student'},
+  {list_module: modules[0], user: test_user3, privilege: 'student'},
+  {list_module: modules[0], user: test_user4, privilege: 'student'},
+  
+  
+  
+  
+  
+  
+
 ])
     
 teams = Team.create([

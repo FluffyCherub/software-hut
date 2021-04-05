@@ -48,7 +48,6 @@ class AdminController < ApplicationController
 
   end
 
-
   def admin_modules
     
     #check if the user trying to access is an admin, otherwise redirect to root
@@ -105,5 +104,42 @@ class AdminController < ApplicationController
     
   end
 
+  def admin_modules_preview
+    #check if the user trying to access is an admin, otherwise redirect to root
+    if current_user.admin == false
+      redirect_to "/"
+    end
+
+    #setting the search input parameter to display the correct users
+    if params['search_button'] == "Search"
+      search_input = params['search_form']['search_input']
+    elsif params['search_input'] != nil
+      search_input = params['search_input']
+    else
+      search_input = ""
+    end
+    
+    #getting users for the correct module and search input
+    @current_module_users = User.joins(:list_modules)
+                                .where("list_modules.id = ? AND 
+                                          (users.username LIKE ? OR
+                                          users.givenname LIKE ? OR 
+                                          users.sn LIKE ? OR 
+                                          users.email LIKE ? OR 
+                                          user_list_modules.privilege LIKE ?)", 
+                                            params[:module_id],
+                                            "%" + search_input + "%",
+                                            "%" + search_input + "%",
+                                            "%" + search_input + "%",
+                                            "%" + search_input + "%",
+                                            "%" + search_input + "%") 
+                                .order(:givenname, :sn)
+
+    if params['search_button'] == "Search"
+      mod_id = params['search_form']['form_module_id']
+      redirect_to admin_modules_preview_path(module_id: mod_id, search_input: params['search_form']['search_input'])
+    end
+  
+  end
 
 end
