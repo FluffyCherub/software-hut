@@ -14,10 +14,8 @@
 
   #accordion
     .card
-      // i in 1..x where x is number of acadamic years
       - for i in 1..@modules_by_year.length
         - true_i = 0
-        //change i == number of acadamic years
         - if i == @modules_by_year.length
           - true_i = 1
         - else
@@ -40,9 +38,13 @@
                         #{@modules_by_year[i-1][z-1].code} #{@modules_by_year[i-1][z-1].name} (#{@modules_by_year[i-1][z-1].semester})
                   #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                     .card-body
+                      %li
+                        %a{ :href => "/admin/modules/preview", :title => "Preview" }
+                          %strong
+                            Preview Module Page
+                      %hr.group_line
                       #{@modules_by_year[i-1][z-1].description}
                 ////////////////////////////////////////////////////// MODULE
-                //change i == number of acadamic years
                 - if i == @modules_by_year.length
                   - last_i = true_i
                   - last_z = z
@@ -50,7 +52,6 @@
                   :javascript
                     document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
                     document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
-
         :javascript
           document.getElementById('heading-1').id = 'heading-#{i}';
           document.getElementById('collapse-1').id = 'collapse-#{i}';
