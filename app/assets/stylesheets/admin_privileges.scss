@@ -65,6 +65,13 @@
   width: 50%
 }
 
+.button_search_2 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  width: 80%
+}
+
 .no_padding {
   padding: 0%;
 }
@@ -83,6 +90,10 @@
 
 .margin_bottom_small {
   margin-bottom: 1%;
+}
+
+.margin_bottom_medium {
+  margin-bottom: 5%;
 }
 
 .scroll_down {  
@@ -130,4 +141,34 @@
   padding: 20px;
   background-color: white;
   text-align: center;
+}
+
+.button_add_module {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  margin-right: 0%;
+  float: right;
+  width: 100%
+}
+
+.button_remove_module {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  margin-right: 0%;
+  float: left;
+  width: 100%
+}
+
+.padding_right_small {
+  padding-right: 1%;
+}
+
+a {
+  color: rgb(31, 20, 93) !important;
+}
+
+a:hover {
+  color: rgb(0, 159, 218) !important;
 }
