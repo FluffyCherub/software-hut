@@ -10,84 +10,68 @@
           = f.input :search_input, as: :string, label: false , required: false
         .container.col-xs-4.col-sm-3.no_padding_left
           = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_2 float_left", id:"submit_choice", "data-disable-with" => "Submitting.."
-        .container.col-xs-4.col-sm-2.no_padding_right
-          = f.button :submit, "Add Module", name:"add_button", class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice", "data-disable-with" => "Submitting.."
-        .container.col-xs-4.col-sm-2.no_padding_left.no_padding_right.padding_right_small
-          = f.button :submit, "Remove Module", name:"remove _button", class: "btn btn-primary agreement_buttons justify-content-center button_remove_module", id:"submit_choice", "data-disable-with" => "Submitting.."
+        .container.col-xs-8.col-sm-4.no_padding_left.no_padding_right.padding_right_small
+          %button{type: "button", name: "add _button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Add Module
 
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black
-    - last_i = 0
-    #accordion
-      .card
-        - for i in 1..@modules_by_year.length
-          - true_i = 0
-          - if i == @modules_by_year.length
-            - true_i = 1
-          - else
-            - true_i = i + 1
-          //for loop here 1
-          //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
-          #heading-1.card-header
-            %h5.mb-0
-              %a.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
-                ACADEMIC YEAR #{@modules_by_year[i-1].first.years}
-          #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
-            .card-body
-              #accordion-1
-                - for z in 1..@modules_by_year[i-1].length
-                  ////////////////////////////////////////////////////// MODULE
-                  .card
-                    #heading-1-1.card-header.header_bad
-                      %h5.mb-0
-                        %a.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                          #{@modules_by_year[i-1][z-1].code} #{@modules_by_year[i-1][z-1].name} (#{@modules_by_year[i-1][z-1].semester})
-                    #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
-                      .card-body
-                        %li
-                          - module_id_var = @modules_by_year[i-1][z-1].id
-                          %a{ :href => admin_modules_preview_path(module_id: module_id_var), :title => "Preview" }
-                            %strong
-                              Preview Module Page
-                        %hr.group_line
-                        #{@modules_by_year[i-1][z-1].description}
-                  ////////////////////////////////////////////////////// MODULE
-                  - if i == @modules_by_year.length
-                    - last_i = true_i
-                    - last_z = z
-                  - else
-                    :javascript
-                      document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
-                      document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
-          :javascript
-            document.getElementById('heading-1').id = 'heading-#{i}';
-            document.getElementById('collapse-1').id = 'collapse-#{i}';
-            document.getElementById('accordion-1').id = 'accordion-#{i}';
-          //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
+    - if @modules_by_year.length <= 0
+      .container.no_results
+        %h.center_element.bigger.text_black No users match your search
+    - else
+      - last_i = 0
+      #accordion
+        .card
+          - for i in 1..@modules_by_year.length
+            - true_i = 0
+            - if i == @modules_by_year.length
+              - true_i = 1
+            - else
+              - true_i = i + 1
+            //for loop here 1
+            //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
+            #heading-1.card-header
+              %h5.mb-0
+                %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
+                  ACADEMIC YEAR #{@modules_by_year[i-1].first.years}
+            #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
+              .card-body
+                #accordion-1
+                  - for z in 1..@modules_by_year[i-1].length
+                    ////////////////////////////////////////////////////// MODULE
+                    .card
+                      #heading-1-1.card-header.header_bad
+                        %h5.mb-0
+                          %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
+                            #{@modules_by_year[i-1][z-1].code} #{@modules_by_year[i-1][z-1].name} (#{@modules_by_year[i-1][z-1].semester})
+                      #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
+                        .card-body
+                          %li
+                            - module_id_var = @modules_by_year[i-1][z-1].id
+                            %a.uni_purple{ :href => admin_modules_preview_path(module_id: module_id_var), :title => "Preview" }
+                              %strong
+                                Preview Module Page
+                          %hr.group_line
+                          #{@modules_by_year[i-1][z-1].description}
+                    ////////////////////////////////////////////////////// MODULE
+                    - if i == @modules_by_year.length
+                      - last_i = true_i
+                      - last_z = z
+                    - else
+                      :javascript
+                        document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
+                        document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
+            :javascript
+              document.getElementById('heading-1').id = 'heading-#{i}';
+              document.getElementById('collapse-1').id = 'collapse-#{i}';
+              document.getElementById('accordion-1').id = 'accordion-#{i}';
+            //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
 
-    // in 1..x  where x is modules in the oldest(last) year
-    - for y in 1..@modules_by_year[@modules_by_year.length-1].length
-      -# counting up the indicies of the modules in the oldest(last) year --> numberOfModulesAcrossAllYears - (NumberOfModulesOldestYear + 1) + y
-      - index = @num_of_modules-(@modules_by_year[@modules_by_year.length-1].length+1) + y 
-      :javascript
-        var bad_headers = document.getElementsByClassName("header_bad");
-        var bad_collapsers = document.getElementsByClassName("collapse_bad");
-        bad_headers['#{index}'].id = 'heading-#{last_i}-#{y}';
-        bad_collapsers['#{index}'].id = 'collapse-#{last_i}-#{y}';
-  -# #heading-1 -> #heading-i    
-  -# #collapse-1 -> #collapse-i
-  -# #accordion-1 -> #accordion-i
-  -# #heading-1-1 -> #heading-i-z
-  -# #collapse-1-1 -> #collapse-i-z
-
-  -# EXPANDED ACCORDION ITEM WITH FIX
-  -# #accordionExample.accordion
-  -# .accordion-item
-  -#   %h2#headingOne.accordion-header
-  -#     %button.accordion-button(aria-controls="collapseOne" aria-expanded="false" data-target="#collapseOne" data-toggle="collapse" type="button")
-  -#       Accordion Item #1
-  -#   #collapseOne.accordion-collapse.collapse.show(aria-labelledby="headingOne" data-parent="#accordionExample")
-  -#     .accordion-body
-  -#       %strong This is the first item's accordion body.
-  -#       It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the
-  -#       = succeed "," do
-  -#         %code .accordion-body
+      // in 1..x  where x is modules in the oldest(last) year
+      - for y in 1..@modules_by_year[@modules_by_year.length-1].length
+        -# counting up the indicies of the modules in the oldest(last) year --> numberOfModulesAcrossAllYears - (NumberOfModulesOldestYear + 1) + y
+        - index = @num_of_modules-(@modules_by_year[@modules_by_year.length-1].length+1) + y 
+        :javascript
+          var bad_headers = document.getElementsByClassName("header_bad");
+          var bad_collapsers = document.getElementsByClassName("collapse_bad");
+          bad_headers['#{index}'].id = 'heading-#{last_i}-#{y}';
+          bad_collapsers['#{index}'].id = 'collapse-#{last_i}-#{y}';
