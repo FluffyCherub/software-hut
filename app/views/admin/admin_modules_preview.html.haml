@@ -1,1 +1,64 @@
 - content_for :title, "Module Preview"
+
+.container.body_whole_custom
+  .container-fluid.bg_none.text_black
+    Module Name here
+    %hr.group_line
+  .container-fluid.bg_none.text_black
+    Description here i guess?
+    %hr.group_line
+  .container 
+    .container-fluid.bg_none.text_black
+      %strong
+        Module Leader:
+      %br
+      %ul
+        %li
+          Big pp guy
+    .container-fluid.bg_none.text_black
+      %strong
+        Teaching assistants:
+      %br
+      %ul
+        %li
+          Not that big pp guy 1
+        %li
+          Not that big pp guy 2
+    %hr.group_line
+    = simple_form_for :search_form do |f|
+      .container-fluid.bg_none
+        %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
+      .container-fluid.bg_none
+        = f.input :search_input, as: :string, label: false , required: false
+        = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
+      .container-fluid.bg_none
+        %button{type: "button"}Handbook ples
+    .container-fluid.bg_none
+      %table.table.table-hover.table-dark 
+        %tbody
+          %tr.medium
+            %th{:colspan => "1", :style => "width: 5%;"} #
+            %th{:colspan => "1", :style => "width: 30%;"} Name
+            %th{:colspan => "1", :style => "width: 10%;"} Username
+            %th{:colspan => "1", :style => "width: 20%;"} Email
+            %th{:colspan => "1", :style => "width: 15%;"} Privilege
+            %th{:colspan => "4", :style => "width: 20%;"} Action
+            = simple_form_for :privilege_form, :id => 'privilege_form' do |f|
+              = f.input :form_username, :as => :hidden, :input_html => {:id => "form_username", :value => "" }
+              - @users_list.to_a.each_with_index do |user, index|
+                - if user[:givenname] == nil  
+                  - user[:givenname] = ""
+                - if user[:sn] == nil 
+                  - user[:sn] = ""
+                - whole_name = user[:givenname] + " " + user[:sn]
+                %tr.small
+                  %td{:colspan => "1", :style => "width: 5%;"} #{index+1}
+                  %td{:colspan => "1", :style => "width: 30%;"} #{whole_name}
+                  %td{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
+                  %td{:colspan => "1", :style => "width: 20%;"} #{user[:suspended]}
+                  %td{:colspan => "1", :style => "width: 15%;"} #{user[:admin]}
+                  %td{:colspan => "1", :style => "width: 20%;"} 
+                    = f.button :submit, "Change Privilege", name:"privilege_button", class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice", "data-disable-with" => "Submitting..", onclick: "userFunction('#{user[:username]}')"
+    .container-fluid.bg_none
+      %button{type: "button"}Group pls
+      %button{type: "button"}idk              

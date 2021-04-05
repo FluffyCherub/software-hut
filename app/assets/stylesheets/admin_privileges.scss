@@ -21,38 +21,6 @@
   width: 100%;
 }
 
-// .accordion-item {
-// //   background-color: rgb(247, 245, 245);
-// //   border: 1.5px solid rgb(31, 20, 93);
-//   width: 100%;
-// }
-
-// .accordion-header {
-//   background-color: rgb(31, 20, 93);
-// }
-
-// .accordion-button {
-//   border-radius: 8px;
-//   color: white;
-//   background-color: rgb(31, 20, 93);
-//   font-family: 'Steph';
-//   width: 100%;
-//   text-align: left;
-// }
-
-// .accordion-body {
-//   border-radius: 8px;
-//   color: black;
-// }
-
-// h2 {
-//   margin: 0%;
-// }
-
-// .accordion {
-//   margin-bottom: 2%;
-// }
-
 .mb-0 > a {
   display: block;
   position: relative;
@@ -65,4 +33,8 @@
 }
 .mb-0 > a[aria-expanded="true"]:after {
   content: "\f077"; /* fa-chevron-up */
+}
+
+.text_black {
+  color: black;
 }
