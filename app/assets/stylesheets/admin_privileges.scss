@@ -96,9 +96,17 @@
   margin-bottom: 5%;
 }
 
+.margin_top {
+  margin-top: 2%;
+}
+
+.margin_top_none {
+  margin-top: 0%;
+}
+
 .scroll_down {  
   max-height: 1200px !important;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .table {
@@ -171,4 +179,39 @@
 
 a:hover {
   color: rgb(0, 159, 218) !important;
+}
+
+.button_handbook {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  margin-right: 0%;
+  float: right;
+  width: 75%
+}
+
+.button_groups {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  margin-right: 0%;
+  float: right;
+  width: 100%
+}
+
+.button_placeholder {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  margin-right: 0%;
+  float: right;
+  width: 35%
+}
+
+.no_border {
+  border: none !important;
+}
+
+.float_left_override {
+  float: left !important;
 }
