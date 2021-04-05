@@ -6,6 +6,14 @@
   margin-bottom: 3%
 }
 
+.body_whole_custom_transparent {
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  margin-bottom: 3%
+}
+
 .bg_none {
   background-color: transparent;
   border: none;
@@ -37,4 +45,83 @@
 
 .text_black {
   color: black;
+}
+
+.search_logo {
+  margin-left: 1%;
+  margin-top: 2%;
+  width: 25%;
+  height: auto;
+}
+
+.float_left {
+  float: left;
+}
+
+.button_search {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  width: 50%
+}
+
+.no_padding {
+  padding: 0%;
+}
+
+.no_padding_right {
+  padding-right: 0%;
+}
+
+.no_padding_left {
+  padding-left: 0%;
+}
+
+.overflow_style {
+  overflow-x:auto;
+}
+
+.margin_bottom_small {
+  margin-bottom: 1%;
+}
+
+.scroll_down {  
+  max-height: 1200px !important;
+  overflow: scroll;
+}
+
+.table {
+  margin-bottom: 0%;
+  border-radius: 0px;
+  border: none;
+  background-color: #EEEEFF;
+  color: black;
+}
+
+.hover_color {
+  background-color: white;
+  color: black !important;
+}
+
+.black_text {
+  color: black !important;
+}
+
+.table_div {
+  margin-bottom: 0%;
+  border: none;
+  border-radius: 3px;
+}
+
+.bg_border {
+  border-radius: 8px;
+  border: 2px solid rgb(31, 20, 93);;
+}
+
+.bg_white {
+  background-color: white;
+}
+
+.center_element {
+  text-align: center;
 }
