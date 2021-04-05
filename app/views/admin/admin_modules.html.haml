@@ -5,8 +5,8 @@
     .container-fluid.bg_none
       %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
     .container-fluid.bg_none
-      = f.input :project_name, as: :string, label: false , required: false
-      = f.button :submit, "Submit", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
+      = f.input :search_input, as: :string, label: false , required: false
+      = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
       = f.button :submit, "Add Module", name:"add_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
       = f.button :submit, "Remove Module", name:"remove _button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
 
@@ -15,10 +15,10 @@
   #accordion
     .card
       // i in 1..x where x is number of acadamic years
-      - for i in 1..17
+      - for i in 1..@modules_by_year.length
         - true_i = 0
         //change i == number of acadamic years
-        - if i == 17
+        - if i == @modules_by_year.length
           - true_i = 1
         - else
           - true_i = i + 1
@@ -27,23 +27,23 @@
         #heading-1.card-header
           %h5.mb-0
             %a.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
-              ACADEMIC YEAR 20xx - 20xx
+              ACADEMIC YEAR #{@modules_by_year[i-1].first.years}
         #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
           .card-body
             #accordion-1
-              - for z in 1..5
+              - for z in 1..@modules_by_year[i-1].length
                 ////////////////////////////////////////////////////// MODULE
                 .card
                   #heading-1-1.card-header.header_bad
                     %h5.mb-0
                       %a.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                        Module Name #{i}
+                        #{@modules_by_year[i-1][z-1].code} #{@modules_by_year[i-1][z-1].name} (#{@modules_by_year[i-1][z-1].semester})
                   #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                     .card-body
-                      Module Description #{i}
+                      #{@modules_by_year[i-1][z-1].description}
                 ////////////////////////////////////////////////////// MODULE
                 //change i == number of acadamic years
-                - if i == 17
+                - if i == @modules_by_year.length
                   - last_i = true_i
                   - last_z = z
                 - else
@@ -58,10 +58,9 @@
         //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
 
   // in 1..x  where x is modules in the oldest(last) year
-  - for y in 1..5
+  - for y in 1..@modules_by_year[@modules_by_year.length-1].length
     -# counting up the indicies of the modules in the oldest(last) year --> numberOfModulesAcrossAllYears - (NumberOfModulesOldestYear + 1) + y
-    - index = 79 + y 
-    - puts "-----------------"
+    - index = @num_of_modules-(@modules_by_year[@modules_by_year.length-1].length+1) + y 
     :javascript
       var bad_headers = document.getElementsByClassName("header_bad");
       var bad_collapsers = document.getElementsByClassName("collapse_bad");

@@ -14,7 +14,7 @@ class PagesController < ApplicationController
   def index
     if current_user.admin?
       #redirect to the admin/super admin page
-      redirect_to "/admin_page"
+      redirect_to "/admin"
     else
       @modules = ListModule.joins(:users).where("users.username = ?", current_user.username)
       session[:modules] = @modules
