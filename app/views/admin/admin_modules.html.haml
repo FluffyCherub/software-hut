@@ -39,7 +39,8 @@
                   #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                     .card-body
                       %li
-                        %a{ :href => "/admin/modules/preview", :title => "Preview" }
+                        - module_id_var = @modules_by_year[i-1][z-1].id
+                        %a{ :href => admin_modules_preview_path(module_id: module_id_var), :title => "Preview" }
                           %strong
                             Preview Module Page
                       %hr.group_line
