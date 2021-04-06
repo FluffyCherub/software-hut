@@ -159,7 +159,13 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_create
-    
+    #check if the user trying to access is an admin, otherwise redirect to root
+    if current_user.admin == false
+      redirect_to "/"
+    end
+
+
+
     #generating academic years based on current year
     @generated_years = ListModule.generate_years(Time.now.year, 5)
     
@@ -181,7 +187,7 @@ class AdminController < ApplicationController
                                                       )
       
         #making the current user module leader if he checked the checkbox
-        if params['module_create_form']['module_leader'] == "checked-value"
+        if params['module_create_form']['module_leader'] == "checked-value" && created_module != nil
           add_mod_leader = UserListModule.create(list_module_id: created_module.id,
                                 user_id: current_user.id,
                                 privilege: "module_leader")

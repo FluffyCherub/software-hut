@@ -15,7 +15,8 @@
         %br
         %ul
           %li
-            #{@module_leader.givenname} #{@module_leader.sn}
+            - if @module_leader != nil
+              #{@module_leader.givenname} #{@module_leader.sn}
       .container-fluid.bg_none.text_black.col-xs-9.col-sm-6.no_padding_left.no_padding.margin_top_none
         %strong
           Teaching assistants:
