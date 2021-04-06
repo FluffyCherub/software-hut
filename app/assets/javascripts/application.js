@@ -11,3 +11,4 @@
 //= require select2_init
 //= require student_page
 //= require admin_page
+//= require enable_toogle
