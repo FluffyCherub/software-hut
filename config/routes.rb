@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   match "/admin/privileges", to: "admin#admin_privileges", via: :all
   match "/admin/modules", to: "admin#admin_modules", via: :all
   match "/admin/modules/preview", to: "admin#admin_modules_preview", via: :all
+  match "/admin/modules/create", to: "admin#admin_modules_create", via: :all
 
 
   get :ie_warning, to: 'errors#ie_warning'

@@ -215,3 +215,24 @@ a:hover {
 .float_left_override {
   float: left !important;
 }
+
+.body_whole_custom2 {
+  width: 55%;
+  border-radius: 8px;
+  border: 1.5px solid rgb(31, 20, 93);
+  background-color: white;
+  margin-bottom: 3%
+}
+
+.transition_timer {
+  transition:all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+        -ms-transition: all 0.3s ease-in;
+        transition: all 0.3s ease-in;
+}
+
+.transit_timer {
+  transition-duration: 0.3s;
+}
