@@ -24,4 +24,16 @@ class ListModule < ApplicationRecord
   has_many :user_list_modules
   has_many :users, through: :user_list_modules
   has_many :teams
+
+
+  #generate academic years based on current year(used for module creation)
+  def self.generate_years(current_year, num_of_years)
+    generated_years = []
+    for i in 1..num_of_years
+      next_year = current_year.to_s + "/" + (current_year+1).to_s
+      generated_years.append(next_year)
+      current_year = current_year + 1
+    end
+    return generated_years
+  end
 end

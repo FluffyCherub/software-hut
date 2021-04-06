@@ -24,9 +24,9 @@
       .form-row
         .form-group.col-md-6.margin_bottom_small
           //- collection = session[:modules] #Defines the options in radio buttons/dropdowns
-          = f.input :fund, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR'], label: "Semester", include_blank: false, required: false
+          = f.input :semester, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR'], label: "Semester", include_blank: false, required: false
         .form-group.col-md-4.margin_bottom_small
-          = f.input :fund, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR'], label: "Academic Year", include_blank: false, required: false
+          = f.input :years, as: :select, collection: @generated_years, label: "Academic Year", include_blank: false, required: false
       .form-group.margin_bottom_small
         .form-check.no_padding_left
           = f.check_box :module_leader, {:id => "check_box_create", :class => "myclass"}, "checked-value", "unchecked-value"
