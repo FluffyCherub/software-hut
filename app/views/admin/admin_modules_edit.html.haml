@@ -11,21 +11,22 @@
   .container-fluid.module_form.text_black
     .container-fluid.text_black.no_padding.bg_none
       %h.float_left.bigger.no_padding Edit Module
-      %button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium{onclick: "location.href='/admin/modules';", type: "button"} Go Back
+      %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium{:href => admin_modules_preview_path(module_id: params[:module_id]), type: "button"} Go Back
     %hr.group_line.no_padding
     = simple_form_for :module_edit_form do |f|
+      = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => @module_info.id }
       .form-row
         .form-group.col-md-9.margin_bottom_small
-          = f.input :module_name, :as => :string, label: "Module Name", required: false , :input_html => {:id => "inputName", :class => "form-control"}
+          = f.input :module_name, :as => :string, label: "Module Name", required: false , :input_html => {:id => "inputName", :class => "form-control", :value => @module_info.name}
         .form-group.col-md-3.margin_bottom_small
-          = f.input :module_code, :as => :string, label: "Code", required: false, :input_html => {:id => "inputCode", :class => "form-control"}
+          = f.input :module_code, :as => :string, label: "Code", required: false, :input_html => {:id => "inputCode", :class => "form-control", :value => @module_info.code}
       .form-group.margin_bottom_small
-        = f.input :module_description, :as => :text, label: "Description", required: false, :input_html => {:id => "inputDescription", :class => "form-control", :rows => 10}
+        = f.input :module_description, :as => :text, label: "Description", required: false, :input_html => {:id => "inputDescription", :class => "form-control", :rows => 10, :value => @module_info.description}
       .form-row
         .form-group.col-md-6.margin_bottom_small
           //- collection = session[:modules] #Defines the options in radio buttons/dropdowns
-          = f.input :semester, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR'], label: "Semester", include_blank: false, required: false
+          = f.input :semester, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR'], label: "Semester", include_blank: false, required: false,  :selected => @module_info.semester
         .form-group.col-md-4.margin_bottom_small
-          = f.input :years, as: :select, collection: @generated_years, label: "Academic Year", include_blank: false, required: false
+          = f.input :years, as: :select, collection: @generated_years, label: "Academic Year", include_blank: false, required: false, :selected => @module_info.years
       
       = f.button :submit, "Edit", name:"edit_module_button", class: "btn btn-primary agreement_buttons justify-content-center button_create_module float_left", id:"submit_choice", "data-disable-with" => "Editing.."

@@ -164,8 +164,6 @@ class AdminController < ApplicationController
       redirect_to "/"
     end
 
-
-
     #generating academic years based on current year
     @generated_years = ListModule.generate_years(Time.now.year, 5)
     
@@ -193,6 +191,44 @@ class AdminController < ApplicationController
                                 privilege: "module_leader")
         end
       end
+    end
+    
+  end
+
+  def admin_modules_edit
+    if params['edit_module_button'] == "Edit"
+
+      #checking if a module with this name and year is in the system
+      module_check = ListModule.where("name = ? AND years = ? AND id != ?", 
+                                       params['module_edit_form']['module_name'],
+                                       params['module_edit_form']['years'],
+                                       params['module_edit_form']['form_module_id'])
+
+      if module_check.length == 0
+        current_module = ListModule.find_by(id: params['module_edit_form']['form_module_id'])
+        current_module.update(name: params['module_edit_form']['module_name'],
+                              code: params['module_edit_form']['module_code'],
+                              description: params['module_edit_form']['module_description'],
+                              semester: params['module_edit_form']['semester'],
+                              years: params['module_edit_form']['years'],)
+        
+      end
+
+      redirect_to admin_modules_preview_path(module_id: params['module_edit_form']['form_module_id'])
+    else
+      #getting information about the selected module
+      @module_info = ListModule.where(id: params['module_id']).first
+      
+      #generating academic years based on current year
+      @generated_years = ListModule.generate_years(Time.now.year, 5)
+
+      #if the years of the module arent generated append them to the array
+      if @generated_years.include?(@module_info.years) == false
+        @generated_years.append(@module_info.years)
+      end
+
+      #sort years
+      @generated_years = @generated_years.sort_by { |t| t[5, 8] }
     end
     
   end
