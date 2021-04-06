@@ -1,0 +1,55 @@
+- content_for :title, "Module Groups"
+
+.container.body_whole_custom_transparent
+  .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white
+    = simple_form_for :search_form do |f|
+      .container-fluid.bg_none.no_padding
+        %img.search_logo{:src => "/assets/search_logo.jpg", :alt => "Search Modules"}
+      .container-fluid.bg_none.row.no_padding.margin_bottom_small
+        .container.col-xs-5.col-sm-4.no_padding_right
+          = f.input :search_input, as: :string, label: false , required: false
+        .container.col-xs-3.col-sm-3.no_padding_left
+          = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_2 float_left", id:"submit_choice", "data-disable-with" => "Submitting.."
+        .container.col-xs-5.col-sm-3.no_padding_left.no_padding_right.padding_right_small
+          %button{onclick: "location.href='/admin/modules';", type: "button", name: "create_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Create Groups
+        .container.col-xs-5.col-sm-2.no_padding_left.no_padding_right.padding_right_small
+          %button{onclick: "location.href='/admin/modules';", type: "button", name: "go_back _button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"submit_choice"}Go Back
+
+  .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black
+    - if 5 > 6
+      .container.no_results
+        %h.center_element.bigger.text_black No users/groups match your search
+    - else
+      - last_i = 0
+      #accordion
+        .card
+          - for i in 1..3
+            - true_i = 0
+            - if i == 3
+              - true_i = 1
+            - else
+              - true_i = i + 1
+            //for loop here 1
+            //////////////////////////////////////////////////////////////////////////////////////////////////////// GROUP
+            #heading-1.card-header
+              %h5.mb-0
+                %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
+                  //Group name/number
+                  Group #{i}
+            #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
+              .card-body
+                #accordion-1
+                  .card-body
+                    %li
+                      //Link to group? idk something here
+                      %a.uni_purple{ :href => "admin/modules/groups", :title => "Preview" }
+                        %strong
+                          Preview Module Page
+                    %hr.group_line
+                    //Group members etc
+                    DESCRIPTION
+            :javascript
+              document.getElementById('heading-1').id = 'heading-#{i}';
+              document.getElementById('collapse-1').id = 'collapse-#{i}';
+              document.getElementById('accordion-1').id = 'accordion-#{i}';
+            //////////////////////////////////////////////////////////////////////////////////////////////////////// GROUP
