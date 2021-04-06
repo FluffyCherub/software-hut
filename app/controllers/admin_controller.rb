@@ -87,9 +87,9 @@ class AdminController < ApplicationController
     for i in 0..(years.length-1)
       current_year_modules = []
       if params['search_button'] == "Search"
-        current_year_modules = search_input_modules.where(years: years[i])
+        current_year_modules = search_input_modules.where(years: years[i]).order(:code)
       else
-        current_year_modules = ListModule.where(years: years[i])
+        current_year_modules = ListModule.where(years: years[i]).order(:code)
       end
       @modules_by_year.append(current_year_modules)
     end
