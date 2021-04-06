@@ -2,10 +2,10 @@
 
 .container.body_whole_custom
   .container-fluid.bg_none.text_black.margin_top.bigger
-    Module Name here
+    #{@module_info.name}
     %hr.group_line
   .container-fluid.bg_none.text_black
-    Description here i guess?
+    #{@module_info.description}
     %hr.group_line
   .container-fluid.bg_none
     .container-fluid.bg_none.row.no_padding
@@ -15,16 +15,15 @@
         %br
         %ul
           %li
-            Big pp guy
+            #{@module_leader.givenname} #{@module_leader.sn}
       .container-fluid.bg_none.text_black.col-xs-9.col-sm-6.no_padding_left.no_padding.margin_top_none
         %strong
           Teaching assistants:
         %br
         %ul
-          %li
-            Not that big pp guy 1
-          %li
-            Not that big pp guy 2
+          - for i in 0..(@teaching_assistants.length-1)
+            %li
+              #{@teaching_assistants[i].givenname} #{@teaching_assistants[i].sn}
     %hr.group_line
     .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.no_border
       = simple_form_for :search_form do |f|

@@ -110,6 +110,22 @@ class AdminController < ApplicationController
       redirect_to "/"
     end
 
+    #getting the module leader of the currently displayed module
+    @module_leader = User.joins(:list_modules).where("user_list_modules.privilege = ? AND
+                                                      list_modules.id = ?",
+                                                      "module_leader",
+                                                      params[:module_id]).first
+
+    #getting the teaching assistants of the currently displayed module
+    @teaching_assistants = User.joins(:list_modules).where("user_list_modules.privilege LIKE ? AND
+                                                            list_modules.id = ?",
+                                                            "%teaching_assistant%",
+                                                            params[:module_id])
+
+    #getting the module information about the currently displayed module
+    @module_info = ListModule.where("id = ?", params[:module_id]).first
+
+    
     #setting the search input parameter to display the correct users
     if params['search_button'] == "Search"
       search_input = params['search_form']['search_input']
