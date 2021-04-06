@@ -13,8 +13,15 @@
 #  updated_at  :datetime         not null
 #
 class ListModule < ApplicationRecord
-    has_many :user_list_modules
-    has_many :users, through: :user_list_modules
+  validates :name , presence: true
+  validates :code , presence: true
+  validates :description , presence: true
+  validates :semester , presence: true
+  validates :years , presence: true
+  validates :created_by , presence: true
 
-    has_many :teams
+
+  has_many :user_list_modules
+  has_many :users, through: :user_list_modules
+  has_many :teams
 end

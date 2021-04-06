@@ -8,14 +8,17 @@
 user1 = User.create(username: 'aca19dl', email: 'dlaszczyk1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 user2 = User.create(username: 'acc19am', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 
-test_user1 = User.create(username: 'test_user1', email: 'test_user1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user2 = User.create(username: 'test_user2', email: 'test_user2@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user3 = User.create(username: 'test_user3', email: 'test_user3@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user4 = User.create(username: 'test_user4', email: 'test_user4@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user5 = User.create(username: 'test_user5', email: 'test_user5@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user1 = User.create(givenname: "Test", sn: "User1", username: 'test_user1', email: 'test_user1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user2 = User.create(givenname: "Test", sn: "User2", username: 'test_user2', email: 'test_user2@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user3 = User.create(givenname: "Test", sn: "User3", username: 'test_user3', email: 'test_user3@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user4 = User.create(givenname: "Test", sn: "User4", username: 'test_user4', email: 'test_user4@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user5 = User.create(givenname: "Test", sn: "User5", username: 'test_user5', email: 'test_user5@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user6 = User.create(givenname: "Test", sn: "User6", username: 'test_user6', email: 'test_user6@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user7 = User.create(givenname: "Test", sn: "User7", username: 'test_user7', email: 'test_user7@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+test_user8 = User.create(givenname: "Test", sn: "User8", username: 'test_user8', email: 'test_user8@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
 
 modules = ListModule.create([
-  {name: 'Software Hut', code: 'COM3420', description: 'Do software be stronk', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021'},
+  {name: 'Software Hut', code: 'COM3420', description: 'The Software Hut (a microcosm of a real Software House) gives students an opportunity to experience the processes of engineering a real software system for a real client in a competitive environment. The taught element covers the tools and technologies needed to manage software development projects successfully and to deliver software products that meet both client expectations and quality standards. Topics that are put into practice include: the requirements engineering process; software modelling and testing; using specific software development framework(s); group project management etc. Tutorials take the form of project meetings, and so are concerned with team management, conduct of meetings and action minutes.', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021'},
   {name: 'Robotics', code: 'COM2009', description: 'Robots go brr', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021'},
   {name: 'Automata, Computation and Complexity', code: 'COM2109', description: 'Connect circles with lines', created_by: 'aca19dl', semester: 'ACADEMIC YEAR', years: '2020/2021'},
   {name: 'Functional Programming', code: 'COM2108', description: 'Worse programming', created_by: 'aca19dl', semester: 'AUTUMN', years: '2020/2021'},
@@ -69,12 +72,11 @@ test = UserListModule.create([
   {list_module: modules[0], user: test_user2, privilege: 'student'},
   {list_module: modules[0], user: test_user3, privilege: 'student'},
   {list_module: modules[0], user: test_user4, privilege: 'student'},
-  
-  
-  
-  
-  
-  
+
+  {list_module: modules[0], user: test_user5, privilege: 'module_leader'},
+  {list_module: modules[0], user: test_user6, privilege: 'teaching_assistant_1'},
+  {list_module: modules[0], user: test_user7, privilege: 'teaching_assistant_2'},
+  {list_module: modules[0], user: test_user8, privilege: 'teaching_assistant_3'}
 
 ])
     
