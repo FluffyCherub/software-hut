@@ -160,28 +160,18 @@ class AdminController < ApplicationController
 
   def admin_modules_create
     
+    #generating academic years based on current year
     @generated_years = ListModule.generate_years(Time.now.year, 5)
-    puts @generated_years
+    
     if params['create_module_button'] == "Create"
-      puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-      puts params['module_create_form']['module_name']
-      puts params['module_create_form']['module_code']
-      puts params['module_create_form']['module_description']
-      puts params['module_create_form']['semester']
-      puts params['module_create_form']['years']
-      puts params['module_create_form']['module_leader']
 
+      #checking if a module with this name and year is in the system
       module_check = ListModule.where("name = ? AND years = ?", 
                                        params['module_create_form']['module_name'],
                                        params['module_create_form']['years'])
 
-      puts "CHEEEEEEEEEEEEECK"
-      puts module_check.length
-
-      if module_check.length == 1
-        #module with this name and years exists
-      else
-
+      if module_check.length == 0
+        #creating a module with the given parameters
         created_module = ListModule.find_or_create_by(name: params['module_create_form']['module_name'],
                                                       code: params['module_create_form']['module_code'],
                                                       description: params['module_create_form']['module_description'],
@@ -190,7 +180,7 @@ class AdminController < ApplicationController
                                                       created_by: current_user.username,
                                                       )
       
-        #making the current user module leader if the checked the checkbox
+        #making the current user module leader if he checked the checkbox
         if params['module_create_form']['module_leader'] == "checked-value"
           add_mod_leader = UserListModule.create(list_module_id: created_module.id,
                                 user_id: current_user.id,
