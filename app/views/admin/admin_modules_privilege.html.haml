@@ -44,8 +44,7 @@
           %span.slider.round#slider4
         %p.margin_left#privilege_4_text Managing student teams
 
-    //If != teaching assistang, execute js
-    - if 5 > 1
+    - if @saved_privilege[0,18] != "teaching_assistant" # if 5 > 1
       :javascript
         document.getElementById("privilege_1").disabled = true;
         document.getElementById("privilege_2").disabled = true;
@@ -55,11 +54,16 @@
         document.getElementById("privilege_2_text").style.color = "gray";
         document.getElementById("privilege_3_text").style.color = "gray";
         document.getElementById("privilege_4_text").style.color = "gray";
+        document.getElementById("slider1").style.backgroundColor = "gray";
+        document.getElementById("slider2").style.backgroundColor = "gray";
+        document.getElementById("slider3").style.backgroundColor = "gray";
+        document.getElementById("slider4").style.backgroundColor = "gray";
+
 
     %hr.group_line.special_margin_top
     .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top_px_medium
       %button.btn.btn-primary.agreement_buttons.justify-content-center.button_change_privilege.float_left.medium{type: "submit", value: "Save", name: "save_button", id: "save_button"} Save
-      %button.btn.btn-primary.agreement_buttons.justify-content-center.button_change_privilege.float_left.medium{type: "button", value: "Close", name: "close_button", onclick: "window.close()"} Close Window
+      %button.btn.btn-primary.agreement_buttons.justify-content-center.button_change_privilege.float_left.medium.margin_left_small{type: "button", value: "Close", name: "close_button", onclick: "window.close()"} Close Window
 
 :javascript
   set_checked_option('#{@saved_privilege}');
