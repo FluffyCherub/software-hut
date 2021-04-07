@@ -23,4 +23,16 @@ class Team < ApplicationRecord
 
   has_many :user_teams
   has_many :users, through: :user_teams
+
+  #get the number of team members in team
+  def self.get_current_team_size(team_id)
+    current_team_size = User.joins(:teams).where("teams.id = ?", team_id).length
+    return current_team_size
+  end
+
+  def self.get_current_team_members(team_id)
+    current_team_members = User.joins(:teams).where("teams.id = ?", team_id)
+
+    return current_team_members
+  end
 end

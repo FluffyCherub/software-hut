@@ -196,6 +196,11 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_edit
+    #check if the user trying to access is an admin, otherwise redirect to root
+    if current_user.admin == false
+      redirect_to "/"
+    end
+
     if params['edit_module_button'] == "Edit"
 
       #checking if a module with this name and year is in the system
@@ -231,5 +236,42 @@ class AdminController < ApplicationController
       @generated_years = @generated_years.sort_by { |t| t[5, 8] }
     end
     
+  end
+
+  def admin_modules_groups
+    #check if the user trying to access is an admin, otherwise redirect to root
+    if current_user.admin == false
+      redirect_to "/"
+    end
+    
+    ##setting the search input parameter to display the correct teams
+    if params['search_button'] == "Search"
+      search_input = params['search_form']['search_input']
+    elsif params['search_input'] != nil
+      search_input = params['search_input']
+    else
+      search_input = ""
+    end
+
+    #getting teams for the correct search input
+    @groups_for_module = Team.left_outer_joins(:users).where("teams.list_module_id = ? AND
+                                                    (users.givenname LIKE ? OR
+                                                    users.sn LIKE ? OR
+                                                    users.email LIKE ? OR
+                                                    teams.name LIKE ? OR 
+                                                    teams.topic LIKE ?)",
+                                                    params[:module_id],
+                                                    "%" + search_input + "%",
+                                                    "%" + search_input + "%",
+                                                    "%" + search_input + "%",
+                                                    "%" + search_input + "%",
+                                                    "%" + search_input + "%"
+                                                    ).distinct.order(:name)
+    
+    if params['search_button'] == "Search"
+      mod_id = params['search_form']['form_module_id']
+      redirect_to admin_modules_groups_path(module_id: mod_id, search_input: params['search_form']['search_input'])
+    end
+
   end
 end
