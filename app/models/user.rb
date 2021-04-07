@@ -54,4 +54,8 @@ class User < ApplicationRecord
     user_info = User.where(id: user_id).first
     return user_info
   end
+
+  def self.check_if_email(email)
+    email =~ /\S+@\S+\.\S+/
+  end
 end

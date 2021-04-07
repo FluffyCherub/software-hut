@@ -116,9 +116,6 @@ class AdminController < ApplicationController
                                                       "module_leader",
                                                       params[:module_id]).order(:givenname, :sn)
 
-    puts "BOIIIIIIIIIIIIIIIIIIII"
-    puts @module_leaders
-
     #getting the teaching assistants of the currently displayed module
     @teaching_assistants = User.joins(:list_modules).where("user_list_modules.privilege LIKE ? AND
                                                             list_modules.id = ?",
@@ -157,6 +154,63 @@ class AdminController < ApplicationController
     if params['search_button'] == "Search"
       mod_id = params['search_form']['form_module_id']
       redirect_to admin_modules_preview_path(module_id: mod_id, search_input: params['search_form']['search_input'])
+    end
+
+
+    if params['add_user_button'] == "add_user"
+      add_username = params['add_username']
+      add_email = params['add_email']
+      add_first_name = params['add_first_name']
+      add_last_name = params['add_last_name']
+
+      if User.check_if_email(add_email) != 0
+        #it is not an email, so we append sheffield.ac.uk at the end
+        add_email = add_email + "@sheffield.ac.uk"
+      else
+        email_without_at = add_email[0, add_email.index("@")]
+        add_email = email_without_at + "@sheffield.ac.uk"
+      end
+
+      #set the first and last name to empty string if they are not provided
+      if add_first_name.nil?
+        add_first_name = ""
+      end
+
+      if add_last_name.nil?
+        add_first_name = ""
+      end
+
+
+      #check if user with this username or email doesn't exist in the system
+      check_user_exist = User.where("username = ? OR email = ?",
+                                     add_username,
+                                     add_email)
+
+      #> 16
+      user_to_add = ''
+      #if user does not exist, create him
+      if check_user_exist.length == 0 && add_username != nil && add_email.length > 16
+        user_to_add = User.create(username: add_username,
+                                  email: add_email,
+                                  givenname: add_first_name,
+                                  sn: add_last_name)
+      else
+        user_to_add = User.where(username: add_username,
+                                  email: add_email,
+                                  givenname: add_first_name,
+                                  sn: add_last_name)
+      end
+
+      #add the user to the module if he is not already in it
+      check_user_in_module = User.joins(:list_modules).where("users.username = ? AND list_modules.id = ?",
+                                                              add_username,
+                                                              params[:module_id])
+
+      if check_user_in_module.length == 0
+        UserListModule.find_or_create_by(list_module_id: params[:module_id],
+                              user_id: user_to_add.id,
+                              privilege: "student")
+      end
     end
   
   end
@@ -284,14 +338,9 @@ class AdminController < ApplicationController
       redirect_to "/"
     end
 
-    
-    
-
     @saved_privilege = UserListModule.where(list_module_id: params['module_id'],
                                             user_id: params['user_id']).first.privilege
 
-    
-    puts @saved_privilege
     if params['save_button'] == "Save"
       privilege_to_update = UserListModule.where(list_module_id: params['module_id'],
                                                    user_id: params['user_id'])
@@ -324,12 +373,8 @@ class AdminController < ApplicationController
         if priv_1 == "on" && priv_2 == "on" && priv_3.nil?    && priv_4 == "on" then ta_type = "teaching_assistant_14" end
         if priv_1 == "on" && priv_2 == "on" && priv_3 == "on" && priv_4 == "on" then ta_type = "teaching_assistant_15" end
         if priv_1.nil?    && priv_2.nil?    && priv_3.nil?    && priv_4.nil?    then ta_type = "teaching_assistant_16" end  
-        
-        
-        
-                                                  
+                                             
         privilege_to_update.update(privilege: ta_type)
-
 
       elsif params['options3'] == "on"
         #module_leader
@@ -341,4 +386,5 @@ class AdminController < ApplicationController
 
     end
   end
+
 end
