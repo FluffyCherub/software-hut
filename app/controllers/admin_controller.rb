@@ -111,16 +111,19 @@ class AdminController < ApplicationController
     end
 
     #getting the module leader of the currently displayed module
-    @module_leader = User.joins(:list_modules).where("user_list_modules.privilege = ? AND
+    @module_leaders = User.joins(:list_modules).where("user_list_modules.privilege = ? AND
                                                       list_modules.id = ?",
                                                       "module_leader",
-                                                      params[:module_id]).first
+                                                      params[:module_id]).order(:givenname, :sn)
+
+    puts "BOIIIIIIIIIIIIIIIIIIII"
+    puts @module_leaders
 
     #getting the teaching assistants of the currently displayed module
     @teaching_assistants = User.joins(:list_modules).where("user_list_modules.privilege LIKE ? AND
                                                             list_modules.id = ?",
                                                             "%teaching_assistant%",
-                                                            params[:module_id])
+                                                            params[:module_id]).order(:givenname, :sn)
 
     #getting the module information about the currently displayed module
     @module_info = ListModule.where("id = ?", params[:module_id]).first
@@ -273,5 +276,69 @@ class AdminController < ApplicationController
       redirect_to admin_modules_groups_path(module_id: mod_id, search_input: params['search_form']['search_input'])
     end
 
+  end
+
+  def admin_modules_privilege
+    #check if the user trying to access is an admin, otherwise redirect to root
+    if current_user.admin == false
+      redirect_to "/"
+    end
+
+    
+    
+
+    @saved_privilege = UserListModule.where(list_module_id: params['module_id'],
+                                            user_id: params['user_id']).first.privilege
+
+    
+    puts @saved_privilege
+    if params['save_button'] == "Save"
+      privilege_to_update = UserListModule.where(list_module_id: params['module_id'],
+                                                   user_id: params['user_id'])
+
+      if params['options1'] == "on"
+        #student
+        privilege_to_update.update(privilege: "student")
+        
+      elsif params['options2'] == "on"
+        #teaching assitant
+        priv_1 = params['privilege_1']
+        priv_2 = params['privilege_2']
+        priv_3 = params['privilege_3']
+        priv_4 = params['privilege_4']
+        ta_type = ""
+        
+        if priv_1 == "on" && priv_2.nil?    && priv_3.nil?    && priv_4.nil?    then ta_type = "teaching_assistant_1"  end
+        if priv_1.nil?    && priv_2 == "on" && priv_3.nil?    && priv_4.nil?    then ta_type = "teaching_assistant_2"  end
+        if priv_1.nil?    && priv_2.nil?    && priv_3 == "on" && priv_4.nil?    then ta_type = "teaching_assistant_3"  end
+        if priv_1.nil?    && priv_2.nil?    && priv_3.nil?    && priv_4 == "on" then ta_type = "teaching_assistant_4"  end
+        if priv_1 == "on" && priv_2 == "on" && priv_3.nil?    && priv_4.nil?    then ta_type = "teaching_assistant_5"  end
+        if priv_1.nil?    && priv_2 == "on" && priv_3 == "on" && priv_4.nil?    then ta_type = "teaching_assistant_6"  end
+        if priv_1.nil?    && priv_2.nil?    && priv_3 == "on" && priv_4 == "on" then ta_type = "teaching_assistant_7"  end
+        if priv_1 == "on" && priv_2.nil?    && priv_3 == "on" && priv_4.nil?    then ta_type = "teaching_assistant_8"  end
+        if priv_1 == "on" && priv_2.nil?    && priv_3.nil?    && priv_4 == "on" then ta_type = "teaching_assistant_9"  end
+        if priv_1.nil?    && priv_2 == "on" && priv_3.nil?    && priv_4 == "on" then ta_type = "teaching_assistant_10" end
+        if priv_1 == "on" && priv_2 == "on" && priv_3 == "on" && priv_4.nil?    then ta_type = "teaching_assistant_11" end
+        if priv_1.nil?    && priv_2 == "on" && priv_3 == "on" && priv_4 == "on" then ta_type = "teaching_assistant_12" end
+        if priv_1 == "on" && priv_2.nil?    && priv_3 == "on" && priv_4 == "on" then ta_type = "teaching_assistant_13" end
+        if priv_1 == "on" && priv_2 == "on" && priv_3.nil?    && priv_4 == "on" then ta_type = "teaching_assistant_14" end
+        if priv_1 == "on" && priv_2 == "on" && priv_3 == "on" && priv_4 == "on" then ta_type = "teaching_assistant_15" end
+        if priv_1.nil?    && priv_2.nil?    && priv_3.nil?    && priv_4.nil?    then ta_type = "teaching_assistant_16" end  
+        
+        
+        
+                                                  
+        privilege_to_update.update(privilege: ta_type)
+
+
+      elsif params['options3'] == "on"
+        #module_leader
+        privilege_to_update.update(privilege: "module_leader")
+        
+      end
+
+      @close_window = "true"
+
+    end
   end
 end

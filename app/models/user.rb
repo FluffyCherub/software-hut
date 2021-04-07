@@ -49,4 +49,9 @@ class User < ApplicationRecord
     privilege = UserListModule.where("user_id = ? AND list_module_id = ?", user_id, module_id).first.privilege
     return privilege
   end
+
+  def self.get_user_info_by_id(user_id)
+    user_info = User.where(id: user_id).first
+    return user_info
+  end
 end
