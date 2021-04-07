@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   match "/admin/modules/edit", to: "admin#admin_modules_edit", via: :all
   match "/admin/modules/privilege", to: "admin#admin_modules_privilege", via: :all
   match "/admin/modules/groups", to: "admin#admin_modules_groups", via: :all
+  match "/admin/modules/groups/preview", to: "admin#admin_modules_groups_preview", via: :all
 
 
   get :ie_warning, to: 'errors#ie_warning'
