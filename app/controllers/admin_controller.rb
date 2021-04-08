@@ -387,4 +387,59 @@ class AdminController < ApplicationController
     end
   end
 
+  def admin_modules_groups_preview
+    #check if the user trying to access is an admin, otherwise redirect to root
+    if current_user.admin == false
+      redirect_to "/"
+    end
+
+    #get info about the selected team
+    @selected_group_team = Team.where(id: params['team_id']).first
+
+    @current_team_users = User.joins(:teams).where("teams.id = ?", params['team_id'])
+
+    #getting users that are in the module
+    @users_in_module = User.joins(:list_modules).where("list_modules.id = ?",
+                                                        params['module_id'])
+         
+    #getting ids of users in the currently selected team
+    current_team_users_ids = []   
+    for i in 0..(@current_team_users.length-1)
+      current_team_users_ids.append(@current_team_users[i].id)
+    end  
+    
+    #getting the users that are in the module but not in the currently selected team
+    @users_in_module_but_not_in_team = []
+    for i in 0..(@users_in_module.length-1)
+      if !current_team_users_ids.include?(@users_in_module[i].id)
+        @users_in_module_but_not_in_team.append(@users_in_module[i])
+      end
+    end
+
+    if params['remove_student_button'] == "remove_student"
+      puts "BOIIIIIIIIIIIIIIIIIIIII"
+      puts params['student_remove_id']
+      puts params['team_id']
+      
+      user_to_remove = UserTeam.where("user_id = ? AND team_id =?",
+                                       params['student_remove_id'],
+                                       params['team_id'])
+
+      if user_to_remove != nil
+        user_to_remove.first.destroy
+      end
+
+      redirect_to admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id'])
+    end
+
+    if params['add_student_button'] == "add_student"
+      user_to_add = UserTeam.create(user_id: params['student_add_id'],
+                                    team_id: params['team_id'],
+                                    )
+          
+      redirect_to admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id'])
+    end
+
+                                                      
+  end
 end

@@ -3,7 +3,7 @@
 # Table name: user_teams
 #
 #  id               :bigint           not null, primary key
-#  signed_agreement :boolean
+#  signed_agreement :boolean          default(FALSE)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  team_id          :bigint           not null
