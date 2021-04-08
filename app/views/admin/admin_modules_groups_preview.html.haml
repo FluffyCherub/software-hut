@@ -6,6 +6,7 @@
     - if @selected_group_team.topic != "none"
       - team_topic = "- " + @selected_group_team.topic + " -"
     #{@selected_group_team.name} #{team_topic} ID: #{@selected_group_team.id}
+    #{@current_team_size}/#{@max_team_size}
     %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{:href => admin_modules_groups_path(module_id: params[:module_id]), type: "button"} Go Back
     %hr.group_line
 

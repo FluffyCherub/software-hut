@@ -395,6 +395,8 @@ class AdminController < ApplicationController
 
     #get info about the selected team
     @selected_group_team = Team.where(id: params['team_id']).first
+    @current_team_size = Team.get_current_team_size(params['team_id'])
+    @max_team_size = @selected_group_team.size
 
     @current_team_users = User.joins(:teams).where("teams.id = ?", params['team_id'])
 
@@ -417,9 +419,6 @@ class AdminController < ApplicationController
     end
 
     if params['remove_student_button'] == "remove_student"
-      puts "BOIIIIIIIIIIIIIIIIIIIII"
-      puts params['student_remove_id']
-      puts params['team_id']
       
       user_to_remove = UserTeam.where("user_id = ? AND team_id =?",
                                        params['student_remove_id'],
@@ -432,11 +431,12 @@ class AdminController < ApplicationController
       redirect_to admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id'])
     end
 
-    if params['add_student_button'] == "add_student"
+    if params['add_student_button'] == "add_student" && @current_team_size < @max_team_size
+      
       user_to_add = UserTeam.create(user_id: params['student_add_id'],
                                     team_id: params['team_id'],
                                     )
-          
+      
       redirect_to admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id'])
     end
 
