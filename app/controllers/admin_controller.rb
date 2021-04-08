@@ -393,16 +393,43 @@ class AdminController < ApplicationController
       redirect_to "/"
     end
 
+    #setting the module and team ids to the correct values
+    module_id = params['module_id']
+    team_id = params['team_id']
+    if module_id.nil?
+      module_id = params['search_form']['form_module_id']
+    end
+    if team_id.nil?
+      team_id = params['search_form']['form_team_id']
+    end
+
     #get info about the selected team
-    @selected_group_team = Team.where(id: params['team_id']).first
-    @current_team_size = Team.get_current_team_size(params['team_id'])
+    @selected_group_team = Team.where(id: team_id).first
+    @current_team_size = Team.get_current_team_size(team_id)
     @max_team_size = @selected_group_team.size
+    @current_team_users = User.joins(:teams).where("teams.id = ?", team_id)
 
-    @current_team_users = User.joins(:teams).where("teams.id = ?", params['team_id'])
+    #setting the search input to the correct value
+    search_input = ""
+    if params['search_form'] != nil
+      search_input = params['search_form']['search_input']
+    elsif params['search_input'] != nil
+      search_input = params['search_input']
+    end
 
-    #getting users that are in the module
-    @users_in_module = User.joins(:list_modules).where("list_modules.id = ?",
-                                                        params['module_id'])
+
+    #getting users that are in the module and match the search input
+    @users_in_module = User.joins(:list_modules).where("list_modules.id = ? AND
+                                                        (username LIKE ? OR
+                                                        givenname LIKE ? OR
+                                                        sn LIKE ? OR
+                                                        email LIKE ?)",
+                                                        module_id,
+                                                        "%" + search_input + "%",
+                                                        "%" + search_input + "%",
+                                                        "%" + search_input + "%",
+                                                        "%" + search_input + "%"
+                                                        )
          
     #getting ids of users in the currently selected team
     current_team_users_ids = []   
@@ -418,27 +445,34 @@ class AdminController < ApplicationController
       end
     end
 
+    #removing a student from a group
     if params['remove_student_button'] == "remove_student"
       
       user_to_remove = UserTeam.where("user_id = ? AND team_id =?",
                                        params['student_remove_id'],
-                                       params['team_id'])
+                                       team_id)
 
       if user_to_remove != nil
         user_to_remove.first.destroy
       end
 
-      redirect_to admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id'])
+      redirect_to admin_modules_groups_preview_path(module_id: module_id, team_id: team_id)
     end
 
+    #adding a student to a group
     if params['add_student_button'] == "add_student" && @current_team_size < @max_team_size
       
       user_to_add = UserTeam.create(user_id: params['student_add_id'],
-                                    team_id: params['team_id'],
+                                    team_id: team_id,
                                     )
       
-      redirect_to admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id'])
+      redirect_to admin_modules_groups_preview_path(module_id: module_id, team_id: team_id)
     end
+
+    if params['search_button'] == "Search"
+      redirect_to admin_modules_groups_preview_path(module_id: module_id, team_id: team_id, search_input: search_input)
+    end
+    
 
                                                       
   end
