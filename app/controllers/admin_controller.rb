@@ -1,4 +1,5 @@
 class AdminController < ApplicationController
+  require 'csv'
 
   def admin_page
     #check if the user trying to access is an admin, otherwise redirect to root
@@ -211,6 +212,12 @@ class AdminController < ApplicationController
                               user_id: user_to_add.id,
                               privilege: "student")
       end
+    end
+
+
+    #taking a csv file and adding students to modules based on it
+    if params['commit'] == "Upload"
+      ListModule.import(params['file'], params['module_id'])
     end
   
   end

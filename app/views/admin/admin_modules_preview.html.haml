@@ -76,7 +76,7 @@
     .container.col-xs-5.col-sm-3.no_padding_left.no_padding_right.padding_right_small
       %a.button.margin_left_none{:href => admin_modules_groups_path(:module_id => params[:module_id]), type: "button", name: "handbook_button",  class: "btn btn-primary agreement_buttons justify-content-center button_groups float_left_override", id:"handbook_choice"}Groups
     .container.col-xs-13.col-sm-9.no_padding_left.no_padding_right.padding_right_small
-      %a.button{:href => admin_modules_edit_path(:module_id => params[:module_id]), class: "btn btn-primary agreement_buttons justify-content-center button_placeholder float_left_override"}Edit
+      %a.button{:href => admin_modules_edit_path(:module_id => params[:module_id]), class: "btn btn-primary agreement_buttons justify-content-center button_placeholder float_left_override"}Edit/Clone
     .container-fluid.bg_none.no_padding.margin_bottom_small.bg_white.text_black
       %hr.group_line
     .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black.border_none
@@ -92,7 +92,16 @@
             .card-body
               #accordion-1
                 .card-body
-                  Stuff here
+                  = form_tag(admin_modules_preview_path(module_id: params[:module_id]), :multipart => true) do
+                    = file_field_tag 'file'
+                    = submit_tag "Upload"
+                  -# %form{action: admin_modules_preview_path(module_id: params[:module_id])}
+                  -#   %label{for: "myfile"} Select a file:
+                  -#   %input#myfile{name: "myfile", type: "file"}/
+                  -#   %input#module_id{name: "module_id", type: "hidden", value: params[:module_id]}/
+                  -#   %br/
+                  -#   %br/
+                  -#   %input{type: "submit", name: "upload_button", value: "Upload"}
           #heading-2.card-header
             %h5.mb-0
               %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-2", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-2", role: "button"}

@@ -34,6 +34,7 @@
 #  index_users_on_username  (username)
 #
 class User < ApplicationRecord
+  require 'csv'
   include EpiCas::DeviseHelper
   has_many :user_list_modules
   has_many :list_modules, through: :user_list_modules  
@@ -58,4 +59,6 @@ class User < ApplicationRecord
   def self.check_if_email(email)
     email =~ /\S+@\S+\.\S+/
   end
+
+  
 end

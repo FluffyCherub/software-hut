@@ -36,4 +36,30 @@ class ListModule < ApplicationRecord
     end
     return generated_years
   end
+
+  #method for importing csv files and adding users to modules
+  def self.import(file, module_id)
+    CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
+      current_user_from_csv = row.to_hash
+
+      add_email = current_user_from_csv['Email']
+      if User.check_if_email(add_email) != 0
+        #it is not an email, so we append sheffield.ac.uk at the end
+        add_email = add_email + "@sheffield.ac.uk"
+      else
+        email_without_at = add_email[0, add_email.index("@")]
+        add_email = email_without_at + "@sheffield.ac.uk"
+      end
+
+
+      current_user = User.find_or_create_by(givenname: current_user_from_csv['Forename'],
+                                            sn: current_user_from_csv['Surname'],
+                                            username: current_user_from_csv['Student Username'],
+                                            email: add_email)
+
+      UserListModule.find_or_create_by(user_id: current_user.id,
+                                       list_module_id: module_id,
+                                       privilege: "student")
+    end
+  end
 end
