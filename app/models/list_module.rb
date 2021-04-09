@@ -39,28 +39,40 @@ class ListModule < ApplicationRecord
 
   #method for importing csv files and adding users to modules
   def self.import(file, module_id)
+    integrity = true
     if file != nil
       CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
         current_user_from_csv = row.to_hash
-
+        add_forename = current_user_from_csv['Forename']
+        add_surname = current_user_from_csv['Surname']
+        add_username = current_user_from_csv['Student Username']
         add_email = current_user_from_csv['Email']
-        if User.check_if_email(add_email) != 0
-          #it is not an email, so we append sheffield.ac.uk at the end
-          add_email = add_email + "@sheffield.ac.uk"
-        else
-          email_without_at = add_email[0, add_email.index("@")]
-          add_email = email_without_at + "@sheffield.ac.uk"
+
+        if add_email.include?("@sheffield.ac.uk") == false
+          integrity = false
+          break
         end
 
+        if add_forename.nil? || add_surname.nil? || add_username.nil? || add_email.nil?
+          integrity = false
+          break
+        end
+      end
 
-        current_user = User.find_or_create_by(givenname: current_user_from_csv['Forename'],
-                                              sn: current_user_from_csv['Surname'],
-                                              username: current_user_from_csv['Student Username'],
-                                              email: add_email)
+      #if fieleds arent empty add users to the database
+      if integrity
+        CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
+          current_user_from_csv = row.to_hash
 
-        UserListModule.find_or_create_by(user_id: current_user.id,
-                                        list_module_id: module_id,
-                                        privilege: "student")
+          current_user = User.find_or_create_by(givenname: current_user_from_csv['Forename'],
+                                                sn: current_user_from_csv['Surname'],
+                                                username: current_user_from_csv['Student Username'],
+                                                email: current_user_from_csv['Email'])
+
+          UserListModule.find_or_create_by(user_id: current_user.id,
+                                          list_module_id: module_id,
+                                          privilege: "student")
+        end
       end
     end
   end
