@@ -163,7 +163,7 @@ class AdminController < ApplicationController
       add_email = params['add_email']
       add_first_name = params['add_first_name']
       add_last_name = params['add_last_name']
-      
+
       #check if all the fields were provided
       if add_username.length>0 && add_email.length>0 && add_first_name.length>0 && add_last_name.length>0
         if User.check_if_email(add_email) != 0
@@ -519,7 +519,7 @@ class AdminController < ApplicationController
     end
 
     #adding a student to a group
-    if params['add_student_button'] == "add_student" && @current_team_size < @max_team_size
+    if params['add_student_button'] == "add_student"
       
       user_to_add = UserTeam.create(user_id: params['student_add_id'],
                                     team_id: team_id,
