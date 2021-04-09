@@ -85,8 +85,9 @@ class ListModule < ApplicationRecord
           add_surname = current_user_from_csv['Surname']
           add_username = current_user_from_csv['Student Username']
           add_email = current_user_from_csv['Email']
-
-          if (User.is_user_in_system(add_username) == true) && (User.is_user_in_module(add_username, module_id) == false)
+          if (User.is_user_in_system(add_username) == true) && (User.is_user_in_module(add_username, module_id) == true) && (ListModule.privilege_for_module(add_username, module_id) == "suspended")
+            User.change_privilege_user_module(add_username, module_id, "student")
+          elsif (User.is_user_in_system(add_username) == true) && (User.is_user_in_module(add_username, module_id) == false)
             UserListModule.create(user_id: User.get_user_id(add_username),
                                   list_module_id: module_id,
                                   privilege: "student")
