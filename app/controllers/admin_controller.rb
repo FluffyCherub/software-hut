@@ -190,7 +190,7 @@ class AdminController < ApplicationController
       #> 16
       user_to_add = ''
       #if user does not exist, create him
-      if check_user_exist.length == 0 && add_username != nil && add_email.length > 16
+      if check_user_exist.length == 0 && add_username != nil
         user_to_add = User.create(username: add_username,
                                   email: add_email,
                                   givenname: add_first_name,
