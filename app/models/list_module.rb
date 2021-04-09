@@ -37,10 +37,28 @@ class ListModule < ApplicationRecord
     return generated_years
   end
 
+  def self.users_in_module(module_id)
+    in_module = User.joins(:list_modules).where("list_modules.id = ?",
+                                                 module_id)
+
+    return in_module
+  end
+
+  def self.privilege_for_module(username, module_id)
+    privilege = UserListModule.joins(:user).where("users.username = ? AND
+                                                   user_list_modules.list_module_id = ?",
+                                                   username,
+                                                   module_id).first.privilege
+
+    return privilege
+  end
+
   #method for importing csv files and adding users to modules
   def self.import(file, module_id)
     integrity = true
     if file != nil
+      csv_usernames = []
+
       CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
         current_user_from_csv = row.to_hash
         add_forename = current_user_from_csv['Forename']
@@ -63,15 +81,40 @@ class ListModule < ApplicationRecord
       if integrity
         CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
           current_user_from_csv = row.to_hash
+          add_forename = current_user_from_csv['Forename']
+          add_surname = current_user_from_csv['Surname']
+          add_username = current_user_from_csv['Student Username']
+          add_email = current_user_from_csv['Email']
 
-          current_user = User.find_or_create_by(givenname: current_user_from_csv['Forename'],
-                                                sn: current_user_from_csv['Surname'],
-                                                username: current_user_from_csv['Student Username'],
-                                                email: current_user_from_csv['Email'])
+          if (User.is_user_in_system(add_username) == true) && (User.is_user_in_module(add_username, module_id) == false)
+            UserListModule.create(user_id: User.get_user_id(add_username),
+                                  list_module_id: module_id,
+                                  privilege: "student")
+          elsif (User.is_user_in_system(add_username) == false) 
+            created_user = User.create(givenname: add_forename,
+                                       sn: add_surname,
+                                       username: add_username,
+                                       email: add_email)
 
-          UserListModule.find_or_create_by(user_id: current_user.id,
-                                          list_module_id: module_id,
-                                          privilege: "student")
+            UserListModule.create(user_id: created_user.id,
+                                  list_module_id: module_id,
+                                  privilege: "student")
+          end
+          
+          
+          csv_usernames.append(add_username)
+          
+        end
+      end
+
+      #users who are in the module but werent in the csv get privilege changed to suspended
+      in_module_users = ListModule.users_in_module(module_id)
+
+      for i in 0..(in_module_users.length-1)
+        users_privilege = ListModule.privilege_for_module(in_module_users[i].username, module_id)
+        if (csv_usernames.include?(in_module_users[i].username) == false) && (users_privilege != "module_leader") && (users_privilege.include?("teaching_assistant") == false)
+          
+          User.change_privilege_user_module(in_module_users[i].username, module_id, "suspended")
         end
       end
     end

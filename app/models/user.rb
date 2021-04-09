@@ -63,4 +63,41 @@ class User < ApplicationRecord
       return privilege
     end
   end
+
+  def self.is_user_in_system(username)
+    check_user = User.where(username: username)
+
+    if check_user.length == 0
+      return false
+    else 
+      return true
+    end
+  end
+
+  def self.is_user_in_module(username, module_id)
+    check_user_module = UserListModule.joins(:user).where("user_list_modules.list_module_id = ? AND
+                                                           users.username = ?",
+                                                           module_id,
+                                                           username)
+
+    if check_user_module.length == 0
+      return false
+    else 
+      return true
+    end
+  end
+
+  def self.change_privilege_user_module(username, module_id, privilege)
+    user_list_module = UserListModule.joins(:user).where("users.username = ? AND
+                                                          user_list_modules.list_module_id = ?",
+                                                          username,
+                                                          module_id)
+
+    user_list_module.update(privilege: privilege)
+  end
+
+  def self.get_user_id(username)
+    user_id = User.where(username: username).first.id
+    return user_id
+  end
 end
