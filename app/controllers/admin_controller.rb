@@ -283,71 +283,96 @@ class AdminController < ApplicationController
     end
 
     if params['edit_module_button'] == "Edit"
+      module_name = params['module_edit_form']['module_name']
+      module_code = params['module_edit_form']['module_code']
+      years = params['module_edit_form']['years']
+      module_description = params['module_edit_form']['module_description']
+      semester = params['module_edit_form']['semester']
+      form_module_id = params['module_edit_form']['form_module_id']
+      level = params['module_edit_form']['level']
 
-      #checking if a module with this name and year is in the system
-      module_check = ListModule.where("name = ? AND years = ? AND id != ?", 
-                                       params['module_edit_form']['module_name'],
-                                       params['module_edit_form']['years'],
-                                       params['module_edit_form']['form_module_id'])
+      if module_name.nil? == false && module_code.nil? == false && years.nil? == false && module_description.nil? == false && semester.nil? == false
+        #checking if a module with this name and year is in the system
+        module_check = ListModule.where("name = ? AND years = ? AND id != ?", 
+                                        module_name,
+                                        years,
+                                        form_module_id)
 
-      if module_check.length == 0
-        current_module = ListModule.find_by(id: params['module_edit_form']['form_module_id'])
-        current_module.update(name: params['module_edit_form']['module_name'],
-                              code: params['module_edit_form']['module_code'],
-                              description: params['module_edit_form']['module_description'],
-                              semester: params['module_edit_form']['semester'],
-                              years: params['module_edit_form']['years'])
-        
+        if module_check.length == 0
+          current_module = ListModule.find_by(id: form_module_id)
+          current_module.update(name: module_name,
+                                code: module_code,
+                                description: module_description,
+                                semester: semester,
+                                years: years,
+                                level: level)
+          
+        end
+
+      else
+        #popu didnt edit because field was empty
       end
 
-      redirect_to admin_modules_preview_path(module_id: params['module_edit_form']['form_module_id'])
+      redirect_to admin_modules_preview_path(module_id: form_module_id)
     elsif params['clone_module_button'] == "Clone"
-      #checking if a module with this name,code,semester and year is in the system
-      module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
-                                       params['module_edit_form']['module_name'],
-                                       params['module_edit_form']['years'],
-                                       params['module_edit_form']['module_code'],
-                                       params['module_edit_form']['semester']
-                                       )
+      module_name = params['module_edit_form']['module_name']
+      module_code = params['module_edit_form']['module_code']
+      years = params['module_edit_form']['years']
+      module_description = params['module_edit_form']['module_description']
+      semester = params['module_edit_form']['semester']
+      form_module_id = params['module_edit_form']['form_module_id']
+      level = params['module_edit_form']['level']
 
-      if module_check.length == 0
-        cloned_module = ListModule.find_or_create_by(name: params['module_edit_form']['module_name'],
-                                                     code: params['module_edit_form']['module_code'],
-                                                     description: params['module_edit_form']['module_description'],
-                                                     semester: params['module_edit_form']['semester'],
-                                                     years: params['module_edit_form']['years'],
-                                                     created_by: current_user.username)
-      
-        #adding module leaders to the cloned module
-        if params['module_edit_form']['check_box_ml'] == "checked-value"
-          module_leaders = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege = ?",
-                                                            params['module_edit_form']['form_module_id'],
-                                                            "module_leader")
+      if module_name.nil? == false && module_code.nil? == false && years.nil? == false && module_description.nil? == false && semester.nil? == false
+        #checking if a module with this name,code,semester and year is in the system
+        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
+                                        module_name,
+                                        years,
+                                        module_code,
+                                        semester
+                                        )
 
-          for i in 0..(module_leaders.length-1)
-            UserListModule.create(user_id: module_leaders[i].id,
-                                  list_module_id: cloned_module.id,
-                                  privilege: "module_leader")
+        if module_check.length == 0
+          cloned_module = ListModule.find_or_create_by(name: module_name,
+                                                      code: module_code,
+                                                      description: module_description,
+                                                      semester: semester,
+                                                      years: years,
+                                                      created_by: current_user.username,
+                                                      level: level)
+        
+          #adding module leaders to the cloned module
+          if params['module_edit_form']['check_box_ml'] == "checked-value"
+            module_leaders = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege = ?",
+                                                              form_module_id,
+                                                              "module_leader")
+
+            for i in 0..(module_leaders.length-1)
+              UserListModule.create(user_id: module_leaders[i].id,
+                                    list_module_id: cloned_module.id,
+                                    privilege: "module_leader")
+            end
+          end
+
+          if params['module_edit_form']['check_box_ta'] == "checked-value"
+            teaching_assistants = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege LIKE ?",
+                                                                  form_module_id,
+                                                                  "%teaching_assistant%")
+          
+
+            for i in 0..(teaching_assistants.length-1)
+              UserListModule.create(user_id: teaching_assistants[i].id,
+                                    list_module_id: cloned_module.id,
+                                    privilege: User.get_module_privilege(form_module_id, teaching_assistants[i].id))
+          
+            end
           end
         end
-
-        if params['module_edit_form']['check_box_ta'] == "checked-value"
-          teaching_assistants = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege LIKE ?",
-                                                                 params['module_edit_form']['form_module_id'],
-                                                                 "%teaching_assistant%")
-        
-
-          for i in 0..(teaching_assistants.length-1)
-            UserListModule.create(user_id: teaching_assistants[i].id,
-                                  list_module_id: cloned_module.id,
-                                  privilege: User.get_module_privilege(params['module_edit_form']['form_module_id'], teaching_assistants[i].id))
-        
-          end
-        end
-
+      else
+        #popup didnt clone because field was empty
       end
 
-      redirect_to admin_modules_preview_path(module_id: params['module_edit_form']['form_module_id'])
+      redirect_to admin_modules_preview_path(module_id: form_module_id)
     else
       #getting information about the selected module
       @module_info = ListModule.where(id: params['module_id']).first
