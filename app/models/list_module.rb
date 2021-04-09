@@ -6,6 +6,7 @@
 #  code        :string
 #  created_by  :string
 #  description :string
+#  level       :integer
 #  name        :string
 #  semester    :string
 #  years       :string
