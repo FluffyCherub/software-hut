@@ -91,17 +91,29 @@
           #collapse-1.collapse{"aria-labelledby" => "heading-1", "data-parent" => "#accordion"}
             .card-body
               #accordion-1
-                .card-body
+                .card-body.no_padding_override
                   = form_tag(admin_modules_preview_path(module_id: params[:module_id]), :multipart => true) do
-                    = file_field_tag 'file'
-                    = submit_tag "Upload"
-                  -# %form{action: admin_modules_preview_path(module_id: params[:module_id])}
-                  -#   %label{for: "myfile"} Select a file:
-                  -#   %input#myfile{name: "myfile", type: "file"}/
-                  -#   %input#module_id{name: "module_id", type: "hidden", value: params[:module_id]}/
-                  -#   %br/
-                  -#   %br/
-                  -#   %input{type: "submit", name: "upload_button", value: "Upload"}
+                    .container
+                      .input-group
+                        .custom-file
+                          //%input#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", type: "file"}
+                          %input#file#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", name: "file", type: "file"}
+                          %label.custom-file-label{for: "customFileInput"} Select file
+                      .input-group-append.margin_left_none.special_margin_top
+                        %input.btn.btn-primary.agreement_buttons.justify-content-center.float_left_override{"data-disable-with" => "Upload", name: "commit", type: "submit", value: "Upload"}/
+                        //%button#customFileInput.btn.btn-primary{type: "button"} Upload
+                        //btn btn-primary agreement_buttons justify-content-center button_groups float_left_override
+                    :javascript
+                      document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+                        var name = document.getElementById("customFileInput").files[0].name;
+                        var nextSibling = e.target.nextElementSibling
+                        nextSibling.innerText = name
+                      })
+
+
+                    -# .container
+                    -#   %input#file#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", name: "file", type: "file"}
+                    -#   %input{"data-disable-with" => "Upload", name: "commit", type: "submit", value: "Upload"}/
           #heading-2.card-header
             %h5.mb-0
               %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-2", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-2", role: "button"}

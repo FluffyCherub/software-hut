@@ -105,7 +105,7 @@
 }
 
 .scroll_down {  
-  max-height: 1200px !important;
+  max-height: 700px !important;
   overflow: auto;
 }
 
@@ -287,4 +287,8 @@ a:hover {
   margin-right: 0%;
   float: left;
   width: 35%
+}
+
+.no_padding_override {
+  padding: 0% !important;
 }
