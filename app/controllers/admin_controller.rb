@@ -163,54 +163,59 @@ class AdminController < ApplicationController
       add_email = params['add_email']
       add_first_name = params['add_first_name']
       add_last_name = params['add_last_name']
+      
+      #check if all the fields were provided
+      if add_username.length>0 && add_email.length>0 && add_first_name.length>0 && add_last_name.length>0
+        if User.check_if_email(add_email) != 0
+          #it is not an email, so we append sheffield.ac.uk at the end
+          add_email = add_email + "@sheffield.ac.uk"
+        else
+          email_without_at = add_email[0, add_email.index("@")]
+          add_email = email_without_at + "@sheffield.ac.uk"
+        end
 
-      if User.check_if_email(add_email) != 0
-        #it is not an email, so we append sheffield.ac.uk at the end
-        add_email = add_email + "@sheffield.ac.uk"
+        #set the first and last name to empty string if they are not provided
+        if add_first_name.nil?
+          add_first_name = ""
+        end
+
+        if add_last_name.nil?
+          add_first_name = ""
+        end
+
+
+        #check if user with this username or email doesn't exist in the system
+        check_user_exist = User.where("username = ? OR email = ?",
+                                      add_username,
+                                      add_email)
+
+        #> 16
+        user_to_add = ''
+        #if user does not exist, create him
+        if check_user_exist.length == 0 && add_username != nil
+          user_to_add = User.create(username: add_username,
+                                    email: add_email,
+                                    givenname: add_first_name,
+                                    sn: add_last_name)
+        else
+          user_to_add = User.where("username = ? OR email = ?",
+                                    add_username,
+                                    add_email,
+                                    ).first
+        end
+
+        #add the user to the module if he is not already in it
+        check_user_in_module = User.joins(:list_modules).where("users.username = ? AND list_modules.id = ?",
+                                                                add_username,
+                                                                params[:module_id])
+
+        if check_user_in_module.length == 0
+          UserListModule.find_or_create_by(list_module_id: params[:module_id],
+                                          user_id: user_to_add.id,
+                                          privilege: "student")
+        end
       else
-        email_without_at = add_email[0, add_email.index("@")]
-        add_email = email_without_at + "@sheffield.ac.uk"
-      end
-
-      #set the first and last name to empty string if they are not provided
-      if add_first_name.nil?
-        add_first_name = ""
-      end
-
-      if add_last_name.nil?
-        add_first_name = ""
-      end
-
-
-      #check if user with this username or email doesn't exist in the system
-      check_user_exist = User.where("username = ? OR email = ?",
-                                     add_username,
-                                     add_email)
-
-      #> 16
-      user_to_add = ''
-      #if user does not exist, create him
-      if check_user_exist.length == 0 && add_username != nil
-        user_to_add = User.create(username: add_username,
-                                  email: add_email,
-                                  givenname: add_first_name,
-                                  sn: add_last_name)
-      else
-        user_to_add = User.where("username = ? OR email = ?",
-                                  add_username,
-                                  add_email,
-                                  ).first
-      end
-
-      #add the user to the module if he is not already in it
-      check_user_in_module = User.joins(:list_modules).where("users.username = ? AND list_modules.id = ?",
-                                                              add_username,
-                                                              params[:module_id])
-
-      if check_user_in_module.length == 0
-        UserListModule.find_or_create_by(list_module_id: params[:module_id],
-                                         user_id: user_to_add.id,
-                                         privilege: "student")
+        #popup one of the values was not provided, so user not created
       end
     end
 
