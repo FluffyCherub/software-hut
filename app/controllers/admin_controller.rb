@@ -190,16 +190,16 @@ class AdminController < ApplicationController
       #> 16
       user_to_add = ''
       #if user does not exist, create him
-      if check_user_exist.length == 0 && add_username != nil && add_email.length > 16
+      if check_user_exist.length == 0 && add_username != nil
         user_to_add = User.create(username: add_username,
                                   email: add_email,
                                   givenname: add_first_name,
                                   sn: add_last_name)
       else
-        user_to_add = User.where(username: add_username,
-                                  email: add_email,
-                                  givenname: add_first_name,
-                                  sn: add_last_name)
+        user_to_add = User.where("username = ? OR email = ?",
+                                  add_username,
+                                  add_email,
+                                  ).first
       end
 
       #add the user to the module if he is not already in it
@@ -209,8 +209,8 @@ class AdminController < ApplicationController
 
       if check_user_in_module.length == 0
         UserListModule.find_or_create_by(list_module_id: params[:module_id],
-                              user_id: user_to_add.id,
-                              privilege: "student")
+                                         user_id: user_to_add.id,
+                                         privilege: "student")
       end
     end
 
@@ -251,8 +251,8 @@ class AdminController < ApplicationController
         #making the current user module leader if he checked the checkbox
         if params['module_create_form']['module_leader'] == "checked-value" && created_module != nil
           add_mod_leader = UserListModule.create(list_module_id: created_module.id,
-                                user_id: current_user.id,
-                                privilege: "module_leader")
+                                                 user_id: current_user.id,
+                                                 privilege: "module_leader")
         end
       end
     end
@@ -279,8 +279,34 @@ class AdminController < ApplicationController
                               code: params['module_edit_form']['module_code'],
                               description: params['module_edit_form']['module_description'],
                               semester: params['module_edit_form']['semester'],
-                              years: params['module_edit_form']['years'],)
+                              years: params['module_edit_form']['years'])
         
+      end
+
+      redirect_to admin_modules_preview_path(module_id: params['module_edit_form']['form_module_id'])
+    elsif params['clone_module_button'] == "Clone"
+      #checking if a module with this name,code,semester and year is in the system
+      module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
+                                       params['module_edit_form']['module_name'],
+                                       params['module_edit_form']['years'],
+                                       params['module_edit_form']['module_code'],
+                                       params['module_edit_form']['semester']
+                                       )
+
+      if module_check.length == 0
+        puts "STROOOOOOOOOOOOOOOOOOOnk"
+        puts params['module_edit_form']['module_name']
+        puts params['module_edit_form']['module_code'] 
+        puts params['module_edit_form']['module_description']
+        puts params['module_edit_form']['semester']
+        puts params['module_edit_form']['years']
+        ListModule.find_or_create_by(name: params['module_edit_form']['module_name'],
+                                     code: params['module_edit_form']['module_code'],
+                                     description: params['module_edit_form']['module_description'],
+                                     semester: params['module_edit_form']['semester'],
+                                     years: params['module_edit_form']['years'],
+                                     created_by: current_user.username)
+      
       end
 
       redirect_to admin_modules_preview_path(module_id: params['module_edit_form']['form_module_id'])
