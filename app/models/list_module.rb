@@ -20,6 +20,7 @@ class ListModule < ApplicationRecord
   validates :semester , presence: true
   validates :years , presence: true
   validates :created_by , presence: true
+  validates :level , presence: true
 
 
   has_many :user_list_modules

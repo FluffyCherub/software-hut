@@ -237,28 +237,40 @@ class AdminController < ApplicationController
     @generated_years = ListModule.generate_years(Time.now.year, 5)
     
     if params['create_module_button'] == "Create"
+      #getting all the variables needed to create a module
+      module_name = params['module_create_form']['module_name']
+      module_code = params['module_create_form']['module_code']
+      module_description = params['module_create_form']['module_description']
+      semester = params['module_create_form']['semester']
+      years = params['module_create_form']['years']
+      level = params['module_create_form']['level']
 
-      #checking if a module with this name and year is in the system
-      module_check = ListModule.where("name = ? AND years = ?", 
-                                       params['module_create_form']['module_name'],
-                                       params['module_create_form']['years'])
+      if module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil
+        #checking if a module with this name and year is in the system
+        module_check = ListModule.where("name = ? AND years = ?", 
+                                        module_name,
+                                        years)
 
-      if module_check.length == 0
-        #creating a module with the given parameters
-        created_module = ListModule.find_or_create_by(name: params['module_create_form']['module_name'],
-                                                      code: params['module_create_form']['module_code'],
-                                                      description: params['module_create_form']['module_description'],
-                                                      semester: params['module_create_form']['semester'],
-                                                      years: params['module_create_form']['years'],
-                                                      created_by: current_user.username,
-                                                      )
-      
-        #making the current user module leader if he checked the checkbox
-        if params['module_create_form']['module_leader'] == "checked-value" && created_module != nil
-          add_mod_leader = UserListModule.create(list_module_id: created_module.id,
-                                                 user_id: current_user.id,
-                                                 privilege: "module_leader")
+        if module_check.length == 0
+          #creating a module with the given parameters
+          created_module = ListModule.find_or_create_by(name: module_name,
+                                                        code: module_code,
+                                                        description: module_description,
+                                                        semester: semester,
+                                                        years: years,
+                                                        created_by: current_user.username,
+                                                        level: level
+                                                        )
+        
+          #making the current user module leader if he checked the checkbox
+          if params['module_create_form']['module_leader'] == "checked-value" && created_module != nil
+            add_mod_leader = UserListModule.create(list_module_id: created_module.id,
+                                                  user_id: current_user.id,
+                                                  privilege: "module_leader")
+          end
         end
+      else
+        #popup that a field was empty
       end
     end
     
