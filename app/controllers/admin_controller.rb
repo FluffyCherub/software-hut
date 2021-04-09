@@ -294,19 +294,40 @@ class AdminController < ApplicationController
                                        )
 
       if module_check.length == 0
-        puts "STROOOOOOOOOOOOOOOOOOOnk"
-        puts params['module_edit_form']['module_name']
-        puts params['module_edit_form']['module_code'] 
-        puts params['module_edit_form']['module_description']
-        puts params['module_edit_form']['semester']
-        puts params['module_edit_form']['years']
-        ListModule.find_or_create_by(name: params['module_edit_form']['module_name'],
-                                     code: params['module_edit_form']['module_code'],
-                                     description: params['module_edit_form']['module_description'],
-                                     semester: params['module_edit_form']['semester'],
-                                     years: params['module_edit_form']['years'],
-                                     created_by: current_user.username)
+        cloned_module = ListModule.find_or_create_by(name: params['module_edit_form']['module_name'],
+                                                     code: params['module_edit_form']['module_code'],
+                                                     description: params['module_edit_form']['module_description'],
+                                                     semester: params['module_edit_form']['semester'],
+                                                     years: params['module_edit_form']['years'],
+                                                     created_by: current_user.username)
       
+        #adding module leaders to the cloned module
+        if params['module_edit_form']['check_box_ml'] == "checked-value"
+          module_leaders = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege = ?",
+                                                            params['module_edit_form']['form_module_id'],
+                                                            "module_leader")
+
+          for i in 0..(module_leaders.length-1)
+            UserListModule.create(user_id: module_leaders[i].id,
+                                  list_module_id: cloned_module.id,
+                                  privilege: "module_leader")
+          end
+        end
+
+        if params['module_edit_form']['check_box_ta'] == "checked-value"
+          teaching_assistants = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege LIKE ?",
+                                                                 params['module_edit_form']['form_module_id'],
+                                                                 "%teaching_assistant%")
+        
+
+          for i in 0..(teaching_assistants.length-1)
+            UserListModule.create(user_id: teaching_assistants[i].id,
+                                  list_module_id: cloned_module.id,
+                                  privilege: User.get_module_privilege(params['module_edit_form']['form_module_id'], teaching_assistants[i].id))
+        
+          end
+        end
+
       end
 
       redirect_to admin_modules_preview_path(module_id: params['module_edit_form']['form_module_id'])

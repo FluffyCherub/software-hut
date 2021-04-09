@@ -44,13 +44,6 @@ class User < ApplicationRecord
 
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
-
-
-  def self.get_module_privilege(user_id, module_id)
-    privilege = UserListModule.where("user_id = ? AND list_module_id = ?", user_id, module_id).first.privilege
-    return privilege
-  end
-
   def self.get_user_info_by_id(user_id)
     user_info = User.where(id: user_id).first
     return user_info
@@ -60,5 +53,14 @@ class User < ApplicationRecord
     email =~ /\S+@\S+\.\S+/
   end
 
-  
+  def self.get_module_privilege(module_id, user_id)
+    privilege = UserListModule.where(list_module_id: module_id,
+                                     user_id: user_id).first
+
+    if privilege != nil
+      return privilege.privilege
+    else
+      return privilege
+    end
+  end
 end
