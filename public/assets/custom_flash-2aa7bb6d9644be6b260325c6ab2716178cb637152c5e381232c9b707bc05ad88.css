@@ -1,0 +1,75 @@
+/* line 4, app/assets/stylesheets/custom_flash.scss */
+.flash-messages {
+  z-index: 800;
+  position: fixed;
+  top: 3.575rem;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 12, app/assets/stylesheets/custom_flash.scss */
+.flash-messages .alert {
+  border-radius: 0;
+  margin: 0;
+  background-color: #EFD050;
+  color: #68560b;
+  text-align: center;
+  padding: 0;
+  border: none;
+  transition: height 0.2s linear;
+}
+
+/* line 20, app/assets/stylesheets/custom_flash.scss */
+.flash-messages .alert + .alert {
+  margin-top: 1px;
+}
+
+/* line 23, app/assets/stylesheets/custom_flash.scss */
+.flash-messages .alert .container {
+  margin-top: 3px;
+  margin-bottom: 2px;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* line 12, app/assets/stylesheets/custom_flash.scss */
+  .flash-messages .alert {
+    transition: none;
+  }
+}
+
+/* line 29, app/assets/stylesheets/custom_flash.scss */
+.flash-messages .alert.fade {
+  opacity: 1;
+  height: 0px;
+  overflow: hidden;
+}
+
+/* line 34, app/assets/stylesheets/custom_flash.scss */
+.flash-messages .alert.in {
+  height: auto;
+  min-height: 22px;
+  overflow: auto;
+}
+
+/* line 41, app/assets/stylesheets/custom_flash.scss */
+.flash-messages .flash-success, .flash-messages a {
+  color: #3f629e;
+}
+
+/* line 44, app/assets/stylesheets/custom_flash.scss */
+.flash-messages .flash-error {
+  color: #7633a0;
+}
+
+/* line 48, app/assets/stylesheets/custom_flash.scss */
+.flash-messages a {
+  margin-left: 5px;
+}
+
+/* line 54, app/assets/stylesheets/custom_flash.scss */
+body.has-environment-notice .flash-messages {
+  top: 4.125rem;
+}

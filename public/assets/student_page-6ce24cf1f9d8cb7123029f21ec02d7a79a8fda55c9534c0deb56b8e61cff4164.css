@@ -1,0 +1,145 @@
+/* line 1, app/assets/stylesheets/student_page.scss */
+.card.mb-3-student {
+  max-width: 500px;
+  height: auto;
+  margin: auto;
+  padding: 10px;
+}
+
+/* line 9, app/assets/stylesheets/student_page.scss */
+.card-body-student {
+  max-width: 500px;
+  margin-top: 2%;
+  padding: 0px;
+}
+
+/* line 19, app/assets/stylesheets/student_page.scss */
+.card-header-student {
+  border: 0.1px solid #e6e6e3;
+  text-align: center;
+  font-size: larger;
+}
+
+/* line 25, app/assets/stylesheets/student_page.scss */
+.select_module {
+  margin: auto;
+  text-align: center;
+  font-size: larger;
+  color: white;
+  background-color: #1f145d;
+  font-family: 'Steph';
+  width: 50%;
+}
+
+/* line 35, app/assets/stylesheets/student_page.scss */
+.select_module:hover {
+  background-color: #009fda;
+  color: black;
+}
+
+/* line 40, app/assets/stylesheets/student_page.scss */
+.module_dropdown {
+  width: 100%;
+  margin-bottom: 2%;
+  font-size: 17.5px;
+}
+
+/* line 46, app/assets/stylesheets/student_page.scss */
+#module_name {
+  color: white;
+}
+
+/* line 50, app/assets/stylesheets/student_page.scss */
+.module_body {
+  border-radius: 8px;
+  border: 0.1px solid gray;
+  margin: auto;
+  margin-top: 2%;
+  text-align: center;
+  background-color: #1f145d;
+  height: 50%;
+  margin-bottom: 2%;
+}
+
+/* line 62, app/assets/stylesheets/student_page.scss */
+.module_info {
+  border-radius: 8px;
+  background-color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 2%;
+  color: black;
+}
+
+/* line 75, app/assets/stylesheets/student_page.scss */
+.module_div {
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+  line-height: 2;
+}
+
+/* line 83, app/assets/stylesheets/student_page.scss */
+.module_group {
+  margin: auto;
+  margin-bottom: 0%;
+  font-size: 18px;
+  overflow-y: scroll;
+}
+
+/* line 92, app/assets/stylesheets/student_page.scss */
+.module_feedback {
+  margin: auto;
+  margin-bottom: 0%;
+  list-style-position: inside;
+  font-size: 18px;
+  position: relative;
+  top: 0px;
+  border: 2px solid #1f145d;
+}
+
+/* line 103, app/assets/stylesheets/student_page.scss */
+.feedback_header {
+  font-size: 21px;
+  text-decoration: underline;
+}
+
+/* line 108, app/assets/stylesheets/student_page.scss */
+.group_header {
+  font-size: 23px;
+}
+
+/* line 113, app/assets/stylesheets/student_page.scss */
+.group_line {
+  border: 0.5px solid black;
+}
+
+/* line 117, app/assets/stylesheets/student_page.scss */
+.small {
+  font-size: calc(12px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 121, app/assets/stylesheets/student_page.scss */
+.medium {
+  font-size: calc(15px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 125, app/assets/stylesheets/student_page.scss */
+.bigger {
+  font-size: calc(34px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 129, app/assets/stylesheets/student_page.scss */
+.choose_logo_middle {
+  width: 50%;
+  height: auto;
+}
+
+/* line 134, app/assets/stylesheets/student_page.scss */
+.see_trough {
+  margin-top: 0%;
+  background-color: transparent;
+  border: none;
+}

@@ -1,0 +1,14 @@
+/* line 1, app/assets/stylesheets/upload_file.scss */
+.custom-file-input.selected:lang(en)::after {
+  content: "" !important;
+}
+
+/* line 5, app/assets/stylesheets/upload_file.scss */
+.custom-file {
+  overflow: hidden;
+}
+
+/* line 9, app/assets/stylesheets/upload_file.scss */
+.custom-file-input {
+  white-space: nowrap;
+}

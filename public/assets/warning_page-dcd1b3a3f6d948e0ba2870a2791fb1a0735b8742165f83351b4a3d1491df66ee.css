@@ -1,0 +1,31 @@
+/* line 1, app/assets/stylesheets/warning_page.scss */
+.warning-page-cover {
+  background: black;
+  background: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+}
+
+/* line 10, app/assets/stylesheets/warning_page.scss */
+.warning-page-cover .alert {
+  position: absolute;
+  z-index: 1000;
+  top: 60px;
+  right: 20px;
+  left: 20px;
+}
+
+/* line 16, app/assets/stylesheets/warning_page.scss */
+.warning-page-cover .alert h2 {
+  margin-top: 0;
+}
+
+/* line 19, app/assets/stylesheets/warning_page.scss */
+.warning-page-cover .alert p {
+  font-size: 18px;
+  line-height: 1.5;
+}

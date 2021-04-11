@@ -1,0 +1,88 @@
+@font-face {
+  font-family: 'Blake';
+  src: url("Blake.ttf");
+}
+
+@font-face {
+  font-family: 'Steph';
+  src: url("Steph.ttf");
+}
+
+/* line 35, app/assets/stylesheets/layout.scss */
+html, body {
+  height: 100%;
+  font-family: 'Steph';
+  background-image: url("bg1.jpg");
+}
+
+/* line 41, app/assets/stylesheets/layout.scss */
+#wrap {
+  position: relative;
+  min-height: 100%;
+  height: auto !important;
+  margin: 0 auto -112px;
+  padding: 0 0 112px;
+}
+
+/* line 49, app/assets/stylesheets/layout.scss */
+#main-container {
+  padding-top: 112px;
+}
+
+/* line 53, app/assets/stylesheets/layout.scss */
+#footer {
+  background-color: #1f145d;
+  position: relative;
+  height: 112px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+  font-size: 0.9rem;
+}
+
+/* line 62, app/assets/stylesheets/layout.scss */
+.logo_top_left {
+  border: 1px solid black;
+  max-width: 100%;
+  height: auto;
+  float: left;
+  margin-right: 1%;
+  margin-left: 0%;
+}
+
+/* line 71, app/assets/stylesheets/layout.scss */
+.navbar-logo {
+  text-align: left;
+}
+
+/* line 75, app/assets/stylesheets/layout.scss */
+.nav_bar_logo {
+  width: 12.5%;
+  margin: 0%;
+}
+
+/* line 81, app/assets/stylesheets/layout.scss */
+.nav_bar_menu {
+  width: 86.5%;
+  text-align: left;
+  margin: 0%;
+}
+
+@media (min-width: 1200px) {
+  /* line 88, app/assets/stylesheets/layout.scss */
+  .container.nav_bar_menu {
+    max-width: 1640px;
+  }
+}
+
+/* line 93, app/assets/stylesheets/layout.scss */
+.blue_line {
+  position: absolute;
+  top: 0;
+  background-color: #009fda;
+  color: #009fda;
+}
+
+/* line 100, app/assets/stylesheets/layout.scss */
+.top_line {
+  position: relative;
+}

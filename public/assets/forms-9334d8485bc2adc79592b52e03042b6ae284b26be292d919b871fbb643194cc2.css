@@ -1,0 +1,10 @@
+/* line 2, app/assets/stylesheets/forms.scss */
+.control-label.radio_buttons, .control-label.check_boxes {
+  margin-bottom: 0;
+}
+
+/* line 5, app/assets/stylesheets/forms.scss */
+.control-label.inline_radio_buttons, .control-label.inline_check_boxes {
+  display: block;
+  margin-bottom: 8px;
+}

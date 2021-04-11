@@ -1,0 +1,188 @@
+/* line 1, app/assets/stylesheets/toa.scss */
+.body_whole {
+  width: 70%;
+  border-radius: 8px;
+  border: 1.5px solid #1f145d;
+  background-color: white;
+  margin-bottom: 3%;
+}
+
+/* line 9, app/assets/stylesheets/toa.scss */
+.table_main {
+  border: 1px solid black;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 3%;
+}
+
+/* line 16, app/assets/stylesheets/toa.scss */
+.column_name {
+  border: 1px solid black;
+  padding: 2px 5px;
+}
+
+/* line 21, app/assets/stylesheets/toa.scss */
+.column_content {
+  border: 1px solid black;
+  padding: 2px 10px;
+  color: #4b4646;
+  font-style: italic;
+}
+
+/* line 28, app/assets/stylesheets/toa.scss */
+.small {
+  font-size: calc(12px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 32, app/assets/stylesheets/toa.scss */
+.medium {
+  font-size: calc(15px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 36, app/assets/stylesheets/toa.scss */
+.bigger {
+  font-size: calc(34px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 40, app/assets/stylesheets/toa.scss */
+.better_header {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* line 47, app/assets/stylesheets/toa.scss */
+.only_bold {
+  font-weight: bold;
+}
+
+/* line 51, app/assets/stylesheets/toa.scss */
+.thinner_line {
+  border: 0.5px solid #c5c3c3;
+}
+
+/* line 55, app/assets/stylesheets/toa.scss */
+.white_bg {
+  color: black !important;
+  background-color: white;
+}
+
+/* line 60, app/assets/stylesheets/toa.scss */
+.text_black {
+  color: black !important;
+}
+
+/* line 64, app/assets/stylesheets/toa.scss */
+.small_bottom_margin {
+  margin-bottom: 0.5%;
+}
+
+/* line 68, app/assets/stylesheets/toa.scss */
+.header_agreemnet {
+  font-weight: bold;
+}
+
+/* line 72, app/assets/stylesheets/toa.scss */
+.push_top {
+  margin-top: 3%;
+}
+
+/* line 76, app/assets/stylesheets/toa.scss */
+.div_buttons_1 {
+  margin: 0 auto;
+  display: inline;
+}
+
+/* line 81, app/assets/stylesheets/toa.scss */
+.div_buttons_action_1 {
+  margin: 0 auto;
+  display: inline;
+}
+
+/* line 86, app/assets/stylesheets/toa.scss */
+.agreement_buttons {
+  float: right;
+  font-size: larger;
+  color: white;
+  background-color: #1f145d;
+  font-family: 'Steph';
+  width: 35%;
+}
+
+/* line 96, app/assets/stylesheets/toa.scss */
+.agreement_buttons:hover {
+  background-color: #009fda;
+  color: black;
+}
+
+/* line 101, app/assets/stylesheets/toa.scss */
+.button_toa_1 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+}
+
+/* line 107, app/assets/stylesheets/toa.scss */
+.button_toa_2 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-right: 1%;
+}
+
+/* line 113, app/assets/stylesheets/toa.scss */
+.toa_logo {
+  margin-top: 2%;
+  width: 65%;
+  height: auto;
+}
+
+/* line 119, app/assets/stylesheets/toa.scss */
+.column_name {
+  font-size: 16px;
+}
+
+/* line 123, app/assets/stylesheets/toa.scss */
+.table_cell_custom {
+  font-size: 16px;
+  height: 18px;
+  border: none;
+}
+
+/* line 129, app/assets/stylesheets/toa.scss */
+.form-group {
+  margin-bottom: 0rem;
+}
+
+/* line 133, app/assets/stylesheets/toa.scss */
+.form-control {
+  border-radius: 0rem;
+}
+
+/* line 137, app/assets/stylesheets/toa.scss */
+.half_button {
+  cursor: not-allowed;
+  pointer-events: none;
+  float: right;
+  font-size: larger;
+  color: GrayText;
+  cursor: inherit;
+  background-color: #ddd;
+  background: #ddd;
+  font-family: 'Steph';
+  width: 35%;
+}
+
+/* line 151, app/assets/stylesheets/toa.scss */
+.half_button_50 {
+  cursor: not-allowed;
+  pointer-events: none;
+  float: right;
+  font-size: larger;
+  color: GrayText;
+  cursor: inherit;
+  background-color: #ddd;
+  background: #ddd;
+  font-family: 'Steph';
+  width: 40%;
+}

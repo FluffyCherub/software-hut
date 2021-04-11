@@ -1,0 +1,127 @@
+/* line 1, app/assets/stylesheets/module_info.scss */
+.form-group {
+  margin-bottom: 0%;
+}
+
+/* line 5, app/assets/stylesheets/module_info.scss */
+label {
+  margin-bottom: 0% !important;
+}
+
+/* line 9, app/assets/stylesheets/module_info.scss */
+.module_form {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: transparent;
+  color: #1f145d;
+  border: none;
+}
+
+/* line 17, app/assets/stylesheets/module_info.scss */
+.button_create_module {
+  margin-top: 0%;
+  margin-bottom: 1%;
+  margin-left: 0%;
+  margin-right: 0%;
+  float: left;
+  width: 35%;
+}
+
+/* line 26, app/assets/stylesheets/module_info.scss */
+.float_right {
+  float: right !important;
+}
+
+/* line 30, app/assets/stylesheets/module_info.scss */
+.margin_none {
+  margin: 0% !important;
+}
+
+/* line 34, app/assets/stylesheets/module_info.scss */
+.margin_bottom_none {
+  margin-bottom: 0% !important;
+}
+
+/* line 38, app/assets/stylesheets/module_info.scss */
+.button_go_back_1 {
+  margin-top: 0%;
+  margin-bottom: 0%;
+  margin-left: 0%;
+  margin-right: 0%;
+  float: right;
+  width: 40%;
+}
+
+/* line 47, app/assets/stylesheets/module_info.scss */
+.container.body_whole_custom_3 {
+  width: 100%;
+  border-radius: 8px;
+  border: 1.5px solid #1f145d;
+  background-color: white;
+  margin-bottom: 3%;
+}
+
+/* line 55, app/assets/stylesheets/module_info.scss */
+.special_margin_top {
+  margin-top: 1%;
+}
+
+/* line 59, app/assets/stylesheets/module_info.scss */
+.button_small {
+  width: 25%;
+}
+
+/* line 63, app/assets/stylesheets/module_info.scss */
+.button_go_back_2 {
+  margin-top: 0%;
+  margin-bottom: 0%;
+  margin-left: 0%;
+  margin-right: 0%;
+  float: right;
+  width: 100%;
+}
+
+/* line 72, app/assets/stylesheets/module_info.scss */
+.margin_left_none {
+  margin-left: 0% !important;
+}
+
+/* line 76, app/assets/stylesheets/module_info.scss */
+.margin_left_small {
+  margin-left: 1% !important;
+}
+
+/* line 80, app/assets/stylesheets/module_info.scss */
+.button_create_user_1 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 0%;
+  margin-right: 0%;
+  float: right;
+  width: 35%;
+}
+
+/* line 89, app/assets/stylesheets/module_info.scss */
+.table td {
+  vertical-align: middle;
+}
+
+/* line 93, app/assets/stylesheets/module_info.scss */
+.button_search_3 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 1%;
+  width: 35%;
+}
+
+/* line 100, app/assets/stylesheets/module_info.scss */
+a.button:hover {
+  background-color: #009fda !important;
+  color: black !important;
+}
+
+/* line 105, app/assets/stylesheets/module_info.scss */
+button:hover {
+  background-color: #009fda !important;
+  color: black !important;
+}

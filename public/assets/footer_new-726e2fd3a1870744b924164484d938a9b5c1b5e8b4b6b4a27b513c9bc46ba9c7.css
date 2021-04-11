@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css?family=Rubik&display=swap");
+/* line 3, app/assets/stylesheets/footer_new.scss */
+.container-fluid {
+  overflow: hidden;
+  margin: auto;
+  background-color: #1f145d;
+  color: white !important;
+  padding: auto;
+}
+
+/* line 11, app/assets/stylesheets/footer_new.scss */
+small {
+  font-size: calc(12px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 15, app/assets/stylesheets/footer_new.scss */
+.bold-text {
+  color: white !important;
+}
+
+/* line 19, app/assets/stylesheets/footer_new.scss */
+.mt-55 {
+  margin-top: calc(50px + (60 - 50) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 23, app/assets/stylesheets/footer_new.scss */
+h3 {
+  font-size: calc(34px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important;
+}
+
+/* line 27, app/assets/stylesheets/footer_new.scss */
+.social {
+  font-size: 21px !important;
+}
+
+/* line 31, app/assets/stylesheets/footer_new.scss */
+.rights {
+  font-size: calc(10px + (12 - 10) * ((100vw - 360px) / (1600 - 360))) !important;
+}

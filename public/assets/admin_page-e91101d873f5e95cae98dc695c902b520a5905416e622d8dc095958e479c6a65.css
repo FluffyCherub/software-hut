@@ -1,0 +1,47 @@
+/* line 1, app/assets/stylesheets/admin_page.scss */
+.bg_none {
+  background-color: transparent;
+  border: none;
+}
+
+/* line 6, app/assets/stylesheets/admin_page.scss */
+.button_gradient {
+  border-radius: 8px;
+  border: transparent;
+  background-color: transparent;
+  color: white;
+  background-image: linear-gradient(to right, #1f145d, rgba(31, 20, 93, 0));
+}
+
+/* line 15, app/assets/stylesheets/admin_page.scss */
+.button_gradient:hover {
+  border-radius: 8px;
+  background-color: transparent;
+  border: transparent;
+  color: black;
+  background-image: linear-gradient(to right, #5a5287, rgba(90, 82, 135, 0));
+}
+
+/* line 24, app/assets/stylesheets/admin_page.scss */
+.bg_none_margin {
+  background-color: transparent;
+  border: none;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+/* line 31, app/assets/stylesheets/admin_page.scss */
+.choose_buttons {
+  float: right;
+  text-align: left;
+  color: white;
+  font-family: 'Steph';
+  width: 100%;
+  padding: 50px;
+  padding-left: 30px;
+}
+
+/* line 42, app/assets/stylesheets/admin_page.scss */
+.bigger {
+  font-size: calc(20px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important;
+}
