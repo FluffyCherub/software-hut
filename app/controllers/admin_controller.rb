@@ -432,6 +432,20 @@ class AdminController < ApplicationController
       redirect_to admin_modules_groups_path(module_id: mod_id, search_input: params['search_form']['search_input'], search_type: params['search_form']['search_type'])
     end
 
+    #removing a student from a group
+    if params['remove_student_button'] == "remove_student"
+     
+      user_to_remove = UserTeam.where("user_id = ? AND team_id =?",
+                                       params['student_remove_id'],
+                                       params['team_id'])
+
+      if user_to_remove != nil
+        user_to_remove.first.destroy
+      end
+
+      redirect_back(fallback_location: root_path)
+    end
+
   end
 
   def admin_modules_privilege

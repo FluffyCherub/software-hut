@@ -82,8 +82,9 @@
                                     - user[:sn] = ""
                                   - whole_name = user[:givenname] + " " + user[:sn]
                                   %tr.small.hover_color
-                                    = form_tag admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id']), :method => :post, :id => 'remove_student_form' do
+                                    = form_tag admin_modules_groups_path(module_id: params['module_id']), :method => :post, :id => 'remove_student_form' do
                                       %input#user_remove_id{name: "student_remove_id", type: "hidden", value: user[:id]}
+                                      %input#team_id{name: "team_id", type: "hidden", value: @groups_for_module[i-1].id}
                                       - last_login = user[:last_sign_in_at]
                                       - if last_login.nil?
                                         - last_login = ""
