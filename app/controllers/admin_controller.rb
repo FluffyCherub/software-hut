@@ -389,11 +389,27 @@ class AdminController < ApplicationController
     
     ##setting the search input parameter to display the correct teams
     if params['search_button'] == "Search"
+      @saved_input = params['search_form']['search_input']
       search_input = params['search_form']['search_input']
+      search_type = params['search_form']['search_type']
     elsif params['search_input'] != nil
+      @saved_input = params['search_input']
       search_input = params['search_input']
+      search_type = params['search_type']
     else
+      @saved_input = ""
       search_input = ""
+      search_type = "Alphabetical order"
+    end
+
+    
+
+    if search_type == "Team size"
+      @selected_type = "Team size"
+      search_type = 'count(user_id)'
+    else
+      @selected_type = "Alphabetical order"
+      search_type = 'name'
     end
 
     #getting teams for the correct search input
@@ -409,11 +425,11 @@ class AdminController < ApplicationController
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%"
-                                                    ).distinct.order(:name)
+                                                    ).group(:id).order(search_type)
     
     if params['search_button'] == "Search"
       mod_id = params['search_form']['form_module_id']
-      redirect_to admin_modules_groups_path(module_id: mod_id, search_input: params['search_form']['search_input'])
+      redirect_to admin_modules_groups_path(module_id: mod_id, search_input: params['search_form']['search_input'], search_type: params['search_form']['search_type'])
     end
 
   end
