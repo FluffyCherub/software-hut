@@ -1,6 +1,8 @@
 class AdminController < ApplicationController
   require 'csv'
 
+  
+
   def admin_page
     #check if the user trying to access is an admin, otherwise redirect to root
     if current_user.admin == false
@@ -434,6 +436,8 @@ class AdminController < ApplicationController
       redirect_to "/"
     end
 
+    
+
     @saved_privilege = UserListModule.where(list_module_id: params['module_id'],
                                             user_id: params['user_id']).first.privilege
 
@@ -481,6 +485,8 @@ class AdminController < ApplicationController
       @close_window = "true"
 
     end
+
+    render layout: 'empty'
   end
 
   def admin_modules_groups_preview
