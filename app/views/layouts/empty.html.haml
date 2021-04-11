@@ -14,19 +14,8 @@
   // %body{ class: environment_notice_body_class , onload: "myFunction()"}
   %body{ class: environment_notice_body_class, onload: "resizeGroup()"}
     = render 'layouts/environment_notice'
-    .flash-messages
-      - flash.each do |name, msg|
-        - next unless name == 'alert' || name == 'notice'
-        .alert.fade.in
-          .container
-            - if name == 'notice'
-              = icon('fas', 'check', class: 'flash-success')
-            - else
-              = icon('fas', 'exclamation-triangle', class: 'flash-error')
-            = msg
-            %a{ href: '#', title: 'Hide this message', data: { dismiss: :alert } } Dismiss
   
-    #wrap
+    #wrap.padding_wrap_special
       %main
-        #main-container.container
+        #main-container.container.no_padding_override
           = yield

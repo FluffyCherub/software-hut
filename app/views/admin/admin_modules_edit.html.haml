@@ -23,12 +23,12 @@
       .form-group.margin_bottom_small
         = f.input :module_description, :as => :text, label: "Description", required: false, :input_html => {:id => "inputDescription", :class => "form-control", :rows => 10, :value => @module_info.description}
       .form-row
-        .form-group.col-md-6.margin_bottom_small
+        .form-group.col-md-5.margin_bottom_small
           //- collection = session[:modules] #Defines the options in radio buttons/dropdowns
           = f.input :semester, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR', 'GRADUATE YEAR'], label: "Semester", include_blank: false, required: false,  :selected => @module_info.semester
         .form-group.col-md-4.margin_bottom_small
           = f.input :years, as: :select, collection: @generated_years, label: "Academic Year", include_blank: false, required: false, :selected => @module_info.years
-        .form-group.col-md-6.margin_bottom_small
+        .form-group.col-md-3.margin_bottom_small
           = f.input :level, as: :select, collection: ['1', '2', '3', '4'], label: "Level", include_blank: false, required: false
       .form-group.margin_bottom_small.special_margin_top
         .form-check.no_padding_left
