@@ -1,13 +1,9 @@
 class ToaController < ApplicationController
 
   def toa_doc
-    puts "BOIIIIIIIIIIIIIIIII"
-    puts params['team_id']
     @current_team = Team.where(id: params['team_id']).first
-
     @student_signed_status = UserTeam.check_student_sign_status(current_user.id, params['team_id'])
-    puts "BOIIIIIIIIIIIIIIIII"
-    @student_signed_status
+
     if params['commit'] == "Submit" && @current_team.toa_status == "in_progress"
       @current_team.document.attach(params['file'])
       @current_team.update(toa_status: "submitted")
