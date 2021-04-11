@@ -39,10 +39,10 @@
                     - group_topic = ""
                   - else
                     - group_topic = "- " + @groups_for_module[i-1].topic
-                  #{@groups_for_module[i-1].name} #{group_topic} 
+                  #{@groups_for_module[i-1].name} #{group_topic}
                   %p.float_right.margin_none #{Team.get_current_team_size(@groups_for_module[i-1].id)}/#{@groups_for_module[i-1].size}
             #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
-              .card-body
+              .card-body.no_padding
                 #accordion-1
                   .card-body
                     %li
@@ -52,10 +52,64 @@
                           Preview Module Page
                     %hr.group_line
                     //Group members etc
-                    - current_team_members = Team.get_current_team_members(@groups_for_module[i-1].id)
-                    - for j in 0..(current_team_members.length-1)
-                      %li 
-                        #{current_team_members[j].givenname} #{current_team_members[j].sn} -- #{current_team_members[j].email}
+                    -# - current_team_members = Team.get_current_team_members(@groups_for_module[i-1].id)
+                    -# - for j in 0..(current_team_members.length-1)
+                    -#   %li 
+                    -#     #{current_team_members[j].givenname} #{current_team_members[j].sn} -- #{current_team_members[j].email}
+
+                    .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
+                      - current_team_users = Team.get_current_team_members(@groups_for_module[i-1].id)
+                      - if current_team_users.length <= 0
+                        .container.no_results
+                          %h.center_element.bigger.text_black No students in the team
+                      - else
+                        .container-fluid.bg_none.overflow_style.scroll_down.no_padding.table_div
+                          %table.table.table-hover.table-dark 
+                            %tbody
+                              %tr.medium
+                                %th.black_text{:colspan => "1", :style => "width: 5%;"} #
+                                %th.black_text{:colspan => "1", :style => "width: 30%;"} Name
+                                %th.black_text.center_element{:colspan => "1", :style => "width: 10%;"} Username
+                                %th.black_text.center_element{:colspan => "1", :style => "width: 20%;"} Email
+                                %th.black_text.center_element{:colspan => "1", :style => "width: 15%;"} Last Login
+                                %th.black_text.center_element{:colspan => "4", :style => "width: 20%;"} Action
+                                - current_team_users.to_a.each_with_index do |user, index|
+                                  - if user[:givenname] == nil  
+                                    - user[:givenname] = ""
+                                  - if user[:sn] == nil 
+                                    - user[:sn] = ""
+                                  - whole_name = user[:givenname] + " " + user[:sn]
+                                  %tr.small.hover_color
+                                    = form_tag admin_modules_groups_preview_path(module_id: params['module_id'], team_id: params['team_id']), :method => :post, :id => 'remove_student_form' do
+                                      %input#user_remove_id{name: "student_remove_id", type: "hidden", value: user[:id]}
+                                      - last_login = user[:last_sign_in_at]
+                                      - if last_login.nil?
+                                        - last_login = ""
+                                      - else
+                                        - last_login = user[:last_sign_in_at].strftime("%d/%m/%Y")
+                                      %td{:colspan => "1", :style => "width: 5%;"} #{index+1}
+                                      %td{:colspan => "1", :style => "width: 30%;"} #{whole_name}
+                                      %td.center_element{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
+                                      %td.center_element{:colspan => "1", :style => "width: 20%;"} #{user[:email]}
+                                      %td.center_element{:colspan => "1", :style => "width: 15%;"} #{last_login}
+                                      %td.center_element{:colspan => "1", :style => "width: 20%;"} 
+                                        %button{type: "submit", name: "remove_student_button",  class: "btn btn-primary action_buttons justify-content-center small", id:"remove_user_button", value: "remove_student"}Remove Student
+                    %hr.group_line
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';

@@ -16,7 +16,7 @@
     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
       - if @current_team_users.length <= 0
         .container.no_results
-          %h.center_element.bigger.text_black No users in the team
+          %h.center_element.bigger.text_black No students in the team
       - else
         .container-fluid.bg_none.overflow_style.scroll_down.no_padding.table_div
           %table.table.table-hover.table-dark 
@@ -74,7 +74,7 @@
 
     -# TABLE FOR ALL STUDENTS-ONLY FROM THE MODULE TIED TO THE GROUP WITH OPTION TO ADD THEM TO THE GROUP
     -# DO NOT INCLUDE PEOPLE THAT ARE IN THE GROUP ALREADY
-    -# IF GROUP IS FULL (6/6) DO NOT ADD THE STUDENT
+    -# IF GROUP IS FULL (6/6) DO NOT ADD THE STUDENT (APPLIES ONLY WHEN STUDENTS ARE JOINING)
 
     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
       - if @users_in_module_but_not_in_team.length <= 0

@@ -27,7 +27,6 @@
               - true_i = 1
             - else
               - true_i = i + 1
-            //for loop here 1
             //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
             #heading-1.card-header
               %h5.mb-0
@@ -66,9 +65,7 @@
               document.getElementById('accordion-1').id = 'accordion-#{i}';
             //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
 
-      // in 1..x  where x is modules in the oldest(last) year
       - for y in 1..@modules_by_year[@modules_by_year.length-1].length
-        -# counting up the indicies of the modules in the oldest(last) year --> numberOfModulesAcrossAllYears - (NumberOfModulesOldestYear + 1) + y
         - index = @num_of_modules-(@modules_by_year[@modules_by_year.length-1].length+1) + y 
         :javascript
           var bad_headers = document.getElementsByClassName("header_bad");
