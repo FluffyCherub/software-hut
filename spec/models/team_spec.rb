@@ -5,6 +5,7 @@
 #  id             :bigint           not null, primary key
 #  name           :string
 #  size           :integer
+#  toa_status     :string           default("in_progress")
 #  topic          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null

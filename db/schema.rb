@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_09_174744) do
+ActiveRecord::Schema.define(version: 2021_04_11_222020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
@@ -51,27 +72,6 @@ ActiveRecord::Schema.define(version: 2021_04_09_174744) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "team_operating_agreements", force: :cascade do |t|
-    t.string "project_name", default: ""
-    t.string "module_name", default: ""
-    t.string "module_leader", default: ""
-    t.string "team_name", default: ""
-    t.string "start_date", default: ""
-    t.string "end_date", default: ""
-    t.string "team_mission", default: ""
-    t.string "team_communications", default: ""
-    t.string "decision_making", default: ""
-    t.string "meetings", default: ""
-    t.string "personal_courtesies", default: ""
-    t.string "status", default: "in_progress"
-    t.datetime "last_opened"
-    t.datetime "last_edited"
-    t.bigint "team_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["team_id"], name: "index_team_operating_agreements_on_team_id"
-  end
-
   create_table "teams", force: :cascade do |t|
     t.string "name"
     t.string "topic"
@@ -79,17 +79,8 @@ ActiveRecord::Schema.define(version: 2021_04_09_174744) do
     t.bigint "list_module_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "toa_status", default: "in_progress"
     t.index ["list_module_id"], name: "index_teams_on_list_module_id"
-  end
-
-  create_table "toa_signatures", force: :cascade do |t|
-    t.string "name", default: ""
-    t.string "signature", default: ""
-    t.string "date", default: ""
-    t.bigint "team_operating_agreement_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["team_operating_agreement_id"], name: "index_toa_signatures_on_team_operating_agreement_id"
   end
 
   create_table "user_list_modules", force: :cascade do |t|
@@ -141,9 +132,8 @@ ActiveRecord::Schema.define(version: 2021_04_09_174744) do
     t.index ["username"], name: "index_users_on_username"
   end
 
-  add_foreign_key "team_operating_agreements", "teams"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "teams", "list_modules"
-  add_foreign_key "toa_signatures", "team_operating_agreements"
   add_foreign_key "user_list_modules", "list_modules"
   add_foreign_key "user_list_modules", "users"
   add_foreign_key "user_teams", "teams"

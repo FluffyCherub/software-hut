@@ -1,131 +1,39 @@
-- content_for :title, "TOA"
+- content_for :title, "Team Operating Agreement"
 
-.container.body_whole
-  .container 
-    %img.toa_logo{:src => "/assets/me_logo.png", :alt => "Department of Mechanical Engineering"}
-  = simple_form_for :update_form, :url => toa_path(:team_id => @team_id) do |f|
-    .container.better_header
-      %h Team Operating Agreement
-    %table.table_main
+.container.body_whole_custom
+  - if @current_team.toa_status == "submitted" || @current_team.toa_status == "finished"
+    %iframe{src: "#{rails_blob_path(@current_team.document, disposition: :inline)}", width: "1000", height: "1000"}
+  - else
+    %h1 There is no Team Operating Agreement Submission
 
-      %colgroup
-        %col{:span => "1", :style => "width: 20%;"}
-        %col{:span => "1", :style => "width: 80%;"}
-
-      %tbody
-        %tr
-          %td.column_name Project Name 
-          %td.column_content
-            = f.input :project_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.project_name }
-        %tr
-          %td.column_name Module
-          %td.column_content
-            = f.input :module_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.module_name }
-        %tr
-          %td.column_name Module Leader
-          %td.column_content
-            = f.input :module_leader, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.module_leader }
-        %tr
-          %td.column_name Team Name
-          %td.column_content
-            = f.input :team_name, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.team_name }
-        %tr
-          %td.column_name Start Date
-          %td.column_content
-            = f.input :start_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.start_date }
-        %tr
-          %td.column_name End Date
-          %td.column_content
-            = f.input :end_date, as: :string, label: false , required: false, input_html: { class: "table_cell_custom", :value => @current_toa.end_date }
-
-    %p.only_bold
-      Purpose of the Team Operating Agreement
-    %P.filler_text
-      This Operating Agreement serves as the guidelines and ground rules 
-      to help the project team work productively together over the course 
-      of the project lifecycle. The aim is to help you avoid disagreements 
-      about your approach to working within your team, and to help you resolve 
-      disagreements if they do arise. The agreement is a living document and may be 
-      updated as the need arises throughout the project. Any updates will be discussed 
-      with and ratified by the project team members, and should be recorded below.
-    %hr.group_line
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    %p.only_bold
-      Team Mission
-    %P.filler_text.long_content
-      = f.input :team_mission, as: :text, label: false , required: false, input_html: {:value => @current_toa.team_mission}
-    %hr.group_line
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    %p.only_bold
-      Team Communications
-    %P.filler_text
-      Describe how project team members will communicate with each other. Include where 
-      project documents will be stored (e.g. Google Team Drive, and a link) and how they 
-      may be accessed; how and when meeting agendas and minutes will be distributed; and 
-      how confidential information will be handled. List all team members’ email and 
-      mobile numbers, Facebook name etc.; their preferred communication method; and 
-      any times/days that they are unavailable to be contacted.
-    %hr.group_line.thinner_line
-      = f.input :team_communications, as: :text, label: false , required: false, input_html: {:value => @current_toa.team_communications}
-    %hr.group_line
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    %p.only_bold
-      Decision Making
-    %P.filler_text
-      Describe how project team members will make decisions. Everyone must agree on how 
-      decisions will be made to ensure that everyone can live with the outcomes, and 
-      to ensure that the project can move forward. Include guidelines for voting on 
-      decisions, how decisions will be documented, definitions of key terms, and what 
-      happens if the team cannot come to a decision.
-    %hr.group_line.thinner_line
-      = f.input :decision_making, as: :text, label: false , required: false, input_html: {:value => @current_toa.decision_making}
-    %hr.group_line
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    %p.only_bold
-      Meetings
-    %P.filler_text
-      So much project work and decision-making happens during meetings that it is 
-      important to establish how project team meetings will work. Address what will 
-      happen at meetings (generally). Establish who will be responsible for the 
-      facilitating, frequency, and scheduling of meetings, and attendance expectations.
-    %hr.group_line.thinner_line
-    %P.filler_text.long_content
-      = f.input :meetings, as: :text, label: false , required: false, input_html: {:value => @current_toa.meetings}
-    %hr.group_line
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    %p.only_bold
-      Personal Courtesies
-    %P.filler_text
-      Outline the personal courtesies that team members will extend to one another. 
-      The contents of this section depend largely on the culture of your team. 
-      Do not assume that personal behaviors are understood, and pay particular attention 
-      to any cultural differences, if you are working in a multicultural team.
-    %hr.group_line.thinner_line
-      = f.input :personal_courtesies, as: :text, label: false , required: false, input_html: {:value => @current_toa.personal_courtesies}
-    %hr.group_line
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    %h.header_agreemnet Agreement 
-    
-    .container-fluid.white_bg.push_top
-
-      - for i in 1..@current_team_size
-        - memberNumber = i.to_s
-        - name = "member" + memberNumber + "name"
-        - signature = "member" + memberNumber + "signature"
-        - date = "member" + memberNumber + "date"
-        %div.row
-          %div.col-xs-6.col-sm-4
-            = f.input name, as: :string, label: "Name:" , required: true, input_html: {:value => @current_toa_signatures[i-1].name}
-          %div.col-xs-6.col-sm-4 
-            = f.input signature, as: :string, label: "Signature:" , required: true, input_html: {:value => @current_toa_signatures[i-1].signature}
-          %div.col-xs-6.col-sm-4
-            = f.input date, as: :string, label: "Date:" , required: true, input_html: {:value => @current_toa_signatures[i-1].date}
-        
-        %hr.group_line.thinner_line
-
-
-    .container-fluid.white_bg.push_top
-      = f.button :submit, "Submit", name:"submit_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_1", id:"submit_choice", "data-disable-with" => "Submitting.."
-      = f.button :submit, "Save", name:"save_button", class: "btn btn-primary agreement_buttons justify-content-center button_toa_2", id:"submit_choice", "data-disable-with" => "Saving.."
+  - if @current_team.toa_status == "in_progress"
+    .container
+      %i Upload a .pdf file with the Team Operating Agreement
+    = form_tag(toa_path(team_id: params[:team_id]), :multipart => true) do
+      %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}/
+      .container
+        .input-group
+          .custom-file
+            //%input#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", type: "file"}
+            %input#file#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", name: "file", type: "file"}
+            %label.custom-file-label{for: "customFileInput"} Select file
+        .input-group-append.margin_left_none.special_margin_top
+          %input.btn.btn-primary.agreement_buttons.justify-content-center.float_left_override{"data-disable-with" => "Upload", name: "commit", type: "submit", value: "Submit"}/
+          
+      :javascript
+        document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+          var name = document.getElementById("customFileInput").files[0].name;
+          var nextSibling = e.target.nextElementSibling
+          nextSibling.innerText = name
+        })
+  - else
+    %form#acceptreject{action: toa_path(team_id: params['team_id']), method: "get"}
+      %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}
+      - if @student_signed_status == false
+        %button{form: "acceptreject", type: "submit", value: "Accept", name: "accept_button"} Accept
+        %button{form: "acceptreject", type: "submit", value: "Reject", name: "reject_button"} Reject
+      - elsif @student_signed_status == true && @current_team.toa_status == "submitted"
+        %h1 Signed, but not by everyone
+      - elsif @current_team.toa_status == "finished"
+        %h1 Signed by everyone
             

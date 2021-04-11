@@ -5,6 +5,7 @@
 #  id             :bigint           not null, primary key
 #  name           :string
 #  size           :integer
+#  toa_status     :string           default("in_progress")
 #  topic          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
@@ -24,6 +25,8 @@ class Team < ApplicationRecord
   has_many :user_teams
   has_many :users, through: :user_teams
 
+  has_one_attached :document
+
   #get the number of team members in team
   def self.get_current_team_size(team_id)
     current_team_size = User.joins(:teams).where("teams.id = ?", team_id).length
@@ -35,4 +38,5 @@ class Team < ApplicationRecord
 
     return current_team_members
   end
+
 end
