@@ -404,12 +404,18 @@ class AdminController < ApplicationController
 
     
 
-    if search_type == "Team size"
-      @selected_type = "Team size"
+    if search_type == "Team size empty"
+      @selected_type = "Team size empty"
       search_type = 'count(user_id)'
-    else
+    elsif search_type == "Alphabetical order"
       @selected_type = "Alphabetical order"
       search_type = 'name'
+    elsif search_type == "Team size full"
+      @selected_type = "Team size full"
+      search_type = 'count(user_id) DESC'
+    elsif search_type == "Topic"
+      @selected_type = "Topic"
+      search_type = 'topic'
     end
 
     #getting teams for the correct search input
