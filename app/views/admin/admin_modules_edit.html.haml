@@ -29,7 +29,7 @@
         .form-group.col-md-4.margin_bottom_small
           = f.input :years, as: :select, collection: @generated_years, label: "Academic Year", include_blank: false, required: false, :selected => @module_info.years
         .form-group.col-md-3.margin_bottom_small
-          = f.input :level, as: :select, collection: ['1', '2', '3', '4'], label: "Level", include_blank: false, required: false
+          = f.input :level, as: :select, collection: ['4', '5', '6', '7'], label: "Level", include_blank: false, required: false, :selected => @module_info.level
       .form-group.margin_bottom_small.special_margin_top
         .form-check.no_padding_left
           = f.check_box :check_box_ml, {:id => "check_box_ml", :class => "myclass"}, "checked-value", "unchecked-value"
