@@ -331,7 +331,8 @@ class AdminController < ApplicationController
                                         module_name,
                                         years,
                                         module_code,
-                                        semester
+                                        semester,
+                                        level
                                         )
 
         if module_check.length == 0
