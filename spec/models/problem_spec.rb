@@ -6,7 +6,7 @@
 #  assigned_to :string
 #  created_by  :string
 #  note        :string
-#  status      :string
+#  status      :string           default("unsolved")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  team_id     :bigint

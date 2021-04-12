@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_174632) do
 
   create_table "problems", force: :cascade do |t|
     t.string "created_by"
-    t.string "status"
+    t.string "status", default: "unsolved"
     t.string "assigned_to"
     t.string "note"
     t.bigint "team_id"
