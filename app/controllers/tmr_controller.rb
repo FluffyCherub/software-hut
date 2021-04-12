@@ -1,6 +1,6 @@
-class ToaController < ApplicationController
+class TmrController < ApplicationController
 
-  def toa_doc
+  def tmr_doc
     @current_team = Team.where(id: params['team_id']).first
     @student_signed_status = UserTeam.check_student_sign_status(current_user.id, params['team_id'])
 
@@ -27,6 +27,6 @@ class ToaController < ApplicationController
 
       redirect_to toa_path(team_id: params['team_id'])
     end
+  
   end
-
 end

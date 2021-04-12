@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   match "/500", to: "errors#error_500", via: :all
   match "/modules", to: "pages#modules", via: :all
   match "/toa", to: "toa#toa_doc", via: :all
-  match "/toa/locked", to: "toa#toa_doc_locked", via: :all
+  match "/tmr", to: "tmr#tmr_doc", via: :all
   match "/admin", to: "admin#admin_page", via: :all
   match "/admin/privileges", to: "admin#admin_privileges", via: :all
   match "/admin/modules", to: "admin#admin_modules", via: :all

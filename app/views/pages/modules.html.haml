@@ -51,7 +51,10 @@
             Open:
           %i.feedback_header.medium
             date - date 
-          %li Team Meeting Record 
+          - if session[:team_info].nil?
+            %li Team Meeting Record Unavailable
+          - else
+            %li #{link_to "Team Meeting Record", tmr_path(:team_id => session[:team_info].id)}
           %li Peer Feedback Matrix
         %ul
           %strong.feedback_header.medium 

@@ -25,7 +25,12 @@ class Team < ApplicationRecord
   has_many :user_teams
   has_many :users, through: :user_teams
 
+  #one team operating agreement per team
   has_one_attached :document
+
+  #multiple team meeting record per team
+  has_many_attached :tmrs
+
 
   #get the number of team members in team
   def self.get_current_team_size(team_id)
