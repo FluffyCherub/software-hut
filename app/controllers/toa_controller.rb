@@ -4,9 +4,12 @@ class ToaController < ApplicationController
     @current_team = Team.where(id: params['team_id']).first
     @student_signed_status = UserTeam.check_student_sign_status(current_user.id, params['team_id'])
 
-    if params['commit'] == "Submit" && @current_team.toa_status == "in_progress"
+    if params['commit'] == "Submit" && @current_team.toa_status == "in_progress" && params['file'] != nil && params['file'].content_type == "application/pdf"
       @current_team.document.attach(params['file'])
       @current_team.update(toa_status: "submitted")
+
+      puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+      puts params['file'].content_type
     else
       #popup
     end

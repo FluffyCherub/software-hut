@@ -58,7 +58,8 @@ class ListModule < ApplicationRecord
   #method for importing csv files and adding users to modules
   def self.import(file, module_id)
     integrity = true
-    if file != nil
+    allowed_file_types = ["text/csv", "application/vnd.ms-excel"]
+    if file != nil && allowed_file_types.include?(file.content_type)
       csv_usernames = []
 
       CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
@@ -108,18 +109,20 @@ class ListModule < ApplicationRecord
           csv_usernames.append(add_username)
           
         end
-      end
 
-      #users who are in the module but werent in the csv get privilege changed to suspended
-      in_module_users = ListModule.users_in_module(module_id)
+        #users who are in the module but werent in the csv get privilege changed to suspended
+        in_module_users = ListModule.users_in_module(module_id)
 
-      for i in 0..(in_module_users.length-1)
-        users_privilege = ListModule.privilege_for_module(in_module_users[i].username, module_id)
-        if (csv_usernames.include?(in_module_users[i].username) == false) && (users_privilege != "module_leader") && (users_privilege.include?("teaching_assistant") == false)
-          
-          User.change_privilege_user_module(in_module_users[i].username, module_id, "suspended")
+        for i in 0..(in_module_users.length-1)
+          users_privilege = ListModule.privilege_for_module(in_module_users[i].username, module_id)
+          if (csv_usernames.include?(in_module_users[i].username) == false) && (users_privilege != "module_leader") && (users_privilege.include?("teaching_assistant") == false)
+            
+            User.change_privilege_user_module(in_module_users[i].username, module_id, "suspended")
+          end
         end
+
       end
+
     end
   end
   
