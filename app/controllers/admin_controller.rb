@@ -399,22 +399,22 @@ class AdminController < ApplicationController
     else
       @saved_input = ""
       search_input = ""
-      search_type = "Alphabetical order"
+      search_type = "Default - A to Z"
     end
 
     
 
-    if search_type == "Team size empty"
-      @selected_type = "Team size empty"
+    if search_type == "Team size - Low to High"
+      @selected_type = "Team size - Low to High"
       search_type = 'count(user_id)'
-    elsif search_type == "Alphabetical order"
-      @selected_type = "Alphabetical order"
+    elsif search_type == "Default - A to Z"
+      @selected_type = "Default - A to Z"
       search_type = 'name'
-    elsif search_type == "Team size full"
-      @selected_type = "Team size full"
+    elsif search_type == "Team size - High to Low"
+      @selected_type = "Team size - High to Low"
       search_type = 'count(user_id) DESC'
-    elsif search_type == "Topic"
-      @selected_type = "Topic"
+    elsif search_type == "Topic - A to Z"
+      @selected_type = "Topic - A to Z"
       search_type = 'topic'
     end
 
