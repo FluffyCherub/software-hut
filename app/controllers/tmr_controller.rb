@@ -27,6 +27,17 @@ class TmrController < ApplicationController
 
       redirect_to toa_path(team_id: params['team_id'])
     end
+
+
+    if params['report_button'] == "Report" && params['report_note'] != nil
+      Problem.create(created_by: current_user.username,
+                     note: params['report_note'],
+                     team_id: params['team_id'])
+
+      #popup your problem has been noted or something like that
+
+      redirect_to tmr_path(team_id: params['team_id'])
+    end
   
   end
 end

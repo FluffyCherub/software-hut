@@ -20,4 +20,5 @@
 #  fk_rails_...  (team_id => teams.id)
 #
 class Problem < ApplicationRecord
+  belongs_to :team
 end

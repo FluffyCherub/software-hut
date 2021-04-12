@@ -54,8 +54,9 @@
   //REPORTING A PROBLEM IS DONE HERE. MODIFY THE FORM 
   .container
     %h.medium Report a problem with the team
-    %form 
+    %form#report{action: tmr_path(team_id: params['team_id']), method: "get"}
+      %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}
       .form-group
-        %textarea.form-control{rows: "5"}
+        %textarea.form-control{rows: "5", name: "report_note"}
       .input-group-append.margin_left_none.special_margin_top.margin_bottom_small
-        %input.btn.btn-primary.agreement_buttons.justify-content-center.float_left_override{name: "commit", type: "button", value: "Report"}   
+        %input.btn.btn-primary.agreement_buttons.justify-content-center.float_left_override{name: "report_button", type: "submit", value: "Report"}   
