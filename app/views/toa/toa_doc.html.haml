@@ -2,10 +2,13 @@
 
 .container.body_whole_custom
   - if @current_team.toa_status == "submitted" || @current_team.toa_status == "finished"
-    %iframe{src: "#{rails_blob_path(@current_team.document, disposition: :inline)}", width: "1000", height: "1000"}
+    .container.container_middle.special_margin_top
+      //Height 6900 for full template to show
+      %iframe{src: "#{rails_blob_path(@current_team.document, disposition: :inline)}", width: "900", height: "800"}
   - else
-    %h1 There is no Team Operating Agreement Submission
-
+    .container.margin_top
+      %h1.bigger There is no Team Operating Agreement Submission
+      %hr.group_line
   - if @current_team.toa_status == "in_progress"
     .container
       %i Upload a .pdf file with the Team Operating Agreement
@@ -17,7 +20,7 @@
             //%input#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", type: "file"}
             %input#file#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", name: "file", type: "file"}
             %label.custom-file-label{for: "customFileInput"} Select file
-        .input-group-append.margin_left_none.special_margin_top
+        .input-group-append.margin_left_none.special_margin_top.margin_bottom_small
           %input.btn.btn-primary.agreement_buttons.justify-content-center.float_left_override{"data-disable-with" => "Upload", name: "commit", type: "submit", value: "Submit"}/
           
       :javascript
@@ -27,13 +30,13 @@
           nextSibling.innerText = name
         })
   - else
-    %form#acceptreject{action: toa_path(team_id: params['team_id']), method: "get"}
-      %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}
-      - if @student_signed_status == false
-        %button{form: "acceptreject", type: "submit", value: "Accept", name: "accept_button"} Accept
-        %button{form: "acceptreject", type: "submit", value: "Reject", name: "reject_button"} Reject
-      - elsif @student_signed_status == true && @current_team.toa_status == "submitted"
-        %h1 Signed, but not by everyone
-      - elsif @current_team.toa_status == "finished"
-        %h1 Signed by everyone
-            
+    .container-fluid.white_bg.push_top.container_middle
+      %form#acceptreject{action: toa_path(team_id: params['team_id']), method: "get"}
+        %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}
+        - if @student_signed_status == false
+          %button.btn.btn-primary.agreement_buttons_2.justify-content-center.button_toa_1{form: "acceptreject", type: "submit", value: "Accept", name: "accept_button"} Accept
+          %button.btn.btn-primary.agreement_buttons_2.justify-content-center.button_toa_2{form: "acceptreject", type: "submit", value: "Reject", name: "reject_button"} Reject
+        - elsif @student_signed_status == true && @current_team.toa_status == "submitted"
+          %button.btn.btn-primary.half_button.justify-content-center.button_toa_1{form: "acceptreject", type: "button", value: "Signed", name: "signed_button"} Signed
+        - elsif @current_team.toa_status == "finished"
+          %button.btn.btn-primary.half_button.justify-content-center.button_toa_1{form: "acceptreject", type: "button", value: "Agreement accepted", name: "agreement_accepted_button"} Agreement accepted   
