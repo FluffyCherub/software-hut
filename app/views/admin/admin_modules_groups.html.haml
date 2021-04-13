@@ -79,7 +79,10 @@
                     -#     #{current_team_members[j].givenname} #{current_team_members[j].sn} -- #{current_team_members[j].email}
                     
                     .container-fluid.bg_none.no_padding.margin_bottom_small.text_black.medium.margin_left
-                      Team Members
+                      Team Members 
+                      .container.col-xs-6.col-sm-3.no_padding_left.no_padding_right.padding_right_small.float_right.small
+                        %button{type: "submit", name: "add_student_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"add_user_button", value: "add_student"}Add Student
+                        
                     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
                       - current_team_users = Team.get_current_team_members(@groups_for_module[i-1].id)
                       - if current_team_users.length <= 0
