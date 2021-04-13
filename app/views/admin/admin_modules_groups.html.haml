@@ -34,8 +34,7 @@
               - true_i = 1
             - else
               - true_i = i + 1
-            //for loop here 1
-            //////////////////////////////////////////////////////////////////////////////////////////////////////// GROUP
+            
             #heading-1.card-header
               %h5.mb-0
                 %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
@@ -44,13 +43,18 @@
                   - else
                     - group_topic = "- " + @groups_for_module[i-1].topic
                   #{@groups_for_module[i-1].name} #{group_topic}
-                  %p.float_right.margin_none #{Team.get_current_team_size(@groups_for_module[i-1].id)}/#{@groups_for_module[i-1].size}
+
+
+                  %p.float_right.margin_none
+                    %span.dot_red
+                    #{Team.get_current_team_size(@groups_for_module[i-1].id)}/#{@groups_for_module[i-1].size}
+                  
+                  
             #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
               .card-body.no_padding
                 #accordion-1
                   .card-body
                     %li
-                      //Link to group? idk something here
                       %a.uni_purple{ :href => admin_modules_groups_preview_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), :title => "Preview" }
                         %strong
                           Preview Module Page
@@ -60,7 +64,9 @@
                     -# - for j in 0..(current_team_members.length-1)
                     -#   %li 
                     -#     #{current_team_members[j].givenname} #{current_team_members[j].sn} -- #{current_team_members[j].email}
-
+                    
+                    .container-fluid.bg_none.no_padding.margin_bottom_small.text_black.medium.margin_left
+                      Team Members
                     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
                       - current_team_users = Team.get_current_team_members(@groups_for_module[i-1].id)
                       - if current_team_users.length <= 0
@@ -101,9 +107,43 @@
                                         %button{type: "submit", name: "remove_student_button",  class: "btn btn-primary action_buttons justify-content-center small", id:"remove_user_button", value: "remove_student"}Remove Student
                     %hr.group_line
 
+                    ////////////////////////////////////////////////////////////////////////////////////////
+                    - if 5 > 2
+                      .container.no_results.bg_none
+                        %h.center_element.bigger.text_black No promblems in this group
+                    - else
+                      - for z in 1..3
+                      
+                        .card
+                          #heading-1-1.card-header.header_bad
+                            %h5.mb-0
+                              %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
+                                Promblem #{z}
+                          #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
+                            .card-body
+                              %p Content here
+                              %hr.group_line
+                        
+                        - if i == @groups_for_module.length
+                          - last_i = true_i
+                          - last_z = z
+                        - else
+                          :javascript
+                            document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
+                            document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
 
+            :javascript
+              document.getElementById('heading-1').id = 'heading-#{i}';
+              document.getElementById('collapse-1').id = 'collapse-#{i}';
+              document.getElementById('accordion-1').id = 'accordion-#{i}';
 
-
+      - for y in 1..3
+        - index = 3 - 4  + y 
+        :javascript
+          var bad_headers = document.getElementsByClassName("header_bad");
+          var bad_collapsers = document.getElementsByClassName("collapse_bad");
+          bad_headers['#{index}'].id = 'heading-#{last_i}-#{y}';
+          bad_collapsers['#{index}'].id = 'collapse-#{last_i}-#{y}';
 
 
 
