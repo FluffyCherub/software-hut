@@ -46,7 +46,7 @@ class Problem < ApplicationRecord
     current_problem = Problem.where(id: problem_id)
 
     current_problem.update(solved_by: username,
-                           solved_on: Time.now,
+                           solved_on: Time.zone.now,
                            )
   end
 

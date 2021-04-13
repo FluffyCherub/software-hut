@@ -173,7 +173,7 @@
                                 = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
                                 = f.input :form_problem_id, :as => :hidden, :input_html => {:id => "form_problem_id", :value => problems[z-1].id }
                                 .container-fluid.bg_none.row.no_padding.margin_bottom_small
-                                  - if problems[z-1].status == "unsolved"
+                                  - if problems[z-1].status != "solved"
                                     .container.col-xs-6.col-sm-3.no_padding.text_black
                                       = f.input :assign_list, as: :select, collection: @ta_and_mod_lead, label: false, include_blank: false, required: false
                                     .container.col-xs-6.col-sm-5
