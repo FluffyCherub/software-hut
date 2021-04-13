@@ -644,4 +644,80 @@ class AdminController < ApplicationController
 
                                                       
   end
+
+  def admin_modules_groups_add
+    #check if the user trying to access is an admin, otherwise redirect to root
+    if current_user.admin == false
+      redirect_to "/"
+    end
+
+    #setting the module and team ids to the correct values
+    module_id = params['module_id']
+    team_id = params['team_id']
+    if module_id.nil?
+      module_id = params['search_form']['form_module_id']
+    end
+    if team_id.nil?
+      team_id = params['search_form']['form_team_id']
+    end
+
+    #get info about the selected team
+    @selected_group_team = Team.where(id: team_id).first
+    @current_team_size = Team.get_current_team_size(team_id)
+    @max_team_size = @selected_group_team.size
+    @current_team_users = User.joins(:teams).where("teams.id = ?", team_id)
+
+    #setting the search input to the correct value
+    search_input = ""
+    if params['search_form'] != nil
+      search_input = params['search_form']['search_input']
+    elsif params['search_input'] != nil
+      search_input = params['search_input']
+    end
+
+
+    #getting users that are in the module and match the search input
+    @users_in_module = User.joins(:list_modules).where("list_modules.id = ? AND
+                                                        (username LIKE ? OR
+                                                        givenname LIKE ? OR
+                                                        sn LIKE ? OR
+                                                        email LIKE ?)",
+                                                        module_id,
+                                                        "%" + search_input + "%",
+                                                        "%" + search_input + "%",
+                                                        "%" + search_input + "%",
+                                                        "%" + search_input + "%"
+                                                        )
+         
+    #getting ids of users in the currently selected team
+    current_team_users_ids = []   
+    for i in 0..(@current_team_users.length-1)
+      current_team_users_ids.append(@current_team_users[i].id)
+    end  
+    
+    #getting the users that are in the module but not in the currently selected team
+    @users_in_module_but_not_in_team = []
+    for i in 0..(@users_in_module.length-1)
+      if !current_team_users_ids.include?(@users_in_module[i].id)
+        @users_in_module_but_not_in_team.append(@users_in_module[i])
+      end
+    end
+
+
+    #adding a student to a group
+    if params['add_student_button'] == "add_student"
+      
+      user_to_add = UserTeam.create(user_id: params['student_add_id'],
+                                    team_id: team_id,
+                                    )
+      
+      redirect_to admin_modules_groups_add_path(module_id: module_id, team_id: team_id)
+    end
+
+    if params['search_button'] == "Search"
+      redirect_to admin_modules_groups_add_path(module_id: module_id, team_id: team_id, search_input: search_input)
+    end
+
+
+  end
 end
