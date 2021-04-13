@@ -34,7 +34,8 @@
               - true_i = 1
             - else
               - true_i = i + 1
-            
+
+            - problems = Problem.get_problems_for_team(@groups_for_module[i-1].id)
             #heading-1.card-header
               %h5.mb-0
                 %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
@@ -46,10 +47,21 @@
 
 
                   %p.float_right.margin_none
-                    %span.dot_red
+                    - group_dot_color = "no_dot"
+                    - for k in 0..(problems.length-1)
+                      - if problems[k].status == "unsolved"
+                        - group_dot_color = "red"
+                      - elsif problems[k].status == "assigned"
+                        - group_dot_color = "yellow"
+
+                    - if group_dot_color == "red"
+                      %span.dot_red
+                    - elsif group_dot_color == "yellow"
+                      %span.dot_yellow
+                  
                     #{Team.get_current_team_size(@groups_for_module[i-1].id)}/#{@groups_for_module[i-1].size}
                   
-                  
+            
             #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
               .card-body.no_padding
                 #accordion-1
@@ -108,20 +120,35 @@
                     %hr.group_line
 
                     ////////////////////////////////////////////////////////////////////////////////////////
-                    - if 5 > 2
+                    
+                    - if problems.length == 0
                       .container.no_results.bg_none
-                        %h.center_element.bigger.text_black No promblems in this group
+                        %h.center_element.bigger.text_black No problems in this group
                     - else
-                      - for z in 1..3
-                      
+                      - for z in 1..problems.length
+                        - problem_dot_type = "no_dot"
+                        - if problems[z-1].status == "unsolved"
+                          - problem_dot_type = "red"
+                        - elsif problems[z-1].status == "assigned"
+                          - problem_dot_type = "yellow"
+                        - elsif problems[z-1].status == "solved"
+                          - problem_dot_type = "solved"
+
                         .card
                           #heading-1-1.card-header.header_bad
                             %h5.mb-0
                               %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                                Promblem #{z}
+                                Problem #{z}
+                                - if problem_dot_type = "red"
+                                  %span.dot_red.float_right
+                                - elsif problem_dot_type = "yellow"
+                                  %span.dot_yellow.float_right
+                                - elsif problem_dot_type = "solved"
+                                  %span.dot_green.float_right
+
                           #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                             .card-body
-                              %p Content here
+                              %p Note: #{problems[z-1].note}
                               %hr.group_line
                         
                         - if i == @groups_for_module.length
@@ -137,27 +164,14 @@
               document.getElementById('collapse-1').id = 'collapse-#{i}';
               document.getElementById('accordion-1').id = 'accordion-#{i}';
 
-      - for y in 1..3
-        - index = 3 - 4  + y 
+      - last_team_id = @groups_for_module[@groups_for_module.length-1].id
+      - last_problems = Problem.get_problems_for_team(last_team_id)
+      - for y in 1..last_problems.length
+        - index = @num_of_problems-(last_problems.length+1) + y 
         :javascript
           var bad_headers = document.getElementsByClassName("header_bad");
           var bad_collapsers = document.getElementsByClassName("collapse_bad");
           bad_headers['#{index}'].id = 'heading-#{last_i}-#{y}';
           bad_collapsers['#{index}'].id = 'collapse-#{last_i}-#{y}';
-
-
-
-
-
-
-
-
-
-
-
-
-            :javascript
-              document.getElementById('heading-1').id = 'heading-#{i}';
-              document.getElementById('collapse-1').id = 'collapse-#{i}';
-              document.getElementById('accordion-1').id = 'accordion-#{i}';
+            
             //////////////////////////////////////////////////////////////////////////////////////////////////////// GROUP

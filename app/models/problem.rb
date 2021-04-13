@@ -21,4 +21,11 @@
 #
 class Problem < ApplicationRecord
   belongs_to :team
+
+  def self.get_problems_for_team(team_id)
+    problems = Problem.where(team_id: team_id)
+
+    return problems
+  end
+
 end

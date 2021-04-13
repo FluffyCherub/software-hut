@@ -387,7 +387,7 @@ class AdminController < ApplicationController
       redirect_to "/"
     end
     
-    ##setting the search input parameter to display the correct teams
+    #setting the search input parameter to display the correct teams
     if params['search_button'] == "Search" || params['search_form']!= nil
       @saved_input = params['search_form']['search_input']
       search_input = params['search_form']['search_input']
@@ -403,7 +403,7 @@ class AdminController < ApplicationController
     end
 
     
-
+    #remembering the search input and sorting by the selected search type
     if search_type == "Team size - Low to High"
       @selected_type = "Team size - Low to High"
       search_type = 'count(user_id)'
@@ -418,7 +418,7 @@ class AdminController < ApplicationController
       search_type = 'topic'
     end
 
-    #getting teams for the correct search input
+    #getting teams for the current search input
     @groups_for_module = Team.left_outer_joins(:users).where("teams.list_module_id = ? AND
                                                     (users.givenname LIKE ? OR
                                                     users.sn LIKE ? OR
@@ -433,6 +433,13 @@ class AdminController < ApplicationController
                                                     "%" + search_input + "%"
                                                     ).group(:id).order(search_type)
     
+    #getting the total number of problems
+    @num_of_problems = 0
+    for i in 0..(@groups_for_module.length-1)
+      num_current_problems = Problem.where(team_id: @groups_for_module[i].id).length
+      @num_of_problems = @num_of_problems + num_current_problems
+    end
+
     if params['search_button'] == "Search" || params['search_form'] != nil
       mod_id = params['search_form']['form_module_id']
       redirect_to admin_modules_groups_path(module_id: mod_id, search_input: params['search_form']['search_input'], search_type: params['search_form']['search_type'])
