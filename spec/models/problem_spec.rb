@@ -6,6 +6,8 @@
 #  assigned_to :string
 #  created_by  :string
 #  note        :string
+#  solved_by   :string
+#  solved_on   :datetime
 #  status      :string           default("unsolved")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

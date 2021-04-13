@@ -100,4 +100,16 @@ class User < ApplicationRecord
     user_id = User.where(username: username).first.id
     return user_id
   end
+
+  def self.get_first_last(username)
+    user = User.where(username: username).first
+
+    return user.givenname + " " + user.sn
+  end
+
+  def self.get_email(username)
+    user = User.where(username: username).first
+
+    return user.email
+  end
 end

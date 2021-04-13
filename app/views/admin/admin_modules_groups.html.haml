@@ -47,16 +47,17 @@
 
 
                   %p.float_right.margin_none
-                    - group_dot_color = "no_dot"
+                    - red_encounter = false
+                    - yellow_encounter = false
                     - for k in 0..(problems.length-1)
                       - if problems[k].status == "unsolved"
-                        - group_dot_color = "red"
+                        - red_encounter = true
                       - elsif problems[k].status == "assigned"
-                        - group_dot_color = "yellow"
+                        - yellow_encounter = true
 
-                    - if group_dot_color == "red"
+                    - if red_encounter
                       %span.dot_red
-                    - elsif group_dot_color == "yellow"
+                    - elsif yellow_encounter
                       %span.dot_yellow
                   
                     #{Team.get_current_team_size(@groups_for_module[i-1].id)}/#{@groups_for_module[i-1].size}
@@ -138,31 +139,49 @@
                           #heading-1-1.card-header.header_bad
                             %h5.mb-0
                               %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                                Problem #{z} - Assigned to NameOne NameTwo
-                                - if problem_dot_type = "red"
+                                - if problems[z-1].status != "assigned"
+                                  - assigned = ""
+                                - else
+                                  - assigned = "- Assigned to " + User.get_first_last(problems[z-1].assigned_to)
+                                Problem #{z} #{assigned}
+                                - if problem_dot_type == "red"
                                   %span.dot_red.float_right
-                                - elsif problem_dot_type = "yellow"
+                                - elsif problem_dot_type == "yellow"
                                   %span.dot_yellow.float_right
-                                - elsif problem_dot_type = "solved"
+                                - elsif problem_dot_type == "solved"
                                   %span.dot_green.float_right
 
                           #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                             .card-body
-                              %p Created by: Anton Minkov - someemail.sheffield.ac.uk
-                              %p Created on: 11:31 AM - 11/04/2021
-                              %p Solved by: Some Person - anotheremail.sheffield.ac.uk
-                              %p Solved on: 3:31 PM - 13/04/2021
+                              - created_at = problems[z-1].created_at.strftime("%I:%M %p - %d/%m/%Y")
+                              - if problems[z-1].solved_on != nil
+                                - solved_on = problems[z-1].solved_on.strftime("%I:%M %p - %d/%m/%Y")
+                              - else
+                                - solved_on = ""
+                              - if problems[z-1].solved_by != nil
+                                - solved_by = User.get_first_last(problems[z-1].solved_by) + " - " + User.get_email(problems[z-1].solved_by)
+                              - else
+                                - solved_by = ""
+                              %p Created by: #{User.get_first_last(problems[z-1].created_by)} - #{User.get_email(problems[z-1].created_by)}
+                              %p Created on: #{created_at}
+                              %p Solved by: #{solved_by}
+                              %p Solved on: #{solved_on}
                               %hr.group_line
                               %p Note: #{problems[z-1].note}
                               %hr.group_line
-                              = simple_form_for :search_form do |f|
+                              = simple_form_for :problem_form do |f|
+                                = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
+                                = f.input :form_problem_id, :as => :hidden, :input_html => {:id => "form_problem_id", :value => problems[z-1].id }
                                 .container-fluid.bg_none.row.no_padding.margin_bottom_small
-                                  .container.col-xs-6.col-sm-3.no_padding.text_black
-                                    = f.input :search_type, as: :select, collection: ['Default - A to Z', 'Team size - Low to High', 'Team size - High to Low', 'Topic - A to Z'], label: false, include_blank: false, required: false, :selected => @selected_type
-                                  .container.col-xs-6.col-sm-5
-                                    = f.button :submit, "Assign", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_assign float_left", id:"submit_choice"
-                                  .container.col-xs-6.col-sm-4.no_padding_left.no_padding_right.padding_right_small
-                                    %a.button{:href => admin_modules_preview_path(:module_id => params[:module_id]), type: "button", name: "go_back_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"submit_choice"}Mark as solved
+                                  - if problems[z-1].status == "unsolved"
+                                    .container.col-xs-6.col-sm-3.no_padding.text_black
+                                      = f.input :assign_list, as: :select, collection: @ta_and_mod_lead, label: false, include_blank: false, required: false
+                                    .container.col-xs-6.col-sm-5
+                                      = f.button :submit, "Assign", name:"assign_button", class: "btn btn-primary agreement_buttons justify-content-center button_assign float_left", id:"assign_button"
+                                  - current_user_privilege = ListModule.privilege_for_module(current_user.username, params[:module_id])
+                                  - if (current_user_privilege.include?("module_leader") || current_user.admin || current_user.username == problems[z-1].assigned_to) && problems[z-1].status != "solved"
+                                    .container.col-xs-6.col-sm-4.no_padding_left.no_padding_right.padding_right_small
+                                      = f.button :submit, "Mark as solved", type: "submit", name: "solve_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"solve_button"
 
 
 

@@ -386,6 +386,41 @@ class AdminController < ApplicationController
     if current_user.admin == false
       redirect_to "/"
     end
+
+    #getting a list of ta's and modules leaders for assigning problems
+    @ta_and_mod_lead = []
+    users_in_module = ListModule.users_in_module(params['module_id'])
+    for i in 0..(users_in_module.length-1) 
+      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, params['module_id'])
+      
+      
+      current_user_names = users_in_module[i].givenname + " " + users_in_module[i].sn + " - " + users_in_module[i].username
+      if current_user_privilege.include?("teaching_assistant") || current_user_privilege.include?("module_leader")
+        @ta_and_mod_lead.append(current_user_names)
+      end
+    end
+
+    #assigning and solving problems
+    if params['problem_form'] != nil
+      problem_id = params['problem_form']['form_problem_id']
+      if params['assign_button'] == "Assign"
+        user_to_assign = params['problem_form']['assign_list'].split(" ")[-1]
+        
+        Problem.assign(user_to_assign, problem_id)
+        Problem.change_status(problem_id, "assigned")
+      end
+
+      if params['solve_button'] == "Mark as solved"
+        if Problem.is_assigned(problem_id) == false
+          Problem.assign(current_user.username, problem_id)
+        end
+
+        Problem.solve(current_user.username, problem_id)
+        Problem.change_status(problem_id, "solved")
+      end
+
+      redirect_back(fallback_location: root_path)
+    end
     
     #setting the search input parameter to display the correct teams
     if params['search_button'] == "Search" || params['search_form']!= nil

@@ -68,6 +68,8 @@ ActiveRecord::Schema.define(version: 2021_04_12_174632) do
     t.string "status", default: "unsolved"
     t.string "assigned_to"
     t.string "note"
+    t.string "solved_by"
+    t.datetime "solved_on"
     t.bigint "team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

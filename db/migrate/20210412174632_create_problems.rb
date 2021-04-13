@@ -5,6 +5,8 @@ class CreateProblems < ActiveRecord::Migration[6.0]
       t.string :status, default: 'unsolved'
       t.string :assigned_to
       t.string :note
+      t.string :solved_by
+      t.datetime :solved_on
 
       t.belongs_to :team, index: true, foreign_key: true
 
