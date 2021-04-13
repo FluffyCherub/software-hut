@@ -564,11 +564,15 @@ class AdminController < ApplicationController
     #setting the module and team ids to the correct values
     module_id = params['module_id']
     team_id = params['team_id']
-    if module_id.nil?
+    if params['module_id'] == nil && params['problem_form'] == nil
       module_id = params['search_form']['form_module_id']
+    elsif params['module_id'] == nil && params['search_form'] == nil
+      module_id = params['problem_form']['form_module_id']
     end
-    if team_id.nil?
+    if params['team_id'] == nil && params['problem_form'] == nil
       team_id = params['search_form']['form_team_id']
+    elsif params['team_id'] == nil && params['search_form'] == nil
+      team_id = params['problem_form']['form_team_id']
     end
 
     #get info about the selected team
@@ -576,6 +580,39 @@ class AdminController < ApplicationController
     @current_team_size = Team.get_current_team_size(team_id)
     @max_team_size = @selected_group_team.size
     @current_team_users = User.joins(:teams).where("teams.id = ?", team_id)
+
+    #getting a list of ta's and modules leaders for assigning problems
+    @ta_and_mod_lead = []
+    users_in_module = ListModule.users_in_module(params['module_id'])
+    for i in 0..(users_in_module.length-1) 
+      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, params['module_id'])
+      current_user_names = users_in_module[i].givenname + " " + users_in_module[i].sn + " - " + users_in_module[i].username
+      if current_user_privilege.include?("teaching_assistant") || current_user_privilege.include?("module_leader")
+        @ta_and_mod_lead.append(current_user_names)
+      end
+    end
+
+    #assigning and solving problems
+    if params['problem_form'] != nil
+      problem_id = params['problem_form']['form_problem_id']
+      if params['assign_button'] == "Assign"
+        user_to_assign = params['problem_form']['assign_list'].split(" ")[-1]
+        
+        Problem.assign(user_to_assign, problem_id)
+        Problem.change_status(problem_id, "assigned")
+      end
+
+      if params['solve_button'] == "Mark as solved"
+        if Problem.is_assigned(problem_id) == false
+          Problem.assign(current_user.username, problem_id)
+        end
+
+        Problem.solve(current_user.username, problem_id)
+        Problem.change_status(problem_id, "solved")
+      end
+
+      redirect_back(fallback_location: root_path)
+    end
 
     #setting the search input to the correct value
     search_input = ""
