@@ -7,6 +7,10 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 user1 = User.create(givenname: 'Dominik', sn: 'Laszczyk', username: 'aca19dl', email: 'dlaszczyk1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 user2 = User.create(givenname: 'Anton', sn: 'Minkov', username: 'acc19am', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
+user3 = User.create(givenname: 'Laney', sn: 'Deveson', username: 'eia17ld', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
+user4 = User.create(givenname: 'Ling', sn: 'Lai', username: 'aca18ll', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
+user5 = User.create(givenname: 'Seth', sn: 'Roberts', username: 'eib18sr', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
+user6 = User.create(givenname: 'Zijian', sn: 'He', username: 'aca19zh', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 
 test_user1 = User.create(givenname: "Test", sn: "User1", username: 'test_user1', email: 'test_user1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
 test_user2 = User.create(givenname: "Test", sn: "User2", username: 'test_user2', email: 'test_user2@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
@@ -51,6 +55,34 @@ test = UserListModule.create([
   {list_module: modules[3], user: user2, privilege: 'student'},
   {list_module: modules[4], user: user2, privilege: 'student'},
 
+  #modules for user3
+  {list_module: modules[0], user: user3, privilege: 'student'},
+  {list_module: modules[1], user: user3, privilege: 'student'},
+  {list_module: modules[2], user: user3, privilege: 'student'},
+  {list_module: modules[3], user: user3, privilege: 'student'},
+  {list_module: modules[4], user: user3, privilege: 'student'},
+
+  #modules for user4
+  {list_module: modules[0], user: user4, privilege: 'student'},
+  {list_module: modules[1], user: user4, privilege: 'student'},
+  {list_module: modules[2], user: user4, privilege: 'student'},
+  {list_module: modules[3], user: user4, privilege: 'student'},
+  {list_module: modules[4], user: user4, privilege: 'student'},
+
+  #modules for user5
+  {list_module: modules[0], user: user5, privilege: 'student'},
+  {list_module: modules[1], user: user5, privilege: 'student'},
+  {list_module: modules[2], user: user5, privilege: 'student'},
+  {list_module: modules[3], user: user5, privilege: 'student'},
+  {list_module: modules[4], user: user5, privilege: 'student'},
+
+  #modules for user6
+  {list_module: modules[0], user: user6, privilege: 'student'},
+  {list_module: modules[1], user: user6, privilege: 'student'},
+  {list_module: modules[2], user: user6, privilege: 'student'},
+  {list_module: modules[3], user: user6, privilege: 'student'},
+  {list_module: modules[4], user: user6, privilege: 'student'},
+
   #modules for test users
   {list_module: modules[7], user: test_user3, privilege: 'student'},
   {list_module: modules[7], user: test_user1, privilege: 'student'},
@@ -94,6 +126,17 @@ teams = Team.create([
 test2 = UserTeam.create([
   {team: teams[0], user: user1, signed_agreement: false},
   {team: teams[0], user: user2, signed_agreement: false},
+
+  {team: teams[3], user: user3, signed_agreement: false},
+  {team: teams[3], user: user4, signed_agreement: false},
+
+  {team: teams[5], user: user5, signed_agreement: false},
+  {team: teams[5], user: user6, signed_agreement: false},
+
+
+
+
+
   {team: teams[0], user: test_user1, signed_agreement: false},
   {team: teams[0], user: test_user2, signed_agreement: false},
   {team: teams[0], user: test_user3, signed_agreement: false},
