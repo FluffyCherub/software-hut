@@ -1,8 +1,6 @@
 class AdminController < ApplicationController
   require 'csv'
 
-  
-
   def admin_page
     #check if the user trying to access is an admin, otherwise redirect to root
     if current_user.admin == false

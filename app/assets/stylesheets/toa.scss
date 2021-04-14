@@ -188,9 +188,11 @@
   width: 15px;
   border-radius: 50%;
   display: inline-block;
-  background: #56ab2f;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #a8e063, #56ab2f);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #a8e063, #56ab2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border: solid rgb(31, 20, 93);
+  border-width: thin;
+  background: #43971c;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #7daf41, #43971c);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #7daf41, #43971c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .dot_yellow {
@@ -198,13 +200,11 @@
   width: 15px;
   border-radius: 50%;
   display: inline-block;
-  background: #FFE000;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #FFE000, #799F0C);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #FFE000, #799F0C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
-
-
+  border: solid rgb(31, 20, 93);
+  border-width: thin;
+  background: #e5e906;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ddcc4a, #e5e906);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ddcc4a, #e5e906); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .dot_red {
@@ -212,10 +212,11 @@
   width: 15px;
   border-radius: 50%;
   display: inline-block;
+  border: solid rgb(31, 20, 93);
+  border-width: thin;
   background: #ED213A;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #93291E, #ED213A);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #93291E, #ED213A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 }
 
 .button_solve {
