@@ -1,0 +1,42 @@
+- content_for :title, "Create groups"
+
+.container.body_whole_custom
+  .container-fluid.text_black.bg_none.margin_top.margin_bottom_medium
+    
+    .container-fluid.bg_none.text_black.margin_top.bigger
+      MODULE NAME - CODE - LEVEL
+      //MAKE BUTTON GO BACK TO GROUPS
+      %button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{onclick: "location.href='/admin/modules';", type: "button"} Go Back
+      .container-fluid.bg_none.text_black.margin_top.small.float_left.no_padding.margin_none
+        Students in module: 420
+        %hr.group_line.margin_top_half_rem
+    
+    .container-fluid.bg_none.text_black.medium
+      %p
+        %button.btn.btn-primary{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button"} Enable Topics
+    
+    //GROUP SIZE GOES HERE -----------------------------
+    .container-fluid.text_black.bg_none.margin_top.margin_bottom_small
+      %button.add{onclick: "addTopic()"}Add
+      %button.remove{onclick: "removeTopic()"} Remove
+    .container-fluid.text_black.bg_none.margin_top.margin_bottom_small
+      .input-group.flex-nowrap.special_width_topic
+        %input.form-control.special_width_topic_name{placeholder: "Topic 1", type: "text"}
+        %input.form-control{placeholder: "Group Size", type: "text"}
+        %input.form-control{placeholder: "№ of Groups", type: "text"}
+      #new_chq
+      %input#total_chq{type: "hidden", value: "1"}
+
+        
+
+    //TOPIC CONTENT GOES HERE ---------------------------
+    .container-fluid.bg_none.text_black.small
+      .row
+        .col
+          #topicCollapse.collapse
+            .card.card-body
+              Some placeholder content for the first collapse 
+              component of this multi-collapse example. This panel is 
+              hidden by default but revealed when the user 
+              activates the relevant trigger.
+    

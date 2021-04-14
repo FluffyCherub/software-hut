@@ -110,3 +110,27 @@ button:hover {
   background-color: rgb(0, 159, 218) !important;
   color: black !important;
 }
+
+.margin_bottom_small {
+  margin-bottom: 1%;
+}
+
+.margin_bottom_medium {
+  margin-bottom: 3%;
+}
+
+.margin_bottom_big {
+  margin-bottom: 5%;
+}
+
+.special_width_topic {
+  width: 50%;
+}
+
+.special_width_topic_name {
+  min-width: 55% !important;
+}
+
+.margin_top_half_rem {
+  margin-top: 0.5rem;
+}

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   match "/admin/modules/groups", to: "admin#admin_modules_groups", via: :all
   match "/admin/modules/groups/preview", to: "admin#admin_modules_groups_preview", via: :all
   match "/admin/modules/groups/add", to: "admin#admin_modules_groups_add", via: :all
+  match "/admin/modules/groups/create", to: "admin#admin_modules_groups_create", via: :all
 
 
   get :ie_warning, to: 'errors#ie_warning'
