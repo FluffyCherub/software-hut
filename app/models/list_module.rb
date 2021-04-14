@@ -125,5 +125,12 @@ class ListModule < ApplicationRecord
 
     end
   end
-  
+
+
+  def self.num_students_in_mod(module_id)
+    students_num = UserListModule.where(list_module_id: module_id,
+                                        privilege: "student")
+
+    return students_num.length
+  end
 end
