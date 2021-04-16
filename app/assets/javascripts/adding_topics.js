@@ -26,3 +26,16 @@ function removeTopic() {
     $('#total_chq').val(last_chq_no - 1);
   }
 }
+
+function topicButtonChange() {
+  var button_value = document.getElementById("topic_toggle").value;  
+
+  if (button_value == "disabled") {
+    document.querySelector('#topic_toggle').innerHTML = 'Disable Topics';
+    document.getElementById("topic_toggle").value = "enabled"  
+  }
+  else {
+    document.querySelector('#topic_toggle').innerHTML = 'Enable Topics';
+    document.getElementById("topic_toggle").value = "disabled"  
+  }
+}

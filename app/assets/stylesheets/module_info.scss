@@ -138,3 +138,29 @@ button:hover {
 .student_numbers span {
   display: block;
 }
+
+.button_topics {
+  background-color: rgb(31, 20, 93);
+  color: white;
+}
+
+.button_topics:hover {
+  background-color: rgb(0, 159, 218);
+  color: black;
+}
+
+.button_topics:focus {
+  outline-width: 0 !important;
+  border-color: none !important;
+  box-shadow: none !important;
+  background-color: rgb(0, 159, 218) !important;
+  color: black !important;
+}
+
+.btn:focus {
+  outline-width: 0 !important;
+  border-color: none !important;
+  box-shadow: none !important;
+  background-color: rgb(0, 159, 218) !important;
+  color: black !important;
+}

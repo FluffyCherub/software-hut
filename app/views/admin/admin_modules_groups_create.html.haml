@@ -13,100 +13,96 @@
     
     .container-fluid.bg_none.text_black.medium
       %p
-        %button.btn.btn-primary{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button"} Enable Topics
+        %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange()", value: "disabled"} Enable Topics
     
     //GROUP SIZE GOES HERE -----------------------------
-    .container-fluid.text_black.bg_none.margin_top.margin_bottom_small
-      %button.add{onclick: "addTopic()"}Add
-      %button.remove{onclick: "removeTopic()"} Remove
-    .container-fluid.text_black.bg_none
-      %p.margin_none.student_numbers
-        %span.margin_none#student_tracker #{@num_of_students} students do not have teams
-        %span.margin_none#spot_tracker
-    .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small
-      .input-group.flex-nowrap.special_width_topic
-        %input.form-control.special_width_topic_name#topic_1{placeholder: "Topic 1", type: "text"}
-        %input.form-control#size_1{placeholder: "Group Size", type: "text"}
-        %input.form-control#amount_1{placeholder: "№ of Groups", type: "text"}
-      #new_chq
-      %input#total_chq{type: "hidden", value: "1"}
-
-    :javascript
-      setInterval(function() {
-        
-        var number_of_topics = document.getElementById("total_chq").value;
-
-        var studentNumberTotal = '#{@num_of_students}';
-        var studentNumberCurrent = 0;
-  
-        for (var i = 0; i < number_of_topics; i++) {
-          var students_per_group;
-          var amout_of_groups;
-
-          var id_number = i + 1;
-          var id_size = 'size_' + id_number;
-          var id_amount = 'amount_' + id_number;
-
-          if (document.getElementById(id_size).value) {
-            students_per_group = document.getElementById(id_size).value;
-          }
-          else {
-            students_per_group = 0;
-          };
-
-          if (document.getElementById(id_amount).value) {
-            amout_of_groups = document.getElementById(id_amount).value;
-          }
-          else {
-            amout_of_groups = 0;
-          };
-
-          var students_for_topic = students_per_group*amout_of_groups;
-          studentNumberCurrent += students_for_topic;
-        }
-
-        var empty_spots = studentNumberCurrent - studentNumberTotal;
-
-        if (studentNumberTotal == studentNumberCurrent) {
-          document.getElementById("student_tracker").innerHTML = "All students are in a team!";
-          document.getElementById("student_tracker").style.color = "green";
-          document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
-          document.getElementById("spot_tracker").style.color = "green"
-        }
-        else if (studentNumberTotal > studentNumberCurrent) {
-          var groupless_students = studentNumberTotal - studentNumberCurrent;
-
-          document.getElementById("student_tracker").innerHTML = "(" + groupless_students + ") students are not in a team!";
-          document.getElementById("student_tracker").style.color = "red";
-          document.getElementById("spot_tracker").innerHTML = "(0) empty slots!";
-          document.getElementById("spot_tracker").style.color = "red"
-        }
-        else {
-          empty_spots = studentNumberCurrent - studentNumberTotal;
-
-          if (empty_spots <= number_of_topics) {
-            document.getElementById("student_tracker").innerHTML = "All students have teams";
-            document.getElementById("student_tracker").style.color = "green";
-            document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
-            document.getElementById("spot_tracker").style.color = "green"
-          }
-          else {
-            document.getElementById("student_tracker").innerHTML = "All students have teams";
-            document.getElementById("student_tracker").style.color = "red";
-            document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
-            document.getElementById("spot_tracker").style.color = "red"
-          } ;
-        };
-      }, 100);      
+     
 
     //TOPIC CONTENT GOES HERE ---------------------------
     .container-fluid.bg_none.text_black.small
-      .row
-        .col
-          #topicCollapse.collapse
-            .card.card-body
-              Some placeholder content for the first collapse 
-              component of this multi-collapse example. This panel is 
-              hidden by default but revealed when the user 
-              activates the relevant trigger.
-    
+      #topicCollapse.collapse
+        .container-fluid.text_black.bg_none.margin_top.margin_bottom_small.no_padding
+          %button.add.btn.btn-primary.button_topics{onclick: "addTopic()"}Add
+          %button.remove.btn.btn-primary.button_topics{onclick: "removeTopic()"} Remove
+        .container-fluid.text_black.bg_none.no_padding
+          %p.margin_none.student_numbers
+            %span.margin_none#student_tracker #{@num_of_students} students do not have teams
+            %span.margin_none#spot_tracker
+        .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small.no_padding
+          .input-group.flex-nowrap.special_width_topic
+            %input.form-control.special_width_topic_name#topic_1{placeholder: "Topic 1", type: "text"}
+            %input.form-control#size_1{placeholder: "Group Size", type: "text"}
+            %input.form-control#amount_1{placeholder: "№ of Groups", type: "text"}
+          #new_chq
+          %input#total_chq{type: "hidden", value: "1"}
+
+        :javascript
+          setInterval(function() {
+            
+            var number_of_topics = document.getElementById("total_chq").value;
+
+            var studentNumberTotal = '#{@num_of_students}';
+            var studentNumberCurrent = 0;
+            var totalGroups = 0;
+      
+            for (var i = 0; i < number_of_topics; i++) {
+              var students_per_group;
+              var amout_of_groups;
+
+              var id_number = i + 1;
+              var id_size = 'size_' + id_number;
+              var id_amount = 'amount_' + id_number;
+
+              if (document.getElementById(id_size).value) {
+                students_per_group = document.getElementById(id_size).value;
+              }
+              else {
+                students_per_group = 0;
+              };
+
+              if (document.getElementById(id_amount).value) {
+                amout_of_groups = document.getElementById(id_amount).value;
+              }
+              else {
+                amout_of_groups = 0;
+              };
+
+              var students_for_topic = students_per_group*amout_of_groups;
+              totalGroups += amout_of_groups
+              studentNumberCurrent += students_for_topic;
+            }
+
+            var empty_spots = studentNumberCurrent - studentNumberTotal;
+
+            if (studentNumberTotal == studentNumberCurrent) {
+              document.getElementById("student_tracker").innerHTML = "All students are in a team!";
+              document.getElementById("student_tracker").style.color = "green";
+              document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
+              document.getElementById("spot_tracker").style.color = "green"
+            }
+            else if (studentNumberTotal > studentNumberCurrent) {
+              var groupless_students = studentNumberTotal - studentNumberCurrent;
+
+              document.getElementById("student_tracker").innerHTML = "(" + groupless_students + ") students are not in a team!";
+              document.getElementById("student_tracker").style.color = "red";
+              document.getElementById("spot_tracker").innerHTML = "(0) empty slots!";
+              document.getElementById("spot_tracker").style.color = "red"
+            }
+            else {
+              empty_spots = studentNumberCurrent - studentNumberTotal;
+
+              if (empty_spots <= number_of_topics) {
+                document.getElementById("student_tracker").innerHTML = "All students have teams";
+                document.getElementById("student_tracker").style.color = "green";
+                document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
+                document.getElementById("spot_tracker").style.color = "green"
+              }
+              else {
+                document.getElementById("student_tracker").innerHTML = "All students have teams";
+                document.getElementById("student_tracker").style.color = "red";
+                document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
+                document.getElementById("spot_tracker").style.color = "red"
+              } ;
+            };
+          }, 100);     
+        
