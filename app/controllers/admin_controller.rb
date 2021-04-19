@@ -1,11 +1,12 @@
 class AdminController < ApplicationController
   require 'csv'
+  
+  def current_ability(module_privilege = "module_leader")
+    @current_ability ||= Ability.new(current_user, module_privilege)
+  end
 
   def admin_page
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_page
 
     #redirect to different admin subpages based on the button pressed
     if params['manage_privileges'] == "Manage Privileges"
@@ -16,10 +17,7 @@ class AdminController < ApplicationController
   end
 
   def admin_privileges
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_privileges
     
     #if the search button was pressed pass the users that match search input
     if params['search_button'] == 'Search'
@@ -50,20 +48,16 @@ class AdminController < ApplicationController
   end
 
   def admin_modules
-    
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_modules
 
     #find the accroding entries in modules table based on search input
     if params['search_button'] == "Search"
       search_input_modules = ListModule.where("years LIKE ? OR name LIKE ? OR code LIKE ? OR description LIKE ? OR semester LIKE ?", 
-                                               "%" + params['search_form']['search_input'] + "%",
-                                               "%" + params['search_form']['search_input'] + "%",
-                                               "%" + params['search_form']['search_input'] + "%",
-                                               "%" + params['search_form']['search_input'] + "%",
-                                               "%" + params['search_form']['search_input'] + "%")
+                                                "%" + params['search_form']['search_input'] + "%",
+                                                "%" + params['search_form']['search_input'] + "%",
+                                                "%" + params['search_form']['search_input'] + "%",
+                                                "%" + params['search_form']['search_input'] + "%",
+                                                "%" + params['search_form']['search_input'] + "%")
     end
 
     #getting all the distinct academic years from list of modules
@@ -106,11 +100,12 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_preview
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
+    authorize! :manage, :admin_modules_preview
 
+    #getting the module information about the currently displayed module
+    @module_info = ListModule.where("id = ?", params[:module_id]).first
+    
     #getting the module leader of the currently displayed module
     @module_leaders = User.joins(:list_modules).where("user_list_modules.privilege = ? AND
                                                       list_modules.id = ?",
@@ -122,10 +117,6 @@ class AdminController < ApplicationController
                                                             list_modules.id = ?",
                                                             "%teaching_assistant%",
                                                             params[:module_id]).order(:givenname, :sn)
-
-    #getting the module information about the currently displayed module
-    @module_info = ListModule.where("id = ?", params[:module_id]).first
-
 
     #setting the search input parameter to display the correct users
     if params['search_button'] == "Search"
@@ -215,10 +206,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_create
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_modules_create
 
     #generating academic years based on current year
     @generated_years = ListModule.generate_years(Time.now.year, 5)
@@ -264,10 +252,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_edit
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_modules_edit
 
     if params['edit_module_button'] == "Edit"
       module_name = params['module_edit_form']['module_name']
@@ -380,10 +365,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_modules_groups
 
     #getting a list of ta's and modules leaders for assigning problems
     @ta_and_mod_lead = []
@@ -442,7 +424,7 @@ class AdminController < ApplicationController
       search_type = 'count(user_id)'
     elsif search_type == "Default - A to Z"
       @selected_type = "Default - A to Z"
-      search_type = 'name'
+      search_type = 'SUBSTRING(name FROM 1 FOR 4), CAST(SUBSTRING(name FROM 6) AS INTEGER)'
     elsif search_type == "Team size - High to Low"
       @selected_type = "Team size - High to Low"
       search_type = 'count(user_id) DESC'
@@ -495,12 +477,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_privilege
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
-
-    
+    authorize! :manage, :admin_modules_privilege
 
     @saved_privilege = UserListModule.where(list_module_id: params['module_id'],
                                             user_id: params['user_id']).first.privilege
@@ -554,10 +531,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups_preview
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_modules_groups_preview
 
     #setting the module and team ids to the correct values
     module_id = params['module_id']
@@ -681,10 +655,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups_add
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_modules_groups_add
 
     #setting the module and team ids to the correct values
     module_id = params['module_id']
@@ -757,11 +728,159 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups_create
-    #check if the user trying to access is an admin, otherwise redirect to root
-    if current_user.admin == false
-      redirect_to "/"
-    end
+    authorize! :manage, :admin_modules_groups_create
 
     @num_of_students = ListModule.num_students_in_mod(params['module_id'])
+
+    #check if submit button was pressed
+    if params['rand_btn'] != nil
+      if params['rand_btn'] == "enabled" && (params['random_group_size'].length>0 || params['random_num_of_groups'].length>0)
+        random_group_size = params['random_group_size']
+        random_num_of_groups = params['random_num_of_groups']
+        module_id = params['module_id']
+
+        #delete all teams that where previously in the module
+        Team.where(list_module_id: module_id).destroy_all
+
+        #get all students from this module and shuffle them
+        students_in_mod = ListModule.students_in_module(module_id).shuffle
+
+
+        #create teams and randomly put students in them
+        if params['random_free_join'].nil?
+          #set the team type to random
+          ListModule.set_team_type(module_id, "random")
+
+          #case1 given both students per group and num of groups
+          if random_group_size.length>0 && random_num_of_groups.length>0
+            new_teams = []
+            for i in 0...random_num_of_groups.to_i
+              new_team_name = "Team " + (i+1).to_s
+              new_teams.append(Team.create(name: new_team_name,
+                                          size: random_group_size,
+                                          list_module_id: module_id))
+            end
+
+            #putting students in groups
+            while students_in_mod.length > 0 do
+              for i in 0...new_teams.length
+                if students_in_mod.length>0
+                  UserTeam.create(team: new_teams[i], user: students_in_mod[0], signed_agreement: false)
+                  students_in_mod.shift(1)
+                else
+                  break
+                end
+              end
+            end
+
+          end
+
+          #case2 given only students per group 
+          if random_group_size.length>0 && random_num_of_groups.length==0
+            name_iterator = 1
+            while students_in_mod.length > 0 do
+              new_team_name = "Team " + name_iterator.to_s
+              new_team = Team.create(name: new_team_name,
+                                    size: random_group_size,
+                                    list_module_id: module_id)
+
+              #link students to the newly created team
+              #create as many teams as needed with the given group size
+              if students_in_mod.length > random_group_size.to_i
+                new_team.users = students_in_mod.take(random_group_size.to_i)
+                students_in_mod.shift(random_group_size.to_i)
+              else
+                new_team.users = students_in_mod
+                students_in_mod.shift(students_in_mod.length)
+              end
+            
+              name_iterator += 1
+            end
+
+            
+          end
+
+          #case3 given only num of groups
+          if random_group_size.length==0 && random_num_of_groups.length>0
+            new_group_size = (@num_of_students.to_f/random_num_of_groups.to_f).ceil
+
+            new_teams = []
+            for i in 0...random_num_of_groups.to_i
+              new_team_name = "Team " + (i+1).to_s
+              new_teams.append(Team.create(name: new_team_name,
+                                          size: new_group_size,
+                                          list_module_id: module_id))
+            end
+
+            #putting students in groups
+            while students_in_mod.length > 0 do
+              for i in 0...new_teams.length
+                if students_in_mod.length>0
+                  UserTeam.create(team: new_teams[i], user: students_in_mod[0], signed_agreement: false)
+                  students_in_mod.shift(1)
+                else
+                  break
+                end
+              end
+            end
+          end
+        else
+          #create teams without putting students in them
+          #set the team type to free join
+          ListModule.set_team_type(module_id, "free_join")
+          #case1 given both students per group and num of groups
+          if random_group_size.length>0 && random_num_of_groups.length>0
+            new_teams = []
+            for i in 0...random_num_of_groups.to_i
+              new_team_name = "Team " + (i+1).to_s
+              new_teams.append(Team.create(name: new_team_name,
+                                          size: random_group_size,
+                                          list_module_id: module_id))
+            end
+          end
+
+          #case2 given only students per group 
+          if random_group_size.length>0 && random_num_of_groups.length==0
+            name_iterator = 1
+            while students_in_mod.length > 0 do
+              new_team_name = "Team " + name_iterator.to_s
+              new_team = Team.create(name: new_team_name,
+                                    size: random_group_size,
+                                    list_module_id: module_id)
+
+              #link students to the newly created team
+              #create as many teams as needed with the given group size
+              if students_in_mod.length > random_group_size.to_i
+                students_in_mod.shift(random_group_size.to_i)
+              else
+                students_in_mod.shift(students_in_mod.length)
+              end
+            
+              name_iterator += 1
+            end
+
+            
+          end
+          #case3 given only num of groups
+          if random_group_size.length==0 && random_num_of_groups.length>0
+            new_group_size = (@num_of_students.to_f/random_num_of_groups.to_f).ceil
+
+            new_teams = []
+            for i in 0...random_num_of_groups.to_i
+              new_team_name = "Team " + (i+1).to_s
+              new_teams.append(Team.create(name: new_team_name,
+                                          size: new_group_size,
+                                          list_module_id: module_id))
+            end
+          end
+
+        end
+      end
+
+
+
+      redirect_back(fallback_location: root_path)
+    end
   end
+
 end

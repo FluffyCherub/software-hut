@@ -6,18 +6,22 @@
     .container-fluid.bg_none.text_black.margin_top.bigger
       MODULE NAME - CODE - LEVEL
       //MAKE BUTTON GO BACK TO GROUPS
-      %button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{onclick: "location.href='/admin/modules';", type: "button"} Go Back
+      %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{:href => admin_modules_groups_path(:module_id => params[:module_id]), type: "button"} Go Back
       .container-fluid.bg_none.text_black.margin_top.small.float_left.no_padding.margin_none
         Students in module: #{@num_of_students}
         %hr.group_line.margin_top_half_rem
     
+  //FORM IS HERE
+  %form{id: "create_groups_form"}
+    %input{id: "rand_btn", name: "rand_btn", type: "hidden", value: ""}
+    %input{id: "topic_btn", name: "topic_btn", type: "hidden", value: ""}
+    %input{id: "module_id", name: "module_id", type: "hidden", value: params['module_id']}
     .container-fluid.bg_none.text_black.medium
       %p
-        %button.btn.btn-primary.button_topics#normal_toggle{"aria-controls" => "normalCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#normalCollapse", role: "button", onclick: "tempDisableButton(); normalButtonChange('#{@num_of_students}')", value: "disabled"} Random/Free join
-        %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange('#{@num_of_students}'); tempDisableButton()", value: "disabled"} Enable Topics
+        %button.btn.btn-primary.button_topics#normal_toggle{"aria-controls" => "normalCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#normalCollapse", role: "button", onclick: "tempDisableButton(); normalButtonChange('#{@num_of_students}')", value: "disabled", type: "button"} Random/Free join
+        %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange('#{@num_of_students}'); tempDisableButton()", value: "disabled", type: "button"} Enable Topics
     
-    //FORM IS HERE
-    %form
+    
       //GROUP SIZE GOES HERE ----------------------------- RANDOM + FREE JOIN
       .container-fluid.bg_none.text_black.small
         #normalCollapse.collapse
@@ -28,13 +32,13 @@
               %span.margin_none#spot_tracker_normal
           .container-fluid.text_black.bg_none.margin_bottom_2.no_padding
             %label.margin_bottom_small.group_creation_input{for: "normal_group_size"} Students per group?
-            %input.form-control#normal_group_size.group_creation_input#normal_size{placeholder: "Example: 14", type: "text"}
+            %input.form-control#normal_group_size.group_creation_input#normal_size{placeholder: "Example: 14", type: "text", name: "random_group_size"}
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding
             %label.margin_bottom_small.group_creation_input{for: "normal_group_size"} How many groups?
-            %input.form-control#normal_group_amount.group_creation_input#normal_amount{placeholder: "Example: 6", type: "text"}
+            %input.form-control#normal_group_amount.group_creation_input#normal_amount{placeholder: "Example: 6", type: "text", name: "random_num_of_groups"}
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_margin_top
             .form-check
-              %input#flexCheckChecked.form-check-input.border_none{checked: true, type: "checkbox", value: ""}
+              %input#flexCheckChecked.form-check-input.border_none{checked: false, type: "checkbox", value: "checked", name: "random_free_join"}
               %label.form-check-label{for: "flexCheckChecked"}
                 Let students join teams
 
@@ -90,5 +94,5 @@
 
       .container-fluid.bg_none.text_black.medium
         %hr.group_line
-        %button.add.btn.btn-primary.button_topics Submit
+        %button.add.btn.btn-primary.button_topics{type: "button", name:"create_groups_button", onclick: "create_groups();"} Submit
           

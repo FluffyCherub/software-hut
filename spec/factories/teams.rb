@@ -6,7 +6,7 @@
 #  name           :string
 #  size           :integer
 #  toa_status     :string           default("in_progress")
-#  topic          :string
+#  topic          :string           default("none")
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  list_module_id :bigint

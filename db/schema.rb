@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_12_174632) do
+ActiveRecord::Schema.define(version: 2021_04_19_205819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_174632) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "level"
+    t.string "team_type", default: "random"
   end
 
   create_table "problems", force: :cascade do |t|
@@ -87,7 +88,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_174632) do
 
   create_table "teams", force: :cascade do |t|
     t.string "name"
-    t.string "topic"
+    t.string "topic", default: "none"
     t.integer "size"
     t.bigint "list_module_id"
     t.datetime "created_at", precision: 6, null: false

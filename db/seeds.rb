@@ -42,7 +42,7 @@ modules = ListModule.create([
 
 test = UserListModule.create([
   #modules for user1
-  {list_module: modules[0], user: user1, privilege: 'student'},
+  {list_module: modules[0], user: user1, privilege: 'module_leader'},
   {list_module: modules[1], user: user1, privilege: 'student'},
   {list_module: modules[2], user: user1, privilege: 'student'},
   {list_module: modules[3], user: user1, privilege: 'student'},

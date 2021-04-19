@@ -3,7 +3,25 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, module_privilege = "student")
+    user ||= User.new
+
+    if user.admin?
+      can :manage, :all
+    end
+
+    if module_privilege == "module_leader"
+      can :manage, :admin_page
+      can :manage, :admin_modules
+      can :manage, :admin_modules_preview
+      can :manage, :admin_modules_create
+      can :manage, :admin_modules_edit
+      can :manage, :admin_modules_groups
+      can :manage, :admin_modules_privilege
+      can :manage, :admin_modules_groups_preview
+      can :manage, :admin_modules_groups_add
+      can :manage, :admin_modules_groups_create
+    end
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

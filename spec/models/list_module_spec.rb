@@ -9,6 +9,7 @@
 #  level       :integer
 #  name        :string
 #  semester    :string
+#  team_type   :string           default("random")
 #  years       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
