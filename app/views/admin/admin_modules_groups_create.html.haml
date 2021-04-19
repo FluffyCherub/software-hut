@@ -32,8 +32,11 @@
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding
             %label.margin_bottom_small.group_creation_input{for: "normal_group_size"} How many groups?
             %input.form-control#normal_group_amount.group_creation_input#normal_amount{placeholder: "Example: 6", type: "text"}
-            -# %button.add.btn.btn-primary.button_topics{onclick: "addTopic()"}Add
-            -# %button.remove.btn.btn-primary.button_topics{onclick: "removeTopic()"} Remove
+          .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_margin_top
+            .form-check
+              %input#flexCheckChecked.form-check-input.border_none{checked: true, type: "checkbox", value: ""}
+              %label.form-check-label{for: "flexCheckChecked"}
+                Let students join teams
 
 
       //TOPIC CONTENT GOES HERE ---------------------------
@@ -79,7 +82,7 @@
             //END TIME
             .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
               %label#end_time_label_1{for: "end_time_1_time"} End Date:   
-              %input#end_time_1.float_right{name: "end_time_1", type: "datetime-local", value: "2018-06-12T19:30"}/
+              %input#end_time_1.float_right{name: "end_time_1", type: "datetime-local", value: "2018-06-12T19:30"}
             %hr.special_line.margin_none
           
         #new_chq_period
