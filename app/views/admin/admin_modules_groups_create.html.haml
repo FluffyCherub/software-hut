@@ -13,17 +13,34 @@
     
     .container-fluid.bg_none.text_black.medium
       %p
-        %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange()", value: "disabled"} Enable Topics
+        %button.btn.btn-primary.button_topics#normal_toggle{"aria-controls" => "normalCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#normalCollapse", role: "button", onclick: "tempDisableButton(); normalButtonChange('#{@num_of_students}')", value: "disabled"} Random/Free join
+        %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange('#{@num_of_students}'); tempDisableButton()", value: "disabled"} Enable Topics
     
-    //GROUP SIZE GOES HERE -----------------------------
-     
+    //GROUP SIZE GOES HERE ----------------------------- RANDOM + FREE JOIN
+    .container-fluid.bg_none.text_black.small
+      #normalCollapse.collapse
+        %hr.special_line.margin_none
+        .container-fluid.text_black.bg_none.no_padding.margin_bottom_2.margin_top.small
+          %p.margin_none.student_numbers
+            %span.margin_none#student_tracker_normal #{@num_of_students} students do not have teams
+            %span.margin_none#spot_tracker_normal
+        .container-fluid.text_black.bg_none.margin_bottom_2.no_padding
+          %label.margin_bottom_small.group_creation_input{for: "normal_group_size"} Students per group?
+          %input.form-control#normal_group_size.group_creation_input#normal_size{placeholder: "Example: 14", type: "text"}
+        .container-fluid.text_black.bg_none.margin_bottom_small.no_padding
+          %label.margin_bottom_small.group_creation_input{for: "normal_group_size"} How many groups?
+          %input.form-control#normal_group_amount.group_creation_input#normal_amount{placeholder: "Example: 6", type: "text"}
+          -# %button.add.btn.btn-primary.button_topics{onclick: "addTopic()"}Add
+          -# %button.remove.btn.btn-primary.button_topics{onclick: "removeTopic()"} Remove
+
 
     //TOPIC CONTENT GOES HERE ---------------------------
     .container-fluid.bg_none.text_black.small
       #topicCollapse.collapse
-        .container-fluid.text_black.bg_none.margin_top.margin_bottom_small.no_padding
-          %button.add.btn.btn-primary.button_topics{onclick: "addTopic()"}Add
-          %button.remove.btn.btn-primary.button_topics{onclick: "removeTopic()"} Remove
+        %hr.special_line.margin_none
+        .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.margin_top.small
+          %button.add.btn.btn-primary.button_topics{onclick: "addTopic()"}Add Topic
+          %button.remove.btn.btn-primary.button_topics{onclick: "removeTopic()"} Remove Topic
         .container-fluid.text_black.bg_none.no_padding
           %p.margin_none.student_numbers
             %span.margin_none#student_tracker #{@num_of_students} students do not have teams
@@ -36,73 +53,33 @@
           #new_chq
           %input#total_chq{type: "hidden", value: "1"}
 
-        :javascript
-          setInterval(function() {
-            
-            var number_of_topics = document.getElementById("total_chq").value;
+    //SETTING UP FEEDBACK FREQUENCY GOES HERE --------------------------------
+    .container-fluid.bg_none.text_black.medium
+      %hr.group_line.margin_top
+      .container-fluid.bg_none.text_black.medium.margin_bottom_2.no_padding.bigger
+        %h Set up feedback frequency
+        %hr.special_line.margin_none
+      .container-fluid.text_black.bg_none.margin_bottom_small.no_padding
+        %button.add.btn.btn-primary.button_topics{onclick: "addPeriod()"}Add period
+        %button.remove.btn.btn-primary.button_topics{onclick: "removePeriod()"} Remove period
 
-            var studentNumberTotal = '#{@num_of_students}';
-            var studentNumberCurrent = 0;
-            var totalGroups = 0;
-      
-            for (var i = 0; i < number_of_topics; i++) {
-              var students_per_group;
-              var amout_of_groups;
-
-              var id_number = i + 1;
-              var id_size = 'size_' + id_number;
-              var id_amount = 'amount_' + id_number;
-
-              if (document.getElementById(id_size).value) {
-                students_per_group = document.getElementById(id_size).value;
-              }
-              else {
-                students_per_group = 0;
-              };
-
-              if (document.getElementById(id_amount).value) {
-                amout_of_groups = document.getElementById(id_amount).value;
-              }
-              else {
-                amout_of_groups = 0;
-              };
-
-              var students_for_topic = students_per_group*amout_of_groups;
-              totalGroups += amout_of_groups
-              studentNumberCurrent += students_for_topic;
-            }
-
-            var empty_spots = studentNumberCurrent - studentNumberTotal;
-
-            if (studentNumberTotal == studentNumberCurrent) {
-              document.getElementById("student_tracker").innerHTML = "All students are in a team!";
-              document.getElementById("student_tracker").style.color = "green";
-              document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
-              document.getElementById("spot_tracker").style.color = "green"
-            }
-            else if (studentNumberTotal > studentNumberCurrent) {
-              var groupless_students = studentNumberTotal - studentNumberCurrent;
-
-              document.getElementById("student_tracker").innerHTML = "(" + groupless_students + ") students are not in a team!";
-              document.getElementById("student_tracker").style.color = "red";
-              document.getElementById("spot_tracker").innerHTML = "(0) empty slots!";
-              document.getElementById("spot_tracker").style.color = "red"
-            }
-            else {
-              empty_spots = studentNumberCurrent - studentNumberTotal;
-
-              if (empty_spots <= number_of_topics) {
-                document.getElementById("student_tracker").innerHTML = "All students have teams";
-                document.getElementById("student_tracker").style.color = "green";
-                document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
-                document.getElementById("spot_tracker").style.color = "green"
-              }
-              else {
-                document.getElementById("student_tracker").innerHTML = "All students have teams";
-                document.getElementById("student_tracker").style.color = "red";
-                document.getElementById("spot_tracker").innerHTML = "(" + empty_spots + ") empty slots!";
-                document.getElementById("spot_tracker").style.color = "red"
-              } ;
-            };
-          }, 100);     
+      //TIME PERIOD HERE  
+      .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small.no_padding.float_left
+        .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_size_1.float_left
+          .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+            %p.margin_none
+              %strong#time_name_1
+                Meeting 1
+          //START TIME
+          .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+            %label#start_time_label_1{for: "start_time_1_time"} Start Date: 
+            %input#start_time_1.float_right{name: "start_time_1", type: "datetime-local", value: "2018-06-12T19:30"}
+          //END TIME
+          .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+            %label#end_time_label_1{for: "end_time_1_time"} End Date:   
+            %input#end_time_1.float_right{name: "end_time_1", type: "datetime-local", value: "2018-06-12T19:30"}/
+          %hr.special_line.margin_none
+        
+      #new_chq_period
+      %input#total_chq_period{type: "hidden", value: "1"}   
         
