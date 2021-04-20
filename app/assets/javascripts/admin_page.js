@@ -33,9 +33,11 @@ const popupCenter = ({url, title, w, h}) => {
 function create_groups() {
   var random_value = document.getElementById('normal_toggle').value;
   var topic_value = document.getElementById('topic_toggle').value;
+  //var num_of_dates = document.getElementById('total_chq').value;
  
   document.getElementById('rand_btn').value = random_value;
   document.getElementById('topic_btn').value = topic_value;
+  //document.getElementById('total_chq').value = num_of_dates;
   
   document.getElementById('create_groups_form').submit();
 }

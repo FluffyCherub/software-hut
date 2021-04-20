@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_19_205819) do
+ActiveRecord::Schema.define(version: 2021_04_20_010948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,15 @@ ActiveRecord::Schema.define(version: 2021_04_19_205819) do
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "feedback_dates", force: :cascade do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.bigint "list_module_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["list_module_id"], name: "index_feedback_dates_on_list_module_id"
   end
 
   create_table "list_modules", force: :cascade do |t|
@@ -147,6 +156,7 @@ ActiveRecord::Schema.define(version: 2021_04_19_205819) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "feedback_dates", "list_modules"
   add_foreign_key "problems", "teams"
   add_foreign_key "teams", "list_modules"
   add_foreign_key "user_list_modules", "list_modules"

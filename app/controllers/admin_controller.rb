@@ -1,5 +1,7 @@
 class AdminController < ApplicationController
   require 'csv'
+  require 'date'
+  require 'active_support/core_ext'
   
   def current_ability(module_privilege = "module_leader")
     @current_ability ||= Ability.new(current_user, module_privilege)
@@ -738,6 +740,7 @@ class AdminController < ApplicationController
         random_group_size = params['random_group_size']
         random_num_of_groups = params['random_num_of_groups']
         module_id = params['module_id']
+        num_of_dates = params['total_chq_period']
 
         #delete all teams that where previously in the module
         Team.where(list_module_id: module_id).destroy_all
@@ -877,7 +880,48 @@ class AdminController < ApplicationController
         end
       end
 
+      #delete all the feedback dates in the system for this module
+      FeedbackDate.where(list_module_id: module_id).destroy_all
 
+      #setting up new start and end dates for giving peer feedback
+      dates_integrity = true
+      previous_end_date = nil
+      for i in 1..num_of_dates.to_i
+        curr_start_date = DateTime.parse(params['start_time_' + i.to_s]).to_datetime
+        curr_end_date = DateTime.parse(params['end_time_' + i.to_s]).to_datetime
+
+        #check if the current window of time starts after the previous one
+        if previous_end_date != nil
+          if previous_end_date - curr_start_date > 0
+            puts "11111111111111111111111111111111111111"
+            dates_integrity = false
+            break
+          end
+        end
+        
+        #check if the end date is after the start date
+        if curr_start_date - curr_end_date > 0
+          puts "2222222222222222222222222222222222222222"
+          dates_integrity = false
+          break
+        end
+
+        previous_end_date = curr_end_date
+      end
+
+      if dates_integrity
+        for i in 1..num_of_dates.to_i
+          curr_start_date = params['start_time_' + i.to_s]
+          curr_end_date = params['end_time_' + i.to_s]
+          FeedbackDate.create(list_module_id: module_id,
+                              start_date: curr_start_date,
+                              end_date: curr_end_date)
+        end
+      else
+        #popup
+      end
+
+      
 
       redirect_back(fallback_location: root_path)
     end

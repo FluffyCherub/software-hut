@@ -69,6 +69,8 @@
           %h Set up feedback frequency
           %hr.special_line.margin_none
         .container-fluid.text_black.bg_none.margin_bottom_small.no_padding
+          - current_time = Time.now.strftime("%Y-%m-%dT%H:%M")
+          - one_day_from_now = (Time.now + 7.days).strftime("%Y-%m-%dT%H:%M")
           %button.add.btn.btn-primary.button_topics{type: "button", onclick: "addPeriod()"}Add period
           %button.remove.btn.btn-primary.button_topics{type: "button", onclick: "removePeriod()"} Remove period
 
@@ -82,17 +84,17 @@
             //START TIME
             .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
               %label#start_time_label_1{for: "start_time_1_time"} Start Date: 
-              %input#start_time_1.float_right{name: "start_time_1", type: "datetime-local", value: "2018-06-12T19:30"}
+              %input#start_time_1.float_right{name: "start_time_1", type: "datetime-local", value: "#{current_time}"}
             //END TIME
             .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
               %label#end_time_label_1{for: "end_time_1_time"} End Date:   
-              %input#end_time_1.float_right{name: "end_time_1", type: "datetime-local", value: "2018-06-12T19:30"}
+              %input#end_time_1.float_right{name: "end_time_1", type: "datetime-local", value: "#{one_day_from_now}"}
             %hr.special_line.margin_none
           
         #new_chq_period
-        %input#total_chq_period{type: "hidden", value: "1"}
+        %input#total_chq_period{type: "hidden",name: "total_chq_period", value: "1"}
 
-      .container-fluid.bg_none.text_black.medium
+      .container-fluid.bg_none.text_black.medium.margin_bottom_2
         %hr.group_line
         %button.add.btn.btn-primary.button_topics{type: "button", name:"create_groups_button", onclick: "create_groups();"} Submit
           

@@ -27,6 +27,7 @@ class ListModule < ApplicationRecord
   has_many :user_list_modules
   has_many :users, through: :user_list_modules
   has_many :teams
+  has_many :feedback_dates
 
 
   #generate academic years based on current year(used for module creation)

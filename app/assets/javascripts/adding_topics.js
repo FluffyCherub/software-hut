@@ -419,19 +419,25 @@ function addPeriod() {
   //Name
   document.getElementById('time_name_' + new_chq_no.toString()).innerHTML = "Meeting "  + new_chq_no.toString();
 
+  //New dates
+  var new_start_date = document.getElementById('end_time_' + (new_chq_no-1).toString()).value
+  var new_end_date = formatDate(addDays(new_start_date, 7))
+
+  //alert(new_end_date)
+
   //Start Date
   document.getElementById('start_time_label_' + new_chq_no.toString()).innerHTML = "Start Date: ";
   document.getElementById('start_time_label_' + new_chq_no.toString()).htmlFor = date_start_id;
   document.getElementById('start_time_' + new_chq_no.toString()).name = "start_time_"  + new_chq_no.toString();
   document.getElementById('start_time_' + new_chq_no.toString()).type = "datetime-local";
-  document.getElementById('start_time_' + new_chq_no.toString()).value = "2018-06-12T19:30";
+  document.getElementById('start_time_' + new_chq_no.toString()).value = new_start_date;
 
   //End Date
   document.getElementById('end_time_label_' + new_chq_no.toString()).innerHTML = "End Date: ";
   document.getElementById('end_time_label_' + new_chq_no.toString()).htmlFor = date_end_id;
   document.getElementById('end_time_' + new_chq_no.toString()).name = "end_time_"  + new_chq_no.toString();
   document.getElementById('end_time_' + new_chq_no.toString()).type = "datetime-local";
-  document.getElementById('end_time_' + new_chq_no.toString()).value = "2018-06-12T19:30";
+  document.getElementById('end_time_' + new_chq_no.toString()).value = new_end_date;
 
   //Update counter value
   $('#total_chq_period').val(new_chq_no);
@@ -469,4 +475,36 @@ function removePeriod() {
     //Update counter value
     $('#total_chq_period').val(last_chq_no - 1);
   }
+}
+
+function addDays(date, days) {
+  var result = new Date(date);
+  var period = document.getElementById('total_chq_period').value
+  var days_ahead = days*(parseInt(period)+1)
+  
+  var ms = new Date().getTime() + (days_ahead*86400000);
+  var tomorrow = new Date(ms);
+
+  return tomorrow
+}
+
+
+function formatDate(date) {
+  var day = date.getDate();
+  var hour = date.getHours();
+  var minute = date.getMinutes();
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  month = String(parseInt(month)+1)
+
+  if(String(day).length < 2) day = "0" + String(day);
+  if(String(month).length < 2) month = "0" + String(month);
+  
+  if(String(hour).length < 2) hour = "0" + String(hour);
+  if(String(minute).length < 2) minute = "0" + String(minute);
+
+  //2018-06-12T19:30
+  result = year + "-" + month + "-" + day + "T" + hour + ":" + minute
+
+  return result
 }
