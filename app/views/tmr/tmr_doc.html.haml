@@ -1,18 +1,21 @@
 - content_for :title, "Team Operating Agreement"
 
 .container.body_whole_custom
-  - if @current_team.toa_status == "submitted" || @current_team.toa_status == "finished"
+  - start_date = @current_feedback_date.start_date.strftime("%d/%m/%Y %H:%M")
+  - end_date = @current_feedback_date.end_date.strftime("%d/%m/%Y %H:%M")
+  - if @current_feedback_date.tmr_status == "submitted" || @current_feedback_date.tmr_status == "finished"
     .container.container_middle.special_margin_top
+      %h1.bigger Team Meeting Record #{start_date} - #{end_date}
       //Height 6900 for full template to show
-      %iframe{src: "#{rails_blob_path(@current_team.document, disposition: :inline)}", width: "900", height: "800"}
+      %iframe{src: "#{rails_blob_path(@current_feedback_date.tmr, disposition: :inline)}", width: "900", height: "800"}
   - else
     .container.margin_top
-      %h1.bigger There is no Team Operating Agreement Submission
+      %h1.bigger There is no Team Meeting Record Submission #{start_date} - #{end_date}
       %hr.group_line
-  - if @current_team.toa_status == "in_progress"
+  - if @current_feedback_date.tmr_status == "in_progress"
     .container
-      %i Upload a .pdf file with the Team Operating Agreement
-    = form_tag(toa_path(team_id: params[:team_id]), :multipart => true) do
+      %i Upload a .pdf file with the Team Meeting Record
+    = form_tag(tmr_path(team_id: params['team_id'], module_id: params['module_id']), :multipart => true) do
       %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}/
       .container
         .input-group
@@ -41,21 +44,23 @@
     
   - else
     .container-fluid.white_bg.push_top.container_middle
-      %form#acceptreject{action: toa_path(team_id: params['team_id']), method: "get"}
-        %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}
-        - if @student_signed_status == false
+      %form#acceptreject{action: tmr_path(team_id: params['team_id'], module_id: params['module_id']), method: "get"}
+        %input#team_id{name: "team_id", type: "hidden", value: params[:team_id]}
+        %input#module_id{name: "module_id", type: "hidden", value: params[:module_id]}
+        - if @tmr_sign_status == false
           %button.btn.btn-primary.agreement_buttons_2.justify-content-center.button_toa_1{form: "acceptreject", type: "submit", value: "Accept", name: "accept_button"} Accept
           %button.btn.btn-primary.agreement_buttons_2.justify-content-center.button_toa_2{form: "acceptreject", type: "submit", value: "Reject", name: "reject_button"} Reject
-        - elsif @student_signed_status == true && @current_team.toa_status == "submitted"
+        - elsif @tmr_sign_status == true && @current_feedback_date.tmr_status == "submitted"
           %button.btn.btn-primary.half_button.justify-content-center.button_toa_1{form: "acceptreject", type: "button", value: "Signed", name: "signed_button"} Signed
-        - elsif @current_team.toa_status == "finished"
-          %button.btn.btn-primary.half_button.justify-content-center.button_toa_1{form: "acceptreject", type: "button", value: "Agreement accepted", name: "agreement_accepted_button"} Agreement accepted
+        - elsif @current_feedback_date.tmr_status == "finished"
+          %button.btn.btn-primary.half_button.justify-content-center.button_toa_1{form: "acceptreject", type: "button", value: "Agreement accepted", name: "agreement_accepted_button"} Team Meeting Record accepted
 
   //REPORTING A PROBLEM IS DONE HERE. MODIFY THE FORM 
   .container
     %h.medium Report a problem with the team
-    %form#report{action: tmr_path(team_id: params['team_id']), method: "get"}
-      %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}
+    %form#report{action: tmr_path(team_id: params['team_id'], module_id: params['module_id']), method: "get"}
+      %input#team_id{name: "team_id", type: "hidden", value: params[:team_id]}
+      %input#module_id{name: "module_id", type: "hidden", value: params[:module_id]}
       .form-group
         %textarea.form-control{rows: "5", name: "report_note"}
       .input-group-append.margin_left_none.special_margin_top.margin_bottom_small

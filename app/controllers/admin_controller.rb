@@ -732,6 +732,8 @@ class AdminController < ApplicationController
   def admin_modules_groups_create
     authorize! :manage, :admin_modules_groups_create
 
+    #getting the module information about the currently displayed module
+    @module_info = ListModule.where("id = ?", params[:module_id]).first
     @num_of_students = ListModule.num_students_in_mod(params['module_id'])
 
     #check if submit button was pressed
@@ -744,6 +746,7 @@ class AdminController < ApplicationController
 
         #delete all teams that where previously in the module
         Team.where(list_module_id: module_id).destroy_all
+        UserTeam.joins(:team).where("teams.list_module_id = ?", module_id).destroy_all
 
         #get all students from this module and shuffle them
         students_in_mod = ListModule.students_in_module(module_id).shuffle
@@ -893,7 +896,6 @@ class AdminController < ApplicationController
         #check if the current window of time starts after the previous one
         if previous_end_date != nil
           if previous_end_date - curr_start_date > 0
-            puts "11111111111111111111111111111111111111"
             dates_integrity = false
             break
           end
@@ -901,7 +903,6 @@ class AdminController < ApplicationController
         
         #check if the end date is after the start date
         if curr_start_date - curr_end_date > 0
-          puts "2222222222222222222222222222222222222222"
           dates_integrity = false
           break
         end

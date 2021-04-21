@@ -25,13 +25,10 @@ class Team < ApplicationRecord
   has_many :user_teams, dependent: :destroy
   has_many :users, through: :user_teams
 
-  has_many :problems
+  has_many :problems, dependent: :destroy
 
   #one team operating agreement per team
-  has_one_attached :document
-
-  #multiple team meeting record per team
-  has_many_attached :tmrs
+  has_one_attached :document, dependent: :destroy
 
 
   #get the number of team members in team

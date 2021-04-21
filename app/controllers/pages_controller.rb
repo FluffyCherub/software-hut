@@ -14,42 +14,47 @@ class PagesController < ApplicationController
   def index
     if current_user.admin?
       #redirect to the admin/super admin page
-      redirect_to "/admin"
+      redirect_to admin_path
     else
-      @modules = ListModule.joins(:users).where("users.username = ?", current_user.username)
-      session[:modules] = @modules
-      
       #redirect to the page for students/TA's/module leaders
-      redirect_to "/modules"
+      redirect_to modules_path
     end
   end
 
   #load the modules again after choosing
   def modules
-    @modules = ListModule.joins(:users).where("users.username = ?", current_user.username)
-    session[:modules] = @modules
-  end
+    @modules = ListModule.joins(:users).where("users.username = ? AND user_list_modules.privilege = ?", 
+                                              current_user.username,
+                                              "student")
 
-  #get information about the team after choosing a module
-  def show_team
     #Check if a module is chosen
     if params["module_choice"] != nil
-      #get module name from module id
-      @module_name = ListModule.find(params["module_choice"]["module_id"])
-      session[:module_name] = @module_name
+      module_id = params["module_choice"]["module_id"]
+
+     
+      @closest_date = FeedbackDate.get_closest_date(Time.now, module_id)
+      @in_feedback_window = FeedbackDate.is_in_feedback_window(Time.now, module_id)
+     
+
+      #get module info from module id
+      @module_info = ListModule.find(module_id)
 
       #get the team name based on the current username and chosen module
-      @team_info = Team.joins(:users, :list_module).where("users.username = ? AND list_modules.id = ?", current_user.username, params["module_choice"]["module_id"]).first
+      @team_info = Team.joins(:users, :list_module)
+                       .where("users.username = ? AND list_modules.id = ?", 
+                               current_user.username, 
+                               module_id).first
       
       #get info about the members in the current team 
       if @team_info != nil
-        @team_members = User.joins(:teams).where("teams.name = ? AND teams.list_module_id = ?", @team_info.name, params["module_choice"]["module_id"])
+        @team_members = User.joins(:teams)
+                            .where("teams.name = ? AND teams.list_module_id = ?", 
+                                    @team_info.name, 
+                                    module_id)
       end
 
-      #store team information and team members information in sessions for use in the view
-      session[:team_info] = @team_info
-      session[:team_members] = @team_members
     end
   end
+
 
 end

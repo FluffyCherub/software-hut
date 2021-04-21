@@ -4,7 +4,7 @@
   .container-fluid.text_black.bg_none.margin_top.margin_bottom_medium
     
     .container-fluid.bg_none.text_black.margin_top.bigger
-      MODULE NAME - CODE - LEVEL
+      #{@module_info.name} - #{@module_info.code} - Level #{@module_info.level}
       //MAKE BUTTON GO BACK TO GROUPS
       %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{:href => admin_modules_groups_path(:module_id => params[:module_id]), type: "button"} Go Back
       .container-fluid.bg_none.text_black.margin_top.small.float_left.no_padding.margin_none

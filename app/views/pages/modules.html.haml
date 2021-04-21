@@ -8,9 +8,9 @@
   .card-header.card-header-student
     Choose module
   .card-body.card-body-student
-    - collection = session[:modules] #Defines the options in radio buttons/dropdowns
+    - collection = @modules #Defines the options in radio buttons/dropdowns
 
-    = simple_form_for :module_choice,:action => show_team do |f|
+    = simple_form_for :module_choice do |f|
       //= f.label 'hello'
       //= f.input :string, as: :integer, label: 'false' , required: false
 
@@ -24,21 +24,21 @@
     %img.choose_logo_middle{:src => "/assets/choose_logo.png", :alt => "Please choose"}
 - else
   .container.module_body
-    %h1{:id => "module_name", :class => "bigger"} #{session[:module_name].name}
+    %h1{:id => "module_name", :class => "bigger"} #{@module_info.name}
     .container.module_info#hider
       .container.module_div.module_group#module_group.small
-        - if session[:team_info].nil?
+        - if @team_info.nil?
           %h.group_header.medium You are not in a team
-        - elsif session[:team_members] == nil
-          %h.group_header.medium #{session[:team_info].name}
+        - elsif @team_members == nil
+          %h.group_header.medium #{@team_info.name}
           %hr.group_line
           %p Team members unavailable 
         - else
-          %h.group_header.medium #{session[:team_info].name}
-          - if session[:team_info].topic != "none"
-            %p Team topic: #{session[:team_info].topic}
+          %h.group_header.medium #{@team_info.name}
+          - if @team_info.topic != "none"
+            %p Team topic: #{@team_info.topic}
           %hr.group_line
-          - session[:team_members].each do |currentMember|
+          - @team_members.each do |currentMember|
             %p 
               username: #{currentMember.username}
               %br
@@ -50,20 +50,25 @@
           %strong.feedback_header.medium
             Open:
           %i.feedback_header.medium
-            date - date 
-          - if session[:team_info].nil?
+            - if @closest_date != nil
+              - start_date = @closest_date.start_date.strftime("%d/%m/%Y %H:%M")
+              - end_date = @closest_date.end_date.strftime("%d/%m/%Y %H:%M")
+              #{start_date} -  #{end_date}
+            - else
+              Unavailable
+          - if @team_info.nil? || @in_feedback_window == false
             %li Team Meeting Record Unavailable
           - else
-            %li #{link_to "Team Meeting Record", tmr_path(:team_id => session[:team_info].id)}
+            %li #{link_to "Team Meeting Record", tmr_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
           %li Peer Feedback Matrix
         %ul
           %strong.feedback_header.medium 
             Additional Info: 
           -# Have to make check here if there is team
-          - if session[:team_info].nil?
+          - if @team_info.nil?
             %li Team Operating Agreement Unavailable
           - else
-            %li #{link_to "Team Operating Agreement", toa_path(:team_id => session[:team_info].id)}
+            %li #{link_to "Team Operating Agreement", toa_path(:team_id => @team_info.id)}
           %li Feedback History
 
 :coffee
