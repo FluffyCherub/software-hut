@@ -321,6 +321,34 @@ function normalButtonChange(students_in_module) {
 
         studentNumberCurrent = students_per_group*amount_of_groups
 
+        if ((document.getElementById("normal_size").value == false) && (document.getElementById("normal_amount").value == false)) {
+          document.getElementById("normal_size").placeholder = "Example: 14";
+          document.getElementById("normal_amount").placeholder = "Example: 6";
+        }
+        else if ((document.getElementById("normal_size").value) && (document.getElementById("normal_amount").value == false)) {
+          students_per_group = document.getElementById("normal_size").value;
+          if (studentNumberTotal%students_per_group != 0) {
+            amount_of_groups = Math.floor(studentNumberTotal/students_per_group) + 1;
+            document.getElementById("normal_amount").placeholder = "Suggested groups: " + amount_of_groups;
+          }
+          else {
+            amount_of_groups = studentNumberTotal/students_per_group;
+            document.getElementById("normal_amount").placeholder = "Suggested groups: " + amount_of_groups;
+          }
+        }
+        else if ((document.getElementById("normal_size").value == false) && (document.getElementById("normal_amount").value)) {
+          amount_of_groups = document.getElementById("normal_amount").value;
+          if (studentNumberTotal%amount_of_groups != 0) {
+            students_per_group = Math.floor(studentNumberTotal/amount_of_groups) + 1;
+            document.getElementById("normal_size").placeholder = "Suggested students per group: " + students_per_group;
+          }
+          else {
+            students_per_group = studentNumberTotal/amount_of_groups;
+            document.getElementById("normal_size").placeholder = "Suggested students per group: " + students_per_group;
+          }
+
+        }
+
         var empty_spots = studentNumberCurrent - studentNumberTotal;
 
         if (studentNumberTotal == studentNumberCurrent) {
