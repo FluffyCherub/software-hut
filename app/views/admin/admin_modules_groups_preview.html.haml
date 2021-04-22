@@ -136,7 +136,7 @@
     .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.no_border
       = simple_form_for :search_form do |f|
         .container-fluid.bg_none.no_padding
-          %img.search_logo.margin_none{:src => "/assets/search_logo.jpg", :alt => "Search Users"}
+          %img.search_logo.margin_none{:src => "/images/search_logo.jpg", :alt => "Search Users"}
         .container-fluid.bg_none.row.no_padding.margin_bottom_none  
           = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
           = f.input :form_team_id, :as => :hidden, :input_html => {:id => "form_team_id", :value => params[:team_id] }

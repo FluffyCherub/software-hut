@@ -3,7 +3,7 @@
 /////Adding University Fonts/////////////////////////
 @font-face {
   font-family: 'Blake';
-  src: url('Blake.ttf');
+  src: url('/fonts/Blake.ttf');
 }
 
 // @font-face {
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: 'Steph';
-  src: url('Steph.ttf');
+  src: url('/fonts/Steph.ttf');
 }
 
 // @font-face {
@@ -35,7 +35,7 @@
 html,body {
   height: 100%;
   font-family: 'Steph';
-  background-image: url("bg1.jpg")
+  background-image: url("/images/bg1.jpg")
 }
 
 #wrap {
