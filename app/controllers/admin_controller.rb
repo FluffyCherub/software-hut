@@ -610,19 +610,8 @@ class AdminController < ApplicationController
                                                         "%" + search_input + "%"
                                                         )
          
-    #getting ids of users in the currently selected team
-    current_team_users_ids = []   
-    for i in 0..(@current_team_users.length-1)
-      current_team_users_ids.append(@current_team_users[i].id)
-    end  
-    
-    #getting the users that are in the module but not in the currently selected team
-    @users_in_module_but_not_in_team = []
-    for i in 0..(@users_in_module.length-1)
-      if !current_team_users_ids.include?(@users_in_module[i].id)
-        @users_in_module_but_not_in_team.append(@users_in_module[i])
-      end
-    end
+    #getting users that are not in any team in this module
+    @users_in_module_but_not_in_team = Team.get_students_not_in_team_but_in_module(module_id)
 
     #removing a student from a group
     if params['remove_student_button'] == "remove_student"
@@ -697,21 +686,9 @@ class AdminController < ApplicationController
                                                         "%" + search_input + "%"
                                                         )
          
-    #getting ids of users in the currently selected team
-    current_team_users_ids = []   
-    for i in 0..(@current_team_users.length-1)
-      current_team_users_ids.append(@current_team_users[i].id)
-    end  
-    
-    #getting the users that are in the module but not in the currently selected team
-    @users_in_module_but_not_in_team = []
-    for i in 0..(@users_in_module.length-1)
-      if !current_team_users_ids.include?(@users_in_module[i].id)
-        @users_in_module_but_not_in_team.append(@users_in_module[i])
-      end
-    end
-
-
+    #getting users that are not in any team in this module
+    @users_in_module_but_not_in_team = Team.get_students_not_in_team_but_in_module(module_id)
+      
     #adding a student to a group
     if params['add_student_button'] == "add_student"
       

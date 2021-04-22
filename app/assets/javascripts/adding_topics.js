@@ -473,7 +473,7 @@ function addPeriod() {
   //Changing properties of created elements
 
   //Name
-  document.getElementById('time_name_' + new_chq_no.toString()).innerHTML = "Meeting "  + new_chq_no.toString();
+  document.getElementById('time_name_' + new_chq_no.toString()).innerHTML = "Period "  + new_chq_no.toString();
 
   //New dates
   var new_start_date = document.getElementById('end_time_' + (new_chq_no-1).toString()).value
