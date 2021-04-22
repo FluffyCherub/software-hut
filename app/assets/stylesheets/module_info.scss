@@ -182,3 +182,7 @@ button:hover {
   height: 1px;
   background-color: rgb(184, 158, 158);
 }
+
+input[type="checkbox"]:focus{
+  outline:0;
+}

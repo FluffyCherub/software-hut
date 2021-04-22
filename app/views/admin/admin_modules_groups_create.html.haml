@@ -1,8 +1,7 @@
 - content_for :title, "Create groups"
 
 .container.body_whole_custom
-  .container-fluid.text_black.bg_none.margin_top.margin_bottom_medium
-    
+  .container-fluid.text_black.bg_none.margin_top
     .container-fluid.bg_none.text_black.margin_top.bigger
       #{@module_info.name} - #{@module_info.code} - Level #{@module_info.level}
       //MAKE BUTTON GO BACK TO GROUPS
@@ -12,20 +11,21 @@
         %hr.group_line.margin_top_half_rem
     
   //FORM IS HERE
-  %form{id: "create_groups_form"}
-    %input{id: "rand_btn", name: "rand_btn", type: "hidden", value: ""}
-    %input{id: "topic_btn", name: "topic_btn", type: "hidden", value: ""}
-    %input{id: "module_id", name: "module_id", type: "hidden", value: params['module_id']}
-    .container-fluid.bg_none.text_black.medium
-      %p
-        %button.btn.btn-primary.button_topics#normal_toggle{"aria-controls" => "normalCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#normalCollapse", role: "button", onclick: "tempDisableButton(); normalButtonChange('#{@num_of_students}')", value: "disabled", type: "button"} Random/Free join
-        %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange('#{@num_of_students}'); tempDisableButton()", value: "disabled", type: "button"} Enable Topics
+  .container-fluid.bg_none.text_black.medium
+    %form{id: "create_groups_form"}
+      %input{id: "rand_btn", name: "rand_btn", type: "hidden", value: ""}
+      %input{id: "topic_btn", name: "topic_btn", type: "hidden", value: ""}
+      %input{id: "module_id", name: "module_id", type: "hidden", value: params['module_id']}
+      .container-fluid.bg_none.text_black.medium
+        %p.margin_none
+          %button.btn.btn-primary.button_topics#normal_toggle{"aria-controls" => "normalCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#normalCollapse", role: "button", onclick: "tempDisableButton(); normalButtonChange('#{@num_of_students}')", value: "disabled", type: "button"} Random/Free join
+          %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange('#{@num_of_students}'); tempDisableButton()", value: "disabled", type: "button"} Enable Topics
     
     
       //GROUP SIZE GOES HERE ----------------------------- RANDOM + FREE JOIN
       .container-fluid.bg_none.text_black.small
         #normalCollapse.collapse
-          %hr.special_line.margin_none
+          %hr.special_line
           .container-fluid.text_black.bg_none.no_padding.margin_bottom_2.margin_top.small
             %p.margin_none.student_numbers
               %span.margin_none#student_tracker_normal #{@num_of_students} students do not have teams
@@ -46,7 +46,7 @@
       //TOPIC CONTENT GOES HERE ---------------------------
       .container-fluid.bg_none.text_black.small
         #topicCollapse.collapse
-          %hr.special_line.margin_none
+          %hr.special_line
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.margin_top.small
             %button.add.btn.btn-primary.button_topics{type: "button", onclick: "addTopic()"}Add Topic
             %button.remove.btn.btn-primary.button_topics{type: "button", onclick: "removeTopic()"} Remove Topic
@@ -66,7 +66,7 @@
       .container-fluid.bg_none.text_black.medium
         %hr.group_line.margin_top
         .container-fluid.bg_none.text_black.medium.margin_bottom_2.no_padding.bigger
-          %h Set up feedback frequency
+          %h Set up feedback/meeting periods
           %hr.special_line.margin_none
         .container-fluid.text_black.bg_none.margin_bottom_small.no_padding
           - current_time = Time.now.strftime("%Y-%m-%dT%H:%M")
@@ -96,5 +96,5 @@
 
       .container-fluid.bg_none.text_black.medium.margin_bottom_2
         %hr.group_line
-        %button.add.btn.btn-primary.button_topics{type: "button", name:"create_groups_button", onclick: "create_groups();"} Submit
+        %button.add.btn.btn-primary.button_topics{type: "button", name:"create_groups_button", onclick: "create_groups();"} Create
           
