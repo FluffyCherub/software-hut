@@ -15,7 +15,7 @@
           //------------------------------------------------------------
           //Go back to the previous module page when you click this button (Not the module home page, but the /modules page with the already chosen module)
           //------------------------------------------------------------
-          %a.button{:href => admin_modules_preview_path(:module_id => params[:module_id]), type: "button", name: "go_back_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"submit_choice"}Go Back
+          %a.button{:href => modules_path(:module_id => params[:module_id]), type: "button", name: "go_back_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"submit_choice"}Go Back
       .container-fluid.bg_none.row.no_padding.margin_bottom_small
         .form-group.col-md-3.margin_bottom_small.text_black
           = f.input :search_type, as: :select, collection: ['Default - A to Z', 'Team size - Low to High', 'Team size - High to Low', 'Topic - A to Z'], label: "Sort By:", include_blank: false, required: false, :selected => @selected_type, :input_html => {onchange: "this.form.submit()"}
@@ -74,10 +74,15 @@
                         //------------------------------------------------------------
                         //Student joins team with this button - CAN'T EXCEED CAPACITY!!!
                         //------------------------------------------------------------
-                        -if (Team.get_current_team_members(@groups_for_module[i-1].id).length < @groups_for_module[i-1].size)
-                          %a.button{:href => admin_modules_groups_add_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), type: "button", name: "add_student_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"add_user_button", value: "add_student"}Join Team
-                        -else 
-                          %a.button.disabled_button{disabled: true, type: "button", name: "add_student_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"add_user_button", value: "add_student"}Team Full
+                        %form{id: "join_group_form"}
+                          %input{id: "team_id", name: "team_id", type: "hidden", value: @groups_for_module[i-1].id}
+                          %input{id: "module_id", name: "module_id", type: "hidden", value: params[:module_id]}
+                          - if (Team.get_current_team_members(@groups_for_module[i-1].id).length < @groups_for_module[i-1].size) && !UserTeam.is_student_in_team(current_user.id, @groups_for_module[i-1].id) && !UserTeam.is_student_in_any_team_in_module(current_user.id, params['module_id'])
+                            %button{type: "submit", name: "join_team_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"join_team_button", value: "join_team"}Join Team
+                          - elsif UserTeam.is_student_in_team(current_user.id, @groups_for_module[i-1].id)
+                            %a.button.disabled_button{disabled: true, type: "button", name: "in_team_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"in_team_button", value: "in_team"}You are in this team
+                          - else
+                            %a.button.disabled_button{disabled: true, type: "button", name: "team_full_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"team_full_button", value: "team_full"}Team Full
 
 
                     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small

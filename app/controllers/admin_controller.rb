@@ -254,6 +254,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_edit
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_edit
 
     if params['edit_module_button'] == "Edit"
@@ -367,6 +368,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_groups
 
     #getting a list of ta's and modules leaders for assigning problems
@@ -479,6 +481,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_privilege
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_privilege
 
     @saved_privilege = UserListModule.where(list_module_id: params['module_id'],
@@ -533,6 +536,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups_preview
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_groups_preview
 
     #setting the module and team ids to the correct values
@@ -646,6 +650,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups_add
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_groups_add
 
     #setting the module and team ids to the correct values
@@ -707,6 +712,7 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups_create
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_groups_create
 
     #getting the module information about the currently displayed module

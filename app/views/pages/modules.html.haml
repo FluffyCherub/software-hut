@@ -16,10 +16,10 @@
 
       //select2 is the header of the field, collection specifies options
       //= f.input :select2, as: :select, collection: collection, input_html: { class: 'module_dropdown', id: 'module_dropdown' , name: 'selected_module'}, include_blank: false, label: false, requied: false
-      = f.collection_select :module_id, collection, :id, :name, {},  {:class=> "module_dropdown form-select", :id=> "module_dropdown"}
+      = f.collection_select :module_id, collection, :id, :name, {}, {:class=> "module_dropdown form-select", :id=> "module_dropdown"}
       = f.button :submit, "Select", class: "btn btn-primary select_module d-flex justify-content-center", id:"submit_choice", "data-disable-with" => "Loading.."
 
-- if params["module_choice"] == nil
+- if params["module_id"] == nil
   .container.module_body.see_trough
     %img.choose_logo_middle{:src => "/images/choose_logo.png", :alt => "Please choose"}
 - else
@@ -29,6 +29,8 @@
       .container.module_div.module_group#module_group.small
         - if @team_info.nil?
           %h.group_header.medium You are not in a team
+          - if @module_info.team_type == "free_join"
+            %a.button{:href => student_groups_path(:module_id => @module_id), type: "button", name: "join_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Join Teams
         - elsif @team_members == nil
           %h.group_header.medium #{@team_info.name}
           %hr.group_line
@@ -70,10 +72,6 @@
           - else
             %li #{link_to "Team Operating Agreement", toa_path(:team_id => @team_info.id)}
           %li Feedback History
-          - if @team_info.nil?
-            %li Team Operating Agreement Unavailable
-          - else
-            %a.button{:href => student_groups_path(:module_id => @team_info.list_module_id), type: "button", name: "join_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Join Teams
 
 :coffee
   $ ->

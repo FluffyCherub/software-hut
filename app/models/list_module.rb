@@ -151,4 +151,9 @@ class ListModule < ApplicationRecord
 
     current_module.update(team_type: new_team_type)
   end
+
+  def self.get_mod_name_from_id(module_id)
+    mod_name = ListModule.find(module_id).name
+    return mod_name
+  end
 end

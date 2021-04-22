@@ -54,4 +54,33 @@ class UserTeam < ApplicationRecord
 
     return user_team
   end
+
+  def self.put_student_in_team(student_id, team_id)
+    UserTeam.create(user_id: student_id,
+                    team_id: team_id)
+  end
+
+  def self.is_student_in_team(student_id, team_id)
+    check = UserTeam.where(user_id: student_id,
+                   team_id: team_id)
+
+    if check.length == 0
+      return false
+    else
+      return true
+    end
+  end
+
+  def self.is_student_in_any_team_in_module(student_id, module_id)
+    check = UserTeam.joins(:team).where("user_teams.user_id = ? AND
+                                         teams.list_module_id = ?",
+                                         student_id,
+                                         module_id)
+
+    if check.length > 0
+      return true
+    else
+      return false
+    end
+  end
 end
