@@ -7,13 +7,14 @@
       .container-fluid.bg_none.no_padding
         %img.search_logo{:src => "/images/search_logo.jpg", :alt => "Search Modules"}
       .container-fluid.bg_none.row.no_padding
-        .container.col-xs-5.col-sm-4.no_padding_right
+        .container.col-xs-6.col-sm-5.no_padding_right.margin_none
           = f.input :search_input, as: :string, label: false , required: false, input_html: {:value => @saved_input}
-        .container.col-xs-3.col-sm-3.no_padding_left
-          = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_2 float_left", id:"submit_choice", "data-disable-with" => "Submitting.."
-        .container.col-xs-5.col-sm-3.no_padding_left.no_padding_right.padding_right_small
-          %a.button{:href => admin_modules_groups_create_path(:module_id => params[:module_id]), type: "button", name: "create_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Create Groups
-        .container.col-xs-5.col-sm-2.no_padding_left.no_padding_right.padding_right_small
+        .container.col-xs-3.col-sm-4.no_padding_left.margin_none
+          = f.button :submit, "Search", name:"search_button", class: "width_50 btn btn-primary agreement_buttons justify-content-center button_search_2 float_left", id:"submit_choice", "data-disable-with" => "Submitting.."
+        .container.col-xs-6.col-sm-3.no_padding_left.no_padding_right.padding_right_small.margin_none
+          //------------------------------------------------------------
+          //Go back to the previous module page when you click this button (Not the module home page, but the /modules page with the already chosen module)
+          //------------------------------------------------------------
           %a.button{:href => admin_modules_preview_path(:module_id => params[:module_id]), type: "button", name: "go_back_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"submit_choice"}Go Back
       .container-fluid.bg_none.row.no_padding.margin_bottom_small
         .form-group.col-md-3.margin_bottom_small.text_black
@@ -67,17 +68,18 @@
               .card-body.no_padding
                 #accordion-1
                   .card-body
-                    %li
-                      %a.uni_purple{ :href => admin_modules_groups_preview_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), :title => "Preview" }
-                        %strong
-                          Preview Module Page
-                    %hr.group_line
-                    
                     .container-fluid.bg_none.no_padding.margin_bottom_small.text_black.medium.margin_left
                       Team Members 
                       .container.col-xs-6.col-sm-3.no_padding_left.no_padding_right.padding_right_small.float_right.small
-                        %a.button{:href => admin_modules_groups_add_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), type: "button", name: "add_student_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"add_user_button", value: "add_student"}Add Student
-                        
+                        //------------------------------------------------------------
+                        //Student joins team with this button - CAN'T EXCEED CAPACITY!!!
+                        //------------------------------------------------------------
+                        -if (Team.get_current_team_members(@groups_for_module[i-1].id).length < @groups_for_module[i-1].size)
+                          %a.button{:href => admin_modules_groups_add_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), type: "button", name: "add_student_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"add_user_button", value: "add_student"}Join Team
+                        -else 
+                          %a.button.disabled_button{disabled: true, type: "button", name: "add_student_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"add_user_button", value: "add_student"}Team Full
+
+
                     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
                       - current_team_users = Team.get_current_team_members(@groups_for_module[i-1].id)
                       - if current_team_users.length <= 0
@@ -89,11 +91,9 @@
                             %tbody
                               %tr.medium
                                 %th.black_text{:colspan => "1", :style => "width: 5%;"} #
-                                %th.black_text{:colspan => "1", :style => "width: 30%;"} Name
-                                %th.black_text.center_element{:colspan => "1", :style => "width: 10%;"} Username
-                                %th.black_text.center_element{:colspan => "1", :style => "width: 20%;"} Email
-                                %th.black_text.center_element{:colspan => "1", :style => "width: 15%;"} Last Login
-                                %th.black_text.center_element{:colspan => "4", :style => "width: 20%;"} Action
+                                %th.black_text{:colspan => "1", :style => "width: 40%;"} Name
+                                %th.black_text.center_element{:colspan => "1", :style => "width: 20%;"} Username
+                                %th.black_text.center_element{:colspan => "1", :style => "width: 35%;"} Email
                                 - current_team_users.to_a.each_with_index do |user, index|
                                   - if user[:givenname] == nil  
                                     - user[:givenname] = ""
@@ -110,97 +110,12 @@
                                       - else
                                         - last_login = user[:last_sign_in_at].strftime("%d/%m/%Y")
                                       %td{:colspan => "1", :style => "width: 5%;"} #{index+1}
-                                      %td{:colspan => "1", :style => "width: 30%;"} #{whole_name}
-                                      %td.center_element{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
-                                      %td.center_element{:colspan => "1", :style => "width: 20%;"} #{user[:email]}
-                                      %td.center_element{:colspan => "1", :style => "width: 15%;"} #{last_login}
-                                      %td.center_element{:colspan => "1", :style => "width: 20%;"} 
-                                        %button{type: "submit", name: "remove_student_button",  class: "btn btn-primary action_buttons justify-content-center small", id:"remove_user_button", value: "remove_student"}Remove Student
-                    %hr.group_line
-                    
-                    - if problems.length == 0
-                      .container.no_results.bg_none
-                        %h.center_element.medium.text_black No problems in this group
-                    - else
-                      - for z in 1..problems.length
-                        - problem_dot_type = "no_dot"
-                        - if problems[z-1].status == "unsolved"
-                          - problem_dot_type = "red"
-                        - elsif problems[z-1].status == "assigned"
-                          - problem_dot_type = "yellow"
-                        - elsif problems[z-1].status == "solved"
-                          - problem_dot_type = "solved"
-
-                        .card
-                          #heading-1-1.card-header.header_bad
-                            %h5.mb-0
-                              %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                                - if problems[z-1].status != "assigned"
-                                  - assigned = ""
-                                - else
-                                  - assigned = "- Assigned to " + User.get_first_last(problems[z-1].assigned_to)
-                                Problem #{z} #{assigned}
-                                - if problem_dot_type == "red"
-                                  %span.dot_red.float_right
-                                - elsif problem_dot_type == "yellow"
-                                  %span.dot_yellow.float_right
-                                - elsif problem_dot_type == "solved"
-                                  %span.dot_green.float_right
-
-                          #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
-                            .card-body
-                              - created_at = problems[z-1].created_at.strftime("%I:%M %p - %d/%m/%Y")
-                              - if problems[z-1].solved_on != nil
-                                - solved_on = problems[z-1].solved_on.strftime("%I:%M %p - %d/%m/%Y")
-                              - else
-                                - solved_on = ""
-                              - if problems[z-1].solved_by != nil
-                                - solved_by = User.get_first_last(problems[z-1].solved_by) + " - " + User.get_email(problems[z-1].solved_by)
-                              - else
-                                - solved_by = ""
-                              %p Created by: #{User.get_first_last(problems[z-1].created_by)} - #{User.get_email(problems[z-1].created_by)}
-                              %p Created on: #{created_at}
-                              %p Solved by: #{solved_by}
-                              %p Solved on: #{solved_on}
-                              %hr.group_line
-                              %p Note: #{problems[z-1].note}
-                              %hr.group_line
-                              = simple_form_for :problem_form do |f|
-                                = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
-                                = f.input :form_problem_id, :as => :hidden, :input_html => {:id => "form_problem_id", :value => problems[z-1].id }
-                                .container-fluid.bg_none.row.no_padding.margin_bottom_small
-                                  - if problems[z-1].status != "solved"
-                                    .container.col-xs-6.col-sm-3.no_padding.text_black
-                                      = f.input :assign_list, as: :select, collection: @ta_and_mod_lead, label: false, include_blank: false, required: false
-                                    .container.col-xs-6.col-sm-5
-                                      = f.button :submit, "Assign", name:"assign_button", class: "btn btn-primary agreement_buttons justify-content-center button_assign float_left", id:"assign_button"
-                                  - current_user_privilege = ListModule.privilege_for_module(current_user.username, params[:module_id])
-                                  - if (current_user_privilege.include?("module_leader") || current_user.admin || current_user.username == problems[z-1].assigned_to) && problems[z-1].status != "solved"
-                                    .container.col-xs-6.col-sm-4.no_padding_left.no_padding_right
-                                      = f.button :submit, "Mark as solved", type: "submit", name: "solve_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"solve_button"
-
-
-
-                        - if i == @groups_for_module.length
-                          - last_i = true_i
-                          - last_z = z
-                        - else
-                          :javascript
-                            document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
-                            document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
-
+                                      %td{:colspan => "1", :style => "width: 40%;"} #{whole_name}
+                                      %td.center_element{:colspan => "1", :style => "width: 20%;"} #{user[:username]}
+                                      %td.center_element{:colspan => "1", :style => "width: 35%;"} #{user[:email]}                
+            
+            //Required for the accordion to work properly - Do not edit
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
               document.getElementById('accordion-1').id = 'accordion-#{i}';
-
-      - last_team_id = @groups_for_module[@groups_for_module.length-1].id
-      - last_problems = Problem.get_problems_for_team(last_team_id)
-      - for y in 1..last_problems.length
-        - index = @num_of_problems-(last_problems.length+1) + y 
-        :javascript
-          var bad_headers = document.getElementsByClassName("header_bad");
-          var bad_collapsers = document.getElementsByClassName("collapse_bad");
-          bad_headers['#{index}'].id = 'heading-#{last_i}-#{y}';
-          bad_collapsers['#{index}'].id = 'collapse-#{last_i}-#{y}';
-            

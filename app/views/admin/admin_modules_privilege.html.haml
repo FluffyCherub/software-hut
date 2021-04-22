@@ -44,7 +44,8 @@
           %span.slider.round#slider4
         %p.margin_left#privilege_4_text Managing student teams
 
-    - if @saved_privilege[0,18] != "teaching_assistant" # if 5 > 1
+    - if @saved_privilege[0,18] != "teaching_assistant"
+      //Required for the privileges to function properly - Do not edit
       :javascript
         document.getElementById("privilege_1").disabled = true;
         document.getElementById("privilege_2").disabled = true;

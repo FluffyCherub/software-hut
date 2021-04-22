@@ -186,3 +186,19 @@ button:hover {
 input[type="checkbox"]:focus{
   outline:0;
 }
+
+.width_50 {
+  width: 50%;
+}
+
+.disabled_button {
+  cursor: not-allowed;
+  pointer-events: none;
+  //text-align: center;
+  font-size: larger;
+  color: GrayText;
+  cursor: inherit;
+  background-color: #ddd;
+  background: #ddd;
+  font-family: 'Steph';
+}

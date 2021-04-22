@@ -56,15 +56,19 @@
                       - last_i = true_i
                       - last_z = z
                     - else
+                      //Required for the accordion to work properly - Do not edit
                       :javascript
                         document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
                         document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
+            
+            //Required for the accordion to work properly - Do not edit
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
               document.getElementById('accordion-1').id = 'accordion-#{i}';
             //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
 
+      //Required for the accordion to work properly - Do not edit
       - for y in 1..@modules_by_year[@modules_by_year.length-1].length
         - index = @num_of_modules-(@modules_by_year[@modules_by_year.length-1].length+1) + y 
         :javascript

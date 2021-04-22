@@ -192,15 +192,18 @@
                           - last_i = true_i
                           - last_z = z
                         - else
+                          //Required for the accordion to work properly - Do not edit
                           :javascript
                             document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
                             document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
-
+            
+            //Required for the accordion to work properly - Do not edit
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
               document.getElementById('accordion-1').id = 'accordion-#{i}';
-
+      
+      //Required for the accordion to work properly - Do not edit
       - last_team_id = @groups_for_module[@groups_for_module.length-1].id
       - last_problems = Problem.get_problems_for_team(last_team_id)
       - for y in 1..last_problems.length
