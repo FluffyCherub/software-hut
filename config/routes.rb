@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   match "/admin/modules/groups/preview", to: "admin#admin_modules_groups_preview", via: :all
   match "/admin/modules/groups/add", to: "admin#admin_modules_groups_add", via: :all
   match "/admin/modules/groups/create", to: "admin#admin_modules_groups_create", via: :all
+  match "/student/groups", to: "pages#student_groups_join", via: :all
 
 
   get :ie_warning, to: 'errors#ie_warning'
