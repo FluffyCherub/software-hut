@@ -70,6 +70,7 @@
           - else
             %li #{link_to "Team Operating Agreement", toa_path(:team_id => @team_info.id)}
           %li Feedback History
+          %a.button{:href => student_groups_path(:module_id => @team_info.list_module_id), type: "button", name: "join_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Join Teams
 
 :coffee
   $ ->
