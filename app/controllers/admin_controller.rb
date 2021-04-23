@@ -368,7 +368,11 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups
-    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
+    if params[:module_id] == nil
+      current_ability(User.get_module_privilege(params['problem_form']['form_module_id'], current_user.id))
+    else
+      current_ability(User.get_module_privilege(params[:module_id], current_user.id))
+    end
     authorize! :manage, :admin_modules_groups
 
     #getting a list of ta's and modules leaders for assigning problems

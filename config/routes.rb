@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   
-  #get 'toa/toa_doc'
   mount EpiCas::Engine, at: "/"
   devise_for :users
   match "/403", to: "errors#error_403", via: :all
@@ -23,6 +22,8 @@ Rails.application.routes.draw do
   match "/admin/modules/groups/add", to: "admin#admin_modules_groups_add", via: :all
   match "/admin/modules/groups/create", to: "admin#admin_modules_groups_create", via: :all
   match "/student/groups", to: "pages#student_groups_join", via: :all
+  match "/feedback/matrix", to: "feedback#feedback_matrix", via: :all
+
 
 
   get :ie_warning, to: 'errors#ie_warning'

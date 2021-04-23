@@ -60,9 +60,10 @@
               Unavailable
           - if @team_info.nil? || @in_feedback_window == false
             %li Team Meeting Record Unavailable
+            %li Peer Feedback Matrix Unavailable
           - else
             %li #{link_to "Team Meeting Record", tmr_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
-          %li Peer Feedback Matrix
+            %li #{link_to "Peer Feedback Matrix", feedback_matrix_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
         %ul
           %strong.feedback_header.medium 
             Additional Info: 

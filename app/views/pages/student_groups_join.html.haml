@@ -45,22 +45,8 @@
                   - else
                     - group_topic = "- " + @groups_for_module[i-1].topic
                   #{@groups_for_module[i-1].name} #{group_topic}
-
-
-                  %p.float_right.margin_none
-                    - red_encounter = false
-                    - yellow_encounter = false
-                    - for k in 0..(problems.length-1)
-                      - if problems[k].status == "unsolved"
-                        - red_encounter = true
-                      - elsif problems[k].status == "assigned"
-                        - yellow_encounter = true
-
-                    - if red_encounter
-                      %span.dot_red
-                    - elsif yellow_encounter
-                      %span.dot_yellow
                   
+                  %p.float_right.margin_none
                     #{Team.get_current_team_size(@groups_for_module[i-1].id)}/#{@groups_for_module[i-1].size}
                   
             
