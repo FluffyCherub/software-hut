@@ -1,3 +1,280 @@
 - content_for :title, "Peer Feedback Matrix"
 
+.container.body_whole_custom
+  //--------------------------------------------------------------------
+  // BLAME HAML FOR LONG LINES AND MESSING WITH INDENTATION! HTML > HAML
+  //--------------------------------------------------------------------
+  //Saving matrix info - can change at any time        
+  - attendance = ["Attendance and Punctuality",
+  - "You have had one of more absences or late arrivals to scheduled team activities and have not explained these to the team. You may have let other commitments impact your contribution. Your performance is detracting from the team’s work.",
+  - "You have had one or more absences or late arrivals to scheduled team activities and could have done a better job of notifying the team in advance. Your absence has not yet caused significant harm to the team, but you need to improve.", 
+  - "You have been prompt and attended every team event, or have excused yourself with good reason. If you have been absent, you have caught up with another group member as soon as possible.", 
+  - "You have been prompt and attended every team event, or have excused yourself with good reason. You have planned ahead for absences (such as interviews or medical appointments) and/or busy periods in your schedule with other deadlines, to ensure that they do not adversely affect the team."]
+  - attitude = ["Attitude and Commitment",
+  - "You usually bring a negative attitude to the team, are unfocused, and do not make much effort. Your lack of commitment has created a burden for the team, and/or has required changes in the schedule to ensure we can still meet the deadline.",
+  - "You sometimes bring a negative attitude to the team, and can lack focus. You sometimes do not try as hard as you could. You you are not undertaking your fair share of the workload and/or are not producing work to the agreed schedule.",
+  - "You bring a positive attitude to the team, are generally focused, and work hard most of the time. You you are undertaking your fair share of the workload, and complete work to the agreed schedule.",
+  - "You bring a very positive attitude to the team, are focused, and consistently give your best. You you are undertaking your fair share of the workload and may be assisting others with their contributions. You complete work on time or ahead of schedule."]
+  - qac = ["Quality, accuracy and completeness",
+  - "You have not completed your contributions, or your work is clearly insufficient, incomplete, or contains basic inaccuracies. The team cannot proceed without completing this work or re-doing it entirely.",
+  - "You have not made as much progress as you could have done with your contributions. Work that has been completed is on the right lines, but needs checking for basic errors. You need to put in extra effort to complete work to the standard agreed in our team vision/mission.",
+  - "You have completed or made solid progress on all of your contributions and they are sufficient and mostly error-free. If anything is incomplete, it is because you have identified valid problems or questions. You have clearly put effort into making the work of the standard agreed in our team vision/mission.",
+  - "You have completed all of your contributions and they are accurate, and essentially in final form. If anything is incomplete, it is because you identified valid problems or questions, and raised these with the team as soon as possible. Your work clearly meets or exceeds the standard agreed in our team vision/mission."]
+  - communication = ["Communication",
+  - "You do not contribute to discussions, and/or fail to reply to messages appropriately. You do not listen to others. Your not communicating effectively means the team lacked important information or hit problems that you could have prevented.",
+  - "Your contribution is patchy with minimal input to discussions and generally poor responses to messages. You do not always listen effectively to others, and need to think about how you share important information the rest of the team needs to succeed.",
+  - "You communicate well with the team in meetings and via messages, mostly sharing your ideas clearly. You listen to others effectively and respectfully. You actively ensure you keep everyone up-to-date on your aspects of the work.",
+  - "Your communication is excellent both orally and in writing. You listen to others effectively and respectfully, and regularly check your and the group’s understanding. You proactively ensure that everyone is up-to-date and shares important information."]
+  - collaboration = ["Collaboration",
+  - "You are frequently rude to others, and work in isolation without consulting the team on your contributions. You do not offer feedback to others, and react negatively if you receive feedback from your team. You cause conflicts within the team and take no responsibility for helping the team work together.",
+  - "You come across abrupt and offhand, and tend to work in isolation without consulting the team. You are not receptive to feedback from others. You may sometimes cause conflicts within the team and could do more to help the team work together.",
+  - "You are polite and courteous to others, and dedicated to the team. You encourage other members of the team, sometimes providing supportive feedback. You try to respond to feedback that others give to you. You make a positive contribution to team harmony.",
+  - "You go above and beyond to help and encourage others. You actively provide praise and constructive criticism to help others make their best contribution. You seek and take account of feedback on your own contributions. You actively help to navigate team disagreements positively."]
+  - leadership = ["Leadership",
+  - "You made no contribution to the direction of the team, by not engaging in setting team goals and not getting involved in idea generation or problem solving.",
+  - "You did not make much contribution to setting team goals, and focus on your own contributions rather than the overall objectives. Your input to idea generation and problem solving is minimal.",
+  - "You have supported the team to set and achieve goals, and helped to keep track of activity and progress. You contributed to idea generation for the team and helped with problem-solving.",
+  - "You actively helped to establish a team vision and goals, and support the team to achieve these. You play a significant role in keeping the team on task, monitoring progress. You made a big contribution to idea generation and problem-solving."]
+  - ethics = ["Professionalism and ethics",
+  - "You have ignored your academic/professional responsibilities, e.g. by committing plagiarism, or behaving inappropriately or in a way that reflects negatively on the team. Your actions could cause the whole team to fail.",
+  - "You have overlooked some academic/professional responsibilities, perhaps omitting references, or making remarks that have been offensive to a team member or other individual. You need to think about the impact of your behaviour on others.",
+  - "You behave responsibly and in line with your academic/professional responsibilities, ensuring work is referenced appropriately, and that your actions do not negatively impact others.",
+  - "You are a role model for others, behaving professionally and ethically even in difficult circumstances. You take great care to ensure that your interactions with others are positive and do not have a negative impact."]
 
+  .container-fluid.bg_none.bg_border.no_padding.special_margin_top.margin_bottom_small{:name => 5, :id => "random_ass_id_ples"}
+    #accordion
+      .card
+        - for i in 1..5
+          - true_i = 0
+          - if i == 5
+            - true_i = 1
+          - else
+            - true_i = i + 1
+
+          #heading-1.card-header
+            %h5.mb-0
+              %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
+                Student #{i}
+                
+                %p.float_right.margin_none
+                  right
+                
+          #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
+            .card-body.no_padding
+              #accordion-1
+                .card-body.no_padding
+                  .container-fluid.bg_none.overflow_style.scroll_down.no_padding.table_div.dark_border.margin_none
+                    %table.table.table-dark.show_table_border
+                      %thead
+                        %tr
+                          %th.text_center{:colspan => "1", :style => "width: 12%;"}Teamworking Values
+                          %th.text_center{:colspan => "1", :style => "width: 22%;"} Unsatisfactory
+                          %th.text_center{:colspan => "1", :style => "width: 22%;"} Needs Improvement
+                          %th.text_center{:colspan => "1", :style => "width: 22%;"} Meets Expectations
+                          %th.text_center{:colspan => "1", :style => "width: 22%;"} Exceeds Expectations
+                      %tbody
+                        //FORM IS HERE
+                        %form
+                          //Attendance and Punctuality ------------------------------------------ 'heading-#{i}'
+                          %tr{name: "attendance_select"}  
+                            %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
+                              .radiotext
+                                %p #{attendance[0]}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attendance_#{i}_1"}
+                              %label.clickable
+                                #{attendance[1]}
+                                %input.special_radio_input{name: "attendance_#{i}", type: "radio", value: "unsatisfactory"}  
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attendance_#{i}_2"}
+                              %label.clickable
+                                #{attendance[2]}
+                                %input.special_radio_input{name: "attendance_#{i}", type: "radio", value: "needs_improvement"} 
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attendance_#{i}_3"} 
+                              %label.clickable 
+                                #{attendance[3]}
+                                %input.special_radio_input{name: "attendance_#{i}", type: "radio", value: "meets_expectations"} 
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attendance_#{i}_4"}
+                              %label.clickable
+                                #{attendance[4]}
+                                %input.special_radio_input{name: "attendance_#{i}", type: "radio", value: "exceeds_expectations"} 
+                          
+                          //Attitude and Commitment ---------------------------------------------
+                          %tr{name: "attitude_select"}
+                            %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
+                              .radiotext
+                                %p #{attitude[0]}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attitude_#{i}_1"}
+                              %label.clickable  
+                                #{attitude[1]}
+                                %input.special_radio_input{name: "attitude_#{i}", type: "radio", value: "unsatisfactory"}
+                            //HERE EDIT      
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attitude_#{i}_2"}
+                              %label.clickable  
+                                #{attitude[2]}
+                                %input.special_radio_input{name: "attitude_#{i}", type: "radio", value: "needs_improvement"} 
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attitude_#{i}_3"}
+                              %label.clickable  
+                                #{attitude[3]}
+                                %input.special_radio_input{name: "attitude_#{i}", type: "radio", value: "meets_expectations"}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attitude_#{i}_4"}
+                              %label.clickable
+                                #{attitude[4]}
+                                %input.special_radio_input{name: "attitude_#{i}", type: "radio", value: "exceeds_expectations"} 
+                          
+                          //Quality, accuracy and completeness ----------------------------------
+                          %tr{name: "qac_select"}
+                            %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
+                              .radiotext
+                                %p #{qac[1]}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_1"}
+                              %label.clickable
+                                #{qac[1]}
+                                %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "unsatisfactory"}
+                            //HERE EDIT      
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_2"}
+                              %label.clickable  
+                                #{qac[2]}
+                                %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "needs_improvement"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_3"}
+                              %label.clickable
+                                #{qac[3]}
+                                %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "meets_expectations"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_4"}
+                              %label.clickable
+                                #{qac[4]}
+                                %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "exceeds_expectations"} 
+                          
+                          //Communication -------------------------------------------------------
+                          %tr{name: "communication_select"}
+                            %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
+                              .radiotext
+                                %p #{communication[0]}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_1"}
+                              %label.clickable
+                                #{communication[1]}
+                                %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "unsatisfactory"}
+                                  
+                            //HERE EDIT      
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_2"}
+                              %label.clickable
+                                #{communication[2]}
+                                %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "needs_improvement"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_3"}
+                              %label.clickable
+                                #{communication[3]}
+                                %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "meets_expectations"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_4"}
+                              %label.clickable
+                                #{communication[4]}
+                                %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "exceeds_expectations"} 
+                          
+                          //Collaboration -------------------------------------------------------
+                          %tr{name: "collaboration_select"}
+                            %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
+                              .radiotext
+                                %p #{collaboration[0]}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_1"}
+                              %label.clickable
+                                #{collaboration[1]}
+                                %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "unsatisfactory"}
+
+                            //HERE EDIT      
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_2"}
+                              %label.clickable
+                                #{collaboration[2]}
+                                %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "needs_improvement"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_3"}
+                              %label.clickable
+                                #{collaboration[3]}
+                                %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "meets_expectations"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_4"}
+                              %label.clickable
+                                #{collaboration[4]}
+                                %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "exceeds_expectations"} 
+                          
+                          //Leadership ----------------------------------------------------------
+                          %tr{name: "leadership_select"}
+                            %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
+                              .radiotext
+                                %p #{leadership[0]}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_1"}
+                              %label.clickable
+                                #{leadership[1]}
+                                %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "unsatisfactory"}
+
+                            //HERE EDIT      
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_2"}
+                              %label.clickable
+                                #{leadership[2]}
+                                %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "needs_improvement"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_3"}
+                              %label.clickable
+                                #{leadership[3]}
+                                %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "meets_expectations"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_4"}
+                              %label.clickable
+                                #{leadership[4]}
+                                %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "exceeds_expectations"} 
+                          
+                          //Professionalism and ethics ------------------------------------------
+                          %tr{name: "ethics_select"}
+                            %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
+                              .radiotext
+                                %p #{ethics[0]}
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_1"}
+                              %label.clickable
+                                #{ethics[1]}
+                                %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "unsatisfactory"}
+
+                            //HERE EDIT      
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_2"}
+                              %label.clickable
+                                #{ethics[2]}
+                                %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "needs_improvement"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_3"}
+                              %label.clickable
+                                #{ethics[3]}
+                                %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "meets_expectations"}
+
+                            %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_4"}
+                              %label.clickable
+                                #{ethics[4]}
+                                %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "exceeds_expectations"} 
+                               
+          
+          //Required for the accordion to work properly - Do not edit
+          :javascript
+            document.getElementById('heading-1').id = 'heading-#{i}';
+            document.getElementById('collapse-1').id = 'collapse-#{i}';
+            document.getElementById('accordion-1').id = 'accordion-#{i}';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
