@@ -43,7 +43,7 @@
 
   .container-fluid.bg_none.bg_border.no_padding.special_margin_top.margin_bottom_small{:name => 5, :id => "random_ass_id_ples"}
     #accordion
-      .card
+      .card.no_border
         - for i in 1..5
           - true_i = 0
           - if i == 5
@@ -63,9 +63,9 @@
             .card-body.no_padding
               #accordion-1
                 .card-body.no_padding
-                  .container-fluid.bg_none.overflow_style.scroll_down.no_padding.table_div.dark_border.margin_none
+                  .container-fluid.bg_none.overflow_style.scroll_down_big.no_padding.table_div.no_border.margin_none
                     %table.table.table-dark.show_table_border
-                      %thead
+                      %thead.no_border
                         %tr
                           %th.text_center{:colspan => "1", :style => "width: 12%;"}Teamworking Values
                           %th.text_center{:colspan => "1", :style => "width: 22%;"} Unsatisfactory
