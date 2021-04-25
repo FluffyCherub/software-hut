@@ -14,3 +14,4 @@
 //= require enable_toogle
 //= require adding_topics
 //= require matrix_selector
+//= require feedback_saving

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var num_of_students = parseInt($("#random_ass_id_ples").attr('name'));
+  var num_of_students = parseInt($("#feedback_id").attr('name'));
 
   // - attendance
   // - attitude

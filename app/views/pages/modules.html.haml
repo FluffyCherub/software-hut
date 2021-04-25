@@ -63,7 +63,7 @@
             %li Peer Feedback Matrix Unavailable
           - else
             %li #{link_to "Team Meeting Record", tmr_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
-            %li #{link_to "Peer Feedback Matrix", feedback_matrix_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
+            %li #{link_to "Peer Feedback Matrix", feedback_matrix_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id, :feedback_date_id => @closest_date.id)}
         %ul
           %strong.feedback_header.medium 
             Additional Info: 

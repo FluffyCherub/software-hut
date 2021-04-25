@@ -25,6 +25,9 @@ class FeedbackDate < ApplicationRecord
   #one team meeting record per feedback date window
   has_one_attached :tmr
 
+  #many peer feedbacks per feedback date window
+  has_many :peer_feedbacks, dependent: :destroy
+
   def self.get_closest_date(current_date, module_id)
     closest_date = nil
 
