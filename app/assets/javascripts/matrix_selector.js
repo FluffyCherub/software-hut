@@ -11,7 +11,7 @@ $(document).ready(function() {
 
   
   var i;
-  for (i = 1; i <= 6; i++) {
+  for (i = 1; i <= num_of_students; i++) {
     $('tr[name="attendance_select"] input:radio[name="attendance_' + i + '"]').change((function(a) {
       return function()
       {                   

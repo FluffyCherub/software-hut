@@ -43,7 +43,7 @@ class PeerFeedback < ApplicationRecord
     end
   end
 
-  def self.get_feedback_for_user(created_by, created_for, feedback_date_id)
+  def self.get_feedback_array_for_user(created_by, created_for, feedback_date_id)
     feedback = PeerFeedback.where(created_by: created_by,
                                   created_for: created_for,
                                   feedback_date_id: feedback_date_id)
@@ -53,6 +53,44 @@ class PeerFeedback < ApplicationRecord
     else
       return feedback.pluck(:attendance, :attitude, :qac, :communication, :collaboration, :leadership, :ethics)[0]
     end
+
+  end
+
+  def self.get_feedback_for_user(created_by, created_for, feedback_date_id)
+    feedback = PeerFeedback.where(created_by: created_by,
+                                  created_for: created_for,
+                                  feedback_date_id: feedback_date_id)
+
+    if feedback.length == 0
+      return nil
+    else
+      return feedback
+    end
+
+  end
+
+  def self.check_feedback_completion(students_list, created_by, feedback_date_id)
+
+    feedback_completed = true
+
+    for i in 0...students_list.length
+      current_feedback = PeerFeedback.where(created_by: created_by,
+                                            created_for: students_list[i].username,
+                                            feedback_date_id: feedback_date_id).first
+
+
+      if current_feedback.nil?
+        feedback_completed = false
+        break
+      end
+      
+      if current_feedback.status == "in_progress"
+        feedback_completed = false
+        break
+      end
+    end
+
+    return feedback_completed
 
   end
 end

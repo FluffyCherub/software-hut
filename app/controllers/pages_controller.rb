@@ -57,6 +57,16 @@ class PagesController < ApplicationController
                             .where("teams.name = ? AND teams.list_module_id = ?", 
                                     @team_info.name, 
                                     @module_id)
+
+        #get students that the current user has to give feedback on
+        @in_team_without_current_user = User.joins(:teams)
+                                            .where("teams.id = ? AND 
+                                                    users.id NOT IN (?)",
+                                                    @team_info.id,
+                                                    current_user.id
+                                                    )
+
+        @is_feedback_completed = PeerFeedback.check_feedback_completion(@in_team_without_current_user, current_user.username, @closest_date.id)
       end
 
       if params['commit'] == "Select"

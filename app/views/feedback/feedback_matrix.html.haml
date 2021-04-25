@@ -44,7 +44,7 @@
   - num_of_students = @in_team_without_current_user.length
   .container-fluid.bg_none.bg_border.no_padding.special_margin_top.margin_bottom_small{:name => "#{num_of_students}", :id => "feedback_id"}
     %iframe#dummyframe{name: "dummyframe", style: "display: none;"}
-    = form_with(id: "feedback_form", local: false, url: feedback_matrix_path, :html => {:target=>'dummyframe'}) do |form|
+    = form_with(id: "feedback_form", url: feedback_matrix_path, :html => {:target=>'dummyframe'}) do |form|
       %input{type: "hidden",id: "module_id", name: "module_id", value: params['module_id']}
       %input{type: "hidden",id: "team_id", name: "team_id", value: params['team_id']}
       %input{type: "hidden",id: "feedback_date_id", name: "feedback_date_id", value: params['feedback_date_id']}
@@ -256,10 +256,7 @@
                                 %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "exceeds_expectations"} 
             
                     
-            - current_feedback = raw (PeerFeedback.get_feedback_for_user(current_user.username, @in_team_without_current_user[i-1].username, @feedback_date_id)).to_json
-            - #current_feedback = array_or_string_for_javascript(current_feedback)
-            - puts "---------------------------"
-            - puts current_feedback.class
+            - current_feedback = raw (PeerFeedback.get_feedback_array_for_user(current_user.username, @in_team_without_current_user[i-1].username, @feedback_date_id)).to_json
             //Required for the accordion to work properly - Do not edit
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
@@ -269,8 +266,8 @@
 
 
               
-
-      %button{type: "submit", name: "submit_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"submit_feedback_button", value: "submit_feedback"}Submit Peer Feedback
+    
+      %button{type: "submit", name: "submit_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"submit_feedback_button", value: "submit_feedback", onclick: "redirect_to_modules('#{@module_id}');"}Submit Peer Feedback
 
 :javascript
   submit_on_radio();

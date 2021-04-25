@@ -5,14 +5,23 @@ class FeedbackController < ApplicationController
     @team_id = params['team_id']
     @feedback_date_id = params['feedback_date_id']
 
+  
     #get students that the current user has to give feedback on
     @in_team_without_current_user = User.joins(:teams)
-                                       .where("teams.id = ? AND 
-                                               users.id NOT IN (?)",
-                                               @team_id,
-                                               current_user.id
-                                               )
+                                        .where("teams.id = ? AND 
+                                                users.id NOT IN (?)",
+                                                @team_id,
+                                                current_user.id
+                                                )
     
+    #check if feedback is completed and submitted 
+    @is_feedback_completed = PeerFeedback.check_feedback_completion(@in_team_without_current_user, current_user.username, @feedback_date_id)
+
+    if @is_feedback_completed
+      render "errors/error_403"
+    end
+
+
     #backup selected values from feedback matrix(set as temp_selected)
     for i in 1..@in_team_without_current_user.length
       attendance = PeerFeedback.feedback_to_int(params['attendance_' + i.to_s])
@@ -38,7 +47,26 @@ class FeedbackController < ApplicationController
 
     # final submission of feedback
     if params['submit_feedback_button'] == "submit_feedback"
-      puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+      feedback_completion = true
+
+      @in_team_without_current_user.each do |student|
+        current_feedback = PeerFeedback.get_feedback_for_user(current_user.username, student.username, @feedback_date_id)
+        current_feedback_array = current_feedback.pluck(:attendance, :attitude, :qac, :communication, :collaboration, :leadership, :ethics)[0]
+        if current_feedback_array.all? {|i| i.is_a?(Integer) } == false
+          feedback_completion = false
+          break
+        end
+      end
+
+      if feedback_completion
+        @in_team_without_current_user.each do |student|
+          feedback_finished = PeerFeedback.get_feedback_for_user(current_user.username, student.username, @feedback_date_id)
+          feedback_finished.update(status: "finished")
+        end
+      else
+        #popup some fields for feeback missing
+      end
+
     end
   end
 end

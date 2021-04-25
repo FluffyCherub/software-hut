@@ -99,7 +99,10 @@ function load_selected_feedback_radios(feedback, student_number) {
       }
     }
   }
-
-
-  
 }
+
+function redirect_to_modules(module_id) {
+  //window.location.href = "/modules?module_id=" + module_id;
+  window.location.replace("/modules?module_id=" + module_id);
+}
+
