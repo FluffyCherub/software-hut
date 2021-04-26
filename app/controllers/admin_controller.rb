@@ -368,18 +368,21 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups
-    if params[:module_id] == nil
-      current_ability(User.get_module_privilege(params['problem_form']['form_module_id'], current_user.id))
-    else
-      current_ability(User.get_module_privilege(params[:module_id], current_user.id))
+    if params['problem_form'] != nil
+      module_id = params['problem_form']['form_module_id']
+    elsif params['search_form'] != nil
+      module_id = params['search_form']['form_module_id']
+    elsif params['module_id'] != nil
+      module_id = params['module_id']
     end
+    current_ability(User.get_module_privilege(module_id, current_user.id))
     authorize! :manage, :admin_modules_groups
 
     #getting a list of ta's and modules leaders for assigning problems
     @ta_and_mod_lead = []
-    users_in_module = ListModule.users_in_module(params['module_id'])
+    users_in_module = ListModule.users_in_module(module_id)
     for i in 0..(users_in_module.length-1) 
-      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, params['module_id'])
+      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, module_id)
       
       
       current_user_names = users_in_module[i].givenname + " " + users_in_module[i].sn + " - " + users_in_module[i].username
@@ -447,8 +450,10 @@ class AdminController < ApplicationController
                                                     users.sn LIKE ? OR
                                                     users.email LIKE ? OR
                                                     teams.name LIKE ? OR 
-                                                    teams.topic LIKE ?)",
-                                                    params[:module_id],
+                                                    teams.topic LIKE ? OR
+                                                    users.username LIKE ?)",
+                                                    module_id,
+                                                    "%" + search_input + "%",
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%",
