@@ -3,8 +3,8 @@ function addTopic() {
 
   var input_div = "<div class='input-group flex-nowrap margin_top margin_bottom_small special_width_topic' id='div_" + new_chq_no + "'> ";
   var topic_input = "<input type='text' id='topic_" + new_chq_no + "' class='form-control special_width_topic_name' placeholder='Topic " + new_chq_no + "' >";
-  var group_size_input = "<input type='text' id='size_" + new_chq_no + "' class='form-control' placeholder='Group Size' >";
-  var group_amount_input = "<input type='text' id='amount_" + new_chq_no + "' class='form-control' placeholder='№ of Groups' >";
+  var group_size_input = "<input type='text' id='size_" + new_chq_no + "' class='form-control' placeholder='Team Size' >";
+  var group_amount_input = "<input type='text' id='amount_" + new_chq_no + "' class='form-control' placeholder='№ of Teams' >";
   var input_div_id = '#div_' + new_chq_no.toString();
 
   $('#new_chq').append(input_div);
@@ -233,22 +233,22 @@ function normalButtonChange(students_in_module) {
           students_per_group = document.getElementById("normal_size").value;
           if (studentNumberTotal%students_per_group != 0) {
             amount_of_groups = Math.floor(studentNumberTotal/students_per_group) + 1;
-            document.getElementById("normal_amount").placeholder = "Suggested groups: " + amount_of_groups;
+            document.getElementById("normal_amount").placeholder = "Suggested teams: " + amount_of_groups;
           }
           else {
             amount_of_groups = studentNumberTotal/students_per_group;
-            document.getElementById("normal_amount").placeholder = "Suggested groups: " + amount_of_groups;
+            document.getElementById("normal_amount").placeholder = "Suggested teams: " + amount_of_groups;
           }
         }
         else if ((document.getElementById("normal_size").value == false) && (document.getElementById("normal_amount").value)) {
           amount_of_groups = document.getElementById("normal_amount").value;
           if (studentNumberTotal%amount_of_groups != 0) {
             students_per_group = Math.floor(studentNumberTotal/amount_of_groups) + 1;
-            document.getElementById("normal_size").placeholder = "Suggested students per group: " + students_per_group;
+            document.getElementById("normal_size").placeholder = "Suggested students per team: " + students_per_group;
           }
           else {
             students_per_group = studentNumberTotal/amount_of_groups;
-            document.getElementById("normal_size").placeholder = "Suggested students per group: " + students_per_group;
+            document.getElementById("normal_size").placeholder = "Suggested students per team: " + students_per_group;
           }
 
         }
@@ -329,22 +329,22 @@ function normalButtonChange(students_in_module) {
           students_per_group = document.getElementById("normal_size").value;
           if (studentNumberTotal%students_per_group != 0) {
             amount_of_groups = Math.floor(studentNumberTotal/students_per_group) + 1;
-            document.getElementById("normal_amount").placeholder = "Suggested groups: " + amount_of_groups;
+            document.getElementById("normal_amount").placeholder = "Suggested teams: " + amount_of_groups;
           }
           else {
             amount_of_groups = studentNumberTotal/students_per_group;
-            document.getElementById("normal_amount").placeholder = "Suggested groups: " + amount_of_groups;
+            document.getElementById("normal_amount").placeholder = "Suggested teams: " + amount_of_groups;
           }
         }
         else if ((document.getElementById("normal_size").value == false) && (document.getElementById("normal_amount").value)) {
           amount_of_groups = document.getElementById("normal_amount").value;
           if (studentNumberTotal%amount_of_groups != 0) {
             students_per_group = Math.floor(studentNumberTotal/amount_of_groups) + 1;
-            document.getElementById("normal_size").placeholder = "Suggested students per group: " + students_per_group;
+            document.getElementById("normal_size").placeholder = "Suggested students per team: " + students_per_group;
           }
           else {
             students_per_group = studentNumberTotal/amount_of_groups;
-            document.getElementById("normal_size").placeholder = "Suggested students per group: " + students_per_group;
+            document.getElementById("normal_size").placeholder = "Suggested students per team: " + students_per_group;
           }
 
         }
