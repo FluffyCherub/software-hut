@@ -32,15 +32,6 @@
           var nextSibling = e.target.nextElementSibling
           nextSibling.innerText = name
         })
-
-    -# .container
-    -#   .container
-    -#   %h.medium Report a problem with the team
-    -#   %form 
-    -#     .form-group
-    -#       %textarea.form-control{rows: "5"}
-    -#     .input-group-append.margin_left_none.special_margin_top.margin_bottom_small
-    -#       %input.btn.btn-primary.agreement_buttons.justify-content-center.float_left_override{name: "commit", type: "button", value: "Report"}
     
   - else
     .container-fluid.white_bg.push_top.container_middle
@@ -55,7 +46,6 @@
         - elsif @current_feedback_date.tmr_status == "finished"
           %button.btn.btn-primary.half_button.justify-content-center.button_toa_1{form: "acceptreject", type: "button", value: "Agreement accepted", name: "agreement_accepted_button"} Team Meeting Record accepted
 
-  //REPORTING A PROBLEM IS DONE HERE. MODIFY THE FORM 
   .container
     %h.medium Report a problem with the team
     %form#report{action: tmr_path(team_id: params['team_id'], module_id: params['module_id']), method: "get"}
