@@ -109,7 +109,7 @@ $(document).ready(function() {
           $('input:radio[name="collaboration_' + a + '"]').closest('td[name="td_collaboration_' + a + '_1"]').addClass('feedback_select');
         }
         else if ($('input[name="collaboration_' + a + '"]:checked').val() == 'needs_improvement') {
-          $('input:radio[name="collaborationn_' + a + '"]').closest('td').removeClass('feedback_select');
+          $('input:radio[name="collaboration_' + a + '"]').closest('td').removeClass('feedback_select');
           $('input:radio[name="collaboration_' + a + '"]').closest('td[name="td_collaboration_' + a + '_2"]').addClass('feedback_select');
         }
         else if ($('input[name="collaboration_' + a + '"]:checked').val() == 'meets_expectations') {
