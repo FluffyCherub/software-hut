@@ -46,8 +46,10 @@
   .container-fluid.no_padding.bg_none.text_black.center_text.special_margin_top
     .container-fluid.no_padding.bg_none.text_black.center_text
       %button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_3.medium{onclick: "location.href='/admin/modules';", type: "button"} Go Back
+    - start_date = @feedback_dates.start_date.strftime("%I:%M %p %d/%m/%Y")
+    - end_date = @feedback_dates.end_date.strftime("%I:%M %p %d/%m/%Y")
     %h5.bigger Peer Feedback Matrix 
-    %p.medium.margin_none 12:00 AM 24/05/2021 - 12:00 AM 31/05/2021
+    %p.medium.margin_none #{start_date} - #{end_date}
   %hr.group_line
   
   %iframe#dummyframe{name: "dummyframe", style: "display: none;"}

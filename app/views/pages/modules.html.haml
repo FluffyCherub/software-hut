@@ -53,8 +53,8 @@
             Open:
           %i.feedback_header.medium
             - if @closest_date != nil
-              - start_date = @closest_date.start_date.strftime("%d/%m/%Y %H:%M")
-              - end_date = @closest_date.end_date.strftime("%d/%m/%Y %H:%M")
+              - start_date = @closest_date.start_date.strftime("%I:%M %p %d/%m/%Y")
+              - end_date = @closest_date.end_date.strftime("%I:%M %p %d/%m/%Y")
               #{start_date} -  #{end_date}
             - else
               Unavailable
