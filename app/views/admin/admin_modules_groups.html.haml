@@ -140,7 +140,10 @@
                       //If impossible, just do (problem.length + students in team) and for students with no feedback show empty field
                       - for z in 1..(problems.length + 3)
 
-                        //If here
+                        - if (problems.length == 0) && (z == 1)
+                          .container.no_results.bg_none
+                            %h.center_element.medium.text_black No problems in this group
+
                         - if z <= problems.length
 
                           - problem_dot_type = "no_dot"
