@@ -21,6 +21,8 @@ class FeedbackController < ApplicationController
       render "errors/error_403"
     end
 
+    @feedback_dates = FeedbackDate.get_closest_date(Time.now, @module_id)
+
 
     #backup selected values from feedback matrix(set as temp_selected)
     for i in 1..@in_team_without_current_user.length
