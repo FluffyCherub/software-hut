@@ -33,6 +33,8 @@ class FeedbackController < ApplicationController
       collaboration = PeerFeedback.feedback_to_int(params['collaboration_' + i.to_s])
       leadership = PeerFeedback.feedback_to_int(params['leadership_' + i.to_s])
       ethics = PeerFeedback.feedback_to_int(params['ethics_' + i.to_s])
+      appreciate = params['appreciate_note_' + i.to_s]
+      request = params['request_note_' + i.to_s]
 
       current_feedback = PeerFeedback.find_or_create_by(created_by: current_user.username,
                                                         created_for: @in_team_without_current_user[i-1].username,
@@ -45,6 +47,8 @@ class FeedbackController < ApplicationController
       if collaboration != nil then current_feedback.update(collaboration: collaboration) end
       if leadership    != nil then current_feedback.update(leadership: leadership) end
       if ethics        != nil then current_feedback.update(ethics: ethics) end
+      if appreciate    != nil then current_feedback.update(appreciate: appreciate) end
+      if request       != nil then current_feedback.update(request: request) end
     end
 
     # final submission of feedback
@@ -66,7 +70,7 @@ class FeedbackController < ApplicationController
           feedback_finished.update(status: "finished")
         end
       else
-        #popup some fields for feeback missing
+        #popup some fields for feedback missing
       end
 
     end

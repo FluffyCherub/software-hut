@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(version: 2021_04_25_021455) do
     t.integer "collaboration"
     t.integer "leadership"
     t.integer "ethics"
+    t.string "appreciate", default: ""
+    t.string "request", default: ""
     t.bigint "feedback_date_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

@@ -14,6 +14,9 @@ class CreatePeerFeedbacks < ActiveRecord::Migration[6.0]
       t.integer :leadership, default: 'not_set'
       t.integer :ethics, default: 'not_set'
 
+      t.string :appreciate, default: ''
+      t.string :request, default: ''
+
       t.belongs_to :feedback_date, index: true, foreign_key: true
       
       t.timestamps

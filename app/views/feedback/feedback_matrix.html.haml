@@ -45,7 +45,7 @@
 
   .container-fluid.no_padding.bg_none.text_black.center_text.special_margin_top
     .container-fluid.no_padding.bg_none.text_black.center_text
-      %button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_3.medium{onclick: "location.href='/admin/modules';", type: "button"} Go Back
+      %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_3.medium{:href => modules_path(module_id: @module_id), type: "button"} Go Back
     - start_date = @feedback_dates.start_date.strftime("%I:%M %p %d/%m/%Y")
     - end_date = @feedback_dates.end_date.strftime("%I:%M %p %d/%m/%Y")
     %h5.bigger Peer Feedback Matrix 
@@ -264,19 +264,24 @@
                     .container-fluid.bg_none_margin
                       %p.medium.text_black.margin_none We appreciate:
                       .form-group
-                        %textarea.form-control{rows: "5", name: "aprreciate_note_#{i}"}
+                        %textarea.form-control{rows: "5", name: "appreciate_note_#{i}"}
                     .container-fluid.bg_none_margin
                       %p.medium.text_black.margin_none We request:
                       .form-group
                         %textarea.form-control{rows: "5", name: "request_note_#{i}"}
                     
             - current_feedback = raw (PeerFeedback.get_feedback_array_for_user(current_user.username, @in_team_without_current_user[i-1].username, @feedback_date_id)).to_json
+            - appreciate_request_fields = PeerFeedback.get_feedback_for_user(current_user.username, @in_team_without_current_user[i-1].username, @feedback_date_id).first
+            - appreciate_note = appreciate_request_fields.appreciate
+            - request_note = appreciate_request_fields.request
             //Required for the accordion to work properly - Do not edit
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
               document.getElementById('accordion-1').id = 'accordion-#{i}';
               load_selected_feedback_radios(#{current_feedback}, #{i});
+              load_appreciate_request_notes('#{appreciate_note}', '#{request_note}', #{i});
+              
              
     .container-fluid.no_padding.bg_none.margin_bottom_small
       %button{type: "submit", name: "submit_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_feedback", id:"submit_feedback_button", value: "submit_feedback", onclick: "redirect_to_modules('#{@module_id}');"}Submit Peer Feedback

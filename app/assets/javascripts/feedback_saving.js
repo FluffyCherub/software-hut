@@ -13,6 +13,8 @@ function submit_on_radio() {
     leadership = "input[name='" + "leadership_" + i.toString() + "']";
     ethics = "input[name='" + "ethics_" + i.toString() + "']";
 
+    
+
     //add event listeners to radio buttons
     document.querySelectorAll(attendance).forEach(item => {
       item.addEventListener('click', event => {
@@ -55,9 +57,26 @@ function submit_on_radio() {
         submit_feedback_form();
       })
     });
-    
+
+    appreciate_note = "appreciate_note_" + i.toString();
+    request_note = "request_note_" + i.toString();
+
+    document.getElementsByName(appreciate_note)[0].onchange = function(){submit_feedback_form();};
+    document.getElementsByName(request_note)[0].onchange = function(){submit_feedback_form();};
+
+    // $(appreciate_note).bind('input propertychange', function() {
+    //   submit_feedback_form();
+    // });
+
+    // $(request_note).bind('input propertychange', function() {
+    //   submit_feedback_form();
+    // });
+
   }
+
 }
+
+
 
 function submit_feedback_form() {
   document.getElementById("feedback_form").submit();
@@ -106,3 +125,13 @@ function redirect_to_modules(module_id) {
   window.location.replace("/modules?module_id=" + module_id);
 }
 
+function load_appreciate_request_notes(appreciate_note, request_note, student_number) {
+  //alert(appreciate_note);
+
+  
+  appreciate_name = "appreciate_note_" + student_number.toString();
+  request_name = "request_note_" + student_number.toString();
+  document.getElementsByName(appreciate_name)[0].value = appreciate_note;
+  document.getElementsByName(request_name)[0].value = request_note;
+  
+}

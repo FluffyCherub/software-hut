@@ -3,6 +3,7 @@
 # Table name: peer_feedbacks
 #
 #  id               :bigint           not null, primary key
+#  appreciate       :string           default("")
 #  attendance       :integer
 #  attitude         :integer
 #  collaboration    :integer
@@ -12,6 +13,7 @@
 #  ethics           :integer
 #  leadership       :integer
 #  qac              :integer
+#  request          :string           default("")
 #  status           :string           default("in_progress")
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
