@@ -53,7 +53,7 @@
   %hr.group_line
   
   %iframe#dummyframe{name: "dummyframe", style: "display: none;"}
-  = form_with(id: "feedback_form", url: feedback_matrix_path, :html => {:target=>'dummyframe'}) do |form|
+  = form_with(id: "feedback_form", url: feedback_matrix_path, :html => {:target=>'dummyframe'}, name: "feedback_form") do |form|
     .container-fluid.bg_none.bg_border.no_padding.special_margin_top.margin_bottom_small{:name => "#{num_of_students}", :id => "feedback_id"}
       %input{type: "hidden",id: "module_id", name: "module_id", value: params['module_id']}
       %input{type: "hidden",id: "team_id", name: "team_id", value: params['team_id']}

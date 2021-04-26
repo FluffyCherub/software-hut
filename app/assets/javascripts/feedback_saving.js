@@ -122,16 +122,13 @@ function load_selected_feedback_radios(feedback, student_number) {
 
 function redirect_to_modules(module_id) {
   //window.location.href = "/modules?module_id=" + module_id;
+  //document.getElementById("feedback_form").submit();
   window.location.replace("/modules?module_id=" + module_id);
 }
 
 function load_appreciate_request_notes(appreciate_note, request_note, student_number) {
-  //alert(appreciate_note);
-
-  
   appreciate_name = "appreciate_note_" + student_number.toString();
   request_name = "request_note_" + student_number.toString();
   document.getElementsByName(appreciate_name)[0].value = appreciate_note;
   document.getElementsByName(request_name)[0].value = request_note;
-  
 }

@@ -63,6 +63,18 @@ class FeedbackController < ApplicationController
           feedback_completion = false
           break
         end
+
+        if current_feedback.first.appreciate.nil? || current_feedback.first.appreciate.length < 1
+          feedback_completion = false
+          break
+        end
+
+        if current_feedback.first.request.nil? || current_feedback.first.request.length < 1
+          feedback_completion = false
+          break
+        end
+
+
       end
 
       if feedback_completion
