@@ -202,3 +202,61 @@ input[type="checkbox"]:focus{
   background: #ddd;
   font-family: 'Steph';
 }
+
+.button_mailmerge_edit {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 0%;
+  margin-right: 0%;
+  float: right;
+  width: 100%;
+  background-image: url("edit_merge.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  color: transparent !important;
+}
+
+.button_mailmerge_edit:hover {
+  background-color: #009fda !important;
+  color: transparent !important;
+}
+
+.button_mailmerge_edit:focus {
+  background-color: #009fda !important;
+  color: transparent !important;
+}
+
+.button_mailmerge_send_1 {
+  margin-top: 0%;
+  margin-bottom: 2%;
+  margin-left: 0%;
+  margin-right: 0%;
+  float: right;
+  width: 80%;
+}
+
+.padding_right_small_5px {
+  padding-right: 2px;
+}
+
+.edit_merge_image {
+  border: none;
+  max-width: 90%;
+  height: auto;
+  float: left;
+  margin-right: 0%;
+  margin-left: 0%;
+}
+
+@media (min-width: 576px) {
+  .col-sm-1_special {
+    flex: 0 0 5% !important;
+    max-width: 8.3333333333%;
+  }
+}
+
+.padding_left_small {
+  padding-left: 2px;
+}
+
+
