@@ -42,7 +42,7 @@ modules = ListModule.create([
 
 test = UserListModule.create([
   #modules for user1
-  {list_module: modules[0], user: user1, privilege: 'module_leader'},
+  {list_module: modules[0], user: user1, privilege: 'student'},
   {list_module: modules[1], user: user1, privilege: 'student'},
   {list_module: modules[2], user: user1, privilege: 'student'},
   {list_module: modules[3], user: user1, privilege: 'student'},
@@ -112,50 +112,50 @@ test = UserListModule.create([
 
 ])
     
-teams = Team.create([
-  {name: 'Team 1', topic: 'Topic 1', size: 6, list_module: modules[0]},
-  {name: 'Team 2', topic: 'none', size: 6, list_module: modules[0]},
-  {name: 'Team 3', topic: 'Topic 3', size: 6, list_module: modules[0]},
-  {name: 'Team 4', topic: 'none', size: 6, list_module: modules[0]},
-  {name: 'Team 5', topic: 'Topic 5', size: 6, list_module: modules[0]},
-  {name: 'Team 6', topic: 'none', size: 6, list_module: modules[0]},
-  {name: 'Team 7', topic: 'none', size: 6, list_module: modules[0]},
-])
+# teams = Team.create([
+#   {name: 'Team 1', topic: 'Topic 1', size: 6, list_module: modules[0]},
+#   {name: 'Team 2', topic: 'none', size: 6, list_module: modules[0]},
+#   {name: 'Team 3', topic: 'Topic 3', size: 6, list_module: modules[0]},
+#   {name: 'Team 4', topic: 'none', size: 6, list_module: modules[0]},
+#   {name: 'Team 5', topic: 'Topic 5', size: 6, list_module: modules[0]},
+#   {name: 'Team 6', topic: 'none', size: 6, list_module: modules[0]},
+#   {name: 'Team 7', topic: 'none', size: 6, list_module: modules[0]},
+# ])
 
 
-test2 = UserTeam.create([
-  {team: teams[0], user: user1, signed_agreement: false},
-  {team: teams[0], user: user2, signed_agreement: false},
+# test2 = UserTeam.create([
+#   {team: teams[0], user: user1, signed_agreement: false},
+#   {team: teams[0], user: user2, signed_agreement: false},
 
-  {team: teams[3], user: user3, signed_agreement: false},
-  {team: teams[3], user: user4, signed_agreement: false},
+#   {team: teams[3], user: user3, signed_agreement: false},
+#   {team: teams[3], user: user4, signed_agreement: false},
 
-  {team: teams[5], user: user5, signed_agreement: false},
-  {team: teams[5], user: user6, signed_agreement: false},
-
-
+#   {team: teams[5], user: user5, signed_agreement: false},
+#   {team: teams[5], user: user6, signed_agreement: false},
 
 
 
-  {team: teams[0], user: test_user1, signed_agreement: false},
-  {team: teams[0], user: test_user2, signed_agreement: false},
-  {team: teams[0], user: test_user3, signed_agreement: false},
-  {team: teams[0], user: test_user4, signed_agreement: false},
 
-  {team: teams[3], user: test_user5, signed_agreement: false},
-  {team: teams[3], user: test_user6, signed_agreement: false},
-  {team: teams[3], user: test_user7, signed_agreement: false},
-  {team: teams[3], user: test_user8, signed_agreement: false},
 
-  {team: teams[5], user: test_user2, signed_agreement: false},
-  {team: teams[5], user: test_user3, signed_agreement: false},
+#   {team: teams[0], user: test_user1, signed_agreement: false},
+#   {team: teams[0], user: test_user2, signed_agreement: false},
+#   {team: teams[0], user: test_user3, signed_agreement: false},
+#   {team: teams[0], user: test_user4, signed_agreement: false},
 
-  {team: teams[6], user: test_user1, signed_agreement: false},
-  {team: teams[6], user: test_user4, signed_agreement: false},
-  {team: teams[6], user: test_user5, signed_agreement: false},
-  {team: teams[6], user: test_user6, signed_agreement: false},
-  {team: teams[6], user: test_user7, signed_agreement: false},
-])
+#   {team: teams[3], user: test_user5, signed_agreement: false},
+#   {team: teams[3], user: test_user6, signed_agreement: false},
+#   {team: teams[3], user: test_user7, signed_agreement: false},
+#   {team: teams[3], user: test_user8, signed_agreement: false},
+
+#   {team: teams[5], user: test_user2, signed_agreement: false},
+#   {team: teams[5], user: test_user3, signed_agreement: false},
+
+#   {team: teams[6], user: test_user1, signed_agreement: false},
+#   {team: teams[6], user: test_user4, signed_agreement: false},
+#   {team: teams[6], user: test_user5, signed_agreement: false},
+#   {team: teams[6], user: test_user6, signed_agreement: false},
+#   {team: teams[6], user: test_user7, signed_agreement: false},
+# ])
 
 
 
