@@ -5,7 +5,6 @@
 #  id             :bigint           not null, primary key
 #  end_date       :datetime
 #  start_date     :datetime
-#  tmr_status     :string           default("in_progress")
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  list_module_id :bigint

@@ -60,30 +60,20 @@
               Unavailable
           - if @module_info.level == 4 || @module_info.level == 5
             - if @team_info.nil? || @in_feedback_window == false
-              %li Team Meeting Record Unavailable
               %li Peer Feedback Matrix Unavailable
             - elsif @is_feedback_completed
-              %li 
-                #{link_to "Team Meeting Record", tmr_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
-                - if FeedbackDate.check_tmr_completion(@team_info.id, @closest_date.id)
-                  %span.green_text (Done)
               %li 
                 Peer Feedback Matrix 
                 %span.green_text (Done)
             - else
-              %li 
-                #{link_to "Team Meeting Record", tmr_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
-                - if FeedbackDate.check_tmr_completion(@team_info.id, @closest_date.id)
-                  %span.green_text (Done)
               %li #{link_to "Peer Feedback Matrix", feedback_matrix_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id, :feedback_date_id => @closest_date.id)}
-          - elsif @module_info.level == 6 || @module_info.level == 7
-            - if @team_info.nil? || @in_feedback_window == false
-              %li Team Meeting Record Unavailable
-            - else
-              %li 
-                #{link_to "Team Meeting Record", tmr_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
-                - if FeedbackDate.check_tmr_completion(@team_info.id, @closest_date.id)
-                  %span.green_text (Done)
+            
+          - if @team_info != nil
+            %li 
+              #{link_to "Team Meeting Record", tmr_path(:team_id => @team_info.id, :module_id => @team_info.list_module_id)}
+          - else
+            %li
+              Team Meeting Record Unavailable
         %ul
           %strong.feedback_header.medium 
             Additional Info: 

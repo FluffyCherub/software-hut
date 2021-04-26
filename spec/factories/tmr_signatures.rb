@@ -2,20 +2,20 @@
 #
 # Table name: tmr_signatures
 #
-#  id               :bigint           not null, primary key
-#  signed_at        :datetime
-#  signed_by        :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  feedback_date_id :bigint
+#  id         :bigint           not null, primary key
+#  signed_at  :datetime
+#  signed_by  :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  tmr_id     :bigint           not null
 #
 # Indexes
 #
-#  index_tmr_signatures_on_feedback_date_id  (feedback_date_id)
+#  index_tmr_signatures_on_tmr_id  (tmr_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (feedback_date_id => feedback_dates.id)
+#  fk_rails_...  (tmr_id => tmrs.id)
 #
 FactoryBot.define do
   factory :tmr_signature do

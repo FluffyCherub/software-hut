@@ -5,7 +5,6 @@
 #  id             :bigint           not null, primary key
 #  end_date       :datetime
 #  start_date     :datetime
-#  tmr_status     :string           default("in_progress")
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  list_module_id :bigint
@@ -20,10 +19,6 @@
 #
 class FeedbackDate < ApplicationRecord
   belongs_to :list_module
-  has_many :tmr_signatures, dependent: :destroy
-
-  #one team meeting record per feedback date window
-  has_one_attached :tmr
 
   #many peer feedbacks per feedback date window
   has_many :peer_feedbacks, dependent: :destroy
@@ -76,21 +71,5 @@ class FeedbackDate < ApplicationRecord
     return result
   end
 
-  def self.check_tmr_completion(team_id, feedback_date_id)
-    num_of_signs_needed = Team.get_current_team_size(team_id)
-    puts "-------------------------------"
-    puts num_of_signs_needed
-    puts TmrSignature.get_tmr_signatures(feedback_date_id).length
-    puts "-------------------------------"
-
-     if TmrSignature.get_tmr_signatures(feedback_date_id).length == num_of_signs_needed
-      return true
-     else
-      return false
-     end
-  end
-
-  def self.unsign_tmr(feedback_date_id)
-    TmrSignature.where(feedback_date_id: feedback_date_id).destroy_all
-  end
+  
 end

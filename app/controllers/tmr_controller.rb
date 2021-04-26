@@ -1,15 +1,19 @@
 class TmrController < ApplicationController
 
   def tmr_doc
-    @current_feedback_date = FeedbackDate.get_closest_date(Time.now, params['module_id'])
-    @tmr_sign_status = TmrSignature.check_signature(current_user.username, @current_feedback_date.id)
+    @team_id = params['team_id']
+    @unfinished_tmr = Tmr.get_unfinished_tmr(@team_id)
 
-    if params['commit'] == "Submit" && @current_feedback_date.tmr_status == "in_progress" && params['file'] != nil && params['file'].content_type == "application/pdf"
-      @current_feedback_date.tmr.attach(params['file'])
-      @current_feedback_date.update(tmr_status: "submitted")
+    if @unfinished_tmr != nil
+      @unfinished_tmr_sign_status = TmrSignature.check_signature(current_user.username, @unfinished_tmr.id)
+    end
 
+    if params['commit'] == "Submit"  && params['file'] != nil && params['file'].content_type == "application/pdf"
+      Tmr.add_tmr(@team_id, params['file'])
+      
+      redirect_to tmr_path(team_id: params['team_id'], module_id: params['module_id'])
     else
-      #popup
+      #popup wrong file format/file not selected
     end
 
     #accept the tmr
@@ -17,17 +21,16 @@ class TmrController < ApplicationController
       #sign tmr
       TmrSignature.create(signed_by: current_user.username,
                           signed_at: Time.now,
-                          feedback_date_id: @current_feedback_date.id)
+                          tmr_id: @unfinished_tmr.id)
 
-      if FeedbackDate.check_tmr_completion(params['team_id'], @current_feedback_date.id)
-        @current_feedback_date.update(tmr_status: "finished")
+      if Tmr.check_tmr_completion(@unfinished_tmr.id, @team_id)
+        @unfinished_tmr.update(status: "finished")
       end
 
       redirect_to tmr_path(team_id: params['team_id'], module_id: params['module_id'])
     elsif params['reject_button'] == "Reject"
       #reject the tmr
-      @current_feedback_date.update(tmr_status: "in_progress")
-      FeedbackDate.unsign_tmr(@current_feedback_date.id)
+      @unfinished_tmr.destroy
 
       redirect_to tmr_path(team_id: params['team_id'], module_id: params['module_id'])
     end

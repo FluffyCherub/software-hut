@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_25_021455) do
+ActiveRecord::Schema.define(version: 2021_04_26_222758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,7 +54,6 @@ ActiveRecord::Schema.define(version: 2021_04_25_021455) do
   create_table "feedback_dates", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
-    t.string "tmr_status", default: "in_progress"
     t.bigint "list_module_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -129,10 +128,18 @@ ActiveRecord::Schema.define(version: 2021_04_25_021455) do
   create_table "tmr_signatures", force: :cascade do |t|
     t.string "signed_by"
     t.datetime "signed_at"
-    t.bigint "feedback_date_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["feedback_date_id"], name: "index_tmr_signatures_on_feedback_date_id"
+    t.bigint "tmr_id", null: false
+    t.index ["tmr_id"], name: "index_tmr_signatures_on_tmr_id"
+  end
+
+  create_table "tmrs", force: :cascade do |t|
+    t.string "status", default: "in_progress"
+    t.bigint "team_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_id"], name: "index_tmrs_on_team_id"
   end
 
   create_table "user_list_modules", force: :cascade do |t|
@@ -189,7 +196,8 @@ ActiveRecord::Schema.define(version: 2021_04_25_021455) do
   add_foreign_key "peer_feedbacks", "feedback_dates"
   add_foreign_key "problems", "teams"
   add_foreign_key "teams", "list_modules"
-  add_foreign_key "tmr_signatures", "feedback_dates"
+  add_foreign_key "tmr_signatures", "tmrs"
+  add_foreign_key "tmrs", "teams"
   add_foreign_key "user_list_modules", "list_modules"
   add_foreign_key "user_list_modules", "users"
   add_foreign_key "user_teams", "teams"

@@ -26,10 +26,10 @@ class Team < ApplicationRecord
   has_many :users, through: :user_teams
 
   has_many :problems, dependent: :destroy
+  has_many :tmrs, dependent: :destroy
 
   #one team operating agreement per team
   has_one_attached :document, dependent: :destroy
-
 
   #get the number of team members in team
   def self.get_current_team_size(team_id)

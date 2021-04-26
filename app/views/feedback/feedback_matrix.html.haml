@@ -260,7 +260,7 @@
                               %label.clickable
                                 #{ethics[4]}
                                 %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "exceeds_expectations"} 
-                    
+                  - if @module_info.level == 5
                     .container-fluid.bg_none_margin
                       %p.medium.text_black.margin_none I appreciate:
                       .form-group
