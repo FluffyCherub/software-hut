@@ -42,9 +42,10 @@
   - "You are a role model for others, behaving professionally and ethically even in difficult circumstances. You take great care to ensure that your interactions with others are positive and do not have a negative impact."]
   
   - num_of_students = @in_team_without_current_user.length
-  .container-fluid.bg_none.bg_border.no_padding.special_margin_top.margin_bottom_small{:name => "#{num_of_students}", :id => "feedback_id"}
-    %iframe#dummyframe{name: "dummyframe", style: "display: none;"}
-    = form_with(id: "feedback_form", url: feedback_matrix_path, :html => {:target=>'dummyframe'}) do |form|
+  
+  %iframe#dummyframe{name: "dummyframe", style: "display: none;"}
+  = form_with(id: "feedback_form", url: feedback_matrix_path, :html => {:target=>'dummyframe'}) do |form|
+    .container-fluid.bg_none.bg_border.no_padding.special_margin_top.margin_bottom_small{:name => "#{num_of_students}", :id => "feedback_id"}
       %input{type: "hidden",id: "module_id", name: "module_id", value: params['module_id']}
       %input{type: "hidden",id: "team_id", name: "team_id", value: params['team_id']}
       %input{type: "hidden",id: "feedback_date_id", name: "feedback_date_id", value: params['feedback_date_id']}
@@ -266,7 +267,7 @@
 
 
               
-    
+    .container-fluid.bg_none_margin
       %button{type: "submit", name: "submit_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"submit_feedback_button", value: "submit_feedback", onclick: "redirect_to_modules('#{@module_id}');"}Submit Peer Feedback
 
 :javascript
