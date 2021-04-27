@@ -56,11 +56,16 @@
               %span.margin_none#spot_tracker
           .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small.no_padding
             .input-group.flex-nowrap.special_width_topic
-              %input.form-control.special_width_topic_name#topic_1{placeholder: "Topic 1", type: "text"}
-              %input.form-control#size_1{placeholder: "Team Size", type: "text"}
-              %input.form-control#amount_1{placeholder: "№ of Teams", type: "text"}
+              %input.form-control.special_width_topic_name#topic_1{name: "topic_1", placeholder: "Topic 1", type: "text"}
+              %input.form-control#size_1{name: "size_1", placeholder: "Team Size", type: "text"}
+              %input.form-control#amount_1{name: "amount_1", placeholder: "№ of Teams", type: "text"}
             #new_chq
-            %input#total_chq{type: "hidden", value: "1"}
+            %input#total_chq{type: "hidden", name: "total_chq", value: "1"}
+          .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_margin_top
+            .form-check
+              %input#flexCheckChecked.form-check-input.border_none{checked: false, type: "checkbox", value: "checked", name: "topic_free_join"}
+              %label.form-check-label{for: "flexCheckChecked"}
+                Let students join teams
 
       //SETTING UP FEEDBACK FREQUENCY GOES HERE --------------------------------
       .container-fluid.bg_none.text_black.medium

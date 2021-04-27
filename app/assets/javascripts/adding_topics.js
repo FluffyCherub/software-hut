@@ -2,9 +2,9 @@ function addTopic() {
   var new_chq_no = parseInt($('#total_chq').val()) + 1;
 
   var input_div = "<div class='input-group flex-nowrap margin_top margin_bottom_small special_width_topic' id='div_" + new_chq_no + "'> ";
-  var topic_input = "<input type='text' id='topic_" + new_chq_no + "' class='form-control special_width_topic_name' placeholder='Topic " + new_chq_no + "' >";
-  var group_size_input = "<input type='text' id='size_" + new_chq_no + "' class='form-control' placeholder='Team Size' >";
-  var group_amount_input = "<input type='text' id='amount_" + new_chq_no + "' class='form-control' placeholder='№ of Teams' >";
+  var topic_input = "<input type='text' id='topic_" + new_chq_no + "' name='topic_" + new_chq_no + "' class='form-control special_width_topic_name' placeholder='Topic " + new_chq_no + "' >";
+  var group_size_input = "<input type='text' id='size_" + new_chq_no + "' name='size_" + new_chq_no + "' class='form-control' placeholder='Team Size' >";
+  var group_amount_input = "<input type='text' id='amount_" + new_chq_no + "' name='amount_" + new_chq_no + "' class='form-control' placeholder='№ of Teams' >";
   var input_div_id = '#div_' + new_chq_no.toString();
 
   $('#new_chq').append(input_div);

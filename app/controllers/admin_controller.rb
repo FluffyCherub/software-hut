@@ -721,28 +721,29 @@ class AdminController < ApplicationController
   end
 
   def admin_modules_groups_create
-    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
+    module_id = params['module_id']
+    current_ability(User.get_module_privilege(module_id, current_user.id))
     authorize! :manage, :admin_modules_groups_create
 
     #getting the module information about the currently displayed module
-    @module_info = ListModule.where("id = ?", params[:module_id]).first
-    @num_of_students = ListModule.num_students_in_mod(params['module_id'])
+    @module_info = ListModule.where("id = ?", module_id).first
+    @num_of_students = ListModule.num_students_in_mod(module_id)
 
     #check if submit button was pressed
     if params['rand_btn'] != nil
+      
+      #delete all teams that where previously in the module
+      Team.where(list_module_id: module_id).destroy_all
+      UserTeam.joins(:team).where("teams.list_module_id = ?", module_id).destroy_all
+
       if params['rand_btn'] == "enabled" && (params['random_group_size'].length>0 || params['random_num_of_groups'].length>0)
         random_group_size = params['random_group_size']
         random_num_of_groups = params['random_num_of_groups']
         module_id = params['module_id']
         num_of_dates = params['total_chq_period']
 
-        #delete all teams that where previously in the module
-        Team.where(list_module_id: module_id).destroy_all
-        UserTeam.joins(:team).where("teams.list_module_id = ?", module_id).destroy_all
-
         #get all students from this module and shuffle them
         students_in_mod = ListModule.students_in_module(module_id).shuffle
-
 
         #create teams and randomly put students in them
         if params['random_free_join'].nil?
@@ -874,6 +875,93 @@ class AdminController < ApplicationController
 
         end
       end
+
+      if params['topic_btn'] == "enabled"
+        num_of_topics = params['total_chq'].to_i
+        topics_integrity = true
+        total_team_size = 0
+        num_of_dates = params['total_chq_period']
+
+        #check if all the fields for topic name/team size/num of teams were filled
+        for i in 1..num_of_topics
+          current_topic_name = params["topic_" + i.to_s]
+          current_topic_size = params["size_" + i.to_s]
+          current_topic_amount = params["amount_" + i.to_s]
+          if current_topic_name.nil? || current_topic_size.nil? || current_topic_amount.nil?
+            topics_integrity = false
+            break
+          end
+        end
+
+        #if all fields were filled, creating teams with given topics and putting people inside
+        if topics_integrity
+          new_teams = []
+          team_name_number = 1
+
+          for i in 1..num_of_topics  
+            current_topic_name = params["topic_" + i.to_s]
+            current_topic_size = params["size_" + i.to_s].to_i
+            current_topic_amount = params["amount_" + i.to_s].to_i
+
+            for j in 0...current_topic_amount
+              new_team_name = "Team " + team_name_number.to_s
+              new_teams.append(Team.create(name: new_team_name,
+                                           size: current_topic_size,
+                                           topic: current_topic_name,
+                                           list_module_id: module_id))
+
+              team_name_number += 1
+              total_team_size += current_topic_size
+            end
+          end
+          
+          puts "--------------------------------------------"
+          puts new_teams.length
+
+          if params['topic_free_join'] == "checked"
+            #set the team type to free join
+            ListModule.set_team_type(module_id, "free_join")
+          else
+            #set the team type to random
+            ListModule.set_team_type(module_id, "random")
+
+            #here put students in newly created teams at random
+
+            #get all students from this module and shuffle them
+            students_in_mod = ListModule.students_in_module(module_id).shuffle
+            num_students_in_teams = 0
+
+        
+            #putting students in new teams until they are filled up
+            while (total_team_size > num_students_in_teams) && (students_in_mod.length) > 0 do
+              for i in 0...new_teams.length
+                if (total_team_size > num_students_in_teams) && (students_in_mod.length > 0)
+                  if new_teams[i].size > Team.get_current_team_size(new_teams[i].id)
+                    UserTeam.create(team: new_teams[i], user: students_in_mod[0], signed_agreement: false)
+                    students_in_mod.shift(1)
+                    num_students_in_teams += 1
+                  end
+                else
+                  break
+                end
+              end
+            end
+
+            #putting the left over students in teams(team1=>team2...)
+            while students_in_mod.length > 0
+              for i in 0...new_teams.length
+                if students_in_mod.length > 0
+                  UserTeam.create(team: new_teams[i], user: students_in_mod[0], signed_agreement: false)
+                  students_in_mod.shift(1)
+                end
+              end
+            end
+
+          end
+        end
+      end
+
+      #--------------------------------FEEDBACK DATES SECTION--------------------------------#
 
       #delete all the feedback dates in the system for this module
       FeedbackDate.where(list_module_id: module_id).destroy_all
