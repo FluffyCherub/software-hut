@@ -37,6 +37,7 @@
 
               //rowspan should be == to number of members that have given feedback multipled by 2
               //Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 8
+              //HERE DISPLAY FIRST PERSON WHO GIVES FEEDBACK
               %tr
                 %td.pt-3-half.td_border_right.small{:colspan => "1", :rowspan => "8", :style => "width: 20%;", contenteditable: "false"}
                   Anton Minkov
@@ -58,6 +59,7 @@
               
               //LOOP HERE
               //Loop trough feedback
+              //IF 2 or more people gave feedback, loop from the second to the last
               //If there are x students with feedback it should be 2..x
               - for z in 2..4
                 %tr
