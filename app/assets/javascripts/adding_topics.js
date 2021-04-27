@@ -407,48 +407,48 @@ function tempDisableButton() {
 }
 
 function addPeriod() {
-  var new_chq_no = parseInt($('#total_chq_period').val()) + 1;
+  var new_chq_no_2 = parseInt($('#total_chq_period').val()) + 1;
 
   //Creating new elements
   //Divs
-  var input_div_1 = "<div class='container-fluid text_black bg_none margin_bottom_small no_padding float_left' id='div_" + new_chq_no + "'> ";
-  var input_div_2 = "<div class='container-fluid text_black bg_none special_size_1 margin_bottom_small no_padding float_left' id='div_2_" + new_chq_no + "'> ";
-  var input_div_3 = "<div class='container-fluid text_black bg_none margin_bottom_small no_padding' id='div_2_3" + new_chq_no + "'> ";
-  var input_p_1 = "<p class='margin_none' id='p_name_" + new_chq_no + "'> ";
-  var input_strong_1 = "<strong id='time_name_" + new_chq_no + "'> ";
+  var input_div_1 = "<div class='container-fluid text_black bg_none margin_bottom_small no_padding float_left' id='div_period_" + new_chq_no_2 + "'> ";
+  var input_div_2 = "<div class='container-fluid text_black bg_none special_size_1 margin_bottom_small no_padding float_left' id='div_2_" + new_chq_no_2 + "'> ";
+  var input_div_3 = "<div class='container-fluid text_black bg_none margin_bottom_small no_padding' id='div_2_3" + new_chq_no_2 + "'> ";
+  var input_p_1 = "<p class='margin_none' id='p_name_" + new_chq_no_2 + "'> ";
+  var input_strong_1 = "<strong id='time_name_" + new_chq_no_2 + "'> ";
 
   //Start Date
-  var picker_div_start = "<div class='container-fluid text_black bg_none no_padding margin_bottom_small' id='picker_div_start_" + new_chq_no + "'> ";
-  var label_start = "<label id='start_time_label_" + new_chq_no + "'> ";
-  var date_start = "<input class='float_right' id='start_time_" + new_chq_no + "'> ";
+  var picker_div_start = "<div class='container-fluid text_black bg_none no_padding margin_bottom_small' id='picker_div_start_" + new_chq_no_2 + "'> ";
+  var label_start = "<label id='start_time_label_" + new_chq_no_2 + "'> ";
+  var date_start = "<input class='float_right' id='start_time_" + new_chq_no_2 + "'> ";
 
   //End Date
-  var picker_div_end = "<div class='container-fluid text_black bg_none no_padding margin_bottom_small' id='picker_div_end_" + new_chq_no + "'> ";
-  var label_end = "<label id='end_time_label_" + new_chq_no + "'> ";
-  var date_end = "<input class='float_right' id='end_time_" + new_chq_no + "'> ";
+  var picker_div_end = "<div class='container-fluid text_black bg_none no_padding margin_bottom_small' id='picker_div_end_" + new_chq_no_2 + "'> ";
+  var label_end = "<label id='end_time_label_" + new_chq_no_2 + "'> ";
+  var date_end = "<input class='float_right' id='end_time_" + new_chq_no_2 + "'> ";
 
   //Separator
-  var line_after = "<hr class='special_line margin_none' id='line_after_" + new_chq_no + "'> ";
+  var line_after = "<hr class='special_line margin_none' id='line_after_" + new_chq_no_2 + "'> ";
 
   //Div ID's
-  var input_div_1_id = '#div_' + new_chq_no.toString();
-  var input_div_2_id = '#div_2_' + new_chq_no.toString();
-  var input_div_3_id = '#div_2_3' + new_chq_no.toString();
-  var input_p_1_id = '#p_name_' + new_chq_no.toString();
-  var input_strong_1_id = '#time_name_' + new_chq_no.toString();
+  var input_div_1_id = '#div_period_' + new_chq_no_2.toString();
+  var input_div_2_id = '#div_2_' + new_chq_no_2.toString();
+  var input_div_3_id = '#div_2_3' + new_chq_no_2.toString();
+  var input_p_1_id = '#p_name_' + new_chq_no_2.toString();
+  var input_strong_1_id = '#time_name_' + new_chq_no_2.toString();
   
   //Start Date ID's
-  var picker_div_start_id = '#picker_div_start_' + new_chq_no.toString();
-  var label_start_id = '#start_time_label_' + new_chq_no.toString();
-  var date_start_id = '#start_time_' + new_chq_no.toString();
+  var picker_div_start_id = '#picker_div_start_' + new_chq_no_2.toString();
+  var label_start_id = '#start_time_label_' + new_chq_no_2.toString();
+  var date_start_id = '#start_time_' + new_chq_no_2.toString();
   
   //End Date ID's
-  var picker_div_end_id = '#picker_div_end_' + new_chq_no.toString();
-  var label_end_id = '#end_time_label_' + new_chq_no.toString();
-  var date_end_id = '#end_time_' + new_chq_no.toString();
+  var picker_div_end_id = '#picker_div_end_' + new_chq_no_2.toString();
+  var label_end_id = '#end_time_label_' + new_chq_no_2.toString();
+  var date_end_id = '#end_time_' + new_chq_no_2.toString();
   
   //Separator ID's
-  var line_after_id = '#line_after_' + new_chq_no.toString();
+  var line_after_id = '#line_after_' + new_chq_no_2.toString();
 
   //Appending the elements
   $('#new_chq_period').append(input_div_1);
@@ -477,63 +477,63 @@ function addPeriod() {
   //Changing properties of created elements
 
   //Name
-  document.getElementById('time_name_' + new_chq_no.toString()).innerHTML = "Period "  + new_chq_no.toString();
+  document.getElementById('time_name_' + new_chq_no_2.toString()).innerHTML = "Period "  + new_chq_no_2.toString();
 
   //New dates
-  var new_start_date = document.getElementById('end_time_' + (new_chq_no-1).toString()).value
+  var new_start_date = document.getElementById('end_time_' + (new_chq_no_2-1).toString()).value
   var new_end_date = formatDate(addDays(new_start_date, 7))
 
   //alert(new_end_date)
 
   //Start Date
-  document.getElementById('start_time_label_' + new_chq_no.toString()).innerHTML = "Start Date: ";
-  document.getElementById('start_time_label_' + new_chq_no.toString()).htmlFor = date_start_id;
-  document.getElementById('start_time_' + new_chq_no.toString()).name = "start_time_"  + new_chq_no.toString();
-  document.getElementById('start_time_' + new_chq_no.toString()).type = "datetime-local";
-  document.getElementById('start_time_' + new_chq_no.toString()).value = new_start_date;
+  document.getElementById('start_time_label_' + new_chq_no_2.toString()).innerHTML = "Start Date: ";
+  document.getElementById('start_time_label_' + new_chq_no_2.toString()).htmlFor = date_start_id;
+  document.getElementById('start_time_' + new_chq_no_2.toString()).name = "start_time_"  + new_chq_no_2.toString();
+  document.getElementById('start_time_' + new_chq_no_2.toString()).type = "datetime-local";
+  document.getElementById('start_time_' + new_chq_no_2.toString()).value = new_start_date;
 
   //End Date
-  document.getElementById('end_time_label_' + new_chq_no.toString()).innerHTML = "End Date: ";
-  document.getElementById('end_time_label_' + new_chq_no.toString()).htmlFor = date_end_id;
-  document.getElementById('end_time_' + new_chq_no.toString()).name = "end_time_"  + new_chq_no.toString();
-  document.getElementById('end_time_' + new_chq_no.toString()).type = "datetime-local";
-  document.getElementById('end_time_' + new_chq_no.toString()).value = new_end_date;
+  document.getElementById('end_time_label_' + new_chq_no_2.toString()).innerHTML = "End Date: ";
+  document.getElementById('end_time_label_' + new_chq_no_2.toString()).htmlFor = date_end_id;
+  document.getElementById('end_time_' + new_chq_no_2.toString()).name = "end_time_"  + new_chq_no_2.toString();
+  document.getElementById('end_time_' + new_chq_no_2.toString()).type = "datetime-local";
+  document.getElementById('end_time_' + new_chq_no_2.toString()).value = new_end_date;
 
   //Update counter value
-  $('#total_chq_period').val(new_chq_no);
+  $('#total_chq_period').val(new_chq_no_2);
 
 }
 
 function removePeriod() {
-  var last_chq_no = $('#total_chq_period').val();
+  var last_chq_no_2 = $('#total_chq_period').val();
 
-  if (last_chq_no > 1) {
+  if (last_chq_no_2 > 1) {
 
     //Removing elements
     //Divs
-    $('#div_' + last_chq_no).remove();
-    $('#div_2_' + last_chq_no).remove();
-    $('#div_2_3' + last_chq_no).remove();
-    $('#p_name_' + last_chq_no).remove();
+    $('#div_period_' + last_chq_no_2).remove();
+    $('#div_2_' + last_chq_no_2).remove();
+    $('#div_2_3' + last_chq_no_2).remove();
+    $('#p_name_' + last_chq_no_2).remove();
 
     //Name
-    $('#time_name_' + last_chq_no).remove();
+    $('#time_name_' + last_chq_no_2).remove();
 
     //Start Date
-    $('#picker_div_start_' + last_chq_no).remove();
-    $('#start_time_label_' + last_chq_no).remove();
-    $('#start_time_' + last_chq_no).remove();
+    $('#picker_div_start_' + last_chq_no_2).remove();
+    $('#start_time_label_' + last_chq_no_2).remove();
+    $('#start_time_' + last_chq_no_2).remove();
 
     //End Date
-    $('#picker_div_end_' + last_chq_no).remove();
-    $('#end_time_label_' + last_chq_no).remove();
-    $('#end_time_' + last_chq_no).remove();
+    $('#picker_div_end_' + last_chq_no_2).remove();
+    $('#end_time_label_' + last_chq_no_2).remove();
+    $('#end_time_' + last_chq_no_2).remove();
 
     //Separator
-    $('#line_after_' + last_chq_no).remove();
+    $('#line_after_' + last_chq_no_2).remove();
 
     //Update counter value
-    $('#total_chq_period').val(last_chq_no - 1);
+    $('#total_chq_period').val(last_chq_no_2 - 1);
   }
 }
 
