@@ -4,8 +4,6 @@ function addTopic() {
 
   var previous_group_size = document.getElementById("size_" + previous_chq_no.toString()).value
   var previous_group_amount = document.getElementById("amount_" + previous_chq_no.toString()).value
-  console.log(previous_group_size);
-  console.log(previous_group_amount);
 
   var input_div = "<div class='input-group flex-nowrap margin_top margin_bottom_small special_width_topic' id='div_" + new_chq_no + "'> ";
   var topic_input = "<input type='text' id='topic_" + new_chq_no + "' name='topic_" + new_chq_no + "' class='form-control special_width_topic_name' placeholder='Topic " + new_chq_no + "' >";

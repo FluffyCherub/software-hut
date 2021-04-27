@@ -188,8 +188,29 @@
                                 %p Solved by: #{solved_by}
                                 %p Solved on: #{solved_on}
                                 %hr.group_line
+                                %p.margin_bottom_small.entry-content
+                                  By [Name] on [Date]
+                                  %hr.special_line.margin_none.margin_bottom_small_override.entry-content
                                 %p Note: #{problems[z-1].note}
                                 %hr.group_line
+
+                                //Here is loop to get all the notes from ta/ml
+
+                                - for x in 1..3
+                                  %p.margin_bottom_small.entry-content
+                                    By [Name] on [Date]
+                                    %hr.special_line.margin_none.margin_bottom_small_override.entry-content
+                                  %p Note: #{problems[z-1].note}
+                                  %hr.group_line
+
+                                //Here is the input field to add a note
+                                %p.medium.text_black.margin_none Additional Note:
+                                .form-group.margin_bottom_small_override
+                                  %textarea.form-control{rows: "3", name: "additional_note_#{i}_#{z}"}
+                                %button.add.btn.btn-primary.button_topics.medium{type: "button", onclick: "addPeriod()"}Add Note
+                                %hr.group_line
+
+
                                 = simple_form_for :problem_form do |f|
                                   = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
                                   = f.input :form_problem_id, :as => :hidden, :input_html => {:id => "form_problem_id", :value => problems[z-1].id }
