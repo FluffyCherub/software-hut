@@ -1,0 +1,8 @@
+- for i in 0...@problem_notes.length
+  - created_by = User.get_first_last(@problem_notes[i].created_by)
+  - created_at = @problem_notes.first.created_at.strftime("%I:%M %p %d/%m/%Y")
+  %p.margin_bottom_small.entry-content
+    By #{created_by} on #{created_at}
+    %hr.special_line.margin_none.margin_bottom_small_override.entry-content
+  %p Note: #{@problem_notes[i].note}
+  %hr.group_line

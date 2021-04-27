@@ -24,7 +24,10 @@ Rails.application.routes.draw do
   match "/student/groups", to: "pages#student_groups_join", via: :all
   match "/feedback/matrix", to: "feedback#feedback_matrix", via: :all
   match "/feedback/review/all", to: "feedback#feedback_review_all", via: :all
+  match "/problem_notes", to: "problem_notes#create", via: :all
   match "*path", to: "errors#error_404", via: :all
+
+  
 
 
 

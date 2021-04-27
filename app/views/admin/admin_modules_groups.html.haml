@@ -22,6 +22,7 @@
 
 
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black
+    %input{id: "num_of_teams", name: "num_of_teams", type: "hidden", value: @groups_for_module.length}
     - if @groups_for_module.length == 0
       .container.no_results
         %h.center_element.bigger.text_black No users/groups match your search
@@ -37,6 +38,8 @@
               - true_i = i + 1
 
             - problems = Problem.get_problems_for_team(@groups_for_module[i-1].id)
+            - num_problems_id = "num_of_problems_" + i.to_s
+            %input{id: "#{num_problems_id}", name: "#{num_problems_id}", type: "hidden", value: problems.length}
             #heading-1.card-header
               %h5.mb-0
                 %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
@@ -140,6 +143,7 @@
                       //If impossible, just do (problem.length + students in team) and for students with no feedback show empty field
                       - for z in 1..(problems.length + 3)
 
+
                         - if (problems.length == 0) && (z == 1)
                           .container.no_results.bg_none
                             %h.center_element.medium.text_black No problems in this group
@@ -174,40 +178,50 @@
 
                             #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                               .card-body
-                                - created_at = problems[z-1].created_at.strftime("%I:%M %p - %d/%m/%Y")
+                                - created_at = problems[z-1].created_at.strftime("%I:%M %p %d/%m/%Y")
                                 - if problems[z-1].solved_on != nil
-                                  - solved_on = problems[z-1].solved_on.strftime("%I:%M %p - %d/%m/%Y")
+                                  - solved_on = problems[z-1].solved_on.strftime("%I:%M %p %d/%m/%Y")
                                 - else
                                   - solved_on = ""
                                 - if problems[z-1].solved_by != nil
                                   - solved_by = User.get_first_last(problems[z-1].solved_by) + " - " + User.get_email(problems[z-1].solved_by)
                                 - else
                                   - solved_by = ""
-                                %p Created by: #{User.get_first_last(problems[z-1].created_by)} - #{User.get_email(problems[z-1].created_by)}
+                                - problem_created_by_name = User.get_first_last(problems[z-1].created_by)
+                                - problem_created_by_email = User.get_email(problems[z-1].created_by)
+                                %p Created by: #{problem_created_by_name} - #{problem_created_by_email}
                                 %p Created on: #{created_at}
                                 %p Solved by: #{solved_by}
                                 %p Solved on: #{solved_on}
                                 %hr.group_line
                                 %p.margin_bottom_small.entry-content
-                                  By [Name] on [Date]
+                                  By #{problem_created_by_name} on #{problems[z-1].created_at.strftime("%I:%M %p %d/%m/%Y")}
                                   %hr.special_line.margin_none.margin_bottom_small_override.entry-content
                                 %p Note: #{problems[z-1].note}
                                 %hr.group_line
 
-                                //Here is loop to get all the notes from ta/ml
+                                - problem_notes = ProblemNote.get_notes_for_problem(problems[z-1].id)
 
-                                - for x in 1..3
-                                  %p.margin_bottom_small.entry-content
-                                    By [Name] on [Date]
-                                    %hr.special_line.margin_none.margin_bottom_small_override.entry-content
-                                  %p Note: #{problems[z-1].note}
-                                  %hr.group_line
+                                - # div for displaying notes 
+                                %div{id: "notes_id_#{i}_#{z}"}
+                                  - for t in 0...problem_notes.length
+                                    - created_by = User.get_first_last(problem_notes[t].created_by)
+                                    - created_at = problem_notes.first.created_at.strftime("%I:%M %p %d/%m/%Y")
+                                    %p.margin_bottom_small.entry-content
+                                      By #{created_by} on #{created_at}
+                                      %hr.special_line.margin_none.margin_bottom_small_override.entry-content
+                                    %p Note: #{problem_notes[t].note}
+                                    %hr.group_line
 
+                                %input{id: "problem_id_#{i}_#{z}", name: "problem_id_#{i}_#{z}", type: "hidden", value: problems[z-1].id}
+                                %input{id: "team_number_#{i}_#{z}", name: "team_number_#{i}_#{z}", type: "hidden", value: "#{i}"}
+                                %input{id: "problem_number_#{i}_#{z}", name: "problem_number_#{i}_#{z}", type: "hidden", value: "#{z}"}
+                                
                                 //Here is the input field to add a note
                                 %p.medium.text_black.margin_none Additional Note:
                                 .form-group.margin_bottom_small_override
-                                  %textarea.form-control{rows: "3", name: "additional_note_#{i}_#{z}"}
-                                %button.add.btn.btn-primary.button_topics.medium{type: "button", onclick: "addPeriod()"}Add Note
+                                  %textarea.form-control{rows: "3", name: "additional_note_#{i}_#{z}", id: "additional_note_#{i}_#{z}"}
+                                = link_to "Add Note", admin_modules_groups_path(), id: "add_note_button_#{i}_#{z}", class: "add btn btn-primary button_topics medium"
                                 %hr.group_line
 
 

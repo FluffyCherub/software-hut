@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_26_222758) do
+ActiveRecord::Schema.define(version: 2021_04_27_072719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,15 @@ ActiveRecord::Schema.define(version: 2021_04_26_222758) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["feedback_date_id"], name: "index_peer_feedbacks_on_feedback_date_id"
+  end
+
+  create_table "problem_notes", force: :cascade do |t|
+    t.string "created_by"
+    t.string "note"
+    t.bigint "problem_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["problem_id"], name: "index_problem_notes_on_problem_id"
   end
 
   create_table "problems", force: :cascade do |t|
@@ -194,6 +203,7 @@ ActiveRecord::Schema.define(version: 2021_04_26_222758) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "feedback_dates", "list_modules"
   add_foreign_key "peer_feedbacks", "feedback_dates"
+  add_foreign_key "problem_notes", "problems"
   add_foreign_key "problems", "teams"
   add_foreign_key "teams", "list_modules"
   add_foreign_key "tmr_signatures", "tmrs"
