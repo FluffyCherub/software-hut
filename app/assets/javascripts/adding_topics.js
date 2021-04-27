@@ -1,10 +1,16 @@
 function addTopic() {
   var new_chq_no = parseInt($('#total_chq').val()) + 1;
+  var previous_chq_no = new_chq_no-1
+
+  var previous_group_size = document.getElementById("size_" + previous_chq_no.toString()).value
+  var previous_group_amount = document.getElementById("amount_" + previous_chq_no.toString()).value
+  console.log(previous_group_size);
+  console.log(previous_group_amount);
 
   var input_div = "<div class='input-group flex-nowrap margin_top margin_bottom_small special_width_topic' id='div_" + new_chq_no + "'> ";
   var topic_input = "<input type='text' id='topic_" + new_chq_no + "' name='topic_" + new_chq_no + "' class='form-control special_width_topic_name' placeholder='Topic " + new_chq_no + "' >";
-  var group_size_input = "<input type='text' id='size_" + new_chq_no + "' name='size_" + new_chq_no + "' class='form-control' placeholder='Team Size' >";
-  var group_amount_input = "<input type='text' id='amount_" + new_chq_no + "' name='amount_" + new_chq_no + "' class='form-control' placeholder='№ of Teams' >";
+  var group_size_input = "<input type='text' id='size_" + new_chq_no + "' name='size_" + new_chq_no + "' value='" + previous_group_size.toString() + "' class='form-control' placeholder='Team Size' >";
+  var group_amount_input = "<input type='text' id='amount_" + new_chq_no + "' name='amount_" + new_chq_no + "' value='" + previous_group_amount.toString() + "' class='form-control' placeholder='№ of Teams' >";
   var input_div_id = '#div_' + new_chq_no.toString();
 
   $('#new_chq').append(input_div);
