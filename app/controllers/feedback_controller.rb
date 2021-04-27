@@ -88,4 +88,8 @@ class FeedbackController < ApplicationController
 
     end
   end
+
+  def feedback_review_all
+    render layout: 'extra_wide'
+  end
 end
