@@ -1,5 +1,82 @@
-
 - content_for :title, "Review Feedback"
 
 .container-fluid.body_whole_custom.text_black
-  %p Hello
+  .container-fluid.text_black.no_padding.border_none.bg_none.margin_bottom_small.special_margin_top
+    %h5.bigger.center_text Review Peer Feedback
+
+  - lorem_ipsum  = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+
+  .container-fluid.text_black.margin_none.no_padding.bg_none.uni_border_dark
+    #table.table-editable
+      %table.table.table-bordered.table-responsive-md.table-striped.text-center.styled_table
+        %thead
+          %tr
+            %th.text-center.small Student Name
+            %th.text-center.small Appreciate
+            %th.text-center.small Request
+        %tbody
+          //Loop trough all students in module here
+          - for i in 1..5
+          
+            //Check if student has feedback related to him(biggest of aprreciate and request)
+            //Example: If 3 people appreciate and 6 people request -> number should be 6
+
+            //This check should pass if no feedback at all was recived
+            - if i == 2 || i == 4 
+              %tr.row_outline_border
+                %td.pt-3-half.td_border_right.small{:colspan => "1", :rowspan => "1", :style => "width: 20%;", contenteditable: "false"}
+                  Student #{i}
+                %td.pt-3-half.feedback_no_info{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
+                  No feedback recieved
+                //Loop trough team members of that student(without the student himself) and check for feedback 
+                %td.pt-3-half.feedback_no_info{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
+                  No feedback recieved
+
+            - else
+              //FOR ONE STUDENT STUFF IS DONE HERE
+
+              //rowspan should be == to number of members that have given feedback multipled by 2
+              //Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 8
+              %tr
+                %td.pt-3-half.td_border_right.small{:colspan => "1", :rowspan => "8", :style => "width: 20%;", contenteditable: "false"}
+                  Anton Minkov
+                %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.cell_check{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
+                  By 
+                  %strong
+                    Student 1 - someemail@sheffield.ac.uk
+                %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.cell_check{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
+                  By 
+                  %strong
+                    Student 1
+              %tr
+                %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                  #{lorem_ipsum}
+                  //Appreciate from person 1
+                %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                  #{lorem_ipsum}
+                  //Request from person 1
+              
+              //LOOP HERE
+              //Loop trough feedback
+              //If there are x students with feedback it should be 2..x
+              - for z in 2..4
+                %tr
+                  %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
+                    By 
+                    %strong
+                      Student #{z} - someemail@sheffield.ac.uk
+                  %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
+                    By 
+                    %strong
+                      Student #{z} - someemail@sheffield.ac.uk
+                %tr
+                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                    #{lorem_ipsum}
+                    #{lorem_ipsum}
+                    //Apreciate from person #{z}
+                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                    #{lorem_ipsum}
+                    //Request from person #{z}
+              
+              //END OF STUFF FOR ONE STUDENT
+          

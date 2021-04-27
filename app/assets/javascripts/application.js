@@ -16,3 +16,4 @@
 //= require matrix_selector
 //= require feedback_saving
 //= require add_note
+//= require profanity_filter
