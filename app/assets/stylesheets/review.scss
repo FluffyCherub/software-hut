@@ -1,0 +1,33 @@
+.wide-container{
+  width: 1720px !important;
+}
+
+@media (min-width: 1920px) {
+  .wide-container{
+    width: 1720px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .wide-container{
+    width: 1400px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .wide-container{
+    width: 1000px;
+  }
+}
+
+@media (min-width: 992px) {
+  .wide-container{
+    width: 800px;
+  }
+}
+
+@media (min-width: 768px) {
+  .wide-container{
+    width: 650px;
+  }
+}

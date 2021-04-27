@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   match "/admin/modules/groups/create", to: "admin#admin_modules_groups_create", via: :all
   match "/student/groups", to: "pages#student_groups_join", via: :all
   match "/feedback/matrix", to: "feedback#feedback_matrix", via: :all
+  match "/feedback/review/all", to: "feedback#feedback_review_all", via: :all
+  match "*path", to: "errors#error_404", via: :all
 
 
 
