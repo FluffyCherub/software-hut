@@ -66,7 +66,11 @@ class PagesController < ApplicationController
                                                     current_user.id
                                                     )
 
+        if @closest_date != nil
         @is_feedback_completed = PeerFeedback.check_feedback_completion(@in_team_without_current_user, current_user.username, @closest_date.id)
+        else
+          @is_feedback_completed = false
+        end
       end
 
       if params['commit'] == "Select"

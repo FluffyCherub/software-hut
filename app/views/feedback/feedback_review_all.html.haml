@@ -1,5 +1,4 @@
 - content_for :title, "Review Feedback"
-
 .container-fluid.body_whole_custom.text_black
   .container-fluid.text_black.no_padding.border_none.bg_none.margin_bottom_small.special_margin_top
     - feedback_period_start_date = @last_finished_period.start_date.strftime("%I:%M %p %d/%m/%Y")
@@ -8,8 +7,10 @@
     %p.center_text #{feedback_period_start_date} - #{feedback_period_end_date}
     %p.center_text#problem_counter Problems detected: 0
 
-  - lorem_ipsum  = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-
+  - #lorem_ipsum  = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  
+  %input{id: "num_of_teams", name: "num_of_teams", type: "hidden", value: @teams_in_module.length}
+  
   .container-fluid.text_black.margin_none.no_padding.bg_none.uni_border_dark
     #table.table-editable
       %table.table.table-bordered.table-responsive-md.table-striped.text-center.styled_table
@@ -24,9 +25,10 @@
           
             - students_in_team = Team.get_current_team_members(@teams_in_module[i].id)
             - feedback_team = PeerFeedback.get_feedback_for_team_period(@teams_in_module[i].id, @last_finished_period.id)
+
+            %input{id: "num_students_in_team_#{i+1}", name: "num_students_in_team_#{i+1}", type: "hidden", value: students_in_team.length}
             //FOR ONE STUDENT STUFF IS DONE HERE
             - feedback_for_first_student_in_team = feedback_team[0]
-              
             - first_student_in_team_name = (students_in_team[0].givenname + " " + students_in_team[0].sn)
             //HERE DISPLAY FIRST TEAM MEMBER
 
@@ -37,7 +39,7 @@
             //no feedback for first student of every team
             
             - if feedback_for_first_student_in_team == nil
-             
+              %input{id: "num_feedbackers_for_student_#{i+1}_1", name: "num_feedbackers_for_student_#{i+1}_1", type: "hidden", value: "0"}
               %tr.row_outline_border
                 %td.pt-3-half.team_td.border_left_right_dark{:colspan => "3", :rowspan => "1", :style => "width: 100%;", contenteditable: "false"}
                   #{@teams_in_module[i].name}
@@ -46,7 +48,6 @@
                   #{first_student_in_team_name}
                 %td.pt-3-half.feedback_no_info{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
                   No feedback received
-                //Loop trough team members of that student(without the student himself) and check for feedback 
                 %td.pt-3-half.feedback_no_info{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
                   No feedback received
             
@@ -57,12 +58,12 @@
                   #{@teams_in_module[i].name}
               
               - num_of_feedbacks_for_first_team_member = feedback_for_first_student_in_team.length
-              //rowspan should be == to number of members that have given feedback multipled by 2
-              //Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 8
-              //Change rowspan here
               - rowspan_stronk = (feedback_for_first_student_in_team.length)*2
               - name_of_first_feedbacker =  User.get_first_last(feedback_for_first_student_in_team[0].created_by)
               - email_of_first_feedbacker = User.get_email(feedback_for_first_student_in_team[0].created_by)
+
+              %input{id: "num_feedbackers_for_student_#{i+1}_1", name: "num_feedbackers_for_student_#{i+1}_1", type: "hidden", value: num_of_feedbacks_for_first_team_member}
+              
               %tr
                 %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "#{rowspan_stronk}", :style => "width: 20%;", contenteditable: "false"}
                   #{first_student_in_team_name}
@@ -74,18 +75,20 @@
                   By 
                   %strong
                     #{name_of_first_feedbacker} - #{email_of_first_feedbacker}
+
+              %input{id: "peer_feedback_id_#{i+1}_1_1", name: "peer_feedback_id_#{i+1}_1_1", type: "hidden", value: feedback_for_first_student_in_team[0].id}
               %tr
-                %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                  #{feedback_for_first_student_in_team[0].appreciate}
-                  //Appreciate from person 1
-                %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                  #{feedback_for_first_student_in_team[0].request}
-                  //Request from person 1
+                %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "appreciate_field_#{i+1}_1_1", :name => "appreciate_field_#{i+1}_1_1", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                  #{feedback_for_first_student_in_team[0].appreciate_edited}
+                %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_1_1", :name => "request_field_#{i+1}_1_1", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                  #{feedback_for_first_student_in_team[0].request_edited}
 
               //Loop trough all the remaining people that gave feedback for the current team member(without the first)
               - for x in 1...feedback_for_first_student_in_team.length
                 - current_feedbacker_name = User.get_first_last(feedback_for_first_student_in_team[x].created_by)
                 - current_feedbacker_email = User.get_email(feedback_for_first_student_in_team[x].created_by)
+
+                
                 %tr
                   %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                     By 
@@ -95,13 +98,13 @@
                     By 
                     %strong
                       #{current_feedbacker_name} - #{current_feedbacker_email}
+
+                %input{id: "peer_feedback_id_#{i+1}_1_#{x+1}", name: "peer_feedback_id_#{i+1}_1_#{x+1}", type: "hidden", value: feedback_for_first_student_in_team[x].id}
                 %tr
-                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{feedback_for_first_student_in_team[x].appreciate}
-                    //Apreciate from person #{x}
-                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{feedback_for_first_student_in_team[x].request}
-                    //Request from person #{x}
+                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "appreciate_field_#{i+1}_1_#{x+1}", :name => "appreciate_field_#{i+1}_1_#{x+1}", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                    #{feedback_for_first_student_in_team[x].appreciate_edited}
+                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_1_#{x+1}", :name => "request_field_#{i+1}_1_#{x+1}",:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                    #{feedback_for_first_student_in_team[x].request_edited}
 
 
 
@@ -117,24 +120,24 @@
 
               //This check should pass if no feedback at all was recived
               - if feedback_for_current_team_member.nil?
-              
+                %input{id: "num_feedbackers_for_student_#{i+1}_#{j+1}", name: "num_feedbackers_for_student_#{i+1}_#{j+1}", type: "hidden", value: 0}
                 %tr
                   %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "1", :style => "width: 20%;", contenteditable: "false"}
                     #{current_student_name}
                   %td.pt-3-half.feedback_no_info.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
                     No feedback received
-                  //Loop trough team members of that student(without the student himself) and check for feedback 
                   %td.pt-3-half.feedback_no_info.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
                     No feedback received
               
               - else
-
+                %input{id: "num_feedbackers_for_student_#{i+1}_#{j+1}", name: "num_feedbackers_for_student_#{i+1}_#{j+1}", type: "hidden", value: feedback_for_current_team_member.length}
                 //rowspan should be == to number of members that have given feedback multipled by 2
                 //Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 
                 //Change rowspan here
                 - rowspan_stronk = (feedback_for_current_team_member.length)*2
                 - name_of_current_feedbacker =  User.get_first_last(feedback_for_current_team_member[0].created_by)
                 - email_of_current_feedbacker = User.get_email(feedback_for_current_team_member[0].created_by)
+
                 %tr
                   %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "#{rowspan_stronk}", :style => "width: 20%;", contenteditable: "false"}
                     #{current_student_name}
@@ -146,18 +149,19 @@
                     By 
                     %strong
                       #{name_of_current_feedbacker} - #{email_of_current_feedbacker}
+
+                %input{id: "peer_feedback_id_#{i+1}_#{j+1}_1", name: "peer_feedback_id_#{i+1}_#{j+1}_1", type: "hidden", value: feedback_for_current_team_member[0].id}
                 %tr
-                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{feedback_for_current_team_member[0].appreciate}
-                    //Apreciate from person 1
-                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{feedback_for_current_team_member[0].request}
-                    //Request from person 1
+                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "appreciate_field_#{i+1}_#{j+1}_1", :name => "appreciate_field_#{i+1}_#{j+1}_1", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                    #{feedback_for_current_team_member[0].appreciate_edited}
+                  %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_#{j+1}_1", :name => "request_field_#{i+1}_#{j+1}_1", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                    #{feedback_for_current_team_member[0].request_edited}
                 
                 //Loop trough all the remaining people that gave feedback for the current team member(without the first)
                 - for z in 1...feedback_for_current_team_member.length
                   - current_feedbacker_name_2 = User.get_first_last(feedback_for_current_team_member[z].created_by)
                   - current_feedbacker_email_2 = User.get_email(feedback_for_current_team_member[z].created_by)
+
                   %tr
                     %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                       By 
@@ -167,13 +171,11 @@
                       By 
                       %strong
                         #{current_feedbacker_name_2} - #{current_feedbacker_email_2}
+
+                  %input{id: "peer_feedback_id_#{i+1}_#{j+1}_#{z+1}", name: "peer_feedback_id_#{i+1}_#{j+1}_#{z+1}", type: "hidden", value: feedback_for_current_team_member[z].id}
                   %tr
-                    %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                      #{feedback_for_current_team_member[z].appreciate}
-                      //Apreciate from person #{z}
-                    %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                      #{feedback_for_current_team_member[z].request}
-                      //Request from person #{z}
-                
-                  //END OF STUFF FOR ONE STUDENT
+                    %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "appreciate_field_#{i+1}_#{j+1}_#{z+1}", :name => "appreciate_field_#{i+1}_#{j+1}_#{z+1}", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                      #{feedback_for_current_team_member[z].appreciate_edited}
+                    %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_#{j+1}_#{z+1}", :name => "request_field_#{i+1}_#{j+1}_#{z+1}", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
+                      #{feedback_for_current_team_member[z].request_edited}
         

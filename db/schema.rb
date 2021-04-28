@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(version: 2021_04_27_072719) do
     t.integer "ethics"
     t.string "appreciate", default: ""
     t.string "request", default: ""
+    t.string "appreciate_edited", default: ""
+    t.string "request_edited", default: ""
     t.bigint "feedback_date_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

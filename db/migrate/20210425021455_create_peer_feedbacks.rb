@@ -17,6 +17,9 @@ class CreatePeerFeedbacks < ActiveRecord::Migration[6.0]
       t.string :appreciate, default: ''
       t.string :request, default: ''
 
+      t.string :appreciate_edited, default: ''
+      t.string :request_edited, default: ''
+
       t.belongs_to :feedback_date, index: true, foreign_key: true
       
       t.timestamps

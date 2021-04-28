@@ -112,6 +112,9 @@ for i in 0...test_teams.length
         rand_leadership = rand(4) + 1
         rand_qac = rand(4) + 1
 
+        aprreciate_random = appreciate_messages.sample
+        request_random = request_messages.sample
+
         PeerFeedback.create(feedback_date: feedback_period,
                             attendance: rand_attendace,  
                             attitude: rand_attitude,    
@@ -120,8 +123,10 @@ for i in 0...test_teams.length
                             ethics: rand_ethics,   
                             leadership: rand_leadership,
                             qac: rand_qac,
-                            appreciate: appreciate_messages.sample,
-                            request: request_messages.sample,
+                            appreciate: aprreciate_random,
+                            request: request_random,
+                            appreciate_edited: aprreciate_random,
+                            request_edited: request_random,
                             created_by: team_members[j].username,
                             created_for: team_members[z].username)
       end

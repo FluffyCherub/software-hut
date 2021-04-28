@@ -50,6 +50,8 @@ class FeedbackController < ApplicationController
       if ethics        != nil then current_feedback.update(ethics: ethics) end
       if appreciate    != nil then current_feedback.update(appreciate: appreciate) end
       if request       != nil then current_feedback.update(request: request) end
+      if appreciate    != nil then current_feedback.update(appreciate_edited: appreciate) end
+      if request       != nil then current_feedback.update(request_edited: request) end
     end
 
     # final submission of feedback
@@ -99,5 +101,18 @@ class FeedbackController < ApplicationController
     else
       render layout: 'extra_wide'
     end
+  end
+
+  def save_feedback
+    appreciate = params['appreciate']
+    request = params['request']
+    peer_feedback_id = params['peer_feedback_id']
+
+    if appreciate != nil
+      PeerFeedback.find(peer_feedback_id.to_i).update(appreciate_edited: appreciate)
+    elsif request != nil
+      PeerFeedback.find(peer_feedback_id.to_i).update(request_edited: request)
+    end
+
   end
 end

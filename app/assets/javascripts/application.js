@@ -15,5 +15,6 @@
 //= require adding_topics
 //= require matrix_selector
 //= require feedback_saving
+//= require feedback_review
 //= require add_note
 //= require profanity_filter
