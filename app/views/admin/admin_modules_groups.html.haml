@@ -141,126 +141,120 @@
                     - else
                       //loop should be 1..(problem.length + num of students that have feedback)
                       //If impossible, just do (problem.length + students in team) and for students with no feedback show empty field
-                      - for z in 1..(problems.length + 3)
+                      - for z in 1..(problems.length)
 
-
-                        - if (problems.length == 0) && (z == 1)
-                          .container.no_results.bg_none
-                            %h.center_element.medium.text_black No problems in this group
-
-                        - if z <= problems.length
-
-                          - problem_dot_type = "no_dot"
-                          - if problems[z-1].status == "unsolved"
-                            - problem_dot_type = "red"
-                          - elsif problems[z-1].status == "assigned"
-                            - problem_dot_type = "yellow"
-                          - elsif problems[z-1].status == "solved"
-                            - problem_dot_type = "solved"
-                          
-                          - if z == 1
-                            %h5 Assign/Solve Problems
-                          .card
-                            #heading-1-1.card-header.header_bad
-                              %h5.mb-0
-                                %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                                  - if problems[z-1].status != "assigned"
-                                    - assigned = ""
-                                  - else
-                                    - assigned = "- Assigned to " + User.get_first_last(problems[z-1].assigned_to)
-                                  Problem #{z} #{assigned}
-                                  - if problem_dot_type == "red"
-                                    %span.dot_red.float_right
-                                  - elsif problem_dot_type == "yellow"
-                                    %span.dot_yellow.float_right
-                                  - elsif problem_dot_type == "solved"
-                                    %span.dot_green.float_right
-
-                            #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
-                              .card-body
-                                - created_at = problems[z-1].created_at.strftime("%I:%M %p %d/%m/%Y")
-                                - if problems[z-1].solved_on != nil
-                                  - solved_on = problems[z-1].solved_on.strftime("%I:%M %p %d/%m/%Y")
-                                - else
-                                  - solved_on = ""
-                                - if problems[z-1].solved_by != nil
-                                  - solved_by = User.get_first_last(problems[z-1].solved_by) + " - " + User.get_email(problems[z-1].solved_by)
-                                - else
-                                  - solved_by = ""
-                                - problem_created_by_name = User.get_first_last(problems[z-1].created_by)
-                                - problem_created_by_email = User.get_email(problems[z-1].created_by)
-                                %p Created by: #{problem_created_by_name} - #{problem_created_by_email}
-                                %p Created on: #{created_at}
-                                %p Solved by: #{solved_by}
-                                %p Solved on: #{solved_on}
-                                %hr.group_line
-                                %p.margin_bottom_small.entry-content
-                                  By #{problem_created_by_name} on #{problems[z-1].created_at.strftime("%I:%M %p %d/%m/%Y")}
-                                  %hr.special_line.margin_none.margin_bottom_small_override.entry-content
-                                %p Note: #{problems[z-1].note}
-                                %hr.group_line
-
-                                - problem_notes = ProblemNote.get_notes_for_problem(problems[z-1].id)
-
-                                - # div for displaying notes 
-                                %div{id: "notes_id_#{i}_#{z}"}
-                                  - for t in 0...problem_notes.length
-                                    - created_by = User.get_first_last(problem_notes[t].created_by)
-                                    - created_at = problem_notes.first.created_at.strftime("%I:%M %p %d/%m/%Y")
-                                    %p.margin_bottom_small.entry-content
-                                      By #{created_by} on #{created_at}
-                                      %hr.special_line.margin_none.margin_bottom_small_override.entry-content
-                                    %p Note: #{problem_notes[t].note}
-                                    %hr.group_line
-
-                                %input{id: "problem_id_#{i}_#{z}", name: "problem_id_#{i}_#{z}", type: "hidden", value: problems[z-1].id}
-                                %input{id: "team_number_#{i}_#{z}", name: "team_number_#{i}_#{z}", type: "hidden", value: "#{i}"}
-                                %input{id: "problem_number_#{i}_#{z}", name: "problem_number_#{i}_#{z}", type: "hidden", value: "#{z}"}
-                                
-                                //Here is the input field to add a note
-                                %p.medium.text_black.margin_none Additional Note:
-                                .form-group.margin_bottom_small_override
-                                  %textarea.form-control{rows: "3", name: "additional_note_#{i}_#{z}", id: "additional_note_#{i}_#{z}"}
-                                = link_to "Add Note", admin_modules_groups_path(), id: "add_note_button_#{i}_#{z}", class: "add btn btn-primary button_topics medium"
-                                %hr.group_line
-
-
-                                = simple_form_for :problem_form do |f|
-                                  = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
-                                  = f.input :form_problem_id, :as => :hidden, :input_html => {:id => "form_problem_id", :value => problems[z-1].id }
-                                  .container-fluid.bg_none.row.no_padding.margin_bottom_small
-                                    - if problems[z-1].status != "solved"
-                                      - if can? :manage, :problems
-                                        .container.col-xs-6.col-sm-3.no_padding.text_black
-                                          = f.input :assign_list, as: :select, collection: @ta_and_mod_lead, label: false, include_blank: false, required: false
-                                        .container.col-xs-6.col-sm-5
-                                          = f.button :submit, "Assign", name:"assign_button", class: "btn btn-primary agreement_buttons justify-content-center button_assign float_left", id:"assign_button"
-                                      - current_user_privilege = ListModule.privilege_for_module(current_user.username, params[:module_id])
-                                      - if (current_user.username == problems[z-1].assigned_to || (can? :manage, :problems)) && problems[z-1].status != "solved"
-                                        .container.col-xs-6.col-sm-4.no_padding_left.no_padding_right
-                                          = f.button :submit, "Mark as solved", type: "submit", name: "solve_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"solve_button"
+                        - problem_dot_type = "no_dot"
+                        - if problems[z-1].status == "unsolved"
+                          - problem_dot_type = "red"
+                        - elsif problems[z-1].status == "assigned"
+                          - problem_dot_type = "yellow"
+                        - elsif problems[z-1].status == "solved"
+                          - problem_dot_type = "solved"
                         
-                        - else
-                          - i_new = z - problems.length 
-                          - if z == problems.length + 1
-                            %hr.group_line
-                            %h5 Review/Edit Feedback
-                          .card
-                            #heading-1-1.card-header.header_bad
-                              %h5.mb-0
-                                //Student name should be here. E.g FirstName LastName
-                                %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                                  Student #{i_new}
-                            #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
-                              .card-body.no_padding                           
-                                .container-fluid.bg_none_margin
-                                  %p.medium.text_black.margin_none We appreciate:
-                                  .form-group
-                                    %textarea.form-control{rows: "5", name: "appreciate_note_#{i_new}"}
-                                .container-fluid.bg_none_margin
-                                  %p.medium.text_black.margin_none We request:
-                                  .form-group
-                                    %textarea.form-control{rows: "5", name: "request_note_#{i_new}"}
+                        - if z == 1
+                          %h5 Assign/Solve Problems
+                        .card
+                          #heading-1-1.card-header.header_bad
+                            %h5.mb-0
+                              %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
+                                - if problems[z-1].status != "assigned"
+                                  - assigned = ""
+                                - else
+                                  - assigned = "- Assigned to " + User.get_first_last(problems[z-1].assigned_to)
+                                Problem #{z} #{assigned}
+                                - if problem_dot_type == "red"
+                                  %span.dot_red.float_right
+                                - elsif problem_dot_type == "yellow"
+                                  %span.dot_yellow.float_right
+                                - elsif problem_dot_type == "solved"
+                                  %span.dot_green.float_right
+
+                          #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
+                            .card-body
+                              - created_at = problems[z-1].created_at.strftime("%I:%M %p %d/%m/%Y")
+                              - if problems[z-1].solved_on != nil
+                                - solved_on = problems[z-1].solved_on.strftime("%I:%M %p %d/%m/%Y")
+                              - else
+                                - solved_on = ""
+                              - if problems[z-1].solved_by != nil
+                                - solved_by = User.get_first_last(problems[z-1].solved_by) + " - " + User.get_email(problems[z-1].solved_by)
+                              - else
+                                - solved_by = ""
+                              - problem_created_by_name = User.get_first_last(problems[z-1].created_by)
+                              - problem_created_by_email = User.get_email(problems[z-1].created_by)
+                              %p Created by: #{problem_created_by_name} - #{problem_created_by_email}
+                              %p Created on: #{created_at}
+                              %p Solved by: #{solved_by}
+                              %p Solved on: #{solved_on}
+                              %hr.group_line
+                              %p.margin_bottom_small
+                                By #{problem_created_by_name} on #{problems[z-1].created_at.strftime("%I:%M %p %d/%m/%Y")}
+                                %hr.special_line.margin_none.margin_bottom_small_override.entry-content
+                              %p Note: #{problems[z-1].note}
+                              %hr.group_line
+
+                              - problem_notes = ProblemNote.get_notes_for_problem(problems[z-1].id)
+
+                              - # div for displaying notes 
+                              %div{id: "notes_id_#{i}_#{z}"}
+                                - for t in 0...problem_notes.length
+                                  - created_by = User.get_first_last(problem_notes[t].created_by)
+                                  - created_at = problem_notes.first.created_at.strftime("%I:%M %p %d/%m/%Y")
+                                  %p.margin_bottom_small
+                                    By #{created_by} on #{created_at}
+                                    %hr.special_line.margin_none.margin_bottom_small_override.entry-content
+                                  %p Note: #{problem_notes[t].note}
+                                  %hr.group_line
+
+                              %input{id: "problem_id_#{i}_#{z}", name: "problem_id_#{i}_#{z}", type: "hidden", value: problems[z-1].id}
+                              %input{id: "team_number_#{i}_#{z}", name: "team_number_#{i}_#{z}", type: "hidden", value: "#{i}"}
+                              %input{id: "problem_number_#{i}_#{z}", name: "problem_number_#{i}_#{z}", type: "hidden", value: "#{z}"}
+                              
+                              //Here is the input field to add a note
+                              %p.medium.text_black.margin_none Additional Note:
+                              .form-group.margin_bottom_small_override
+                                %textarea.form-control{rows: "3", name: "additional_note_#{i}_#{z}", id: "additional_note_#{i}_#{z}"}
+                              = link_to "Add Note", admin_modules_groups_path(), id: "add_note_button_#{i}_#{z}", class: "add btn btn-primary button_topics medium"
+                              %hr.group_line
+
+
+                              = simple_form_for :problem_form do |f|
+                                = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
+                                = f.input :form_problem_id, :as => :hidden, :input_html => {:id => "form_problem_id", :value => problems[z-1].id }
+                                .container-fluid.bg_none.row.no_padding.margin_bottom_small
+                                  - if problems[z-1].status != "solved"
+                                    - if can? :manage, :problems
+                                      .container.col-xs-6.col-sm-3.no_padding.text_black
+                                        = f.input :assign_list, as: :select, collection: @ta_and_mod_lead, label: false, include_blank: false, required: false
+                                      .container.col-xs-6.col-sm-5
+                                        = f.button :submit, "Assign", name:"assign_button", class: "btn btn-primary agreement_buttons justify-content-center button_assign float_left", id:"assign_button"
+                                    - current_user_privilege = ListModule.privilege_for_module(current_user.username, params[:module_id])
+                                    - if (current_user.username == problems[z-1].assigned_to || (can? :manage, :problems)) && problems[z-1].status != "solved"
+                                      .container.col-xs-6.col-sm-4.no_padding_left.no_padding_right
+                                        = f.button :submit, "Mark as solved", type: "submit", name: "solve_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"solve_button"
+                      
+                        -# - else
+                        -#   - i_new = z - problems.length 
+                        -#   - if z == problems.length + 1
+                        -#     %hr.group_line
+                        -#     %h5 Review/Edit Feedback
+                        -#   .card
+                        -#     //ISSUE MIGHT BE HERE -> Duplicates header and collapse ID
+                        -#     #heading-1-1.card-header.header_bad
+                        -#       %h5.mb-0
+                        -#         //Student name should be here. E.g FirstName LastName
+                        -#         %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
+                        -#           Student #{i_new}
+                        -#     #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
+                        -#       .card-body.no_padding                           
+                        -#         .container-fluid.bg_none_margin
+                        -#           %p.medium.text_black.margin_none We appreciate:
+                        -#           .form-group
+                        -#             %textarea.form-control{rows: "5", name: "appreciate_note_#{i_new}"}
+                        -#         .container-fluid.bg_none_margin
+                        -#           %p.medium.text_black.margin_none We request:
+                        -#           .form-group
+                        -#             %textarea.form-control{rows: "5", name: "request_note_#{i_new}"}
 
                         - if i == @groups_for_module.length
                           - last_i = true_i

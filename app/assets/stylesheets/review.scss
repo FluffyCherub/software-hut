@@ -85,12 +85,17 @@
 }
 
 .styled_table tbody tr {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ffebeb;
   border-radius: 4px;
 }
 
 .styled_table .feedback_info {
   background-color: #a0cce5;
+  border-radius: 4px;
+}
+
+.from_field {
+  background-color: #EEEEFF !important;
   border-radius: 4px;
 }
 
@@ -115,5 +120,21 @@
 
 .vertical_top {
   vertical-align: top !important;
+}
+
+.team_td {
+  background-color: rgb(0, 159, 218);
+  font-size: 1.3em;
+  font-family: 'Steph';
+  border-bottom: thin solid rgb(31, 20, 93) !important;;
+}
+
+.border_bottom_dark {
+  border-bottom: thin solid rgb(31, 20, 93) !important;
+}
+
+.border_left_right_dark {
+  border-left: thin solid rgb(31, 20, 93) !important;
+  border-right: thin solid rgb(31, 20, 93) !important;
 }
 
