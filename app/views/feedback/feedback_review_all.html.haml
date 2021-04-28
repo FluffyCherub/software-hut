@@ -2,8 +2,10 @@
 
 .container-fluid.body_whole_custom.text_black
   .container-fluid.text_black.no_padding.border_none.bg_none.margin_bottom_small.special_margin_top
+    - feedback_period_start_date = @last_finished_period.start_date.strftime("%I:%M %p %d/%m/%Y")
+    - feedback_period_end_date = @last_finished_period.end_date.strftime("%I:%M %p %d/%m/%Y")
     %h5.bigger.center_text Review Peer Feedback
-    %p.center_text 12:00 AM 12/06/22 - 12:00 AM 19/06/22
+    %p.center_text #{feedback_period_start_date} - #{feedback_period_end_date}
     %p.center_text#problem_counter Problems detected: 0
 
   - lorem_ipsum  = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -18,77 +20,87 @@
             %th.text-center.small Request
         %tbody
           //Loop trough all teams in module here
-          - for i in 1..5
+          - for i in 0...@teams_in_module.length
           
+            - students_in_team = Team.get_current_team_members(@teams_in_module[i].id)
+            - feedback_team = PeerFeedback.get_feedback_for_team_period(@teams_in_module[i].id, @last_finished_period.id)
             //FOR ONE STUDENT STUFF IS DONE HERE
-
-            
+            - feedback_for_first_student_in_team = feedback_team[0]
+              
+            - first_student_in_team_name = (students_in_team[0].givenname + " " + students_in_team[0].sn)
             //HERE DISPLAY FIRST TEAM MEMBER
 
             //Check if student has feedback related to him(biggest of aprreciate and request) CHECK FOR FIRST TEAM MEMBER ONLY
             //Example: If 3 people appreciate and 6 people request -> number should be 6
 
             //This check should pass if no feedback at all was recieved
-            - if i == 3
+            //no feedback for first student of every team
+            
+            - if feedback_for_first_student_in_team == nil
              
               %tr.row_outline_border
                 %td.pt-3-half.team_td.border_left_right_dark{:colspan => "3", :rowspan => "1", :style => "width: 100%;", contenteditable: "false"}
-                  Team #{i}
+                  #{@teams_in_module[i].name}
               %tr
                 %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "1", :style => "width: 20%;", contenteditable: "false"}
-                  Student 1
+                  #{first_student_in_team_name}
                 %td.pt-3-half.feedback_no_info{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
-                  No feedback recieved
+                  No feedback received
                 //Loop trough team members of that student(without the student himself) and check for feedback 
                 %td.pt-3-half.feedback_no_info{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
-                  No feedback recieved
+                  No feedback received
             
             - else
-            
+
               %tr.row_outline_border
                 %td.pt-3-half.team_td.border_left_right_dark{:colspan => "3", :rowspan => "1", :style => "width: 100%;", contenteditable: "false"}
-                  Team #{i}
+                  #{@teams_in_module[i].name}
               
+              - num_of_feedbacks_for_first_team_member = feedback_for_first_student_in_team.length
               //rowspan should be == to number of members that have given feedback multipled by 2
               //Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 8
               //Change rowspan here
+              - rowspan_stronk = (feedback_for_first_student_in_team.length)*2
+              - name_of_first_feedbacker =  User.get_first_last(feedback_for_first_student_in_team[0].created_by)
+              - email_of_first_feedbacker = User.get_email(feedback_for_first_student_in_team[0].created_by)
               %tr
-                %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "8", :style => "width: 20%;", contenteditable: "false"}
-                  Anton Minkov
+                %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "#{rowspan_stronk}", :style => "width: 20%;", contenteditable: "false"}
+                  #{first_student_in_team_name}
                 %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.cell_check.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                   By 
                   %strong
-                    Student 1 - someemail@sheffield.ac.uk
+                    #{name_of_first_feedbacker} - #{email_of_first_feedbacker}
                 %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.cell_check.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                   By 
                   %strong
-                    Student 1
+                    #{name_of_first_feedbacker} - #{email_of_first_feedbacker}
               %tr
                 %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                  #{lorem_ipsum}
+                  #{feedback_for_first_student_in_team[0].appreciate}
                   //Appreciate from person 1
                 %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                  #{lorem_ipsum}
+                  #{feedback_for_first_student_in_team[0].request}
                   //Request from person 1
 
               //Loop trough all the remaining people that gave feedback for the current team member(without the first)
-              - for x in 2..4
+              - for x in 1...feedback_for_first_student_in_team.length
+                - current_feedbacker_name = User.get_first_last(feedback_for_first_student_in_team[x].created_by)
+                - current_feedbacker_email = User.get_email(feedback_for_first_student_in_team[x].created_by)
                 %tr
                   %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                     By 
                     %strong
-                      Student #{x} - someemail@sheffield.ac.uk
+                      #{current_feedbacker_name} - #{current_feedbacker_email}
                   %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                     By 
                     %strong
-                      Student #{x} - someemail@sheffield.ac.uk
+                      #{current_feedbacker_name} - #{current_feedbacker_email}
                 %tr
                   %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{lorem_ipsum}
-                    #{lorem_ipsum}
+                    #{feedback_for_first_student_in_team[x].appreciate}
                     //Apreciate from person #{x}
                   %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{lorem_ipsum}
+                    #{feedback_for_first_student_in_team[x].request}
                     //Request from person #{x}
 
 
@@ -96,67 +108,71 @@
             //LOOP HERE
             //Loop trough feedback
             //Loop trough all the remaining team members(without first one)
-            - for j in 2..4
+            - for j in 1...students_in_team.length
 
+              - current_student_name = students_in_team[j].givenname + students_in_team[j].sn
+              - feedback_for_current_team_member = feedback_team[j]
               //Check if student has feedback related to him(biggest of aprreciate and request) CHECK FOR ALL TEAM MEMBERS WITHOUT THE FIRST
               //Example: If 3 people appreciate and 6 people request -> number should be 6
 
               //This check should pass if no feedback at all was recived
-              - if 5 > 3
+              - if feedback_for_current_team_member.nil?
               
                 %tr
                   %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "1", :style => "width: 20%;", contenteditable: "false"}
-                    Student #{j}
+                    #{current_student_name}
                   %td.pt-3-half.feedback_no_info.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
-                    No feedback recieved
+                    No feedback received
                   //Loop trough team members of that student(without the student himself) and check for feedback 
                   %td.pt-3-half.feedback_no_info.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "false", name: "cell"}
-                    No feedback recieved
+                    No feedback received
               
               - else
 
                 //rowspan should be == to number of members that have given feedback multipled by 2
                 //Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 
                 //Change rowspan here
+                - rowspan_stronk = (feedback_for_current_team_member.length)*2
+                - name_of_current_feedbacker =  User.get_first_last(feedback_for_current_team_member[0].created_by)
+                - email_of_current_feedbacker = User.get_email(feedback_for_current_team_member[0].created_by)
                 %tr
-                  %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "8", :style => "width: 20%;", contenteditable: "false"}
-                    Student #{j}
+                  %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "#{rowspan_stronk}", :style => "width: 20%;", contenteditable: "false"}
+                    #{current_student_name}
                   %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                     By 
                     %strong
-                      Student 1 - someemail@sheffield.ac.uk
+                      #{name_of_current_feedbacker} - #{email_of_current_feedbacker}
                   %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                     By 
                     %strong
-                      Student 1 - someemail@sheffield.ac.uk
+                      #{name_of_current_feedbacker} - #{email_of_current_feedbacker}
                 %tr
                   %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{lorem_ipsum}
-                    #{lorem_ipsum}
+                    #{feedback_for_current_team_member[0].appreciate}
                     //Apreciate from person 1
                   %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                    #{lorem_ipsum}
+                    #{feedback_for_current_team_member[0].request}
                     //Request from person 1
                 
                 //Loop trough all the remaining people that gave feedback for the current team member(without the first)
-                - for z in 2..4
-                  
+                - for z in 1...feedback_for_current_team_member.length
+                  - current_feedbacker_name_2 = User.get_first_last(feedback_for_current_team_member[z].created_by)
+                  - current_feedbacker_email_2 = User.get_email(feedback_for_current_team_member[z].created_by)
                   %tr
                     %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                       By 
                       %strong
-                        Student #{z} - someemail@sheffield.ac.uk
+                        #{current_feedbacker_name_2} - #{current_feedbacker_email_2}
                     %td.pt-3-half.text_left.table_side_padding.table_small_top_bottom_padding.from_field{:colspan => "1", :style => "width: 40%;",contenteditable: "false"}
                       By 
                       %strong
-                        Student #{z} - someemail@sheffield.ac.uk
+                        #{current_feedbacker_name_2} - #{current_feedbacker_email_2}
                   %tr
                     %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                      #{lorem_ipsum}
-                      #{lorem_ipsum}
+                      #{feedback_for_current_team_member[z].appreciate}
                       //Apreciate from person #{z}
                     %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
-                      #{lorem_ipsum}
+                      #{feedback_for_current_team_member[z].request}
                       //Request from person #{z}
                 
                   //END OF STUFF FOR ONE STUDENT

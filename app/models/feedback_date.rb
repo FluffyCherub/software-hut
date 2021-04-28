@@ -71,5 +71,27 @@ class FeedbackDate < ApplicationRecord
     return result
   end
 
+  def self.get_last_finished_period(current_date, module_id)
+
+    all_periods = FeedbackDate.where(list_module_id: module_id)
+
+    last_finished_period = nil
+
+    #loop through  the periods
+    for i in 0...all_periods.length
+      if last_finished_period.nil? && all_periods[i].end_date - current_date < 0
+        last_finished_period = all_periods[i]
+      end 
+
+      #check if date is in the past
+      if all_periods[i].end_date - current_date < 0
+        if all_periods[i].end_date - current_date > last_finished_period.end_date - current_date
+          last_finished_period = all_periods[i]
+        end
+      end
+    end 
+
+    return last_finished_period
+  end
   
 end

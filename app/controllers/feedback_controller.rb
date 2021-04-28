@@ -90,6 +90,14 @@ class FeedbackController < ApplicationController
   end
 
   def feedback_review_all
-    render layout: 'extra_wide'
+    module_id = params['module_id']
+    @teams_in_module = Team.where(list_module_id: module_id)
+    @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, module_id)
+
+    if @last_finished_period.nil?
+      render "errors/error_500"
+    else
+      render layout: 'extra_wide'
+    end
   end
 end

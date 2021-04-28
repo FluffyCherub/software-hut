@@ -12,14 +12,30 @@ user4 = User.create(givenname: 'Ling', sn: 'Lai', username: 'aca18ll', email: 'a
 user5 = User.create(givenname: 'Seth', sn: 'Roberts', username: 'eib18sr', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 user6 = User.create(givenname: 'Zijian', sn: 'He', username: 'aca19zh', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 
-test_user1 = User.create(givenname: "Test", sn: "User1", username: 'test_user1', email: 'test_user1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user2 = User.create(givenname: "Test", sn: "User2", username: 'test_user2', email: 'test_user2@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user3 = User.create(givenname: "Test", sn: "User3", username: 'test_user3', email: 'test_user3@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user4 = User.create(givenname: "Test", sn: "User4", username: 'test_user4', email: 'test_user4@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user5 = User.create(givenname: "Test", sn: "User5", username: 'test_user5', email: 'test_user5@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user6 = User.create(givenname: "Test", sn: "User6", username: 'test_user6', email: 'test_user6@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user7 = User.create(givenname: "Test", sn: "User7", username: 'test_user7', email: 'test_user7@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
-test_user8 = User.create(givenname: "Test", sn: "User8", username: 'test_user8', email: 'test_user8@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user1 = User.create(givenname: "Test", sn: "User1", username: 'test_user1', email: 'test_user1@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user2 = User.create(givenname: "Test", sn: "User2", username: 'test_user2', email: 'test_user2@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user3 = User.create(givenname: "Test", sn: "User3", username: 'test_user3', email: 'test_user3@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user4 = User.create(givenname: "Test", sn: "User4", username: 'test_user4', email: 'test_user4@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user5 = User.create(givenname: "Test", sn: "User5", username: 'test_user5', email: 'test_user5@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user6 = User.create(givenname: "Test", sn: "User6", username: 'test_user6', email: 'test_user6@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user7 = User.create(givenname: "Test", sn: "User7", username: 'test_user7', email: 'test_user7@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+# test_user8 = User.create(givenname: "Test", sn: "User8", username: 'test_user8', email: 'test_user8@sheffield.ac.uk', password:'1234', password_confirmation: '1234')
+
+NUM_OF_TEST_USERS = 300
+
+#creating test_users
+test_users = []
+for i in 1..NUM_OF_TEST_USERS
+  new_test_givenname = "Test"
+  new_test_sn = "User" + i.to_s
+  new_test_username = "test_user" + i.to_s
+  new_test_email = new_test_username + "@sheffield.ac.uk"
+
+  new_test_user = User.create(givenname: new_test_givenname, sn: new_test_sn, username: new_test_username, email: new_test_email, password:'1234', password_confirmation: '1234')
+
+  test_users.append(new_test_user)
+end
+
 
 modules = ListModule.create([
   {name: 'Software Hut', code: 'COM3420', description: 'The Software Hut (a microcosm of a real Software House) gives students an opportunity to experience the processes of engineering a real software system for a real client in a competitive environment. The taught element covers the tools and technologies needed to manage software development projects successfully and to deliver software products that meet both client expectations and quality standards. Topics that are put into practice include: the requirements engineering process; software modelling and testing; using specific software development framework(s); group project management etc. Tutorials take the form of project meetings, and so are concerned with team management, conduct of meetings and action minutes.', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021', level: '5'},
@@ -40,78 +56,81 @@ modules = ListModule.create([
   
 ])
 
-test = UserListModule.create([
-  #modules for user1
-  {list_module: modules[0], user: user1, privilege: 'student'},
-  {list_module: modules[1], user: user1, privilege: 'student'},
-  {list_module: modules[2], user: user1, privilege: 'student'},
-  {list_module: modules[3], user: user1, privilege: 'student'},
-  {list_module: modules[4], user: user1, privilege: 'student'},
 
-  #modules for user2
-  {list_module: modules[0], user: user2, privilege: 'student'},
-  {list_module: modules[1], user: user2, privilege: 'student'},
-  {list_module: modules[2], user: user2, privilege: 'student'},
-  {list_module: modules[3], user: user2, privilege: 'student'},
-  {list_module: modules[4], user: user2, privilege: 'student'},
+num_of_modules = modules.length
 
-  #modules for user3
-  {list_module: modules[0], user: user3, privilege: 'student'},
-  {list_module: modules[1], user: user3, privilege: 'student'},
-  {list_module: modules[2], user: user3, privilege: 'student'},
-  {list_module: modules[3], user: user3, privilege: 'student'},
-  {list_module: modules[4], user: user3, privilege: 'student'},
+#putting test_users in modules
+for j in 0...num_of_modules
+  for i in 0...NUM_OF_TEST_USERS
+    UserListModule.create(list_module: modules[j], user: test_users[i], privilege: 'student')
+  end
+end
 
-  #modules for user4
-  {list_module: modules[0], user: user4, privilege: 'student'},
-  {list_module: modules[1], user: user4, privilege: 'student'},
-  {list_module: modules[2], user: user4, privilege: 'student'},
-  {list_module: modules[3], user: user4, privilege: 'student'},
-  {list_module: modules[4], user: user4, privilege: 'student'},
+#creating teams in software hut
+shuffled_test_users = test_users.shuffle
+TEAM_SIZE = 5
+NUM_OF_TEAMS = 60
+test_teams = []
 
-  #modules for user5
-  {list_module: modules[0], user: user5, privilege: 'student'},
-  {list_module: modules[1], user: user5, privilege: 'student'},
-  {list_module: modules[2], user: user5, privilege: 'student'},
-  {list_module: modules[3], user: user5, privilege: 'student'},
-  {list_module: modules[4], user: user5, privilege: 'student'},
+for j in 1..NUM_OF_TEAMS 
+  new_team_name = "Team " + j.to_s
+  new_team_topic = "none"
+  new_team = Team.create(name: new_team_name, topic: new_team_topic, size: TEAM_SIZE, list_module: modules[0])
+  test_teams.append(new_team)
+  for i in 0...TEAM_SIZE
+    UserTeam.create(team: new_team, user: shuffled_test_users[0], signed_agreement: false)
+    shuffled_test_users.shift(1)
+  end
+end
 
-  #modules for user6
-  {list_module: modules[0], user: user6, privilege: 'student'},
-  {list_module: modules[1], user: user6, privilege: 'student'},
-  {list_module: modules[2], user: user6, privilege: 'student'},
-  {list_module: modules[3], user: user6, privilege: 'student'},
-  {list_module: modules[4], user: user6, privilege: 'student'},
 
-  #modules for test users
-  {list_module: modules[7], user: test_user3, privilege: 'student'},
-  {list_module: modules[7], user: test_user1, privilege: 'student'},
-  {list_module: modules[7], user: test_user2, privilege: 'student'},
-  {list_module: modules[8], user: test_user5, privilege: 'student'},
-  {list_module: modules[8], user: test_user1, privilege: 'student'},
-  {list_module: modules[8], user: test_user3, privilege: 'student'},
-  {list_module: modules[9], user: test_user5, privilege: 'student'},
-  {list_module: modules[10], user: test_user2, privilege: 'student'},
-  {list_module: modules[10], user: test_user4, privilege: 'student'},
-  {list_module: modules[11], user: test_user2, privilege: 'student'},
-  {list_module: modules[11], user: test_user5, privilege: 'student'},
-  {list_module: modules[11], user: test_user3, privilege: 'student'},
-  {list_module: modules[12], user: test_user1, privilege: 'student'},
-  {list_module: modules[12], user: test_user4, privilege: 'student'},
-  {list_module: modules[12], user: test_user2, privilege: 'student'},
-
-  {list_module: modules[0], user: test_user1, privilege: 'student'},
-  {list_module: modules[0], user: test_user2, privilege: 'student'},
-  {list_module: modules[0], user: test_user3, privilege: 'student'},
-  {list_module: modules[0], user: test_user4, privilege: 'student'},
-
-  {list_module: modules[0], user: test_user5, privilege: 'module_leader'},
-  {list_module: modules[0], user: test_user6, privilege: 'teaching_assistant_1'},
-  {list_module: modules[0], user: test_user7, privilege: 'teaching_assistant_2'},
-  {list_module: modules[0], user: test_user8, privilege: 'teaching_assistant_3'}
-
-])
     
+start_date = DateTime.new(2020,2,3,4,5,6)
+end_date = DateTime.new(2020,2,10,4,5,6)
+
+
+#creating the feedback period
+feedback_period = FeedbackDate.create(start_date: start_date, end_date: end_date, list_module: modules[0])
+
+appreciate_messages = ["Helpful team member", "Very communicative", "Great leader"]
+request_messages = ["Should try to speak more", "Should turn up in meetings", "Should explain ideas more clearly"]
+
+NUM_OF_FEEDBACKS = NUM_OF_TEST_USERS/2
+
+for i in 0...test_teams.length
+
+  team_members = User.joins(:teams).where("teams.id = ?", test_teams[i].id)
+ 
+  for j in 0...team_members.length
+    for z in 0...team_members.length
+      if j != z && rand(2) == 0
+        rand_attendace = rand(4) + 1
+        rand_attitude = rand(4) + 1
+        rand_collaboration = rand(4) + 1
+        rand_communication = rand(4) + 1
+        rand_ethics = rand(4) + 1
+        rand_leadership = rand(4) + 1
+        rand_qac = rand(4) + 1
+
+        PeerFeedback.create(feedback_date: feedback_period,
+                            attendance: rand_attendace,  
+                            attitude: rand_attitude,    
+                            collaboration: rand_collaboration,
+                            communication: rand_communication,
+                            ethics: rand_ethics,   
+                            leadership: rand_leadership,
+                            qac: rand_qac,
+                            appreciate: appreciate_messages.sample,
+                            request: request_messages.sample,
+                            created_by: team_members[j].username,
+                            created_for: team_members[z].username)
+      end
+    end
+  end
+
+end
+
+
 # teams = Team.create([
 #   {name: 'Team 1', topic: 'Topic 1', size: 6, list_module: modules[0]},
 #   {name: 'Team 2', topic: 'none', size: 6, list_module: modules[0]},
@@ -123,30 +142,21 @@ test = UserListModule.create([
 # ])
 
 
-# test2 = UserTeam.create([
-#   {team: teams[0], user: user1, signed_agreement: false},
-#   {team: teams[0], user: user2, signed_agreement: false},
-
-#   {team: teams[3], user: user3, signed_agreement: false},
-#   {team: teams[3], user: user4, signed_agreement: false},
-
-#   {team: teams[5], user: user5, signed_agreement: false},
-#   {team: teams[5], user: user6, signed_agreement: false},
-
-
-
-
-
+# user_teams = UserTeam.create([
 #   {team: teams[0], user: test_user1, signed_agreement: false},
 #   {team: teams[0], user: test_user2, signed_agreement: false},
 #   {team: teams[0], user: test_user3, signed_agreement: false},
 #   {team: teams[0], user: test_user4, signed_agreement: false},
 
+#   {team: teams[3], user: user3, signed_agreement: false},
+#   {team: teams[3], user: user4, signed_agreement: false},
 #   {team: teams[3], user: test_user5, signed_agreement: false},
 #   {team: teams[3], user: test_user6, signed_agreement: false},
 #   {team: teams[3], user: test_user7, signed_agreement: false},
 #   {team: teams[3], user: test_user8, signed_agreement: false},
 
+#   {team: teams[5], user: user5, signed_agreement: false},
+#   {team: teams[5], user: user6, signed_agreement: false},
 #   {team: teams[5], user: test_user2, signed_agreement: false},
 #   {team: teams[5], user: test_user3, signed_agreement: false},
 

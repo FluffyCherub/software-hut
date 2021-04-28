@@ -71,6 +71,17 @@ class PeerFeedback < ApplicationRecord
 
   end
 
+  def self.get_feedback_for_user_by_date(created_for, feedback_date_id)
+    feedback = PeerFeedback.where(created_for: created_for,
+                                  feedback_date_id: feedback_date_id)
+
+    if feedback.length == 0
+      return nil
+    else
+      return feedback
+    end
+  end
+
   def self.check_feedback_completion(students_list, created_by, feedback_date_id)
 
     feedback_completed = true
@@ -94,5 +105,20 @@ class PeerFeedback < ApplicationRecord
 
     return feedback_completed
 
+  end
+
+  def self.get_feedback_for_team_period(team_id, feedback_date_id)
+    team_members = Team.get_current_team_members(team_id)
+
+    result = []
+
+    #get feedback for every team member
+    for i in 0...team_members.length
+      feedback_for_current_team_member = PeerFeedback.get_feedback_for_user_by_date(team_members[i].username, feedback_date_id)
+
+      result.append(feedback_for_current_team_member)
+    end
+
+    return result
   end
 end
