@@ -37,3 +37,18 @@ $(function() {
     }
   }
 });
+
+// $("#approve_button" ).on( "click", function() {
+//   console.log( "test" );
+// });
+function test() {
+  $('#approve_button').click(function(){
+
+    let module_id = $("#module_id").val();
+    let feedback_date_id = $("#feedback_date_id").val();
+
+    $.post('/feedback/review/all/approve', { approve: "approve", module_id: module_id, feedback_date_id: feedback_date_id }, function(data) {
+      // log the result from the server, or whatever...
+    });
+  });
+}

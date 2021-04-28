@@ -94,7 +94,10 @@
     //--------------------------------------------
     .container.col-xs-8.col-sm-6.no_padding_left.no_padding_right
       - if can? :manage, :admin_modules_edit
-        %a.button{:href => feedback_review_all_path(:module_id => params[:module_id]), class: "btn btn-primary agreement_buttons justify-content-center button_review_feedback_all float_right"}Review Feedback
+        - if @last_finished_period != nil && @last_finished_period.feedback_status == "not_approved"
+          %a.button{:href => feedback_review_all_path(:module_id => params[:module_id]), class: "btn btn-primary agreement_buttons justify-content-center button_review_feedback_all float_right"}Review Feedback
+        - elsif @last_finished_period == nil || @last_finished_period.feedback_status == "approved"
+          %button{disabled: true, :href => feedback_review_all_path(:module_id => params[:module_id]), class: "btn btn-primary agreement_buttons justify-content-center button_review_feedback_all float_right"}Review Feedback
     - if can? :manage, :add_remove_students_from_module
       .container-fluid.bg_none.no_padding.margin_bottom_small.bg_white.text_black
         %hr.group_line

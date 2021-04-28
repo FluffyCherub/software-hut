@@ -178,4 +178,11 @@
                       #{feedback_for_current_team_member[z].appreciate_edited}
                     %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_#{j+1}_#{z+1}", :name => "request_field_#{i+1}_#{j+1}_#{z+1}", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
                       #{feedback_for_current_team_member[z].request_edited}
+
+  %input{id: "feedback_date_id", name: "feedback_date_id", type: "hidden", value: @last_finished_period.id}
+  %input{id: "module_id", name: "module_id", type: "hidden", value: @module_id}
+  .container-fluid.bg_none.text_black.no_padding.special_margin_top.margin_bottom_small.medium
+    %button{type: "button", name: "approve_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"approve_button"}Approve Feedback
         
+:javascript
+  test();

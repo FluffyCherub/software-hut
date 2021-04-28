@@ -92,11 +92,13 @@ class FeedbackController < ApplicationController
   end
 
   def feedback_review_all
-    module_id = params['module_id']
-    @teams_in_module = Team.where(list_module_id: module_id)
-    @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, module_id)
-
-    if @last_finished_period.nil?
+    @module_id = params['module_id']
+    @teams_in_module = Team.where(list_module_id: @module_id)
+    @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, @module_id)
+    
+    if @last_finished_period.nil? 
+      render "errors/error_500"
+    elsif @last_finished_period.feedback_status == "approved"
       render "errors/error_500"
     else
       render layout: 'extra_wide'
@@ -114,5 +116,19 @@ class FeedbackController < ApplicationController
       PeerFeedback.find(peer_feedback_id.to_i).update(request_edited: request)
     end
 
+  end
+
+  def approve_feedback
+    module_id = params['module_id']
+    feedback_date_id = params['feedback_date_id']
+
+    if params['approve'] != nil
+      FeedbackDate.find(feedback_date_id.to_i).update(feedback_status: "approved")
+    end
+
+    respond_to do |format|
+      format.js { render js: "window.location = '/admin/modules/preview?module_id=#{module_id}'" }
+    end
+    
   end
 end

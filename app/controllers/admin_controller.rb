@@ -107,7 +107,11 @@ class AdminController < ApplicationController
 
     #getting the module information about the currently displayed module
     @module_info = ListModule.where("id = ?", params[:module_id]).first
-    
+
+    #get the last feedback period which is closed
+    @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, params[:module_id])
+
+
     #getting the module leader of the currently displayed module
     @module_leaders = User.joins(:list_modules).where("user_list_modules.privilege = ? AND
                                                       list_modules.id = ?",

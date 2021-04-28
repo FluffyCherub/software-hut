@@ -2,12 +2,13 @@
 #
 # Table name: feedback_dates
 #
-#  id             :bigint           not null, primary key
-#  end_date       :datetime
-#  start_date     :datetime
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  list_module_id :bigint
+#  id              :bigint           not null, primary key
+#  end_date        :datetime
+#  feedback_status :string           default("not_approved")
+#  start_date      :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  list_module_id  :bigint
 #
 # Indexes
 #

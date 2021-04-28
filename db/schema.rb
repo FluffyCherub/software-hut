@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_27_072719) do
+ActiveRecord::Schema.define(version: 2021_04_28_150050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2021_04_27_072719) do
     t.bigint "list_module_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "feedback_status", default: "not_approved"
     t.index ["list_module_id"], name: "index_feedback_dates_on_list_module_id"
   end
 
