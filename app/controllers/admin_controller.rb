@@ -11,9 +11,9 @@ class AdminController < ApplicationController
     authorize! :manage, :admin_page
 
     #redirect to different admin subpages based on the button pressed
-    if params['manage_privileges'] == "Manage Privileges"
+    if params['manage_privileges'] != nil
       redirect_to "/admin/privileges"
-    elsif params['manage_modules'] == "Manage Modules"
+    elsif params['manage_modules'] != nil 
       redirect_to "/admin/modules"
     end
   end
@@ -304,7 +304,7 @@ class AdminController < ApplicationController
 
       if module_name.nil? == false && module_code.nil? == false && years.nil? == false && module_description.nil? == false && semester.nil? == false
         #checking if a module with this name,code,semester and year is in the system
-        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
+        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ? AND level = ?", 
                                         module_name,
                                         years,
                                         module_code,
@@ -919,8 +919,6 @@ class AdminController < ApplicationController
             end
           end
           
-          puts "--------------------------------------------"
-          puts new_teams.length
 
           if params['topic_free_join'] == "checked"
             #set the team type to free join
