@@ -2,17 +2,18 @@
 #
 # Table name: list_modules
 #
-#  id          :bigint           not null, primary key
-#  code        :string
-#  created_by  :string
-#  description :string
-#  level       :integer
-#  name        :string
-#  semester    :string
-#  team_type   :string           default("random")
-#  years       :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                :bigint           not null, primary key
+#  code              :string
+#  created_by        :string
+#  description       :string
+#  level             :integer
+#  mailmerge_message :string           default("")
+#  name              :string
+#  semester          :string
+#  team_type         :string           default("random")
+#  years             :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 class ListModule < ApplicationRecord
   validates :name , presence: true

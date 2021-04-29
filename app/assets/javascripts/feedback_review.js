@@ -49,6 +49,9 @@ function test() {
 
     $.post('/feedback/review/all/approve', { approve: "approve", module_id: module_id, feedback_date_id: feedback_date_id }, function(data) {
       // log the result from the server, or whatever...
+      
     });
+
+    alert("saved");
   });
 }

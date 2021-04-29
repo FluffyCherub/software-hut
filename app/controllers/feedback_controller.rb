@@ -131,4 +131,17 @@ class FeedbackController < ApplicationController
     end
     
   end
+
+  def feedback_mailmerge_edit
+    module_id = params['module_id']
+    @module_info = ListModule.find(module_id.to_i)
+
+    if params['save_message'] == "save" 
+      @module_info.update(mailmerge_message: params['message'])
+
+      respond_to do |format|
+        format.js { render :js => "popup_saved_message();" }
+      end
+    end
+  end
 end

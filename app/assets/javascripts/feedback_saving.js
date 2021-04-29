@@ -64,14 +64,6 @@ function submit_on_radio() {
     document.getElementsByName(appreciate_note)[0].onchange = function(){submit_feedback_form();};
     document.getElementsByName(request_note)[0].onchange = function(){submit_feedback_form();};
 
-    // $(appreciate_note).bind('input propertychange', function() {
-    //   submit_feedback_form();
-    // });
-
-    // $(request_note).bind('input propertychange', function() {
-    //   submit_feedback_form();
-    // });
-
   }
 
 }
@@ -131,4 +123,21 @@ function load_appreciate_request_notes(appreciate_note, request_note, student_nu
   request_name = "request_note_" + student_number.toString();
   document.getElementsByName(appreciate_name)[0].value = appreciate_note;
   document.getElementsByName(request_name)[0].value = request_note;
+}
+
+function save_mailmerge_message() {
+
+  $('#save_mailmerge_button').click(function(){
+
+    let message = $("#custom_feedback_text").val();
+    let module_id = $("#module_id").val();
+
+    $.post('/feedback/mailmerge/edit', { module_id: module_id, message: message, save_message: "save" }, function(data) {
+      // log the result from the server, or whatever...
+    });
+  });
+}
+
+function popup_saved_message() {
+  alert("Saved message");
 }
