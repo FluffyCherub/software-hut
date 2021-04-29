@@ -226,11 +226,16 @@ class AdminController < ApplicationController
       years = params['module_create_form']['years']
       level = params['module_create_form']['level']
 
-      if module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil
-        #checking if a module with this name and year is in the system
-        module_check = ListModule.where("name = ? AND years = ?", 
-                                        module_name,
-                                        years)
+      if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
+         module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
+        
+         #checking if a module with this name and year is in the system
+        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
+                                         module_name,
+                                         years,
+                                         module_code,
+                                         semester
+                                         )
 
         if module_check.length == 0
           #creating a module with the given parameters
@@ -249,9 +254,38 @@ class AdminController < ApplicationController
                                                   user_id: current_user.id,
                                                   privilege: "module_leader")
           end
+
+          #popup that module was created successfully
+          respond_to do |format|
+            format.js { render :js => "myAlertTopSuccess();" }
+          end
+        else
+          #popup that this module already exists
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError4();" }
+          end
         end
       else
-        #popup that a field was empty
+        
+        #error popups
+        if module_name.nil? || module_name.length == 0
+          puts "BOIIIIIIIIIIIIIIIIIIIIIIII"
+          #popup that module name was empty
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError1();" }
+          end
+        elsif module_code.nil? || module_code.length == 0
+          #popup that module code was empty
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError2();" }
+          end
+        elsif module_description != nil || module_description.length == 0
+          #popup that module description was empty
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError3();" }
+          end
+        end
+
       end
     end
     
@@ -304,12 +338,11 @@ class AdminController < ApplicationController
 
       if module_name.nil? == false && module_code.nil? == false && years.nil? == false && module_description.nil? == false && semester.nil? == false
         #checking if a module with this name,code,semester and year is in the system
-        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ? AND level = ?", 
+        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
                                         module_name,
                                         years,
                                         module_code,
-                                        semester,
-                                        level
+                                        semester
                                         )
 
         if module_check.length == 0

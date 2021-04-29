@@ -13,7 +13,7 @@
       %h.float_left.bigger.no_padding Create Module
       %button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium{onclick: "location.href='/admin/modules';", type: "button"} Go Back
     %hr.group_line.no_padding
-    = simple_form_for :module_create_form do |f|
+    = simple_form_for :module_create_form, remote: true do |f|
       .form-row
         .form-group.col-md-9.margin_bottom_small
           = f.input :module_name, :as => :string, label: "Module Name", required: false , :input_html => {:id => "inputName", :class => "form-control"}
@@ -50,3 +50,6 @@
 
 .myAlert-top-error-3.alert.alert-warning
   %strong Please enter a Description
+
+.myAlert-top-error-4.alert.alert-warning
+  %strong This Module already exists
