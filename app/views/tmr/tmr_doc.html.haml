@@ -5,7 +5,7 @@
     .container.container_middle.special_margin_top
       %h1.bigger Team Meeting Record, submitted at: #{@unfinished_tmr.created_at}
       //Height 6900 for full template to show
-      %iframe{src: "#{rails_blob_path(@unfinished_tmr.tmr_doc, disposition: :inline)}", width: "900", height: "800"}
+      %iframe{src: "#{rails_blob_path(@unfinished_tmr.tmr_doc, disposition: :inline)}", width: "900", height: "1200"}
   - else
     .container.margin_top
       %h1.bigger There is no Team Meeting Record Submission
