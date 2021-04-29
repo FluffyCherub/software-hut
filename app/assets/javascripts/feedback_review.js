@@ -1,4 +1,4 @@
-$(function() {
+function save_edited_feedback () {
   var num_of_teams = parseInt(document.getElementById("num_of_teams").value);
   
   for(let i=1; i<=num_of_teams; i++) {
@@ -36,12 +36,10 @@ $(function() {
       }
     }
   }
-});
+}
 
-// $("#approve_button" ).on( "click", function() {
-//   console.log( "test" );
-// });
-function test() {
+
+function approve_feedback() {
   $('#approve_button').click(function(){
 
     let module_id = $("#module_id").val();
@@ -52,6 +50,5 @@ function test() {
       
     });
 
-    alert("saved");
   });
 }

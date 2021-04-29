@@ -1,4 +1,4 @@
-$(function() {
+function add_note_function() {
   var num_of_teams = parseInt(document.getElementById("num_of_teams").value);
 
   for(let i=1; i<=num_of_teams; i++) {
@@ -32,4 +32,4 @@ $(function() {
   }
 
   
-});
+}

@@ -66,6 +66,12 @@ UserListModule.create(list_module: modules[0], user: ta_3_soft, privilege: 'teac
 UserListModule.create(list_module: modules[1], user: user1, privilege: 'student')
 UserListModule.create(list_module: modules[1], user: user2, privilege: 'student')
 
+#adding mod lead and ta's to automata
+UserListModule.create(list_module: modules[2], user: mod_lead_soft, privilege: 'module_leader')
+UserListModule.create(list_module: modules[2], user: ta_1_soft, privilege: 'teaching_assistant')
+UserListModule.create(list_module: modules[2], user: ta_2_soft, privilege: 'teaching_assistant')
+UserListModule.create(list_module: modules[2], user: ta_3_soft, privilege: 'teaching_assistant')
+
 
 #putting test_users in software hut
 for i in 0...NUM_OF_TEST_USERS
