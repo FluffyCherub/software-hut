@@ -2,6 +2,10 @@ function myAlertTopSuccess(){
   $("div.myAlert-top-success").fadeIn(300).delay(2000).fadeOut(400);
 }
 
+function myAlertTopSuccess2(){
+  $("div.myAlert-top-success2").fadeIn(300).delay(2000).fadeOut(400);
+}
+
 function myAlertTopUnknown(){
   $("div.myAlert-top-unknown").fadeIn(300).delay(2000).fadeOut(400);
 }

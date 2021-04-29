@@ -229,7 +229,7 @@ class AdminController < ApplicationController
       if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
          module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
         
-         #checking if a module with this name and year is in the system
+        #checking if a module with this name and year is in the system
         module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
                                          module_name,
                                          years,
@@ -269,7 +269,6 @@ class AdminController < ApplicationController
         
         #error popups
         if module_name.nil? || module_name.length == 0
-          puts "BOIIIIIIIIIIIIIIIIIIIIIIII"
           #popup that module name was empty
           respond_to do |format|
             format.js { render :js => "myAlertTopError1();" }
@@ -304,12 +303,17 @@ class AdminController < ApplicationController
       form_module_id = params['module_edit_form']['form_module_id']
       level = params['module_edit_form']['level']
 
-      if module_name.nil? == false && module_code.nil? == false && years.nil? == false && module_description.nil? == false && semester.nil? == false
+      if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
+          module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
+        
         #checking if a module with this name and year is in the system
-        module_check = ListModule.where("name = ? AND years = ? AND id != ?", 
-                                        module_name,
-                                        years,
-                                        form_module_id)
+        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ? AND id != ?", 
+                                         module_name,
+                                         years,
+                                         module_code,
+                                         semester,
+                                         form_module_id
+                                         )
 
         if module_check.length == 0
           current_module = ListModule.find_by(id: form_module_id)
@@ -320,13 +324,36 @@ class AdminController < ApplicationController
                                 years: years,
                                 level: level)
           
+          #popup that module was updated successfully
+          respond_to do |format|
+            format.js { render :js => "myAlertTopSuccess();" }
+          end
+        else
+          #popup that this module already exists
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError4();" }
+          end
         end
 
+        
+
       else
-        #popu didnt edit because field was empty
+        #popups
+        if module_name.nil? || module_name.length == 0
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError1();" }
+          end
+        elsif module_code.nil? || module_code.length == 0
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError2();" }
+          end
+        elsif module_description.nil? || module_description.length == 0
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError3();" }
+          end
+        end
       end
 
-      redirect_to admin_modules_preview_path(module_id: form_module_id)
     elsif params['clone_module_button'] == "Clone"
       module_name = params['module_edit_form']['module_name']
       module_code = params['module_edit_form']['module_code']
@@ -336,14 +363,16 @@ class AdminController < ApplicationController
       form_module_id = params['module_edit_form']['form_module_id']
       level = params['module_edit_form']['level']
 
-      if module_name.nil? == false && module_code.nil? == false && years.nil? == false && module_description.nil? == false && semester.nil? == false
-        #checking if a module with this name,code,semester and year is in the system
+      if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
+          module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
+        
+        #checking if a module with this name and year is in the system
         module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
-                                        module_name,
-                                        years,
-                                        module_code,
-                                        semester
-                                        )
+                                         module_name,
+                                         years,
+                                         module_code,
+                                         semester
+                                         )
 
         if module_check.length == 0
           cloned_module = ListModule.find_or_create_by(name: module_name,
@@ -380,12 +409,34 @@ class AdminController < ApplicationController
           
             end
           end
+
+          #popup that module was cloned successfully
+          respond_to do |format|
+            format.js { render :js => "myAlertTopSuccess2();" }
+          end
+        else
+          #popup that this module already exists
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError4();" }
+          end
         end
       else
-        #popup didnt clone because field was empty
+        #popups empty fields
+        if module_name.nil? || module_name.length == 0
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError1();" }
+          end
+        elsif module_code.nil? || module_code.length == 0
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError2();" }
+          end
+        elsif module_description.nil? || module_description.length == 0
+          respond_to do |format|
+            format.js { render :js => "myAlertTopError3();" }
+          end
+        end
       end
 
-      redirect_to admin_modules_preview_path(module_id: form_module_id)
     else
       #getting information about the selected module
       @module_info = ListModule.where(id: params['module_id']).first

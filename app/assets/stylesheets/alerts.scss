@@ -1,7 +1,7 @@
 .myAlert-top-success, .myAlert-top-unknown,
 .myAlert-top-error-1, .myAlert-top-error-2,
 .myAlert-top-error-3, .myAlert-top-error-4,
-.myAlert-top-error-5
+.myAlert-top-error-5, .myAlert-top-success2
 {
   position: fixed;
   top: 1%; 
@@ -11,9 +11,10 @@
   text-align: center;
 }
 
-.myAlert-top-success {
+.myAlert-top-success, .myAlert-top-success2 {
   border: thin solid green;
 }
+
 
 .myAlert-top-unknown, .myAlert-top-error-1,
 .myAlert-top-error-2, .myAlert-top-error-3,
