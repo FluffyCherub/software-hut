@@ -140,7 +140,7 @@ class FeedbackController < ApplicationController
       @module_info.update(mailmerge_message: params['message'])
 
       respond_to do |format|
-        format.js { render :js => "popup_saved_message();" }
+        format.js { render :js => "myAlertTopSuccess();" }
       end
     end
   end

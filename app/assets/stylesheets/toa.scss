@@ -236,3 +236,13 @@
   float: right;
   width: 50%;
 }
+
+.button_off {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  color: GrayText !important;
+  cursor: inherit;
+  background-color: #ddd !important;
+  background: #ddd !important;
+  font-family: 'Steph';
+}

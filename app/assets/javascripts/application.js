@@ -18,3 +18,4 @@
 //= require feedback_review
 //= require add_note
 //= require profanity_filter
+//= require alerts

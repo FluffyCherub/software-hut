@@ -1,0 +1,36 @@
+.myAlert-top-success, .myAlert-top-unknown,
+.myAlert-top-error-1, .myAlert-top-error-2,
+.myAlert-top-error-3, .myAlert-top-error-4,
+.myAlert-top-error-5
+{
+  position: fixed;
+  top: 1%; 
+  left: 30%;
+  width: 40%;
+  z-index: 99999999;
+  text-align: center;
+}
+
+.myAlert-top-success {
+  border: thin solid green;
+}
+
+.myAlert-top-unknown, .myAlert-top-error-1,
+.myAlert-top-error-2, .myAlert-top-error-3,
+.myAlert-top-error-4, .myAlert-top-error-5
+{
+  border: thin solid red;
+}
+
+
+.myAlert-bottom{
+  position: fixed;
+  bottom: 1%;
+  left: 10%;
+  width: 80%;
+  z-index: 99999999;
+}
+
+.alert{
+  display: none;
+}
