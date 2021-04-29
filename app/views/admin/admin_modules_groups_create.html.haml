@@ -5,7 +5,7 @@
     .container-fluid.bg_none.text_black.margin_top.bigger
       #{@module_info.name} - #{@module_info.code} - Level #{@module_info.level}
       //MAKE BUTTON GO BACK TO GROUPS
-      %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{:href => admin_modules_groups_path(:module_id => params[:module_id]), type: "button"} Go Back
+      %a.button.add.btn.btn-primary.button_topics.float_right.medium{:href => admin_modules_groups_path(:module_id => params[:module_id]), type: "button"} Go Back
       .container-fluid.bg_none.text_black.margin_top.small.float_left.no_padding.margin_none
         Students in module: #{@num_of_students}
         %hr.group_line.margin_top_half_rem

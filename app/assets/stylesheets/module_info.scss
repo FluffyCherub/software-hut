@@ -289,3 +289,11 @@ input[type="checkbox"]:focus{
   width: 55%;
 }
 
+a.no_text {
+  color: transparent !important;
+}
+
+a.no_text:hover {
+  color: transparent !important;
+}
+
