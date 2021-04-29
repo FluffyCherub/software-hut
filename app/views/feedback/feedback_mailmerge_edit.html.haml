@@ -1,0 +1,98 @@
+- content_for :title, "Mailmerge Edit"
+
+- custom_placeholder = "Some placeholder text that the module leader can type/edit. It only affects the current module. To change other parts of the text, please contact the department administration"
+
+.container.body_whole_custom
+  .container-fluid.bg_none.no_padding.text_black.center_text.special_margin_top
+    %button.add.btn.btn-primary.button_topics.float_right.medium{type: "button", onclick: "addPeriod()"} Go back
+    //%button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{onclick: "location.href='/admin/modules';", type: "button"} Go Back   
+  .container-fluid.bg_none.no_padding.text_black.center_text
+    %h5.bigger Edit Mail Merge Content
+    %h5.medium Software Hut
+  %hr.group_line
+  .container-fluid.bg_none.no_padding.text_black
+    %p.small Dear {{First name}},
+    
+    %p.small Please see below your peer feedback for [TYPE MODULE NUMBER/NAME HERE] for Week [INSERT WEEK NO]. 
+    
+    %p.small 
+      Your team rated you across seven teamworking values, using the Department of Mechanical Engineering's Peer Evaluation Matrix. You can find this matrix here: 
+      %a{href: "https://tinyurl.com/TUoS-MEC-PFM1"} Peer Feedback Matrix
+
+    %p.small We encourage you to take the time to reflect on this feedback and to think about your strengths as a team member, and which areas you might want to improve.
+    
+    //-------------------------------
+    //      EDITABLE TEXT HERE
+    //-------------------------------
+    // Do not make save on change. Save when a button is clicked
+    .form-group.margin_bottom_small_override
+      %textarea.form-control.medium{rows: "10", name: "custom_feedback_text", id: "custom_feedback_text"}
+        #{custom_placeholder}
+    %p.small
+      Best wishes,
+      %br
+        [SIGN OFF HERE]
+  
+  %hr.group_line
+
+  .container-fluid.bg_none.no_padding.text_black
+    %p.medium Peer Feedback for {{First name}} {{Last name}} for Week [TYPE WEEK NO]
+    
+    %p.small
+      Attendance and Punctuality
+      %br
+        {{Evaluation [Attendance and punctuality]}}
+    
+    %p.small
+      Attitude and Commitment
+      %br
+        {{Evaluation [Attitude and commitment]}}
+    
+    %p.small
+      Quality, accuracy and completeness
+      %br
+        {{Evaluation [Quality, accuracy and completeness]}}
+
+    %p.small
+      Communication
+      %br
+        {{Evaluation [Communication]}}
+
+    %p.small
+      Collaboration
+      %br
+        {{Evaluation [Collaboration]}}
+
+    %p.small
+      Leadership
+      %br
+        {{Evaluation [Leadership]}}
+
+    %p.small
+      Professionalism and ethics
+      %br
+        {{Evaluation [Professionalism and ethics]}}
+  
+
+  // Check for level. If level 5 pass the check
+  - if 5 > 2
+    %hr.group_line
+    .container-fluid.bg_none.no_padding.text_black
+      %p.medium PEER COMMENTS
+
+      %p.small
+        Things I appreciate about this group member
+        %br
+          {{Things I appreciate about this group member}}
+    
+      %p.small
+        Things I request from this group member
+        %br
+          {{Things I request from this group member}}
+    %hr.group_line
+
+  .container-fluid.bg_none.no_padding.text_black.margin_bottom_small
+    %button.add.btn.btn-primary.button_topics.medium{type: "button", onclick: "addPeriod()"} Save Changes
+    
+    
+
