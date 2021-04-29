@@ -28,8 +28,6 @@ Rails.application.routes.draw do
   match "/feedback/review/all/approve", to: "feedback#approve_feedback", via: :all
   match "/feedback/mailmerge/edit", to: "feedback#feedback_mailmerge_edit", via: :all
   match "/problem_notes", to: "problem_notes#create", via: :all
-  match "*path", to: "errors#error_404", via: :all
-
   
 
 

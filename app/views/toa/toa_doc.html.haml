@@ -4,7 +4,7 @@
   - if @current_team.toa_status == "submitted" || @current_team.toa_status == "finished"
     .container.container_middle.special_margin_top
       //Height 6900 for full template to show
-      %iframe{src: "#{rails_blob_path(@current_team.document, disposition: :inline)}", width: "900", height: "800"}
+      %iframe{src: "#{rails_blob_path(@current_team.document, disposition: :inline)}", width: "900", height: "1200"}
   - else
     .container.margin_top
       %h1.bigger There is no Team Operating Agreement Submission
