@@ -1,3 +1,10 @@
+#--------------------------------------------------
+# File for defining abilities(using cancancan gem)
+#--------------------------------------------------
+# Author: Dominik Laszczyk/Ling Lai
+# Date: 10/04/2021
+#--------------------------------------------------
+
 # frozen_string_literal: true
 
 class Ability
@@ -6,11 +13,14 @@ class Ability
   def initialize(user, module_privilege = "student")
     user ||= User.new
 
+    #check if user is not suspended(otherwise has no permission to do anything in the system)
     if !user.suspended
+
+      #check if user is an admin(can manage every page)
       if user.admin?
         can :manage, :all
       else
-        #mod leader
+        #privileges for module leader
         if module_privilege == "module_leader"
           can :manage, :admin_page
           can :manage, :admin_modules
@@ -25,7 +35,7 @@ class Ability
           can :manage, :add_remove_students_from_module
         end
 
-        #student
+        #privileges for the student
         if module_privilege == "student"
           can :manage, :modules
           can :manage, :toa_doc
@@ -49,7 +59,6 @@ class Ability
         # can :manage, :admin_modules_groups_create
         # can :manage, :problems
         # can :manage, :add_remove_students_from_module
-
 
         if module_privilege.include? "teaching_assistant"
           can :manage, :admin_page
@@ -208,31 +217,5 @@ class Ability
 
     end
     
-    # Define abilities for the passed in user here. For example:
-    #
-    #   user ||= User.new # guest user (not logged in)
-    #   if user.admin?
-    #     can :manage, :all
-    #   else
-    #     can :read, :all
-    #   end
-    #
-    # The first argument to `can` is the action you are giving the user
-    # permission to do.
-    # If you pass :manage it will apply to every action. Other common actions
-    # here are :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on.
-    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
-    # class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the
-    # objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details:
-    # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
   end
 end

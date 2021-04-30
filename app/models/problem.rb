@@ -24,24 +24,36 @@
 class Problem < ApplicationRecord
   belongs_to :team
 
+  #get array of problems for a team
+  #takes team id(integer)
+  #returns array of Problem objects
   def self.get_problems_for_team(team_id)
     problems = Problem.where(team_id: team_id)
 
     return problems
   end
 
+  #assign user to a problem
+  #takes username(string) and problem_id(integer)
+  #returns void
   def self.assign(username, problem_id)
     current_problem = Problem.where(id: problem_id)
 
     current_problem.update(assigned_to: username)
   end
 
+  #change problem status
+  #takes problem_id(integer) and stauts(string)
+  #returns void
   def self.change_status(problem_id, status)
     current_problem = Problem.where(id: problem_id)
 
     current_problem.update(status: status)
   end
 
+  #solve a problem
+  #takes username(string) and problem_id(integer)
+  #returns void
   def self.solve(username, problem_id)
     current_problem = Problem.where(id: problem_id)
 
@@ -50,6 +62,9 @@ class Problem < ApplicationRecord
                            )
   end
 
+  #check if problem is assigned to anybody
+  #takes problem id(integer)
+  #returns true or false
   def self.is_assigned(problem_id)
     current_problem = Problem.where(id: problem_id).first
 

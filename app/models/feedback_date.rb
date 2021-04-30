@@ -24,6 +24,8 @@ class FeedbackDate < ApplicationRecord
   #many peer feedbacks per feedback date window
   has_many :peer_feedbacks, dependent: :destroy
 
+  #get wither the current feedback period or the closest one in the future
+  #takes current date and module id, returns a datetime object
   def self.get_closest_date(current_date, module_id)
     closest_date = nil
 
@@ -55,6 +57,8 @@ class FeedbackDate < ApplicationRecord
     return closest_date
   end
 
+  #checks if current date is in a feedback window
+  #takes the current date and module id, returns true or false
   def self.is_in_feedback_window(current_date, module_id)
     feedback_dates = FeedbackDate.where(list_module_id: module_id).order(:start_date)
     result = false
@@ -72,6 +76,8 @@ class FeedbackDate < ApplicationRecord
     return result
   end
 
+  #get the most frequent feedback period which is in the past
+  # takes the current date and module id, returns a ffedback period object
   def self.get_last_finished_period(current_date, module_id)
 
     all_periods = FeedbackDate.where(list_module_id: module_id)

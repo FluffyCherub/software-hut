@@ -1,12 +1,25 @@
+#-------------------------------------------------------------
+# Controller dedicated to all admin related views            
+# with privileges cascading down                             
+# (also contains pages which the module leaders and          
+# teaching asssitants with the right permissions can access) 
+# one function correlates to one view file                   
+#-------------------------------------------------------------
+# Authors: Dominik Laszczyk/Ling Lai                         
+# Date: 04/04/2021                                           
+#-------------------------------------------------------------
+
 class AdminController < ApplicationController
   require 'csv'
   require 'date'
   require 'active_support/core_ext'
   
+  #called to change the current ability(used for cancancan)
   def current_ability(module_privilege = "module_leader")
     @current_ability ||= Ability.new(current_user, module_privilege)
   end
 
+  #the default page which an admin user gets redirected to
   def admin_page
     authorize! :manage, :admin_page
 
@@ -18,6 +31,7 @@ class AdminController < ApplicationController
     end
   end
 
+  #correlates with the view for changing system privileges
   def admin_privileges
     authorize! :manage, :admin_privileges
     
@@ -48,7 +62,8 @@ class AdminController < ApplicationController
     end
 
   end
-
+  
+  #correlates with the view for viewwing all modules inside the system
   def admin_modules
     authorize! :manage, :admin_modules
 
@@ -101,6 +116,7 @@ class AdminController < ApplicationController
     
   end
 
+  #correlates with the view for looking at a certain module page
   def admin_modules_preview
     current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_preview
@@ -211,6 +227,7 @@ class AdminController < ApplicationController
   
   end
 
+  #correlates with the view for module creation
   def admin_modules_create
     authorize! :manage, :admin_modules_create
 
@@ -226,6 +243,7 @@ class AdminController < ApplicationController
       years = params['module_create_form']['years']
       level = params['module_create_form']['level']
 
+      #check if there is no empty field supplied by the user
       if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
          module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
         
@@ -237,6 +255,7 @@ class AdminController < ApplicationController
                                          semester
                                          )
 
+        #check if module with this data doesnt already exist in the system
         if module_check.length == 0
           #creating a module with the given parameters
           created_module = ListModule.find_or_create_by(name: module_name,
@@ -290,10 +309,12 @@ class AdminController < ApplicationController
     
   end
 
+  #correlates with the view for editing/cloning modules
   def admin_modules_edit
     current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_edit
 
+    #check if edit button was clicked
     if params['edit_module_button'] == "Edit"
       module_name = params['module_edit_form']['module_name']
       module_code = params['module_edit_form']['module_code']
@@ -303,6 +324,7 @@ class AdminController < ApplicationController
       form_module_id = params['module_edit_form']['form_module_id']
       level = params['module_edit_form']['level']
 
+      #check if there is no empty field supplied by the user
       if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
           module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
         
@@ -315,6 +337,7 @@ class AdminController < ApplicationController
                                          form_module_id
                                          )
 
+        #check if module with this data doesnt already exist in the system
         if module_check.length == 0
           current_module = ListModule.find_by(id: form_module_id)
           current_module.update(name: module_name,
@@ -338,7 +361,7 @@ class AdminController < ApplicationController
         
 
       else
-        #popups
+        #popups for missing fields
         if module_name.nil? || module_name.length == 0
           respond_to do |format|
             format.js { render :js => "myAlertTopError1();" }
@@ -354,6 +377,7 @@ class AdminController < ApplicationController
         end
       end
 
+      #check if the clone button was clicked
     elsif params['clone_module_button'] == "Clone"
       module_name = params['module_edit_form']['module_name']
       module_code = params['module_edit_form']['module_code']
@@ -363,6 +387,7 @@ class AdminController < ApplicationController
       form_module_id = params['module_edit_form']['form_module_id']
       level = params['module_edit_form']['level']
 
+      #check if there is no empty field supplied by the user
       if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
           module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
         
@@ -374,6 +399,7 @@ class AdminController < ApplicationController
                                          semester
                                          )
 
+        #check if module with this data doesnt already exist in the system
         if module_check.length == 0
           cloned_module = ListModule.find_or_create_by(name: module_name,
                                                       code: module_code,
@@ -383,7 +409,7 @@ class AdminController < ApplicationController
                                                       created_by: current_user.username,
                                                       level: level)
         
-          #adding module leaders to the cloned module
+          #adding module leaders to the cloned module if checkbox checked
           if params['module_edit_form']['check_box_ml'] == "checked-value"
             module_leaders = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege = ?",
                                                               form_module_id,
@@ -396,6 +422,7 @@ class AdminController < ApplicationController
             end
           end
 
+          #inheriting teaching assistants if checkbox checked
           if params['module_edit_form']['check_box_ta'] == "checked-value"
             teaching_assistants = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege LIKE ?",
                                                                   form_module_id,
@@ -421,7 +448,7 @@ class AdminController < ApplicationController
           end
         end
       else
-        #popups empty fields
+        #popups if empty fields
         if module_name.nil? || module_name.length == 0
           respond_to do |format|
             format.js { render :js => "myAlertTopError1();" }
@@ -455,7 +482,10 @@ class AdminController < ApplicationController
     
   end
 
+  #correlates with the view for viewing teams/dealing with problems
   def admin_modules_groups
+
+    #getting the module id based on was form was submitted on the page
     if params['problem_form'] != nil
       module_id = params['problem_form']['form_module_id']
     elsif params['search_form'] != nil
@@ -463,6 +493,8 @@ class AdminController < ApplicationController
     elsif params['module_id'] != nil
       module_id = params['module_id']
     end
+
+    #checking if current user has privilege to access this page
     current_ability(User.get_module_privilege(module_id, current_user.id))
     authorize! :manage, :admin_modules_groups
 
@@ -471,8 +503,6 @@ class AdminController < ApplicationController
     users_in_module = ListModule.users_in_module(module_id)
     for i in 0..(users_in_module.length-1) 
       current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, module_id)
-      
-      
       current_user_names = users_in_module[i].givenname + " " + users_in_module[i].sn + " - " + users_in_module[i].username
       if current_user_privilege.include?("teaching_assistant") || current_user_privilege.include?("module_leader")
         @ta_and_mod_lead.append(current_user_names)
@@ -485,10 +515,12 @@ class AdminController < ApplicationController
       if params['assign_button'] == "Assign"
         user_to_assign = params['problem_form']['assign_list'].split(" ")[-1]
         
+        #assigning problem to the chosen user
         Problem.assign(user_to_assign, problem_id)
         Problem.change_status(problem_id, "assigned")
       end
 
+      #solving the problem by the current user
       if params['solve_button'] == "Mark as solved"
         if Problem.is_assigned(problem_id) == false
           Problem.assign(current_user.username, problem_id)
@@ -577,29 +609,36 @@ class AdminController < ApplicationController
 
   end
 
+  #correlates with the view for changing module privileges
   def admin_modules_privilege
+    #checking if the current user has access to this page
     current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_privilege
 
+    #loading the peivilege of the selected user
     @saved_privilege = UserListModule.where(list_module_id: params['module_id'],
                                             user_id: params['user_id']).first.privilege
 
+    #saving the chosen privilege if save button clicked
     if params['save_button'] == "Save"
       privilege_to_update = UserListModule.where(list_module_id: params['module_id'],
                                                    user_id: params['user_id'])
 
+      #student option
       if params['options1'] == "on"
-        #student
         privilege_to_update.update(privilege: "student")
         
+        #teaching asssitant option
       elsif params['options2'] == "on"
-        #teaching assitant
+
+        #get values of switches for teaching asssitant privileges
         priv_1 = params['privilege_1']
         priv_2 = params['privilege_2']
         priv_3 = params['privilege_3']
         priv_4 = params['privilege_4']
         ta_type = ""
         
+        #assign the selected user the correct teaching assistant permission based on flipped switches
         if priv_1 == "on" && priv_2.nil?    && priv_3.nil?    && priv_4.nil?    then ta_type = "teaching_assistant_1"  end
         if priv_1.nil?    && priv_2 == "on" && priv_3.nil?    && priv_4.nil?    then ta_type = "teaching_assistant_2"  end
         if priv_1.nil?    && priv_2.nil?    && priv_3 == "on" && priv_4.nil?    then ta_type = "teaching_assistant_3"  end
@@ -619,6 +658,7 @@ class AdminController < ApplicationController
                                              
         privilege_to_update.update(privilege: ta_type)
 
+        #module leader option
       elsif params['options3'] == "on"
         #module_leader
         privilege_to_update.update(privilege: "module_leader")
@@ -632,6 +672,7 @@ class AdminController < ApplicationController
     render layout: 'empty'
   end
 
+  #correlates with the view for the team page(adding removing students)
   def admin_modules_groups_preview
     current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_groups_preview
@@ -673,10 +714,12 @@ class AdminController < ApplicationController
       if params['assign_button'] == "Assign"
         user_to_assign = params['problem_form']['assign_list'].split(" ")[-1]
         
+        #assigning a problem to the selected user
         Problem.assign(user_to_assign, problem_id)
         Problem.change_status(problem_id, "assigned")
       end
 
+      #marking the selected problem as solved by the current user
       if params['solve_button'] == "Mark as solved"
         if Problem.is_assigned(problem_id) == false
           Problem.assign(current_user.username, problem_id)
@@ -746,7 +789,9 @@ class AdminController < ApplicationController
                                                       
   end
 
+  #correlates with the view for adding students to teams
   def admin_modules_groups_add
+    #checking if the current user has access to this page
     current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_groups_add
 
@@ -808,8 +853,11 @@ class AdminController < ApplicationController
 
   end
 
+  #correlates with the view for creating teams
   def admin_modules_groups_create
     module_id = params['module_id']
+
+    #checking if the current user has access to this page
     current_ability(User.get_module_privilege(module_id, current_user.id))
     authorize! :manage, :admin_modules_groups_create
 

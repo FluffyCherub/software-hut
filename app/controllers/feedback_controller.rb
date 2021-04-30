@@ -1,4 +1,13 @@
+#-----------------------------------------------------------------------
+# Controller related to views for giving/receiving feedback by students
+#-----------------------------------------------------------------------
+# Authors: Dominik Laszczyk/ Ling Lai
+# Date: 23/04/2021
+#-----------------------------------------------------------------------
+
 class FeedbackController < ApplicationController
+
+  #action used for saving/dispalying data to the feedback matrix
   def feedback_matrix
     #getting ids of module and team
     @module_id = params['module_id']
@@ -91,11 +100,14 @@ class FeedbackController < ApplicationController
     end
   end
 
+  #action used for reviewing feedback(for module leader or ta with permission to do so)
   def feedback_review_all
     @module_id = params['module_id']
     @teams_in_module = Team.where(list_module_id: @module_id)
     @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, @module_id)
     
+    #rendering errors when no previous feedback period
+    #(shouldnt happen, because in this case access to this page is disabled)
     if @last_finished_period.nil? 
       render "errors/error_500"
     elsif @last_finished_period.feedback_status == "approved"
@@ -105,6 +117,7 @@ class FeedbackController < ApplicationController
     end
   end
 
+  #saving feedback onchange(for module leader or ta with permission to do so)
   def save_feedback
     appreciate = params['appreciate']
     request = params['request']
@@ -118,24 +131,29 @@ class FeedbackController < ApplicationController
 
   end
 
+  #approving feedback for the whole feedback period(for module leader or ta with permission to do so)
   def approve_feedback
     module_id = params['module_id']
     feedback_date_id = params['feedback_date_id']
 
+    #changing stauts to approved when approve button clicked
     if params['approve'] != nil
       FeedbackDate.find(feedback_date_id.to_i).update(feedback_status: "approved")
     end
 
+    #redirecting back to the module page
     respond_to do |format|
       format.js { render js: "window.location = '/admin/modules/preview?module_id=#{module_id}'" }
     end
     
   end
 
+  #action for editing the mailmerge message(only module leader and admin)
   def feedback_mailmerge_edit
     module_id = params['module_id']
     @module_info = ListModule.find(module_id.to_i)
 
+    #if save button clicked, saving and dispaying alert
     if params['save_message'] == "save" 
       @module_info.update(mailmerge_message: params['message'])
 

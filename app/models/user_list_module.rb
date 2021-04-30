@@ -20,6 +20,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class UserListModule < ApplicationRecord
+  #connection to other database tables
   belongs_to :list_module
   belongs_to :user
 end

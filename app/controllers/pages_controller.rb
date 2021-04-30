@@ -1,8 +1,14 @@
+#--------------------------------------------------------------------------
+# Controller used for redirecting users to correct pages when logging in +
+# basic student functionality
+#--------------------------------------------------------------------------
+# Authors: Dominik Laszczyk/Ling Lai
+# Date: 23/03/2021
+#--------------------------------------------------------------------------
+
 class PagesController < ApplicationController
 
   skip_authorization_check
-
-  helper_method :show_team
 
   def home
     @current_nav_identifier = :home
@@ -27,7 +33,6 @@ class PagesController < ApplicationController
                                               current_user.username,
                                               "student")
                                               
-
     #Check if a module is chosen
     if params["module_choice"] != nil || params['module_id'] != nil
 
@@ -37,11 +42,12 @@ class PagesController < ApplicationController
         @module_id = params["module_choice"]["module_id"]
       end
 
-     
+      #get the closest feedback period(either the current or future)
       @closest_date = FeedbackDate.get_closest_date(Time.now, @module_id)
+
+      #check if youre currently in a feedback period
       @in_feedback_window = FeedbackDate.is_in_feedback_window(Time.now, @module_id)
      
-
       #get module info from module id
       @module_info = ListModule.find(@module_id)
 

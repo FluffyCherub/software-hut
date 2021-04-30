@@ -36,23 +36,30 @@
 class User < ApplicationRecord
   require 'csv'
   include EpiCas::DeviseHelper
+  #connection to other database tables
   has_many :user_list_modules
   has_many :list_modules, through: :user_list_modules  
-
   has_many :user_teams
   has_many :teams, through: :user_teams
 
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-
+  #get user object for a user
+  #takes user id(integer)
+  #returns User object
   def self.get_user_info_by_id(user_id)
     user_info = User.where(id: user_id).first
     return user_info
   end
 
+  #regex to check if stirng is an email
+  #takes emiail(string)
+  #returns true or false
   def self.check_if_email(email)
     email =~ /\S+@\S+\.\S+/
   end
 
+  #get module privilege for a user
+  #takes module id(integer) and user id(integer)
+  #returns privilege(string)
   def self.get_module_privilege(module_id, user_id)
     privilege = UserListModule.where(list_module_id: module_id,
                                      user_id: user_id).first
@@ -64,6 +71,9 @@ class User < ApplicationRecord
     end
   end
 
+  #check if user exists in the system
+  #takes username(string)
+  #returns true or false
   def self.is_user_in_system(username)
     check_user = User.where(username: username)
 
@@ -74,6 +84,9 @@ class User < ApplicationRecord
     end
   end
 
+  #check if user is linked to a module
+  #takes username(string) and module id(integer)
+  #returns true or false
   def self.is_user_in_module(username, module_id)
     check_user_module = UserListModule.joins(:user).where("user_list_modules.list_module_id = ? AND
                                                            users.username = ?",
@@ -87,6 +100,9 @@ class User < ApplicationRecord
     end
   end
 
+  #change module privilege for a user
+  #takes username(string) and module id(integer) and privilege(string)
+  #returns void
   def self.change_privilege_user_module(username, module_id, privilege)
     user_list_module = UserListModule.joins(:user).where("users.username = ? AND
                                                           user_list_modules.list_module_id = ?",
@@ -96,17 +112,26 @@ class User < ApplicationRecord
     user_list_module.update(privilege: privilege)
   end
 
+  #get id of a user
+  #takes username(string)
+  #returns user id(integer)
   def self.get_user_id(username)
     user_id = User.where(username: username).first.id
     return user_id
   end
 
+  #get first and last name of a user
+  #takes username(string)
+  #returns first name + last name(string)
   def self.get_first_last(username)
     user = User.where(username: username).first
 
     return user.givenname + " " + user.sn
   end
 
+  #get email of a user
+  #takes username(string)
+  #returns email(string)
   def self.get_email(username)
     user = User.where(username: username).first
 

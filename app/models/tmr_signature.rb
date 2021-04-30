@@ -20,6 +20,8 @@
 class TmrSignature < ApplicationRecord
   belongs_to :tmr
 
+  #check if a user signed a team meeting record
+  #takes username(string) and team meeting record id(integer)
   def self.check_signature(username, tmr_id)
     signature_check = TmrSignature.where(tmr_id: tmr_id,
                                          signed_by: username)
@@ -31,6 +33,9 @@ class TmrSignature < ApplicationRecord
     end
   end
 
+  #get a list of team meeting record signatures for a team meeting record
+  #takes team meeting record id(integer)
+  #returns an array of TmrSignature objects
   def self.get_tmr_signatures(tmr_id)
     signs = TmrSignature.where(tmr_id: tmr_id)
 

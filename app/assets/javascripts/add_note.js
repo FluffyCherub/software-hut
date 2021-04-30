@@ -1,3 +1,10 @@
+//-----------------------------------------------------------
+// This file contains functions for adding notes to problems
+//-----------------------------------------------------------
+// Author: Dominik Laszczyk
+// Date: 27/04/2021
+//-----------------------------------------------------------
+
 function add_note_function() {
   var num_of_teams = parseInt(document.getElementById("num_of_teams").value);
 

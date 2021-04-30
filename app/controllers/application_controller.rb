@@ -1,3 +1,10 @@
+#----------------------------------------------------------------------
+# Controller for basic functinality, mostly unchanged form the template
+#----------------------------------------------------------------------
+# Author: Ling Lai
+# Date: 23/03/2021
+#----------------------------------------------------------------------
+
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   # Ensure that CanCanCan is correctly configured

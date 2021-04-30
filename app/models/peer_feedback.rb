@@ -32,6 +32,8 @@
 class PeerFeedback < ApplicationRecord
   belongs_to :feedback_date
 
+  #convert text feedback to integer
+  #takes feedback text as string, returns integer
   def self.feedback_to_int(feedback_text = nil)
 
     if feedback_text == "unsatisfactory"
@@ -47,6 +49,9 @@ class PeerFeedback < ApplicationRecord
     end
   end
 
+  #get feedback in array format with integers inside
+  #takes created_by as string(username), created_for as string(username), and id of a feedback date object
+  #returns array of integers(feedback)
   def self.get_feedback_array_for_user(created_by, created_for, feedback_date_id)
     feedback = PeerFeedback.where(created_by: created_by,
                                   created_for: created_for,
@@ -60,6 +65,9 @@ class PeerFeedback < ApplicationRecord
 
   end
 
+  #get feedback object for student
+  #takes created_by as string(username), created_for as string(username), and id of a feedback date object
+  #returns PeerFeedback object
   def self.get_feedback_for_user(created_by, created_for, feedback_date_id)
     feedback = PeerFeedback.where(created_by: created_by,
                                   created_for: created_for,
@@ -73,6 +81,9 @@ class PeerFeedback < ApplicationRecord
 
   end
 
+  #get feedback objects for user
+  #takes created_for as string(username), and id of a feedback date object
+  #returns PeerFeedback object
   def self.get_feedback_for_user_by_date(created_for, feedback_date_id)
     feedback = PeerFeedback.where(created_for: created_for,
                                   feedback_date_id: feedback_date_id)
@@ -84,6 +95,9 @@ class PeerFeedback < ApplicationRecord
     end
   end
 
+  #check if feedback is completed for feedback period
+  #takes list of student objects, created_by as string(username) and id of feedback date object
+  #returns true or false
   def self.check_feedback_completion(students_list, created_by, feedback_date_id)
 
     feedback_completed = true
@@ -109,6 +123,9 @@ class PeerFeedback < ApplicationRecord
 
   end
 
+  #get feedback for a ceratain feedback period for a team
+  #takes team id and feedback date id
+  #returns array of PeerFeedback objects
   def self.get_feedback_for_team_period(team_id, feedback_date_id)
     team_members = Team.get_current_team_members(team_id)
 

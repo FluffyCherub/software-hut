@@ -20,6 +20,9 @@
 class ProblemNote < ApplicationRecord
   belongs_to :problem
 
+  #get notes for a problem
+  #takes problem_id(integer)
+  #returns ProblemNote object
   def self.get_notes_for_problem(problem_id)
     notes = ProblemNote.where(problem_id: problem_id)
 

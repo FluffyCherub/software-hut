@@ -20,12 +20,13 @@
 #  fk_rails_...  (list_module_id => list_modules.id)
 #
 class Team < ApplicationRecord
+  #connection to other tables in the database
   belongs_to :list_module
-
   has_many :user_teams, dependent: :destroy
   has_many :users, through: :user_teams
-
   has_many :problems, dependent: :destroy
+
+  #every team has multiple team meeting records
   has_many :tmrs, dependent: :destroy
 
   #one team operating agreement per team
@@ -37,15 +38,19 @@ class Team < ApplicationRecord
     return current_team_size
   end
 
+  #get current team members of a team
+  #takes team id(integer)
+  #returns array of User objects
   def self.get_current_team_members(team_id)
     current_team_members = User.joins(:teams).where("teams.id = ?", team_id)
 
     return current_team_members
   end
 
+  #get students who are in the module but arent connected to any team
+  #takes module_id(integer)
+  #returns array of User objects
   def self.get_students_not_in_team_but_in_module(module_id)
-    
-
     students_in_any_team_in_module = User.joins(:list_modules, :teams)
                                          .where("list_modules.id = ? AND 
                                                  user_list_modules.privilege = ?",

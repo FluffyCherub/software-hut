@@ -1,3 +1,10 @@
+#---------------------------------------------------------
+# Controller for rendering error messages on the website
+#---------------------------------------------------------
+# Author: Ling Lai
+# Date: 23/03/2021
+#---------------------------------------------------------
+
 class ErrorsController < ApplicationController
 
   skip_before_action :ie_warning

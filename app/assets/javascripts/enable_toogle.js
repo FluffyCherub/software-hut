@@ -1,5 +1,13 @@
-function enable_toogle() {
+//-----------------------------------------------------------------
+// File with functions for dealing with changing module privileges
+// (saving/loading)
+//-----------------------------------------------------------------
+// Authors: Dominik Laszczyk/Anton Minkov
+// Date: 06/04/2021
+//-----------------------------------------------------------------
 
+//enabling switches for the teaching assistant role
+function enable_toogle() {
   document.getElementById("privilege_1").disabled = false;
   document.getElementById("privilege_2").disabled = false;
   document.getElementById("privilege_3").disabled = false;
@@ -12,20 +20,9 @@ function enable_toogle() {
   document.getElementById("slider2").style.backgroundColor = "";
   document.getElementById("slider3").style.backgroundColor = "";
   document.getElementById("slider4").style.backgroundColor = "";
-
-  // var css = '#input:checked + .slider{ blue }';
-  // var style = document.createElement('style');
-
-  // if (style.styleSheet) {
-  //     style.styleSheet.cssText = css;
-  // } else {
-  //     style.appendChild(document.createTextNode(css));
-  // }
-
-  // document.getElementsByTagName('head')[0].appendChild(style);
 }
 
-
+//disabling switches for the teaching assistant role
 function disable_toogle() {
   document.getElementById("privilege_1").disabled = true;
   document.getElementById("privilege_2").disabled = true;
@@ -42,21 +39,28 @@ function disable_toogle() {
 
 }
 
+//called when teaching assistant clicked
+//unclicks buttons for student and module leader
 function disable_opt_13() {
   document.getElementById("option1").value = "off";
   document.getElementById("option3").value = "off";
 }
 
+//called when module leader clicked
+//unclicks buttons for student and teaching assistant
 function disable_opt_12() {
   document.getElementById("option1").value = "off";
   document.getElementById("option2").value = "off";
 }
 
+//called when student clicked
+//unclicks buttons for teaching assistant and module leader
 function disable_opt_23() {
   document.getElementById("option2").value = "off";
   document.getElementById("option3").value = "off";
 }
 
+//makes the radio button clicked based on which option is chosen
 function set_checked_option(option) {
   if(option == "student") {
     document.getElementById('option1').checked = "checked";
@@ -68,6 +72,7 @@ function set_checked_option(option) {
   }
 }
 
+//if user is a teaching assistant loading his privileges(swithces on the change privilege page)
 function set_switches(privilege) {
   if (privilege == "teaching_assistant_1") document.getElementById('privilege_1').checked = "true";
   if (privilege == "teaching_assistant_2") document.getElementById('privilege_2').checked = "true";
@@ -136,7 +141,7 @@ function set_switches(privilege) {
   }
 }
 
-
+//when save button clicked, closing the popup window and resreshing the module preview page
 function quit_after_save(close_param) {
   if(close_param == "true") {
     window.close();
@@ -145,6 +150,7 @@ function quit_after_save(close_param) {
   }
 }
 
+//refreshing aprent window
 function refreshParent() {
   window.opener.location.reload();
 }
