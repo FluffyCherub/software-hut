@@ -1,6 +1,11 @@
+- # View for module privileges
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 06/04/2021
+
 - content_for :title, "Module Privileges"
 
 .container.body_whole_custom_4
+  - # Display possible privileges
   .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top
     %h.float_left.bigger
       Change privilege for user: #{User.get_user_info_by_id(params['user_id']).givenname} #{User.get_user_info_by_id(params['user_id']).sn}
@@ -18,26 +23,31 @@
           %input#option3{name: "options3", type: "radio", onclick: "disable_toogle();disable_opt_12();"}
           Module Leader
 
+    - # Display teaching assinstant additional privileges
     .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top_px_medium
-
+      
+      - # Send feedback to students
       .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top_px_small
         %label.switch
           %input#privilege_1{type: "checkbox", name: "privilege_1"}
           %span.slider.round#slider1
         %p.margin_left#privilege_1_text Send mail feedback to students
 
+      - # Deal with problems
       .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top_px_small
         %label.switch
           %input#privilege_2{type: "checkbox", name: "privilege_2"}
           %span.slider.round#slider2
         %p.margin_left#privilege_2_text See teams that have flagged problems
 
+      - # Edit/Clone module
       .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top_px_small
         %label.switch
           %input#privilege_3{type: "checkbox", name: "privilege_3"}
           %span.slider.round#slider3
         %p.margin_left#privilege_3_text Enable module edit/clone
 
+      - # Manage student teams
       .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top_px_small
         %label.switch
           %input#privilege_4{type: "checkbox", name: "privilege_4"}
@@ -45,7 +55,7 @@
         %p.margin_left#privilege_4_text Managing student teams
 
     - if @saved_privilege[0,18] != "teaching_assistant"
-      //Required for the privileges to function properly - Do not edit
+      - # Disables privileges upon load if chosen user is not teaching assistant
       :javascript
         document.getElementById("privilege_1").disabled = true;
         document.getElementById("privilege_2").disabled = true;
@@ -60,7 +70,7 @@
         document.getElementById("slider3").style.backgroundColor = "gray";
         document.getElementById("slider4").style.backgroundColor = "gray";
 
-
+    - # Submit form
     %hr.group_line.special_margin_top
     .container-fluid.bg_none.row.no_padding.margin_bottom_none.text_black.special_margin_top_px_medium
       %button.btn.btn-primary.agreement_buttons.justify-content-center.button_change_privilege.float_left.medium{type: "submit", value: "Save", name: "save_button", id: "save_button"} Save

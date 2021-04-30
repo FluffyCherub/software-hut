@@ -1,17 +1,15 @@
+// JQuery for selecting matrix options
+// Authors: Anton Minkov && Laney Deveson
+// Date: 25/04/2021
+
+//Function used to select matrix fields(options) in the feedback matrix
 $(document).ready(function() {
+  //Get the number of students for feedback
   var num_of_students = parseInt($("#feedback_id").attr('name'));
-
-  // - attendance
-  // - attitude
-  // - qac
-  // - communication
-  // - collaboration
-  // - leadership
-  // - ethics
-
-  
   var i;
   for (i = 1; i <= num_of_students; i++) {
+
+    //Highligh selected field for "Attendance"
     $('tr[name="attendance_select"] input:radio[name="attendance_' + i + '"]').change((function(a) {
       return function()
       {                   
@@ -34,6 +32,7 @@ $(document).ready(function() {
       };  
     })(i));
     
+    //Highligh selected field for "Attitude"
     $('tr[name="attitude_select"] input:radio[name="attitude_' + i + '"]').change((function(a) {
       return function()
       {                   
@@ -56,7 +55,7 @@ $(document).ready(function() {
       };  
     })(i));
     
-    
+    //Highligh selected field for "QAC"
     $('tr[name="qac_select"] input:radio[name="qac_' + i + '"]').change((function(a) {
       return function()
       {                   
@@ -79,6 +78,7 @@ $(document).ready(function() {
       };  
     })(i));
     
+    //Highligh selected field for "Communication"
     $('tr[name="communication_select"] input:radio[name="communication_' + i + '"]').change((function(a) {
       return function()
       {                   
@@ -101,6 +101,7 @@ $(document).ready(function() {
       };  
     })(i));
 
+    //Highligh selected field for "Collaboration"
     $('tr[name="collaboration_select"] input:radio[name="collaboration_' + i + '"]').change((function(a) {
       return function()
       {                   
@@ -123,6 +124,7 @@ $(document).ready(function() {
       };  
     })(i));
 
+    //Highligh selected field for "Leadership"
     $('tr[name="leadership_select"] input:radio[name="leadership_' + i + '"]').change((function(a) {
       return function()
       {                   
@@ -145,6 +147,7 @@ $(document).ready(function() {
       };  
     })(i));
 
+    //Highligh selected field for "Ethics"
     $('tr[name="ethics_select"] input:radio[name="ethics_' + i + '"]').change((function(a) {
       return function()
       {                   

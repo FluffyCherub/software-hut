@@ -1,36 +1,19 @@
+// CSS for all layouts
+// Authors: Anton Minkov && Laney Deveson
+// Date: 29/03/2021
+
 @import 'variables';
 
-/////Adding University Fonts/////////////////////////
+//Adding University Fonts
 @font-face {
   font-family: 'Blake';
   src: url('/fonts/Blake.ttf');
 }
 
-// @font-face {
-//   font-family: 'BlakeBold';
-//   src: url('BlakeBd.ttf');
-// }
-
-// @font-face {
-//   font-family: 'BlakeItalic';
-//   src: url('BlakeIt.ttf');
-// }
-
 @font-face {
   font-family: 'Steph';
   src: url('/fonts/Steph.ttf');
 }
-
-// @font-face {
-//   font-family: 'StephBold';
-//   src: url('StephBd.ttf');
-// }
-
-// @font-face {
-//   font-family: 'StephItalic';
-//   src: url('StephIt.ttf');
-// }
-/////////////////////////////////////////////////////
 
 html,body {
   height: 100%;

@@ -1,3 +1,7 @@
+- # View for group page preview
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 08/04/2021
+
 - content_for :title, "Group Preview"
 
 .container.body_whole_custom
@@ -9,10 +13,8 @@
     #{@current_team_size}/#{@max_team_size}
     %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{:href => admin_modules_groups_path(module_id: params[:module_id]), type: "button"} Go Back
     %hr.group_line
-
-
-    -# TABLE FOR ALL STUDENTS FROM THE GROUP WITH OPTION TO REMOVE THEM FROM GROUP 
     
+    - # Generate table for students in the group
     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
       - if @current_team_users.length <= 0
         .container.no_results
@@ -51,9 +53,9 @@
                         %button{type: "submit", name: "remove_student_button",  class: "btn btn-primary action_buttons justify-content-center small", id:"remove_user_button", value: "remove_student"}Remove Student
     %hr.group_line
 
+    - # Display all the problems in the group and their status
     .container-fluid.bg_none.no_padding.margin_bottom_small
       .container-fluid.bg_none.no_padding.text_black
-        //%p.float_left.medium.margin_none Group Problems Here I Guess?
         - problems = Problem.get_problems_for_team(params['team_id'])
         - if problems.length <= 0
           .container.no_results
@@ -68,7 +70,8 @@
                   - true_i = 1
                 - else
                   - true_i = i + 1
-                //////////////////////////////////////////////////////////////////////////////////////////////////////// PROBLEM NAME
+                
+                - # Problem name and label
                 #heading-1.card-header
                   %h5.mb-0
                     %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
@@ -87,7 +90,8 @@
                 #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
                   .card-body
                     #accordion-1
-                      ////////////////////////////////////////////////////// CONTENT
+                      
+                      - # Problem content
                       .card.small.bg_none
                         - created_at = problems[i-1].created_at.strftime("%I:%M %p - %d/%m/%Y")
                         - if problems[i-1].solved_on != nil
@@ -120,19 +124,14 @@
                               .container.col-xs-6.col-sm-4.no_padding_left.no_padding_right
                                 = f.button :submit, "Mark as solved", type: "submit", name: "solve_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"solve_button"
 
-
-                      ////////////////////////////////////////////////////// CONTENT
+                - # Renaming id's during accordeon generation to avoid duplicates
                 :javascript
                   document.getElementById('heading-1').id = 'heading-#{i}';
                   document.getElementById('collapse-1').id = 'collapse-#{i}';
                   document.getElementById('accordion-1').id = 'accordion-#{i}';
-
-
     %hr.group_line
 
-
-    -# SEARCH FORM FOR THE TABLE BELOW
-    
+    - # Search form for adding students
     .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.no_border
       = simple_form_for :search_form do |f|
         .container-fluid.bg_none.no_padding
@@ -145,11 +144,7 @@
           .container.col-xs-9.col-sm-7.no_padding_left
             = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_3 float_left no_padding bigger", id:"search_choice"
 
-
-    -# TABLE FOR ALL STUDENTS-ONLY FROM THE MODULE TIED TO THE GROUP WITH OPTION TO ADD THEM TO THE GROUP
-    -# DO NOT INCLUDE PEOPLE THAT ARE IN THE GROUP ALREADY
-    -# IF GROUP IS FULL (6/6) DO NOT ADD THE STUDENT (APPLIES ONLY WHEN STUDENTS ARE JOINING)
-
+    - # Table of students in the module but NOT in a group
     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
       - if @users_in_module_but_not_in_team.length <= 0
         .container.no_results

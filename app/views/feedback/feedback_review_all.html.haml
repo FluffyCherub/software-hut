@@ -1,16 +1,20 @@
+- # View for feedback review page
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 27/04/2021
+
 - content_for :title, "Review Feedback"
+
 .container-fluid.body_whole_custom.text_black
+  - # Display period of the reviewed feedback
   .container-fluid.text_black.no_padding.border_none.bg_none.margin_bottom_small.special_margin_top
     - feedback_period_start_date = @last_finished_period.start_date.strftime("%I:%M %p %d/%m/%Y")
     - feedback_period_end_date = @last_finished_period.end_date.strftime("%I:%M %p %d/%m/%Y")
     %h5.bigger.center_text Review Peer Feedback
     %p.center_text #{feedback_period_start_date} - #{feedback_period_end_date}
     %p.center_text#problem_counter Problems detected: 0
-
-  - #lorem_ipsum  = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-  
   %input{id: "num_of_teams", name: "num_of_teams", type: "hidden", value: @teams_in_module.length}
   
+  - # Generate table with all the teams in the module and their feedback
   .container-fluid.text_black.margin_none.no_padding.bg_none.uni_border_dark
     #table.table-editable
       %table.table.table-bordered.table-responsive-md.table-striped.text-center.styled_table
@@ -20,24 +24,18 @@
             %th.text-center.small Appreciate
             %th.text-center.small Request
         %tbody
-          //Loop trough all teams in module here
           - for i in 0...@teams_in_module.length
           
             - students_in_team = Team.get_current_team_members(@teams_in_module[i].id)
             - feedback_team = PeerFeedback.get_feedback_for_team_period(@teams_in_module[i].id, @last_finished_period.id)
 
             %input{id: "num_students_in_team_#{i+1}", name: "num_students_in_team_#{i+1}", type: "hidden", value: students_in_team.length}
-            //FOR ONE STUDENT STUFF IS DONE HERE
+            - # Get the feedback for the first studnet in the current team
             - feedback_for_first_student_in_team = feedback_team[0]
             - first_student_in_team_name = (students_in_team[0].givenname + " " + students_in_team[0].sn)
-            //HERE DISPLAY FIRST TEAM MEMBER
-
-            //Check if student has feedback related to him(biggest of aprreciate and request) CHECK FOR FIRST TEAM MEMBER ONLY
-            //Example: If 3 people appreciate and 6 people request -> number should be 6
-
-            //This check should pass if no feedback at all was recieved
-            //no feedback for first student of every team
             
+            - # Check if student has feedback related to him(biggest of aprreciate and request) CHECK FOR FIRST TEAM MEMBER ONLY
+            - # Example: If 3 people appreciate and 6 people request -> number should be 6    
             - if feedback_for_first_student_in_team == nil
               %input{id: "num_feedbackers_for_student_#{i+1}_1", name: "num_feedbackers_for_student_#{i+1}_1", type: "hidden", value: "0"}
               %tr.row_outline_border
@@ -52,18 +50,18 @@
                   No feedback received
             
             - else
-
               %tr.row_outline_border
                 %td.pt-3-half.team_td.border_left_right_dark{:colspan => "3", :rowspan => "1", :style => "width: 100%;", contenteditable: "false"}
                   #{@teams_in_module[i].name}
-              
               - num_of_feedbacks_for_first_team_member = feedback_for_first_student_in_team.length
               - rowspan_stronk = (feedback_for_first_student_in_team.length)*2
               - name_of_first_feedbacker =  User.get_first_last(feedback_for_first_student_in_team[0].created_by)
               - email_of_first_feedbacker = User.get_email(feedback_for_first_student_in_team[0].created_by)
-
               %input{id: "num_feedbackers_for_student_#{i+1}_1", name: "num_feedbackers_for_student_#{i+1}_1", type: "hidden", value: num_of_feedbacks_for_first_team_member}
               
+              - # Show the feedback from the first user
+              - # rowspan should be == to number of members that have given feedback multipled by 2
+              - # Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 8
               %tr
                 %td.pt-3-half.td_border_right.small.border_bottom_dark{:colspan => "1", :rowspan => "#{rowspan_stronk}", :style => "width: 20%;", contenteditable: "false"}
                   #{first_student_in_team_name}
@@ -83,7 +81,7 @@
                 %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_1_1", :name => "request_field_#{i+1}_1_1", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
                   #{feedback_for_first_student_in_team[0].request_edited}
 
-              //Loop trough all the remaining people that gave feedback for the current team member(without the first)
+              - # Loop trough all the remaining people that gave feedback for the current team member(without the first)
               - for x in 1...feedback_for_first_student_in_team.length
                 - current_feedbacker_name = User.get_first_last(feedback_for_first_student_in_team[x].created_by)
                 - current_feedbacker_email = User.get_email(feedback_for_first_student_in_team[x].created_by)
@@ -106,19 +104,14 @@
                   %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_1_#{x+1}", :name => "request_field_#{i+1}_1_#{x+1}",:colspan => "1", :style => "width: 40%;",contenteditable: "true"}
                     #{feedback_for_first_student_in_team[x].request_edited}
 
-
-
-            //LOOP HERE
-            //Loop trough feedback
-            //Loop trough all the remaining team members(without first one)
+            - # Loop trough all the remaining team members(without first one)
             - for j in 1...students_in_team.length
 
               - current_student_name = students_in_team[j].givenname + students_in_team[j].sn
               - feedback_for_current_team_member = feedback_team[j]
-              //Check if student has feedback related to him(biggest of aprreciate and request) CHECK FOR ALL TEAM MEMBERS WITHOUT THE FIRST
-              //Example: If 3 people appreciate and 6 people request -> number should be 6
+              - # Check if student has feedback related to him(biggest of aprreciate and request) CHECK FOR ALL TEAM MEMBERS WITHOUT THE FIRST
+              - # Example: If 3 people appreciate and 6 people request -> number should be 6
 
-              //This check should pass if no feedback at all was recived
               - if feedback_for_current_team_member.nil?
                 %input{id: "num_feedbackers_for_student_#{i+1}_#{j+1}", name: "num_feedbackers_for_student_#{i+1}_#{j+1}", type: "hidden", value: 0}
                 %tr
@@ -131,9 +124,8 @@
               
               - else
                 %input{id: "num_feedbackers_for_student_#{i+1}_#{j+1}", name: "num_feedbackers_for_student_#{i+1}_#{j+1}", type: "hidden", value: feedback_for_current_team_member.length}
-                //rowspan should be == to number of members that have given feedback multipled by 2
-                //Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 
-                //Change rowspan here
+                - # rowspan should be == to number of members that have given feedback multipled by 2
+                - # Example: If 2 people appreciate and 4 people request -> rowspan should be 4 * 2 = 8
                 - rowspan_stronk = (feedback_for_current_team_member.length)*2
                 - name_of_current_feedbacker =  User.get_first_last(feedback_for_current_team_member[0].created_by)
                 - email_of_current_feedbacker = User.get_email(feedback_for_current_team_member[0].created_by)
@@ -157,7 +149,7 @@
                   %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_#{j+1}_1", :name => "request_field_#{i+1}_#{j+1}_1", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
                     #{feedback_for_current_team_member[0].request_edited}
                 
-                //Loop trough all the remaining people that gave feedback for the current team member(without the first)
+                - # Loop trough all the remaining people that gave feedback for the current team member(without the first)
                 - for z in 1...feedback_for_current_team_member.length
                   - current_feedbacker_name_2 = User.get_first_last(feedback_for_current_team_member[z].created_by)
                   - current_feedbacker_email_2 = User.get_email(feedback_for_current_team_member[z].created_by)
@@ -179,6 +171,7 @@
                     %td.pt-3-half.text_left.table_side_padding.feedback_info.cell_check.vertical_top.border_bottom_dark{:id => "request_field_#{i+1}_#{j+1}_#{z+1}", :name => "request_field_#{i+1}_#{j+1}_#{z+1}", :colspan => "1", :style => "width: 40%;",contenteditable: "true"}
                       #{feedback_for_current_team_member[z].request_edited}
 
+  - # Approve feedback
   %input{id: "feedback_date_id", name: "feedback_date_id", type: "hidden", value: @last_finished_period.id}
   %input{id: "module_id", name: "module_id", type: "hidden", value: @module_id}
   .container-fluid.bg_none.text_black.no_padding.special_margin_top.margin_bottom_small.medium

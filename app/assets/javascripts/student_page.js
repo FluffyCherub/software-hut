@@ -1,3 +1,8 @@
+// Javascript for the student page
+// Authors: Anton Minkov && Laney Deveson
+// Date: 30/03/2021
+
+//Function to hide elemets (test)
 function myFunction() {
   var x = document.getElementById("hider");
   if (x.style.display === "none") {
@@ -7,12 +12,15 @@ function myFunction() {
   }
 }
 
+//Function that gets the currently selected module
 function getSelectedModule() {
   var choice = document.getElementById("module_dropdown");
   var strUser = choice.options[choice.selectedIndex].text;
   document.getElementById("module_name").innerHTML = strUser;
 
 }
+
+//Function that gets the height of specific elements (prototype - change later)
 function sameHeightGroup() {
   var feedbackHeight = document.getElementById('module_feedback').clientHeight;
   var strHeight = feedbackHeight.toString();
@@ -22,6 +30,7 @@ function sameHeightGroup() {
   groupDiv.style.height = finalHeight;
 }
 
+//Function that equalizes the height of two elements (prototype - change later)
 $(function resizeGroup(){
   var element =  document.getElementById('module_feedback');
   if (typeof(element) != 'undefined' && element != null)
@@ -36,6 +45,8 @@ $(function resizeGroup(){
   }
 });
 
+
+//Function that creates blue line under header (prototype - change later)
 function createBlueLine() {
   var topLineHeight = (document.getElementById('top_line').clientHeight)/4;
   var topLineWidth = document.getElementById('top_line').clientWidth;
@@ -53,6 +64,7 @@ function createBlueLine() {
   bottmLine.style.width = finalWidth;
 }
 
+//Test function
 $(document).on('click', '.update_form :submit', function () {
   var buttons = $('.update_form :submit').not($(this));
   buttons.removeAttr('data-disable-with');
@@ -61,6 +73,7 @@ $(document).on('click', '.update_form :submit', function () {
   buttons.style.color="black";
 });
 
+//Test function
 function userFunction(number) {
   document.getElementById('form_username').value = "index";
   document.getElementById("myForm").submit();

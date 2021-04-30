@@ -1,16 +1,19 @@
+- # View for creating teams
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 14/04/2021
+
 - content_for :title, "Create groups"
 
 .container.body_whole_custom
   .container-fluid.text_black.bg_none.margin_top
     .container-fluid.bg_none.text_black.margin_top.bigger
       #{@module_info.name} - #{@module_info.code} - Level #{@module_info.level}
-      //MAKE BUTTON GO BACK TO GROUPS
       %a.button.add.btn.btn-primary.button_topics.float_right.medium{:href => admin_modules_groups_path(:module_id => params[:module_id]), type: "button"} Go Back
       .container-fluid.bg_none.text_black.margin_top.small.float_left.no_padding.margin_none
         Students in module: #{@num_of_students}
         %hr.group_line.margin_top_half_rem
     
-  //FORM IS HERE
+  - # Select group type
   .container-fluid.bg_none.text_black.medium
     %form{id: "create_groups_form"}
       %input{id: "rand_btn", name: "rand_btn", type: "hidden", value: ""}
@@ -22,7 +25,7 @@
           %button.btn.btn-primary.button_topics#topic_toggle{"aria-controls" => "topicCollapse", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#topicCollapse", role: "button", onclick: "topicButtonChange('#{@num_of_students}'); tempDisableButton()", value: "disabled", type: "button"} Enable Topics
     
     
-      //GROUP SIZE GOES HERE ----------------------------- RANDOM + FREE JOIN
+      - # Content for creating groups without topics
       .container-fluid.bg_none.text_black.small
         #normalCollapse.collapse
           %hr.special_line
@@ -43,7 +46,7 @@
                 Let students join teams
 
 
-      //TOPIC CONTENT GOES HERE ---------------------------
+      - # Content for creating groups with topics
       .container-fluid.bg_none.text_black.small
         #topicCollapse.collapse
           %hr.special_line
@@ -59,6 +62,7 @@
               %input.form-control.special_width_topic_name#topic_1{name: "topic_1", placeholder: "Topic 1", type: "text"}
               %input.form-control#size_1{name: "size_1", placeholder: "Team Size", type: "text"}
               %input.form-control#amount_1{name: "amount_1", placeholder: "№ of Teams", type: "text"}
+            - # Keeping track of amount of topics
             #new_chq
             %input#total_chq{type: "hidden", name: "total_chq", value: "1"}
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_margin_top
@@ -67,7 +71,7 @@
               %label.form-check-label{for: "flexCheckChecked"}
                 Let students join teams
 
-      //SETTING UP FEEDBACK FREQUENCY GOES HERE --------------------------------
+      - # Setting up feedback frequency
       .container-fluid.bg_none.text_black.medium
         %hr.group_line.margin_top
         .container-fluid.bg_none.text_black.medium.margin_bottom_2.no_padding.bigger
@@ -79,23 +83,24 @@
           %button.add.btn.btn-primary.button_topics{type: "button", onclick: "addPeriod()"}Add period
           %button.remove.btn.btn-primary.button_topics{type: "button", onclick: "removePeriod()"} Remove period
 
-        //TIME PERIOD HERE  
+        - # Generating time periods
         .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small.no_padding.float_left
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_size_1.float_left
             .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
               %p.margin_none
                 %strong#time_name_1
                   Period 1
-            //START TIME
+            - # Time period start date
             .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
               %label#start_time_label_1{for: "start_time_1_time"} Start Date: 
               %input#start_time_1.float_right{name: "start_time_1", type: "datetime-local", value: "#{current_time}"}
-            //END TIME
+            - # Time period end date
             .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
               %label#end_time_label_1{for: "end_time_1_time"} End Date:   
               %input#end_time_1.float_right{name: "end_time_1", type: "datetime-local", value: "#{one_day_from_now}"}
             %hr.special_line.margin_none
-          
+        
+        - # Keeping track of amount of periods
         #new_chq_period
         %input#total_chq_period{type: "hidden",name: "total_chq_period", value: "1"}
 

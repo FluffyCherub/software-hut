@@ -1,10 +1,14 @@
+- # View for feedback matrix
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 23/04/2021
+
 - content_for :title, "Peer Feedback Matrix"
 
 .container.body_whole_custom
-  //--------------------------------------------------------------------
-  // BLAME HAML FOR LONG LINES AND MESSING WITH INDENTATION! HTML > HAML
-  //--------------------------------------------------------------------
-  //Saving matrix info - can change at any time        
+  - # -------------------------------------------------------------------
+  - # BLAME HAML FOR LONG LINES AND MESSING WITH INDENTATION! HTML > HAML
+  - # -------------------------------------------------------------------
+  - # Saving matrix info - can change at any time        
   - attendance = ["Attendance and Punctuality",
   - "You have had one of more absences or late arrivals to scheduled team activities and have not explained these to the team. You may have let other commitments impact your contribution. Your performance is detracting from the team’s work.",
   - "You have had one or more absences or late arrivals to scheduled team activities and could have done a better job of notifying the team in advance. Your absence has not yet caused significant harm to the team, but you need to improve.", 
@@ -43,6 +47,7 @@
   
   - num_of_students = @in_team_without_current_user.length
 
+  - # Displaying current feedback period
   .container-fluid.no_padding.bg_none.text_black.center_text.special_margin_top
     .container-fluid.no_padding.bg_none.text_black.center_text
       %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_3.medium{:href => modules_path(module_id: @module_id), type: "button"} Go Back
@@ -52,6 +57,7 @@
     %p.medium.margin_none #{start_date} - #{end_date}
   %hr.group_line
   
+  - # Generating feedback matrix for students in the current team
   %iframe#dummyframe{name: "dummyframe", style: "display: none;"}
   = form_with(id: "feedback_form", url: feedback_matrix_path, :html => {:target=>'dummyframe'}, name: "feedback_form") do |form|
     .container-fluid.bg_none.bg_border.no_padding.special_margin_top.margin_bottom_small{:name => "#{num_of_students}", :id => "feedback_id"}
@@ -87,7 +93,7 @@
                             %th.text_center{:colspan => "1", :style => "width: 22%;"} Exceeds Expectations
                         %tbody
 
-                          //Attendance and Punctuality ------------------------------------------
+                          - # Attendance and Punctuality ------------------------------------------
                           %tr{name: "attendance_select"}  
                             %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
                               .radiotext
@@ -109,7 +115,7 @@
                                 #{attendance[4]}
                                 %input.special_radio_input{name: "attendance_#{i}", type: "radio", value: "exceeds_expectations"} 
                           
-                          //Attitude and Commitment ---------------------------------------------
+                          - # Attitude and Commitment ---------------------------------------------
                           %tr{name: "attitude_select"}
                             %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
                               .radiotext
@@ -117,8 +123,7 @@
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attitude_#{i}_1"}
                               %label.clickable  
                                 #{attitude[1]}
-                                %input.special_radio_input{name: "attitude_#{i}", type: "radio", value: "unsatisfactory"}
-                            //HERE EDIT      
+                                %input.special_radio_input{name: "attitude_#{i}", type: "radio", value: "unsatisfactory"}   
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_attitude_#{i}_2"}
                               %label.clickable  
                                 #{attitude[2]}
@@ -132,7 +137,7 @@
                                 #{attitude[4]}
                                 %input.special_radio_input{name: "attitude_#{i}", type: "radio", value: "exceeds_expectations"} 
                           
-                          //Quality, accuracy and completeness ----------------------------------
+                          - # Quality, accuracy and completeness ----------------------------------
                           %tr{name: "qac_select"}
                             %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
                               .radiotext
@@ -140,24 +145,21 @@
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_1"}
                               %label.clickable
                                 #{qac[1]}
-                                %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "unsatisfactory"}
-                            //HERE EDIT      
+                                %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "unsatisfactory"}     
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_2"}
                               %label.clickable  
                                 #{qac[2]}
                                 %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "needs_improvement"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_3"}
                               %label.clickable
                                 #{qac[3]}
                                 %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "meets_expectations"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_qac_#{i}_4"}
                               %label.clickable
                                 #{qac[4]}
                                 %input.special_radio_input{name: "qac_#{i}", type: "radio", value: "exceeds_expectations"} 
                           
-                          //Communication -------------------------------------------------------
+                          - # Communication -------------------------------------------------------
                           %tr{name: "communication_select"}
                             %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
                               .radiotext
@@ -165,25 +167,21 @@
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_1"}
                               %label.clickable
                                 #{communication[1]}
-                                %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "unsatisfactory"}
-                                  
-                            //HERE EDIT      
+                                %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "unsatisfactory"}     
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_2"}
                               %label.clickable
                                 #{communication[2]}
                                 %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "needs_improvement"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_3"}
                               %label.clickable
                                 #{communication[3]}
                                 %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "meets_expectations"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_communication_#{i}_4"}
                               %label.clickable
                                 #{communication[4]}
                                 %input.special_radio_input{name: "communication_#{i}", type: "radio", value: "exceeds_expectations"} 
                           
-                          //Collaboration -------------------------------------------------------
+                          - # Collaboration -------------------------------------------------------
                           %tr{name: "collaboration_select"}
                             %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
                               .radiotext
@@ -191,25 +189,21 @@
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_1"}
                               %label.clickable
                                 #{collaboration[1]}
-                                %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "unsatisfactory"}
-
-                            //HERE EDIT      
+                                %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "unsatisfactory"}      
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_2"}
                               %label.clickable
                                 #{collaboration[2]}
                                 %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "needs_improvement"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_3"}
                               %label.clickable
                                 #{collaboration[3]}
                                 %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "meets_expectations"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_collaboration_#{i}_4"}
                               %label.clickable
                                 #{collaboration[4]}
                                 %input.special_radio_input{name: "collaboration_#{i}", type: "radio", value: "exceeds_expectations"} 
                           
-                          //Leadership ----------------------------------------------------------
+                          - # Leadership ----------------------------------------------------------
                           %tr{name: "leadership_select"}
                             %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
                               .radiotext
@@ -217,25 +211,21 @@
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_1"}
                               %label.clickable
                                 #{leadership[1]}
-                                %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "unsatisfactory"}
-
-                            //HERE EDIT      
+                                %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "unsatisfactory"}     
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_2"}
                               %label.clickable
                                 #{leadership[2]}
                                 %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "needs_improvement"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_3"}
                               %label.clickable
                                 #{leadership[3]}
                                 %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "meets_expectations"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_leadership_#{i}_4"}
                               %label.clickable
                                 #{leadership[4]}
                                 %input.special_radio_input{name: "leadership_#{i}", type: "radio", value: "exceeds_expectations"} 
                           
-                          //Professionalism and ethics ------------------------------------------
+                          - # Professionalism and ethics ------------------------------------------
                           %tr{name: "ethics_select"}
                             %td.top_align.special_table_border{:colspan => "1", :style => "width: 12%;"}
                               .radiotext
@@ -243,23 +233,21 @@
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_1"}
                               %label.clickable
                                 #{ethics[1]}
-                                %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "unsatisfactory"}
-
-                            //HERE EDIT      
+                                %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "unsatisfactory"}   
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_2"}
                               %label.clickable
                                 #{ethics[2]}
                                 %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "needs_improvement"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_3"}
                               %label.clickable
                                 #{ethics[3]}
                                 %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "meets_expectations"}
-
                             %td.top_align.special_table_border.col{:colspan => "1", :style => "width: 22%;", name: "td_ethics_#{i}_4"}
                               %label.clickable
                                 #{ethics[4]}
                                 %input.special_radio_input{name: "ethics_#{i}", type: "radio", value: "exceeds_expectations"} 
+                  
+                  - # Additional feedback based on level
                   - if @module_info.level == 5
                     .container-fluid.bg_none_margin
                       %p.medium.text_black.margin_none I appreciate:
@@ -269,12 +257,13 @@
                       %p.medium.text_black.margin_none I request:
                       .form-group
                         %textarea.form-control{rows: "5", name: "request_note_#{i}"}
-                    
+            
+            - # Saving the feedback constantly so there are no loses
             - current_feedback = raw (PeerFeedback.get_feedback_array_for_user(current_user.username, @in_team_without_current_user[i-1].username, @feedback_date_id)).to_json
             - appreciate_request_fields = PeerFeedback.get_feedback_for_user(current_user.username, @in_team_without_current_user[i-1].username, @feedback_date_id).first
             - appreciate_note = appreciate_request_fields.appreciate
             - request_note = appreciate_request_fields.request
-            //Required for the accordion to work properly - Do not edit
+            - # Changing accordions id's to avoid dublication
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
@@ -282,7 +271,7 @@
               load_selected_feedback_radios(#{current_feedback}, #{i});
               load_appreciate_request_notes('#{appreciate_note}', '#{request_note}', #{i});
               
-             
+    - # Submit feedback         
     .container-fluid.no_padding.bg_none.margin_bottom_small
       %button{type: "submit", name: "submit_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_feedback", id:"submit_feedback_button", value: "submit_feedback", onclick: "redirect_to_modules('#{@module_id}');"}Submit Peer Feedback
 

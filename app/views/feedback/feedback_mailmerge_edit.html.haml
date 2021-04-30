@@ -1,3 +1,7 @@
+- # View for mailmerge edit page
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 29/04/2021
+
 - content_for :title, "Mailmerge Edit"
 
 - custom_placeholder = "Some placeholder text that the module leader can type/edit. It only affects the current module. To change other parts of the text, please contact the department administration"
@@ -5,9 +9,10 @@
 %form{id: "save_mailmerge", name: "save_mailmerge"}
   %input{id: "module_id", name: "module_id", type: "hidden", value: params['module_id']}
   .container.body_whole_custom
+    - # Replicate template provided by client - simple text, easy to edit
+    - # Set at department level
     .container-fluid.bg_none.no_padding.text_black.center_text.special_margin_top
       %a.button.add.btn.btn-primary.button_topics.float_right.medium{:href => admin_modules_preview_path(module_id: params['module_id']), type: "button"} Go back
-      //%button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{onclick: "location.href='/admin/modules';", type: "button"} Go Back   
     .container-fluid.bg_none.no_padding.text_black.center_text
       %h5.bigger Edit Mail Merge Content
       %h5.medium Software Hut
@@ -23,10 +28,7 @@
 
       %p.small We encourage you to take the time to reflect on this feedback and to think about your strengths as a team member, and which areas you might want to improve.
       
-      //-------------------------------
-      //      EDITABLE TEXT HERE
-      //-------------------------------
-      // Do not make save on change. Save when a button is clicked
+      - # Custom text set by the module leader
       .form-group.margin_bottom_small_override
         %textarea.form-control.medium{rows: "10", name: "custom_feedback_text", id: "custom_feedback_text"}
           #{@module_info.mailmerge_message}
@@ -76,7 +78,7 @@
           {{Evaluation [Professionalism and ethics]}}
     
 
-    // Check for level. If level 5 pass the check
+    - # Additional feedback depending on level
     - if @module_info.level == 5
       %hr.group_line
       .container-fluid.bg_none.no_padding.text_black
@@ -99,6 +101,7 @@
 :javascript
   save_mailmerge_message();
 
+- # Alerts
 .myAlert-top-success.alert.alert-success
   %strong Changes saved successfully!
 

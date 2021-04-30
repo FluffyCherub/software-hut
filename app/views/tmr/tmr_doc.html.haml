@@ -1,6 +1,11 @@
+- # View for Team Meeting Record(TMR)
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 12/04/2021
+
 - content_for :title, "Team Operating Agreement"
 
 .container.body_whole_custom
+  - # Check if TMR is submitted or finished
   - if @unfinished_tmr != nil && (@unfinished_tmr.status == "submitted" || @unfinished_tmr.status == "finished")
     .container.container_middle.special_margin_top
       %h1.bigger Team Meeting Record, submitted at: #{@unfinished_tmr.created_at}
@@ -11,6 +16,7 @@
       %h1.bigger There is no Team Meeting Record Submission
       %hr.group_line
   - if @unfinished_tmr.nil?
+    - # Upload a TMR as a .pdf file
     .container
       %i Upload a .pdf file with the Team Meeting Record
     = form_tag(tmr_path(team_id: params['team_id'], module_id: params['module_id']), :multipart => true) do
@@ -18,7 +24,6 @@
       .container
         .input-group
           .custom-file
-            //%input#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", type: "file"}
             %input#file#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", name: "file", type: "file"}
             %label.custom-file-label{for: "customFileInput"} Select file
         .input-group-append.margin_left_none.special_margin_top.margin_bottom_small
@@ -32,6 +37,7 @@
         })
     
   - else
+    - # Display TMR status
     .container-fluid.white_bg.push_top.container_middle
       %form#acceptreject{action: tmr_path(team_id: params['team_id'], module_id: params['module_id']), method: "get"}
         %input#team_id{name: "team_id", type: "hidden", value: params[:team_id]}
@@ -44,6 +50,7 @@
         - elsif @unfinished_tmr.status == "finished"
           %button.btn.btn-primary.half_button.justify-content-center.button_toa_1{form: "acceptreject", type: "button", value: "Agreement accepted", name: "agreement_accepted_button"} Team Meeting Record accepted
 
+  - # Report a problem to the staff
   .container
     %h.medium Report a problem with the team
     %form#report{action: tmr_path(team_id: params['team_id'], module_id: params['module_id']), method: "get"}

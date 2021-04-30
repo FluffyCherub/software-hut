@@ -1,3 +1,7 @@
+- # View for adding students into teams
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 13/04/2021
+
 - content_for :title, "Group Add Student"
 
 .container.body_whole_custom
@@ -9,9 +13,8 @@
     #{@current_team_size}/#{@max_team_size}
     %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium.button_small{:href => admin_modules_groups_path(module_id: params[:module_id]), type: "button"} Go Back
     %hr.group_line
-
-    -# SEARCH FORM FOR THE TABLE BELOW
     
+    - # Search form
     .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.no_border
       = simple_form_for :search_form do |f|
         .container-fluid.bg_none.no_padding
@@ -24,11 +27,7 @@
           .container.col-xs-9.col-sm-7.no_padding_left
             = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_3 float_left no_padding bigger", id:"search_choice"
 
-
-    -# TABLE FOR ALL STUDENTS-ONLY FROM THE MODULE TIED TO THE GROUP WITH OPTION TO ADD THEM TO THE GROUP
-    -# DO NOT INCLUDE PEOPLE THAT ARE IN THE GROUP ALREADY
-    -# IF GROUP IS FULL (6/6) DO NOT ADD THE STUDENT (APPLIES ONLY WHEN STUDENTS ARE JOINING)
-
+    - # Table of students in the module but NOT in any team
     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
       - if @users_in_module_but_not_in_team.length <= 0
         .container.no_results
