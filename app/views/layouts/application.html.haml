@@ -1,3 +1,7 @@
+- # Default layout
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 01/04/2021
+
 !!!
 %html
   %head
@@ -28,6 +32,7 @@
   
     #wrap
       %header#top_line
+        - # University logo
         %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top.top_line
           .container.nav_bar_logo
             %img.logo_top_left{:src => "/assets/uni_logo-1329b75602ca87d0410c0ebe873b6698a79ddabed62396fe44d908aeb603a0ad.jpg", :alt => "University of Sheffield"}
@@ -60,10 +65,8 @@
       %main
         #main-container.container
           = yield
-  -# %script
-  -#   setTimeout(sameHeightGroup(),500);
-  -#   setTimeout(createBlueLine(), 500)
 
+  - # Footer
   .container-fluid.pb-0.mb-0.justify-content-center.text-light
     %footer.footer_app
       .row.my-5.justify-content-center.py-5

@@ -1,11 +1,8 @@
-- content_for :title, "Create Module"
+- # View for creating modules
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 06/04/2021
 
--# a Name
--# a Code
--# a Description
--# a Semester
--# a Years
--# a Module Leader Checkbox
+- content_for :title, "Create Module"
 
 .container.body_whole_custom2
   .container-fluid.module_form.text_black
@@ -13,6 +10,7 @@
       %h.float_left.bigger.no_padding Create Module
       %button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium{onclick: "location.href='/admin/modules';", type: "button"} Go Back
     %hr.group_line.no_padding
+    - # Module Creation Form
     = simple_form_for :module_create_form, remote: true do |f|
       .form-row
         .form-group.col-md-9.margin_bottom_small
@@ -23,7 +21,6 @@
         = f.input :module_description, :as => :text, label: "Description", required: false, :input_html => {:id => "inputDescription", :class => "form-control", :rows => 10}
       .form-row
         .form-group.col-md-5.margin_bottom_small
-          //- collection = session[:modules] #Defines the options in radio buttons/dropdowns
           = f.input :semester, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR', 'GRADUATE YEAR'], label: "Semester", include_blank: false, required: false
         .form-group.col-md-4.margin_bottom_small
           = f.input :years, as: :select, collection: @generated_years, label: "Academic Year", include_blank: false, required: false
@@ -34,8 +31,10 @@
           = f.check_box :module_leader, {:id => "check_box_create", :class => "myclass"}, "checked-value", "unchecked-value"
           %label{for: "check_box_create"} Make me a module leader
       
+      - # Submiting the form
       = f.button :submit, "Create", name:"create_module_button", class: "btn btn-primary agreement_buttons justify-content-center button_create_module float_left", id:"submit_choice", "data-disable-with" => "Creating.."
 
+- # Alerts
 .myAlert-top-success.alert.alert-success
   %strong Module created successfully!
 

@@ -1,6 +1,11 @@
+- # View for Team Operating Agreement(TOA)
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 12/04/2021
+
 - content_for :title, "Team Operating Agreement"
 
 .container.body_whole_custom
+  - # Check if TOA is submitted or finished
   - if @current_team.toa_status == "submitted" || @current_team.toa_status == "finished"
     .container.container_middle.special_margin_top
       //Height 6900 for full template to show
@@ -10,6 +15,7 @@
       %h1.bigger There is no Team Operating Agreement Submission
       %hr.group_line
   - if @current_team.toa_status == "in_progress"
+    - # Upload a TOA as .pdf file if you are in a currently active period
     .container
       %i Upload a .pdf file with the Team Operating Agreement
     = form_tag(toa_path(team_id: params[:team_id]), :multipart => true) do
@@ -17,7 +23,6 @@
       .container
         .input-group
           .custom-file
-            //%input#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", type: "file"}
             %input#file#customFileInput.custom-file-input{"aria-describedby" => "customFileInput", name: "file", type: "file"}
             %label.custom-file-label{for: "customFileInput"} Select file
         .input-group-append.margin_left_none.special_margin_top.margin_bottom_small
@@ -30,6 +35,7 @@
           nextSibling.innerText = name
         })
   - else
+    - # Display TOA status
     .container-fluid.white_bg.push_top.container_middle
       %form#acceptreject{action: toa_path(team_id: params['team_id']), method: "get"}
         %input#custId{name: "team_id", type: "hidden", value: params[:team_id]}

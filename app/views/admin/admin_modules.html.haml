@@ -1,6 +1,12 @@
+- # View for modules page
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 05/04/2021
+
 - content_for :title, "Admin Modules"
 
 .container.body_whole_custom_transparent
+
+  - # Searching form and adding modules
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white
     = simple_form_for :search_form do |f|
       .container-fluid.bg_none.no_padding
@@ -13,6 +19,7 @@
         .container.col-xs-8.col-sm-4.no_padding_left.no_padding_right.padding_right_small
           %button{onclick: "location.href='/admin/modules/create';", type: "button", name: "add _button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Add Module
 
+  - # Generate accordions with all the modules
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black
     - if @modules_by_year.length <= 0
       .container.no_results
@@ -27,7 +34,7 @@
               - true_i = 1
             - else
               - true_i = i + 1
-            //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
+            - # Sort modules in academic years
             #heading-1.card-header
               %h5.mb-0
                 %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
@@ -36,12 +43,13 @@
               .card-body
                 #accordion-1
                   - for z in 1..@modules_by_year[i-1].length
-                    ////////////////////////////////////////////////////// MODULE
+                    - # Generate all the modules for the specfic academic year
                     .card
                       #heading-1-1.card-header.header_bad
                         %h5.mb-0
                           %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
                             #{@modules_by_year[i-1][z-1].code} #{@modules_by_year[i-1][z-1].name} (#{@modules_by_year[i-1][z-1].semester}) - Level #{@modules_by_year[i-1][z-1].level}
+                      - # Generate module content
                       #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                         .card-body
                           %li
@@ -51,24 +59,23 @@
                                 Preview Module Page
                           %hr.group_line
                           #{@modules_by_year[i-1][z-1].description}
-                    ////////////////////////////////////////////////////// MODULE
+                    
+                    - # Change accordion id's to avoid dublication
                     - if i == @modules_by_year.length
                       - last_i = true_i
                       - last_z = z
                     - else
-                      //Required for the accordion to work properly - Do not edit
                       :javascript
                         document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
                         document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
             
-            //Required for the accordion to work properly - Do not edit
+            - # Change accordion id's to avoid dublication
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
               document.getElementById('accordion-1').id = 'accordion-#{i}';
-            //////////////////////////////////////////////////////////////////////////////////////////////////////// YEAR
 
-      //Required for the accordion to work properly - Do not edit
+      - # Change accordion id's to avoid dublication
       - for y in 1..@modules_by_year[@modules_by_year.length-1].length
         - index = @num_of_modules-(@modules_by_year[@modules_by_year.length-1].length+1) + y 
         :javascript

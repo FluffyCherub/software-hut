@@ -1,21 +1,16 @@
+- # View for modules page
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 29/03/2021
+
 - content_for :title, "Modules"
 
--# %button#show-flash.btn.btn-outline-primary{ type: :button }
--#     = navbar_link_to :root, title: "Go to home page", identifier: :home do
--#         = icon 'fas', 'exclamation-circle', 'Go to the home page'
-
 .card.mb-3.card.mb-3-student
+  - # Choose a module to display its information
   .card-header.card-header-student
     Choose module
   .card-body.card-body-student
-    - collection = @modules #Defines the options in radio buttons/dropdowns
-
+    - collection = @modules
     = simple_form_for :module_choice do |f|
-      //= f.label 'hello'
-      //= f.input :string, as: :integer, label: 'false' , required: false
-
-      //select2 is the header of the field, collection specifies options
-      //= f.input :select2, as: :select, collection: collection, input_html: { class: 'module_dropdown', id: 'module_dropdown' , name: 'selected_module'}, include_blank: false, label: false, requied: false
       = f.collection_select :module_id, collection, :id, :name, {}, {:class=> "module_dropdown form-select", :id=> "module_dropdown"}
       = f.button :submit, "Select", class: "btn btn-primary select_module d-flex justify-content-center", id:"submit_choice", "data-disable-with" => "Loading.."
 
@@ -26,6 +21,7 @@
   .container.module_body
     %h1{:id => "module_name", :class => "bigger"} #{@module_info.name}
     .container.module_info#hider
+      - # Display members in the current team
       .container.module_div.module_group#module_group.small
         - if @team_info.nil?
           %h.group_header.medium You are not in a team
@@ -46,6 +42,8 @@
               %br
               E-mail: #{currentMember.email}
               %hr.group_line
+      
+      - # Display student resources: Team meeting record, Team operating agreemnet and Feedback
       .container.module_div.module_feedback#module_feedback.small
         %h.feedback_header
         %ul
@@ -77,7 +75,7 @@
         %ul
           %strong.feedback_header.medium 
             Additional Info: 
-          -# Have to make check here if there is team
+          - # Have to make check here if there is team
           - if @team_info.nil?
             %li Team Operating Agreement Unavailable
           - else

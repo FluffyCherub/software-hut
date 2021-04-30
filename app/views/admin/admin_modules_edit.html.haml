@@ -1,11 +1,8 @@
-- content_for :title, "Edit Module"
+- # View for Editing/Cloning modules
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 06/04/2021
 
--# a Name
--# a Code
--# a Description
--# a Semester
--# a Years
--# a Module Leader Checkbox
+- content_for :title, "Edit/Clone Module"
 
 .container.body_whole_custom2
   .container-fluid.module_form.text_black
@@ -13,6 +10,7 @@
       %h.float_left.bigger.no_padding Edit Module
       %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_1.medium{:href => admin_modules_preview_path(module_id: params[:module_id]), type: "button"} Go Back
     %hr.group_line.no_padding
+    - # Module Cloning/Editing Form
     = simple_form_for :module_edit_form, remote: true do |f|
       = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => @module_info.id }
       .form-row
@@ -24,7 +22,6 @@
         = f.input :module_description, :as => :text, label: "Description", required: false, :input_html => {:id => "inputDescription", :class => "form-control", :rows => 10, :value => @module_info.description}
       .form-row
         .form-group.col-md-5.margin_bottom_small
-          //- collection = session[:modules] #Defines the options in radio buttons/dropdowns
           = f.input :semester, as: :select, collection: ['AUTUMN', 'SPRING', 'ACADEMIC YEAR', 'GRADUATE YEAR'], label: "Semester", include_blank: false, required: false,  :selected => @module_info.semester
         .form-group.col-md-4.margin_bottom_small
           = f.input :years, as: :select, collection: @generated_years, label: "Academic Year", include_blank: false, required: false, :selected => @module_info.years
@@ -38,9 +35,11 @@
           = f.check_box :check_box_ta, {:id => "check_box_ta", :class => "myclass"}, "checked-value", "unchecked-value"
           %label{for: "check_box_ta"} Inherit Teaching Assistants (Cloning only)
       
+      - # Submiting the form
       = f.button :submit, "Edit", name:"edit_module_button", class: "btn btn-primary agreement_buttons justify-content-center button_create_module float_left special_margin_top", id:"submit_choice"
       = f.button :submit, "Clone", name:"clone_module_button", class: "btn btn-primary agreement_buttons justify-content-center button_create_module float_left margin_left_small special_margin_top", id:"submit_choice"
 
+- # Alerts
 .myAlert-top-success.alert.alert-success
   %strong Module edited successfully!
 

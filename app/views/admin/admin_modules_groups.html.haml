@@ -1,7 +1,12 @@
+- #  View for displaying module teams
+- #  Authors: Anton Minkov && Laney Deveson
+- #  Date: 07/04/2021
+
 - content_for :title, "Module Groups"
 
 .container.body_whole_custom_transparent
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white
+    - # Search and sort form
     = simple_form_for :search_form do |f|
       = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
       .container-fluid.bg_none.no_padding
@@ -20,7 +25,7 @@
         .form-group.col-md-3.margin_bottom_small.text_black
           = f.input :search_type, as: :select, collection: ['Default - A to Z', 'Team size - Low to High', 'Team size - High to Low', 'Topic - A to Z'], label: "Sort By:", include_blank: false, required: false, :selected => @selected_type, :input_html => {onchange: "this.form.submit()"}
 
-
+  - # Generating accordion with all the teams in the module
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black
     %input{id: "num_of_teams", name: "num_of_teams", type: "hidden", value: @groups_for_module.length}
     - if @groups_for_module.length == 0
@@ -40,6 +45,7 @@
             - problems = Problem.get_problems_for_team(@groups_for_module[i-1].id)
             - num_problems_id = "num_of_problems_" + i.to_s
             %input{id: "#{num_problems_id}", name: "#{num_problems_id}", type: "hidden", value: problems.length}
+            - # Displaying Teams name, topic and size + problem alert
             #heading-1.card-header
               %h5.mb-0
                 %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
@@ -49,7 +55,7 @@
                     - group_topic = "- " + @groups_for_module[i-1].topic
                   #{@groups_for_module[i-1].name} #{group_topic}
 
-
+                  - # Check for unsolved and assigned problems
                   %p.float_right.margin_none
                     - red_encounter = false
                     - yellow_encounter = false
@@ -66,7 +72,7 @@
                   
                     #{Team.get_current_team_size(@groups_for_module[i-1].id)}/#{@groups_for_module[i-1].size}
                   
-            
+            - # Generate team information - members, team page, problems
             #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
               .card-body.no_padding
                 #accordion-1
@@ -77,18 +83,13 @@
                           %strong
                             View Team Page
                       %hr.group_line
-                    //Group members etc
-                    -# - current_team_members = Team.get_current_team_members(@groups_for_module[i-1].id)
-                    -# - for j in 0..(current_team_members.length-1)
-                    -#   %li 
-                    -#     #{current_team_members[j].givenname} #{current_team_members[j].sn} -- #{current_team_members[j].email}
-                    
                     .container-fluid.bg_none.no_padding.margin_bottom_small.text_black.medium.margin_left
                       Team Members 
                       .container.col-xs-6.col-sm-3.no_padding_left.no_padding_right.padding_right_small.float_right.small
                         - if can? :manage, :admin_modules_groups_add
                           %a.button{:href => admin_modules_groups_add_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), type: "button", name: "add_student_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"add_user_button", value: "add_student"}Add Student
-                        
+
+                    - # Table of students in the current team   
                     .container-fluid.bg_none.bg_border.no_padding.margin_bottom_small
                       - current_team_users = Team.get_current_team_members(@groups_for_module[i-1].id)
                       - if current_team_users.length <= 0
@@ -131,29 +132,25 @@
                   
                     %hr.group_line
 
-                    ////////////////////////////////////////////////////////////////////////////////////////
-
-                    // 5==5 should be checking if there is any feedback at all
-                    - if (problems.length == 0) && (5 == 6)
+                    - # Display current group's problems and potential feedback
+                    - if problems.length == 0
                       .container.no_results.bg_none
                         %h.center_element.medium.text_black No problems in this group
                       %hr.group_line
                     - else
-                      //loop should be 1..(problem.length + num of students that have feedback)
-                      //If impossible, just do (problem.length + students in team) and for students with no feedback show empty field
-                      - for z in 1..(problems.length)
-
+                      - for z in 1..problems.length
                         - problem_dot_type = "no_dot"
                         - if problems[z-1].status == "unsolved"
                           - problem_dot_type = "red"
                         - elsif problems[z-1].status == "assigned"
                           - problem_dot_type = "yellow"
                         - elsif problems[z-1].status == "solved"
-                          - problem_dot_type = "solved"
-                        
+                          - problem_dot_type = "solved"                  
                         - if z == 1
                           %h5 Assign/Solve Problems
                         .card
+                          
+                          - # Display current problem's status
                           #heading-1-1.card-header.header_bad
                             %h5.mb-0
                               %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
@@ -168,7 +165,8 @@
                                   %span.dot_yellow.float_right
                                 - elsif problem_dot_type == "solved"
                                   %span.dot_green.float_right
-
+                          
+                          - # Display current problem's content
                           #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                             .card-body
                               - created_at = problems[z-1].created_at.strftime("%I:%M %p %d/%m/%Y")
@@ -195,7 +193,7 @@
 
                               - problem_notes = ProblemNote.get_notes_for_problem(problems[z-1].id)
 
-                              - # div for displaying notes 
+                              - # Displaying current problem's notes
                               %div{id: "notes_id_#{i}_#{z}"}
                                 - for t in 0...problem_notes.length
                                   - created_by = User.get_first_last(problem_notes[t].created_by)
@@ -210,14 +208,13 @@
                               %input{id: "team_number_#{i}_#{z}", name: "team_number_#{i}_#{z}", type: "hidden", value: "#{i}"}
                               %input{id: "problem_number_#{i}_#{z}", name: "problem_number_#{i}_#{z}", type: "hidden", value: "#{z}"}
                               
-                              //Here is the input field to add a note
                               %p.medium.text_black.margin_none Additional Note:
                               .form-group.margin_bottom_small_override
                                 %textarea.form-control{rows: "3", name: "additional_note_#{i}_#{z}", id: "additional_note_#{i}_#{z}"}
                               = link_to "Add Note", admin_modules_groups_path(), id: "add_note_button_#{i}_#{z}", class: "add btn btn-primary button_topics medium"
                               %hr.group_line
 
-
+                              - # Problem assign/solve form
                               = simple_form_for :problem_form do |f|
                                 = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
                                 = f.input :form_problem_id, :as => :hidden, :input_html => {:id => "form_problem_id", :value => problems[z-1].id }
@@ -232,46 +229,23 @@
                                     - if (current_user.username == problems[z-1].assigned_to || (can? :manage, :problems)) && problems[z-1].status != "solved"
                                       .container.col-xs-6.col-sm-4.no_padding_left.no_padding_right
                                         = f.button :submit, "Mark as solved", type: "submit", name: "solve_button",  class: "btn btn-primary agreement_buttons justify-content-center button_solve", id:"solve_button"
-                      
-                        -# - else
-                        -#   - i_new = z - problems.length 
-                        -#   - if z == problems.length + 1
-                        -#     %hr.group_line
-                        -#     %h5 Review/Edit Feedback
-                        -#   .card
-                        -#     //ISSUE MIGHT BE HERE -> Duplicates header and collapse ID
-                        -#     #heading-1-1.card-header.header_bad
-                        -#       %h5.mb-0
-                        -#         //Student name should be here. E.g FirstName LastName
-                        -#         %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
-                        -#           Student #{i_new}
-                        -#     #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
-                        -#       .card-body.no_padding                           
-                        -#         .container-fluid.bg_none_margin
-                        -#           %p.medium.text_black.margin_none We appreciate:
-                        -#           .form-group
-                        -#             %textarea.form-control{rows: "5", name: "appreciate_note_#{i_new}"}
-                        -#         .container-fluid.bg_none_margin
-                        -#           %p.medium.text_black.margin_none We request:
-                        -#           .form-group
-                        -#             %textarea.form-control{rows: "5", name: "request_note_#{i_new}"}
 
+                        - # Changing id's to avoid duplication
                         - if i == @groups_for_module.length
                           - last_i = true_i
                           - last_z = z
                         - else
-                          //Required for the accordion to work properly - Do not edit
                           :javascript
                             document.getElementById('heading-1-1').id = 'heading-#{true_i}-#{z}';
                             document.getElementById('collapse-1-1').id = 'collapse-#{true_i}-#{z}';
             
-            //Required for the accordion to work properly - Do not edit
+            - # Changing id's to avoid duplication
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
               document.getElementById('accordion-1').id = 'accordion-#{i}';
       
-      //Required for the accordion to work properly - Do not edit
+      - # Changing id's to avoid duplication
       - last_team_id = @groups_for_module[@groups_for_module.length-1].id
       - last_problems = Problem.get_problems_for_team(last_team_id)
       - for y in 1..last_problems.length
@@ -281,7 +255,6 @@
           var bad_collapsers = document.getElementsByClassName("collapse_bad");
           bad_headers['#{index}'].id = 'heading-#{last_i}-#{y}';
           bad_collapsers['#{index}'].id = 'collapse-#{last_i}-#{y}';
-            
-            //////////////////////////////////////////////////////////////////////////////////////////////////////// GROUP
+
 :javascript
   add_note_function();

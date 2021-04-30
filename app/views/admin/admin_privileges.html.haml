@@ -1,7 +1,13 @@
+- # View for system privileges
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 05/04/2021
+
 - content_for :title, "Admin Privileges"
   
 
 .container.body_whole_custom_transparent
+  
+  - # Search form for system users
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white
     = simple_form_for :search_form do |f|
       .container-fluid.bg_none.text_black.center_text.special_margin_top
@@ -14,8 +20,7 @@
         .container.col-xs-4.col-sm-3.no_padding_left
           = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_special float_right", id:"submit_choice", "data-disable-with" => "Submitting.."
 
-
-
+  - # Table of all system users with the option to change system privilge (suspend/admin)
   .container-fluid.bg_none.bg_border.no_padding
     - if @users_list.length <= 0
       .container.no_results
@@ -31,7 +36,6 @@
               %th.black_text.center_element{:colspan => "1", :style => "width: 10%;"} Suspended
               %th.black_text.center_element{:colspan => "1", :style => "width: 10%;"} Admin
               %th.black_text.center_element{:colspan => "4", :style => "width: 40%;"} Actions
-
           %tbody
             = simple_form_for :privilege_form, :id => 'privilege_form' do |f|
               = f.input :form_username, :as => :hidden, :input_html => {:id => "form_username", :value => "" }
@@ -48,7 +52,6 @@
                     - suspendedBool = "Yes"
                   - else  
                     - suspendedBool = "No"
-
                   - if user[:admin] == true 
                     - adminBool = "Yes"
                   - else  

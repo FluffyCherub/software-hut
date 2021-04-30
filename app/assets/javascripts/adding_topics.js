@@ -1,27 +1,42 @@
+// Javascript for adding topics and time periods
+// Authors: Anton Minkov && Laney Deveson
+// Date: 17/04/2021
+
+
+//Function to add addition topic choise to the existing ones
 function addTopic() {
+  
+  //Check current amout of topics
   var new_chq_no = parseInt($('#total_chq').val()) + 1;
   var previous_chq_no = new_chq_no-1
 
+  //Get previous topics group size and amout of groups for cloning
   var previous_group_size = document.getElementById("size_" + previous_chq_no.toString()).value
   var previous_group_amount = document.getElementById("amount_" + previous_chq_no.toString()).value
 
+  //Clone a new topic
   var input_div = "<div class='input-group flex-nowrap margin_top margin_bottom_small special_width_topic' id='div_" + new_chq_no + "'> ";
   var topic_input = "<input type='text' id='topic_" + new_chq_no + "' name='topic_" + new_chq_no + "' class='form-control special_width_topic_name' placeholder='Topic " + new_chq_no + "' >";
   var group_size_input = "<input type='text' id='size_" + new_chq_no + "' name='size_" + new_chq_no + "' value='" + previous_group_size.toString() + "' class='form-control' placeholder='Team Size' >";
   var group_amount_input = "<input type='text' id='amount_" + new_chq_no + "' name='amount_" + new_chq_no + "' value='" + previous_group_amount.toString() + "' class='form-control' placeholder='№ of Teams' >";
   var input_div_id = '#div_' + new_chq_no.toString();
 
+  //Append to the previous topic
   $('#new_chq').append(input_div);
   $(input_div_id).append(topic_input);
   $(input_div_id).append(group_size_input);
   $(input_div_id).append(group_amount_input);
 
+  //Update number of topics
   $('#total_chq').val(new_chq_no);
 }
 
+//Function to add addition topic choise to the existing ones
 function removeTopic() {
+  //Check current amout of topics
   var last_chq_no = $('#total_chq').val();
 
+  //Remove last added topic and update number of topics
   if (last_chq_no > 1) {
     $('#amount_' + last_chq_no).remove();
     $('#size_' + last_chq_no).remove();
@@ -31,16 +46,22 @@ function removeTopic() {
   }
 }
 
+//Function to enable adding topics
 function topicButtonChange(students_in_module) {
+
+  //Check if topics are enabled
   var button_value = document.getElementById("topic_toggle").value;
   var normal_value = document.getElementById("normal_toggle").value;  
 
   if (button_value == "disabled") {
-
     if (normal_value == "disabled") {
       document.querySelector('#topic_toggle').innerHTML = 'Disable Topics';
       document.getElementById("topic_toggle").value = "enabled"
       
+      //Function to calculate the best amount of students per team
+      //as well as the best  amout of groups
+      //Also calculates if there is enough space for all the students
+      //in the module and relays that information to the staff member
       setInterval(function() {
               
         var number_of_topics = document.getElementById("total_chq").value;
@@ -49,6 +70,7 @@ function topicButtonChange(students_in_module) {
         var studentNumberCurrent = 0;
         var totalGroups = 0;
 
+        //Sums in the students in all of the topic groups
         for (var i = 0; i < number_of_topics; i++) {
           var students_per_group;
           var amout_of_groups;
@@ -78,6 +100,8 @@ function topicButtonChange(students_in_module) {
 
         var empty_spots = studentNumberCurrent - studentNumberTotal;
 
+        //Calculates if there is enough space for all of students and displays
+        //the appropriate information
         if (studentNumberTotal == studentNumberCurrent) {
           document.getElementById("student_tracker").innerHTML = "All students are in a team!";
           document.getElementById("student_tracker").style.color = "green";
@@ -111,6 +135,7 @@ function topicButtonChange(students_in_module) {
       }, 100);
     }
     else {
+      //Check if topics are disabled
       document.getElementById("normal_toggle").value = "disabled"
       var normal_div = document.getElementById("normalCollapse");
       normal_div.classList.remove("show");
@@ -119,6 +144,10 @@ function topicButtonChange(students_in_module) {
       document.querySelector('#topic_toggle').innerHTML = 'Disable Topics';
       document.getElementById("topic_toggle").value = "enabled"
       
+      //Function to calculate the best amount of students per team
+      //as well as the best  amout of groups
+      //Also calculates if there is enough space for all the students
+      //in the module and relays that information to the staff member
       setInterval(function() {
               
         var number_of_topics = document.getElementById("total_chq").value;
@@ -126,7 +155,8 @@ function topicButtonChange(students_in_module) {
         var studentNumberTotal = students_in_module;
         var studentNumberCurrent = 0;
         var totalGroups = 0;
-
+        
+        //Sums in the students in all of the topic groups
         for (var i = 0; i < number_of_topics; i++) {
           var students_per_group;
           var amout_of_groups;
@@ -156,6 +186,8 @@ function topicButtonChange(students_in_module) {
 
         var empty_spots = studentNumberCurrent - studentNumberTotal;
 
+        //Calculates if there is enough space for all of students and displays
+        //the appropriate information
         if (studentNumberTotal == studentNumberCurrent) {
           document.getElementById("student_tracker").innerHTML = "All students are in a team!";
           document.getElementById("student_tracker").style.color = "green";
@@ -196,15 +228,20 @@ function topicButtonChange(students_in_module) {
   }
 }
 
+//Function to enable making groups without topics
 function normalButtonChange(students_in_module) {
   var button_value = document.getElementById("normal_toggle").value;
   var toggle_value = document.getElementById("topic_toggle").value;  
 
+  //Check if topics are enabled
   if (button_value == "disabled") {
-
     if (toggle_value == "disabled") {
       document.getElementById("normal_toggle").value = "enabled";
 
+      //Function to calculate the best amount of students per team
+      //as well as the best  amout of groups
+      //Also calculates if there is enough space for all the students
+      //in the module and relays that information to the staff member
       setInterval(function() {
                    
         var studentNumberTotal = students_in_module;
@@ -229,6 +266,8 @@ function normalButtonChange(students_in_module) {
 
         studentNumberCurrent = students_per_group*amount_of_groups
 
+        //Calculates if there is enough space for all of students and displays
+        //the appropriate information
         if ((document.getElementById("normal_size").value == false) && (document.getElementById("normal_amount").value == false)) {
           document.getElementById("normal_size").placeholder = "Example: 14";
           document.getElementById("normal_amount").placeholder = "Example: 6";
@@ -259,6 +298,8 @@ function normalButtonChange(students_in_module) {
 
         var empty_spots = studentNumberCurrent - studentNumberTotal;
 
+        //Calculates if there is enough space for all of students and displays
+        //the appropriate information
         if (studentNumberTotal == studentNumberCurrent) {
           document.getElementById("student_tracker_normal").innerHTML = "All students are in a team!";
           document.getElementById("student_tracker_normal").style.color = "green";
@@ -293,6 +334,7 @@ function normalButtonChange(students_in_module) {
       }, 100);
     }
     else {
+      //Check if topics are disabled
       document.querySelector('#topic_toggle').innerHTML = 'Enable Topics';
       document.getElementById("topic_toggle").value = "disabled"
       var topic_div = document.getElementById("topicCollapse");
@@ -301,6 +343,10 @@ function normalButtonChange(students_in_module) {
 
       document.getElementById("normal_toggle").value = "enabled";
 
+      //Function to calculate the best amount of students per team
+      //as well as the best  amout of groups
+      //Also calculates if there is enough space for all the students
+      //in the module and relays that information to the staff member
       setInterval(function() {
                    
         var studentNumberTotal = students_in_module;
@@ -325,6 +371,8 @@ function normalButtonChange(students_in_module) {
 
         studentNumberCurrent = students_per_group*amount_of_groups
 
+        //Calculates if there is enough space for all of students and displays
+        //the appropriate information
         if ((document.getElementById("normal_size").value == false) && (document.getElementById("normal_amount").value == false)) {
           document.getElementById("normal_size").placeholder = "Example: 14";
           document.getElementById("normal_amount").placeholder = "Example: 6";
@@ -355,6 +403,8 @@ function normalButtonChange(students_in_module) {
 
         var empty_spots = studentNumberCurrent - studentNumberTotal;
 
+        //Calculates if there is enough space for all of students and displays
+        //the appropriate information
         if (studentNumberTotal == studentNumberCurrent) {
           document.getElementById("student_tracker_normal").innerHTML = "All students are in a team!";
           document.getElementById("student_tracker_normal").style.color = "green";
@@ -395,6 +445,7 @@ function normalButtonChange(students_in_module) {
   }
 }
 
+//Function to dissable buttons temporarily to avoid overload
 function tempDisableButton() {
   setTimeout(function() {
     document.getElementById('normal_toggle').disabled = true;
@@ -406,7 +457,9 @@ function tempDisableButton() {
   }, 400);
 }
 
+//Function to add new feedback periods when creating teams
 function addPeriod() {
+  //Get number of current periods
   var new_chq_no_2 = parseInt($('#total_chq_period').val()) + 1;
 
   //Creating new elements
@@ -504,7 +557,9 @@ function addPeriod() {
 
 }
 
+//Function to remove last added feedback period when creating groups
 function removePeriod() {
+  //Get number of current periods
   var last_chq_no_2 = $('#total_chq_period').val();
 
   if (last_chq_no_2 > 1) {
@@ -537,13 +592,14 @@ function removePeriod() {
   }
 }
 
+//Function to add a certain amount of days when creating periods
 function addDays(date, days) {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 }
 
-
+//Function to format the recieved in the following format: 2018-06-12T19:30
 function formatDate(date) {
   var day = date.getDate();
   var hour = date.getHours();
