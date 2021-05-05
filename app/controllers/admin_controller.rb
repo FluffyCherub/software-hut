@@ -293,8 +293,17 @@ class AdminController < ApplicationController
           end
 
           #popup that module was created successfully
+
+          #wizard path for adding users to the created module
+          wizard_path = "\"" + "/admin/modules/preview?module_id=" + created_module.id.to_s + "\""
+
+          #functions to alert and show wizard toast
+          call_alert_success = "myAlertTopSuccess();"
+          call_wizard_toast = "add_wizard_toast(\"You just created a new module!\",
+                                                \"The next step we suggest is to add users to the module using a <strong>.CSV</strong> file or by <strong>adding individual users</strong>.\", " +
+                                                wizard_path + ");"
           respond_to do |format|
-            format.js { render :js => "myAlertTopSuccess();" }
+            format.js { render :js => call_alert_success + call_wizard_toast }
           end
         else
           #popup that this module already exists

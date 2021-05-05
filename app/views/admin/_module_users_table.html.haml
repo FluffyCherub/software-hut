@@ -40,3 +40,6 @@
 :javascript
   myAlertTopEditableSuccess("Students imported successfully!");
   no_file_selected();
+  add_wizard_toast("You just added users to this module!", 
+                   "The next step we suggest is to create teams and setup feedback periods for this module.", 
+                   "/admin/modules/groups/create?module_id=" + #{params[:module_id].to_s});

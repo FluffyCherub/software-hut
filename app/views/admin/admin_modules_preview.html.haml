@@ -166,3 +166,11 @@
 
 :javascript
   no_file_selected();
+
+- if ListModule.num_students_in_mod(params['module_id']) == 0
+  :javascript
+    add_wizard_toast("You just created this module!", 
+                    "The next step we suggest is to add students to this module, by clicking on <strong>\'Upload a .CSV file\'</strong>.", 
+                    "/admin/modules/groups/create?module_id=" + #{params[:module_id].to_s});
+
+

@@ -52,24 +52,3 @@
 
 .myAlert-top-error-4.alert.alert-warning
   %strong This Module already exists
-
-%div.bottom_right_stick
-  #myToast.toast.border_blue
-    .toast-header.bg_dark_purple
-      %img.rounded.mr-2.img_15{alt: "You are a wizard Harry!", src: "/images/wizard.png"}
-      %strong.mr-auto
-        %i.fa.fa-grav.bg_dark
-          You just created a new module!
-      %small.smaller.text_gray Just now
-      %button.ml-2.mb-1.close.text_white.no_hover{"data-dismiss" => "toast", type: "button"} ×
-    .toast-body.bg_pure_white.text_black
-      The next step we suggest is to add users to the module using a 
-      %strong
-        \.CSV file
-      or by
-      %strong
-        adding individual users.     
-      %a{href: "#"} Click here to proceed!
-
-:javascript
-  displayToast();
