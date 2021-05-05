@@ -1,0 +1,46 @@
+.bottom_right_stick {
+  position: fixed;
+  right: 1%;
+  bottom: 2%;
+  margin: 0;
+  padding: 0;
+  z-index: 99999999999999;
+}
+
+.fa-grav:before {
+  content: none;
+}
+
+.border_blue {
+  border: 2px solid #9e9edf;
+  border-radius: 5px
+}
+
+.bg_dark_purple {
+  font-family: 'Steph';
+  background-color: rgb(31, 20, 93);
+  color: white !important;
+}
+
+.bg_pure_white {
+  font-family: 'Steph';
+  background-color: #EEEEFF;
+}
+
+.text_white {
+  color: white !important;
+}
+
+.text_gray {
+  color: rgb(196, 180, 180) !important;
+}
+
+button.no_hover:hover {
+  background-color: rgb(31, 20, 93) !important;
+  color: white !important;
+}
+
+.img_15 {
+  width: 6%;
+  height: auto;
+}

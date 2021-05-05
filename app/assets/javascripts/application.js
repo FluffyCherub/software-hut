@@ -20,3 +20,4 @@
 //= require profanity_filter
 //= require alerts
 //= require import_csv
+//= require wizard
