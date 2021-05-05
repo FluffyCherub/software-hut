@@ -1,0 +1,42 @@
+
+- if @current_module_users.length <= 0
+  .container.no_results
+    %h.center_element.bigger.text_black No users match your search
+- else
+  .container-fluid.bg_none.overflow_style.scroll_down.no_padding.table_div
+    %table.table.table-hover.table-dark
+      %thead
+        %tr.stick_top
+          %th.black_text{:colspan => "1", :style => "width: 5%;"} #
+          %th.black_text{:colspan => "1", :style => "width: 30%;"} Name
+          %th.black_text.center_element{:colspan => "1", :style => "width: 10%;"} Username
+          %th.black_text.center_element{:colspan => "1", :style => "width: 20%;"} Email
+          %th.black_text.center_element{:colspan => "1", :style => "width: 15%;"} Role
+          %th.black_text.center_element{:colspan => "4", :style => "width: 20%;"} Action 
+      %tbody
+        - @current_module_users.to_a.each_with_index do |user, index|
+          - if user[:givenname] == nil  
+            - user[:givenname] = ""
+          - if user[:sn] == nil 
+            - user[:sn] = ""
+          - whole_name = user[:givenname] + " " + user[:sn]
+          - user_privilege = User.get_module_privilege(params[:module_id], user[:id])
+          - if user_privilege.include?("teaching_assistant")
+            - user_privilege = "Teaching Assistant"
+          - elsif user_privilege.include?("module_leader")
+            - user_privilege = "Module Leader"
+          - elsif user_privilege.include?("student")
+            - user_privilege = "Student"
+          %tr.small.hover_color
+            %td{:colspan => "1", :style => "width: 5%;"} #{index+1}
+            %td{:colspan => "1", :style => "width: 30%;"} #{whole_name}
+            %td.center_element{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
+            %td.center_element{:colspan => "1", :style => "width: 20%;"} #{user[:email]}
+            %td.center_element{:colspan => "1", :style => "width: 15%;"} #{user_privilege}
+            %td.center_element{:colspan => "1", :style => "width: 20%;"} 
+              - if can? :manage, :admin_modules_privilege
+                %button{onclick: "popupCenter({url: '/admin/modules/privilege?module_id=#{params[:module_id]}&user_id=#{user[:id]}', title: 'Change Privilege', w: 650, h: 500}); ", type: "submit", name: "privilege_button",  class: "btn btn-primary action_buttons justify-content-center small", id:"submit_choice"}Change Privilege
+
+:javascript
+  myAlertTopEditableSuccess("Students imported successfully!");
+  no_file_selected();

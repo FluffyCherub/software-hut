@@ -19,3 +19,4 @@
 //= require add_note
 //= require profanity_filter
 //= require alerts
+//= require import_csv

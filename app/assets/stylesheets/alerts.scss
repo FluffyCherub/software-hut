@@ -5,7 +5,8 @@
 .myAlert-top-success, .myAlert-top-unknown,
 .myAlert-top-error-1, .myAlert-top-error-2,
 .myAlert-top-error-3, .myAlert-top-error-4,
-.myAlert-top-error-5, .myAlert-top-success2
+.myAlert-top-error-5, .myAlert-top-success2,
+.myAlert-top-error-6
 {
   position: fixed;
   top: 1%; 
@@ -22,7 +23,8 @@
 
 .myAlert-top-unknown, .myAlert-top-error-1,
 .myAlert-top-error-2, .myAlert-top-error-3,
-.myAlert-top-error-4, .myAlert-top-error-5
+.myAlert-top-error-4, .myAlert-top-error-5,
+.myAlert-top-error-6
 {
   border: thin solid red;
 }

@@ -72,52 +72,88 @@ class ListModule < ApplicationRecord
     return privilege
   end
 
+
   #method for importing csv files and adding users to modules
   #takes a file and module id, returns void
   def self.import(file, module_id)
-    transaction do 
-      #variable for checking if all fields in the csv are input correctly 
-      #and there arent any missing fields
-      integrity = true
 
-      #setting file types which the system can proccess
-      allowed_file_types = ["text/csv", "application/vnd.ms-excel"]
-      if file != nil && allowed_file_types.include?(file.content_type)
+    #variable for checking if all fields in the csv are input correctly 
+    #and there arent any missing fields
+    integrity = true
+
+    transaction do 
+      if file != nil
+        #get an array of headers from the csv file
+        csv_headers = file[0].split(',')
+
+        #store usernames of users in csv file
         csv_usernames = []
 
-        #looping through rows in the csv(every row is one user)
-        CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
+        #get indexes of needed headers
+        surname_index = csv_headers.index("Surname")
+        forename_index = csv_headers.index("Forename")
+        username_index = csv_headers.index("Student Username")
+        email_index = csv_headers.index("Email")
 
-          #get information about the user to add to the module
-          current_user_from_csv = row.to_hash
-          add_forename = current_user_from_csv['Forename']
-          add_surname = current_user_from_csv['Surname']
-          add_username = current_user_from_csv['Student Username']
-          add_email = current_user_from_csv['Email']
+        #check if all neccessary headers are present
+        if surname_index.nil? || forename_index.nil? || username_index.nil? || email_index.nil?
+          integrity = false
+        else
 
-          #if university of sheffield domain missing from email set integrity to false
-          if add_email.include?("@sheffield.ac.uk") == false
-            integrity = false
-            break
-          end
+          #looping through rows in the csv(every row is one user), starting from index 1(beacuse index 0 is headers)
+          for i in 1...(file.length)
 
-          #if any of the forename, surname, username or email fields are missing, set integrity to false
-          if add_forename.nil? || add_surname.nil? || add_username.nil? || add_email.nil?
-            integrity = false
-            break
+            #get information about the user to add to the module
+            current_user_from_csv = file[i].split(',')
+
+            add_surname = current_user_from_csv[surname_index]
+            add_forename = current_user_from_csv[forename_index]
+            add_username = current_user_from_csv[username_index]
+            add_email = current_user_from_csv[email_index]
+
+            if(add_surname != nil && add_surname.length != 0) || 
+              (add_forename != nil && add_forename.length != 0) || 
+              (add_username != nil && add_username.length != 0) || 
+              (add_email != nil && add_email.length != 0)
+
+              #if any of the forename, surname, username or email fields are missing, set integrity to false
+              if (add_forename.nil? || add_surname.nil? || add_username.nil? || add_email.nil? ||
+                add_forename.length == 0 || add_surname.length == 0 || add_username.length == 0 || add_email.length == 0)
+                
+                integrity = false
+                break
+              end
+
+              #if university of sheffield domain missing from email set integrity to false
+              if add_email.include?("@sheffield.ac.uk") == false
+                integrity = false
+                break
+              end
+            end
           end
         end
 
-        #if data is fine in the csv add users to the database
+
+        #if data is fine in the csv, add users to the database
         if integrity
-          CSV.foreach(file.path, headers: true, skip_blanks: true) do |row|
+          #looping through rows in the csv(every row is one user), starting from index 1(beacuse index 0 is headers)
+          for i in 1...(file.length)
 
             #get information about the user to add to the module
-            current_user_from_csv = row.to_hash
-            add_forename = current_user_from_csv['Forename']
-            add_surname = current_user_from_csv['Surname']
-            add_username = current_user_from_csv['Student Username']
-            add_email = current_user_from_csv['Email']
+            current_user_from_csv = file[i].split(',')
+
+            add_surname = current_user_from_csv[surname_index]
+            add_forename = current_user_from_csv[forename_index]
+            add_username = current_user_from_csv[username_index]
+            add_email = current_user_from_csv[email_index]
+
+            if ((add_surname == nil || add_surname.length == 0) ||
+              (add_forename == nil || add_forename.length == 0) ||
+              (add_username == nil || add_username.length == 0) ||
+              (add_email == nil || add_email.length == 0))
+            
+              next
+            end
 
             #check if this user is already in the system or in the module
             is_user_in_system = User.is_user_in_system(add_username)
@@ -164,7 +200,10 @@ class ListModule < ApplicationRecord
       end
 
     end
+
+    return integrity
   end
+
 
   #get number of students in a module
   #takes module id, returns int with number of students

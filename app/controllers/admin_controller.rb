@@ -218,13 +218,31 @@ class AdminController < ApplicationController
         #popup one of the values was not provided, so user not created
       end
     end
-
-
-    #taking a csv file and adding students to modules based on it
-    if params['commit'] == "Upload"
-      ListModule.import(params['file'], params['module_id'])
-    end
   
+  end
+
+  #imports users to to the module from a .csv file
+  def import_users_csv
+    
+    #taking a csv file and adding students to modules based on it
+    csv_integrity = ListModule.import(params['csv_file'], params['module_id'])
+
+    #if data in csv fine, rendering a partial with updated users in module
+    if csv_integrity
+
+      @div_name = "#module_users_table"
+
+      #getting users for the correct module 
+      @current_module_users = User.joins(:list_modules)
+                                  .where("list_modules.id = ?", 
+                                          params[:module_id]) 
+                                  .order(:givenname, :sn)
+
+      respond_to do |format|
+        format.js { render layout: false }
+      end
+    end
+
   end
 
   #correlates with the view for module creation
