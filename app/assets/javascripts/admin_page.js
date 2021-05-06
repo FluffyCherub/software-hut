@@ -43,9 +43,66 @@ const popupCenter = ({url, title, w, h}) => {
 function create_groups() {
   var random_value = document.getElementById('normal_toggle').value;
   var topic_value = document.getElementById('topic_toggle').value;
- 
   document.getElementById('rand_btn').value = random_value;
   document.getElementById('topic_btn').value = topic_value;
+
+  let random_group_size = $("#normal_size").val();
+  let random_num_of_groups = $("#normal_amount").val();
   
-  document.getElementById('create_groups_form').submit();
+  if ((random_value == "enabled") && (random_group_size.length > 0 || random_num_of_groups.length > 0)){
+    $("#create_groups_form").trigger('submit.rails');
+  } 
+  else if ((random_value == "enabled") && (random_group_size.length == 0 && random_num_of_groups.length == 0)) {
+    myAlertTopEditableError("Please select the team size and/or number of teams.");
+  } 
+  else if (topic_value == "enabled") {
+    let num_of_topics = $("#total_chq").val();
+    topics_integrity = true;
+
+    for(let i=0; i<num_of_topics; i++) {
+      let current_topic_name = $("#topic_" + (i+1).toString()).val();
+      let current_topic_size = $("#size_" + (i+1).toString()).val();
+      let current_topic_amount = $("#amount_" + (i+1).toString()).val();
+
+      //check if all topic fields are filled
+      if (current_topic_name.length == 0) {
+        myAlertTopEditableError("Please select the name for topic " + (i+1).toString());
+        topics_integrity = false;
+        break;
+      }
+      else if ((current_topic_size.length == 0)) {
+        myAlertTopEditableError("Please select the team size for topic " + (i+1).toString());
+        topics_integrity = false;
+        break;
+      }
+      else if ((current_topic_amount.length == 0)) {
+        myAlertTopEditableError("Please select the number of teams for topic " + (i+1).toString());
+        topics_integrity = false;
+        break;
+      }
+
+      //check if topic size and topic team amount fields are numbers
+      if (isNaN(current_topic_size)) {
+        myAlertTopEditableError("Topic team size of topic " + (i+1).toString() + " is not a number");
+        topics_integrity = false;
+        break;
+      }
+      else if (isNaN(current_topic_amount)) {
+        myAlertTopEditableError("Number of teams for topic " + (i+1).toString() + " is not a number");
+        topics_integrity = false;
+        break;
+      }
+      
+    }
+
+    if(topics_integrity) {
+      $("#create_groups_form").trigger('submit.rails');
+    }
+    
+  }
+  else if ((random_value == "disabled") && (topic_value == "disabled")) {
+    myAlertTopEditableError("Please select how you would like to create teams for this module.");
+  }
+
+  
 }

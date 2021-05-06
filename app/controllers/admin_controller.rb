@@ -1164,8 +1164,9 @@ class AdminController < ApplicationController
       end
 
       
-
-      redirect_back(fallback_location: root_path)
+      respond_to do |format|
+        format.js { render :js => "myAlertTopEditableSuccess(\"Teams created successfully.\");" }
+      end
     end
   end
 

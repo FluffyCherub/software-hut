@@ -15,7 +15,7 @@
     
   - # Select group type
   .container-fluid.bg_none.text_black.medium
-    %form{id: "create_groups_form"}
+    = form_with(url: admin_modules_groups_create_path(module_id: params['module_id']), id: "create_groups_form", remote: true) do |form|
       %input{id: "rand_btn", name: "rand_btn", type: "hidden", value: ""}
       %input{id: "topic_btn", name: "topic_btn", type: "hidden", value: ""}
       %input{id: "module_id", name: "module_id", type: "hidden", value: params['module_id']}
