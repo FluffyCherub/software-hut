@@ -1,0 +1,119 @@
+- # View for student profiles
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 06/05/2021
+
+- content_for :title, "Profile - Student Name"
+
+.container
+  .main-body.no_padding_top
+    .row.gutters-sm
+      .col-md-4.mb-3
+        .card.card_border
+          .card-body
+            .d-flex.flex-column.align-items-center.text-center
+              %img.rounded-circle{alt: "Student", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "30%"}
+              .mt-3
+                %h4 John Doe
+                %p.text-secondary.mb-1 Department of General Engineering
+                //%p.text-muted.font-size-sm Bay Area, San Francisco, CA
+                //%button.btn.btn-primary Follow
+                = link_to destroy_user_session_path, class: 'btn btn-outline-primary text_dark text_dark_hover special_margin_top', method: :delete, title: "Log out of the system" do
+                  = icon 'fas', 'sign-out-alt', 'Log out'
+
+        .card.mt-3.card_border
+          %ul.list-group.list-group-flush
+            %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small.width_100.center_text
+              %h5.mb-0.width_100
+                Active modules
+              //%span.text-secondary https://bootdey.com
+            - for z in 1..10
+              %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small
+                %h8.mb-0.smaller
+                  Module 1
+
+      .col-md-8.mb-6    
+        .row.gutters-sm
+          .col-sm-7   
+            .card.mb-3.card_border#need_height
+              .card-body
+                .row
+                  .col-sm-4
+                    %h6.mb-0 Full Name
+                  .col-sm-8.text-secondary
+                    Anton Minkov
+                %hr/
+                .row
+                  .col-sm-4
+                    %h6.mb-0 Username
+                  .col-sm-8.text-secondary
+                    acc19am
+                %hr/
+                .row
+                  .col-sm-4
+                    %h6.mb-0 E-mail
+                  .col-sm-8.text-secondary
+                    aminkov1@sheffield.ac.uk
+          
+          .col-sm-5
+            .card.mb-3.card_border#same_height
+              .card-body
+                .row
+                  %p.margin_none.center_text.width_100 Feedback Period:
+                %hr.mb-1.mt-1
+                .row
+                  %h6.smaller.center_text.width_100 12:00 AM 12/05/21 - 12:00 AM 19/05/21
+                %hr.group_line.mb-1.mt-1
+                .row.mb-1
+                  %p.margin_none.center_text.width_100 Team Meeting Record
+                .row.mb-1
+                  %p.margin_none.center_text.width_100 Peer Feedback Matrix
+                .row
+                  %p.margin_none.center_text.width_100 Team Operation Agreement
+
+        .row.gutters-sm
+          .col-sm-12.mb-3
+            .card.h-100.card_border
+              .card-body
+                %h6.d-flex.align-items-center.mb-3
+                  %i.material-icons.text-info.mr-2> Team 22
+                  Team Members
+                %hr.group_line
+                - for i in 1..7
+                  %img.rounded-circle.margin_right_small{alt: "Admin", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "3%"}
+                  %small.small Student #{i} - student#{i}@sheffield.ac.uk
+                  - if i != 7
+                    %hr
+            
+
+      .col-md-12.mb-9
+        .row.gutters-sm
+          .col-sm-12.mb-6
+            .card.h-100.card_border
+              .card-body
+                %h6.d-flex.align-items-center.mb-3.text_center
+                  %i.material-icons.text-info.mr-2 feedback
+                  Feedback Graph   
+          
+          
+          
+          -# .col-sm-6.mb-3
+          -#   .card.h-100
+          -#     .card-body
+          -#       %h6.d-flex.align-items-center.mb-3
+          -#         %i.material-icons.text-info.mr-2> assignment
+          -#         Project Status
+          -#       %small Web Design
+          -#       .progress.mb-3{style: "height: 5px"}
+          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "80", role: "progressbar", style: "width: 80%"}
+          -#       %small Website Markup
+          -#       .progress.mb-3{style: "height: 5px"}
+          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "72", role: "progressbar", style: "width: 72%"}
+          -#       %small One Page
+          -#       .progress.mb-3{style: "height: 5px"}
+          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "89", role: "progressbar", style: "width: 89%"}
+          -#       %small Mobile Template
+          -#       .progress.mb-3{style: "height: 5px"}
+          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "55", role: "progressbar", style: "width: 55%"}
+          -#       %small Backend API
+          -#       .progress.mb-3{style: "height: 5px"}
+          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "66", role: "progressbar", style: "width: 66%"}

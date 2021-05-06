@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   match "/feedback/mailmerge/edit", to: "feedback#feedback_mailmerge_edit", via: :all
   match "/problem_notes", to: "problem_notes#create", via: :all
   match "/admin/modules/preview/import_users", to: "admin#import_users_csv", via: :all
+  match "/student/profile", to: "pages#student_profile", via: :all
   
 
 
