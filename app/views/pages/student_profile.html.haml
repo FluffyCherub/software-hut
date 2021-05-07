@@ -79,11 +79,11 @@
                   %i.material-icons.text-info.mr-2#poopoos feedback
                   Feedback Graph  
                 %div
-                  %canvas#myChart
+                  %canvas#feedback_Chart
                   - # Generate the canvas chart
                   :javascript
-                    var myChart = new Chart(
-                      document.getElementById('myChart'),
+                    var feedbackChart = new Chart(
+                      document.getElementById('feedback_Chart'),
                       config
                     );
          

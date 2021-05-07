@@ -32,6 +32,7 @@ const data = {
 	},
 	{
 		label: 'Leadership',
+		hidden: true,
 		backgroundColor: 'rgb(234, 159, 218)',
 		borderColor: 'rgb(90, 180, 93)',
 		data: [2, 3, 1, 1, 4, 2, 4,2,1,3,4,4],
