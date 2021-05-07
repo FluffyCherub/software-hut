@@ -263,9 +263,9 @@
 
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black{id: "approve_button_div"}
     - if @all_teams_approved
-      %button{type: "button", name: "approve_teams_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2 button_off", id:"approve_teams_button"}Approve Teams
+      %button.border_begone{type: "button", name: "approve_teams_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2 button_off", id:"approve_teams_button"}Approve Teams
     - else
-      %button{type: "button", name: "approve_teams_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"approve_teams_button"}Approve Teams
+      %button.border_begone{type: "button", name: "approve_teams_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"approve_teams_button"}Approve Teams
 
 
 :javascript
