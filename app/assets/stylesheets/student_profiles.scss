@@ -95,3 +95,11 @@ a.text_dark_hover:hover {
 .padding_left_none {
   padding-left: 0px !important;
 }
+
+.navbar-brand:focus {
+  outline: none;
+}
+
+.text_begone {
+  color: transparent;
+}
