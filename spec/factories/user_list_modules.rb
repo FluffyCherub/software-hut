@@ -23,7 +23,7 @@ FactoryBot.define do
   factory :user_list_module do
     list_module { nil }
     user { nil }
-    created_at: {DateTime.now()}
-    updated_at: {DateTime.now()}
+    created_at {DateTime.now()}
+    updated_at {DateTime.now()}
   end
 end
