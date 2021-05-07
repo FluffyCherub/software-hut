@@ -21,3 +21,5 @@
 //= require alerts
 //= require import_csv
 //= require wizard
+//= require feedback_charts
+

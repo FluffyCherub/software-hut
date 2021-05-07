@@ -76,29 +76,14 @@
             .card.h-100.card_border
               .card-body
                 %h6.d-flex.align-items-center.mb-3.text_center
-                  %i.material-icons.text-info.mr-2 feedback
-                  Feedback Graph   
-          
-          
-          
-          -# .col-sm-6.mb-3
-          -#   .card.h-100
-          -#     .card-body
-          -#       %h6.d-flex.align-items-center.mb-3
-          -#         %i.material-icons.text-info.mr-2> assignment
-          -#         Project Status
-          -#       %small Web Design
-          -#       .progress.mb-3{style: "height: 5px"}
-          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "80", role: "progressbar", style: "width: 80%"}
-          -#       %small Website Markup
-          -#       .progress.mb-3{style: "height: 5px"}
-          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "72", role: "progressbar", style: "width: 72%"}
-          -#       %small One Page
-          -#       .progress.mb-3{style: "height: 5px"}
-          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "89", role: "progressbar", style: "width: 89%"}
-          -#       %small Mobile Template
-          -#       .progress.mb-3{style: "height: 5px"}
-          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "55", role: "progressbar", style: "width: 55%"}
-          -#       %small Backend API
-          -#       .progress.mb-3{style: "height: 5px"}
-          -#         .progress-bar.bg-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "66", role: "progressbar", style: "width: 66%"}
+                  %i.material-icons.text-info.mr-2#poopoos feedback
+                  Feedback Graph  
+                %div
+                  %canvas#myChart
+                  - # Generate the canvas chart
+                  :javascript
+                    var myChart = new Chart(
+                      document.getElementById('myChart'),
+                      config
+                    );
+         
