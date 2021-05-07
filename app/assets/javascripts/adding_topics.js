@@ -461,6 +461,7 @@ function tempDisableButton() {
 function addPeriod() {
   //Get number of current periods
   var new_chq_no_2 = parseInt($('#total_chq_period').val()) + 1;
+  //alert("First value " + new_chq_no_2)
 
   //Creating new elements
   //Divs
@@ -553,7 +554,9 @@ function addPeriod() {
   document.getElementById('end_time_' + new_chq_no_2.toString()).value = new_end_date;
 
   //Update counter value
+  //alert("Before update " + new_chq_no_2)
   $('#total_chq_period').val(new_chq_no_2);
+  //alert("After update " + new_chq_no_2)
 
 }
 

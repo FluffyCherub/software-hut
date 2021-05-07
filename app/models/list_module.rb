@@ -72,7 +72,6 @@ class ListModule < ApplicationRecord
     return privilege
   end
 
-
   #method for importing csv files and adding users to modules
   #takes a file and module id, returns void
   def self.import(file, module_id)
@@ -204,7 +203,6 @@ class ListModule < ApplicationRecord
     return integrity
   end
 
-
   #get number of students in a module
   #takes module id, returns int with number of students
   def self.num_students_in_mod(module_id)
@@ -228,5 +226,38 @@ class ListModule < ApplicationRecord
   def self.get_mod_name_from_id(module_id)
     mod_name = ListModule.find(module_id).name
     return mod_name
+  end
+
+  def self.approve_teams(module_id)
+    waiting_teams = Team.joins(:list_module)
+                        .where("list_modules.id = ? AND teams.status = ?",
+                                module_id,
+                                "waiting_for_approval").update_all(status: "active")
+  end
+
+  def self.all_approved(module_id)
+    unapproved_teams = Team.joins(:list_module)
+                           .where("teams.status = ? AND list_modules.id = ?",
+                           "waiting_for_approval",
+                           module_id)
+
+    if unapproved_teams.length == 0
+      return true
+    else
+      return false
+    end
+  end
+
+  def self.has_active_teams(module_id)
+    active_teams = Team.joins(:list_module)
+                        .where("teams.status = ? AND list_modules.id = ?",
+                        "active",
+                        module_id)
+
+    if active_teams.length != 0
+      return true
+    else
+      return false
+    end
   end
 end

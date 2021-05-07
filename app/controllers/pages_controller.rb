@@ -23,7 +23,8 @@ class PagesController < ApplicationController
       redirect_to admin_path
     else
       #redirect to the page for students/TA's/module leaders
-      redirect_to modules_path
+      #redirect_to modules_path
+      redirect_to student_profile_path
     end
   end
 
@@ -151,6 +152,25 @@ class PagesController < ApplicationController
 
     
 
+  end
+
+  def student_profile
+    @full_name = current_user.givenname + " " +  current_user.sn
+    @department = current_user.ou
+    @username = current_user.username
+    @email = current_user.email
+
+    @active_modules = ListModule.joins(:users)
+                         .where("users.username = ? AND user_list_modules.privilege = ?", 
+                                 current_user.username,
+                                 "student")
+
+    #get the closest feedback period(either the current or future)
+    # closest_date = FeedbackDate.get_closest_date(Time.now, @module_id)
+    # if closest_date != nil
+    #   @f_period_start_date = closest_date.start_date.strftime("%I:%M %p %d/%m/%Y")
+    #   @f_period_end_date = closest_date.end_date.strftime("%I:%M %p %d/%m/%Y")
+    # end
   end
 
 end

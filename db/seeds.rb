@@ -137,6 +137,18 @@ end_date_robot = DateTime.new(2021,5,3,10,0,0)
 feedback_period_robot = FeedbackDate.create(start_date: start_date_robot, end_date: end_date_robot, list_module: modules[1])
 
 
+#connecting teams in software hut to feedback periods
+for i in 0...(test_teams_soft.length)
+  TeamFeedbackDate.create(feedback_date_id: feedback_period_soft.id, team_id: test_teams_soft[i].id)
+end
+
+#connecting teams in robotics to feedback periods
+for i in 0...(test_teams_robot.length)
+  TeamFeedbackDate.create(feedback_date_id: feedback_period_robot.id, team_id: test_teams_robot[i].id)
+end
+
+
+
 appreciate_messages = ["He is a very good teammate.",
                       "Helpful at all times and completes his work on time." ,
                       "Never late for meetings." ,

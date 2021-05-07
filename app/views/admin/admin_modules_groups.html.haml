@@ -4,6 +4,8 @@
 
 - content_for :title, "Module Groups"
 
+%input{id: "module_id", name: "module_id", type: "hidden", value: @module_id}
+
 .container.body_whole_custom_transparent
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white
     - # Search and sort form
@@ -18,9 +20,17 @@
           = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_2 float_left", id:"submit_choice", "data-disable-with" => "Submitting.."
         .container.col-xs-5.col-sm-3.no_padding_left.no_padding_right.padding_right_small
           - if can? :manage, :admin_modules_groups_create
-            %a.button{:href => admin_modules_groups_create_path(:module_id => params[:module_id]), type: "button", name: "create_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Create Teams
+            - if @has_active_teams == false && @num_students_in_module > 0
+              %a.button{:href => admin_modules_groups_create_path(:module_id => params[:module_id]), type: "button", name: "create_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"create_groups_button"}Create Teams
+            - else
+              %button{type: "button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module button_off"}Create Teams
         .container.col-xs-5.col-sm-2.no_padding_left.no_padding_right.padding_right_small
-          %a.button{:href => admin_modules_preview_path(:module_id => params[:module_id]), type: "button", name: "go_back_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"submit_choice"}Go Back
+          %a.button{:href => admin_modules_preview_path(:module_id => params[:module_id]), type: "button", name: "go_back_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"go_back_button"}Go Back
+        .container.col-xs-5.col-sm-2.no_padding_left.no_padding_right.padding_right_small{id: "approve_button_div"}
+          - if @all_teams_approved
+            %button{type: "button", name: "approve_teams_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2 button_off", id:"approve_teams_button"}Approve Teams
+          - else
+            %button{type: "button", name: "approve_teams_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"approve_teams_button"}Approve Teams
       .container-fluid.bg_none.row.no_padding.margin_bottom_small
         .form-group.col-md-3.margin_bottom_small.text_black
           = f.input :search_type, as: :select, collection: ['Default - A to Z', 'Team size - Low to High', 'Team size - High to Low', 'Topic - A to Z'], label: "Sort By:", include_blank: false, required: false, :selected => @selected_type, :input_html => {onchange: "this.form.submit()"}
@@ -258,3 +268,4 @@
 
 :javascript
   add_note_function();
+  approve_teams()

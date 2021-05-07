@@ -5,6 +5,7 @@
 #  id             :bigint           not null, primary key
 #  name           :string
 #  size           :integer
+#  status         :string           default("waiting_for_approval")
 #  toa_status     :string           default("in_progress")
 #  topic          :string           default("none")
 #  created_at     :datetime         not null

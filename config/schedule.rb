@@ -12,9 +12,18 @@ end
 #####
 
 require 'rake'
-env :MAILTO, 'systems@epigenesys.org.uk'
+#env :MAILTO, 'systems@epigenesys.org.uk'
+env :MAILTO, 'dlaszczyk1@sheffield.ac.uk'
 set :output, { standard: 'log/whenever.log' }
+
 
 every :reboot, roles: [ :db ] do
   runner "require 'delayed/command'; Delayed::Command.new(['-p #{@delayed_job_args_p}', '-n #{@delayed_job_args_n}', 'start']).daemonize"
+end
+
+set :environment, "development"
+set :output, "log/teams.log"
+
+every 1.minute do
+  rake "team:status_update"
 end

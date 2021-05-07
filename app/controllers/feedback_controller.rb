@@ -103,8 +103,16 @@ class FeedbackController < ApplicationController
   #action used for reviewing feedback(for module leader or ta with permission to do so)
   def feedback_review_all
     @module_id = params['module_id']
-    @teams_in_module = Team.where(list_module_id: @module_id)
+    
+    #latest finished feedback period for this module
     @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, @module_id)
+
+    #teams in this module, that are connected to the latest finished feedback period
+    @teams_in_module = Team.joins(:feedback_dates)
+                           .where("teams.list_module_id = ? AND 
+                                   feedback_dates.id = ?", 
+                                   @module_id,
+                                   @last_finished_period.id)
     
     #rendering errors when no previous feedback period
     #(shouldnt happen, because in this case access to this page is disabled)

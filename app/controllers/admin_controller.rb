@@ -514,22 +514,31 @@ class AdminController < ApplicationController
 
     #getting the module id based on was form was submitted on the page
     if params['problem_form'] != nil
-      module_id = params['problem_form']['form_module_id']
+      @module_id = params['problem_form']['form_module_id']
     elsif params['search_form'] != nil
-      module_id = params['search_form']['form_module_id']
+      @module_id = params['search_form']['form_module_id']
     elsif params['module_id'] != nil
-      module_id = params['module_id']
+      @module_id = params['module_id']
     end
 
     #checking if current user has privilege to access this page
-    current_ability(User.get_module_privilege(module_id, current_user.id))
+    current_ability(User.get_module_privilege(@module_id, current_user.id))
     authorize! :manage, :admin_modules_groups
+
+    #checking if all teams in this modules are approvesd
+    @all_teams_approved = ListModule.all_approved(@module_id)
+
+    #getting the number of students in a module
+    @num_students_in_module = ListModule.num_students_in_mod(@module_id)
+
+    #checking if this module has currently active teams
+    @has_active_teams = ListModule.has_active_teams(@module_id)
 
     #getting a list of ta's and modules leaders for assigning problems
     @ta_and_mod_lead = []
-    users_in_module = ListModule.users_in_module(module_id)
+    users_in_module = ListModule.users_in_module(@module_id)
     for i in 0..(users_in_module.length-1) 
-      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, module_id)
+      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, @module_id)
       current_user_names = users_in_module[i].givenname + " " + users_in_module[i].sn + " - " + users_in_module[i].username
       if current_user_privilege.include?("teaching_assistant") || current_user_privilege.include?("module_leader")
         @ta_and_mod_lead.append(current_user_names)
@@ -598,14 +607,17 @@ class AdminController < ApplicationController
                                                     users.email LIKE ? OR
                                                     teams.name LIKE ? OR 
                                                     teams.topic LIKE ? OR
-                                                    users.username LIKE ?)",
-                                                    module_id,
+                                                    users.username LIKE ? AND
+                                                    (teams.status = ? OR teams.status = ?))",
+                                                    @module_id,
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%",
                                                     "%" + search_input + "%",
-                                                    "%" + search_input + "%"
+                                                    "%" + search_input + "%",
+                                                    "waiting_for_approval",
+                                                    "active"
                                                     ).group(:id).order(search_type)
     
     #getting the total number of problems
@@ -634,6 +646,16 @@ class AdminController < ApplicationController
       redirect_back(fallback_location: root_path)
     end
 
+  end
+
+  def approve_teams
+    module_id = params['module_id']
+
+    ListModule.approve_teams(module_id)
+
+    respond_to do |format|
+      format.js { render :js => "myAlertTopEditableSuccess(\"Teams approved successfully.\");disable_approve_button();" }
+    end
   end
 
   #correlates with the view for changing module privileges
@@ -890,14 +912,25 @@ class AdminController < ApplicationController
 
     #getting the module information about the currently displayed module
     @module_info = ListModule.where("id = ?", module_id).first
-    @num_of_students = ListModule.num_students_in_mod(module_id)
+    @num_of_students = Team.get_students_not_in_inactive_team_but_in_module(module_id).length
+
+    #checking if all teams in this modules are approvesd
+    @all_teams_approved = ListModule.all_approved(@module_id)
 
     #check if submit button was pressed
     if params['rand_btn'] != nil
+
+      #delete all the feedback dates connected to unapproved teams for this module
+      FeedbackDate.joins(:teams)
+                  .where("feedback_dates.list_module_id = ? AND teams.status = ?", 
+                          module_id, 
+                          "waiting_for_approval").group("feedback_dates.id").destroy_all
       
-      #delete all teams that where previously in the module
-      Team.where(list_module_id: module_id).destroy_all
-      UserTeam.joins(:team).where("teams.list_module_id = ?", module_id).destroy_all
+      #delete all unapproved teams in the module
+      Team.where(list_module_id: module_id, status: "waiting_for_approval").destroy_all
+
+      #storing newly created teams
+      created_teams = []
 
       if params['rand_btn'] == "enabled" && (params['random_group_size'].length>0 || params['random_num_of_groups'].length>0)
         random_group_size = params['random_group_size']
@@ -905,8 +938,8 @@ class AdminController < ApplicationController
         module_id = params['module_id']
         num_of_dates = params['total_chq_period']
 
-        #get all students from this module and shuffle them
-        students_in_mod = ListModule.students_in_module(module_id).shuffle
+        #getting students that are not in any team in this module
+        students_in_mod = Team.get_students_not_in_inactive_team_but_in_module(module_id).shuffle
 
         #create teams and randomly put students in them
         if params['random_free_join'].nil?
@@ -918,9 +951,12 @@ class AdminController < ApplicationController
             new_teams = []
             for i in 0...random_num_of_groups.to_i
               new_team_name = "Team " + (i+1).to_s
-              new_teams.append(Team.create(name: new_team_name,
-                                          size: random_group_size,
-                                          list_module_id: module_id))
+              new_team = (Team.create(name: new_team_name,
+                                      size: random_group_size,
+                                      list_module_id: module_id))
+
+              new_teams.append(new_team)
+              created_teams.append(new_team)
             end
 
             #putting students in groups
@@ -945,6 +981,8 @@ class AdminController < ApplicationController
               new_team = Team.create(name: new_team_name,
                                     size: random_group_size,
                                     list_module_id: module_id)
+
+              created_teams.append(new_team)
 
               #link students to the newly created team
               #create as many teams as needed with the given group size
@@ -969,9 +1007,12 @@ class AdminController < ApplicationController
             new_teams = []
             for i in 0...random_num_of_groups.to_i
               new_team_name = "Team " + (i+1).to_s
-              new_teams.append(Team.create(name: new_team_name,
-                                          size: new_group_size,
-                                          list_module_id: module_id))
+              new_team = (Team.create(name: new_team_name,
+                                      size: new_group_size,
+                                      list_module_id: module_id))
+
+              new_teams.append(new_team)
+              created_teams.append(new_team)
             end
 
             #putting students in groups
@@ -995,9 +1036,12 @@ class AdminController < ApplicationController
             new_teams = []
             for i in 0...random_num_of_groups.to_i
               new_team_name = "Team " + (i+1).to_s
-              new_teams.append(Team.create(name: new_team_name,
+              new_team = (Team.create(name: new_team_name,
                                           size: random_group_size,
                                           list_module_id: module_id))
+
+              new_teams.append(new_team)
+              created_teams.append(new_team)
             end
           end
 
@@ -1009,6 +1053,8 @@ class AdminController < ApplicationController
               new_team = Team.create(name: new_team_name,
                                     size: random_group_size,
                                     list_module_id: module_id)
+
+              created_teams.append(new_team)
 
               #link students to the newly created team
               #create as many teams as needed with the given group size
@@ -1030,9 +1076,12 @@ class AdminController < ApplicationController
             new_teams = []
             for i in 0...random_num_of_groups.to_i
               new_team_name = "Team " + (i+1).to_s
-              new_teams.append(Team.create(name: new_team_name,
-                                          size: new_group_size,
-                                          list_module_id: module_id))
+              new_team = (Team.create(name: new_team_name,
+                                      size: new_group_size,
+                                      list_module_id: module_id))
+
+              new_teams.append(new_team)
+              created_teams.append(new_team)
             end
           end
 
@@ -1068,10 +1117,13 @@ class AdminController < ApplicationController
 
             for j in 0...current_topic_amount
               new_team_name = "Team " + team_name_number.to_s
-              new_teams.append(Team.create(name: new_team_name,
-                                           size: current_topic_size,
-                                           topic: current_topic_name,
-                                           list_module_id: module_id))
+              new_team = (Team.create(name: new_team_name,
+                                      size: current_topic_size,
+                                      topic: current_topic_name,
+                                      list_module_id: module_id))
+
+              new_teams.append(new_team)
+              created_teams.append(new_team)
 
               team_name_number += 1
               total_team_size += current_topic_size
@@ -1088,8 +1140,9 @@ class AdminController < ApplicationController
 
             #here put students in newly created teams at random
 
-            #get all students from this module and shuffle them
-            students_in_mod = ListModule.students_in_module(module_id).shuffle
+            #getting students that are not in any team in this module
+            students_in_mod = Team.get_students_not_in_inactive_team_but_in_module(module_id).shuffle
+
             num_students_in_teams = 0
 
         
@@ -1124,8 +1177,7 @@ class AdminController < ApplicationController
 
       #--------------------------------FEEDBACK DATES SECTION--------------------------------#
 
-      #delete all the feedback dates in the system for this module
-      FeedbackDate.where(list_module_id: module_id).destroy_all
+      
 
       #setting up new start and end dates for giving peer feedback
       dates_integrity = true
@@ -1155,13 +1207,19 @@ class AdminController < ApplicationController
         for i in 1..num_of_dates.to_i
           curr_start_date = params['start_time_' + i.to_s]
           curr_end_date = params['end_time_' + i.to_s]
-          FeedbackDate.create(list_module_id: module_id,
-                              start_date: curr_start_date,
-                              end_date: curr_end_date)
+          new_f_period = FeedbackDate.create(list_module_id: module_id,
+                                             start_date: curr_start_date,
+                                             end_date: curr_end_date)
+
+          for j in 0...(created_teams.length)
+            TeamFeedbackDate.create(team_id: created_teams[j].id,
+                                    feedback_date_id: new_f_period.id)
+          end
         end
       else
         #popup
       end
+      
 
       
       respond_to do |format|

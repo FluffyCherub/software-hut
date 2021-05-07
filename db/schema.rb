@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_29_042949) do
+ActiveRecord::Schema.define(version: 2021_05_06_182203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,15 @@ ActiveRecord::Schema.define(version: 2021_04_29_042949) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "team_feedback_dates", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "feedback_date_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["feedback_date_id"], name: "index_team_feedback_dates_on_feedback_date_id"
+    t.index ["team_id"], name: "index_team_feedback_dates_on_team_id"
+  end
+
   create_table "teams", force: :cascade do |t|
     t.string "name"
     t.string "topic"
@@ -135,6 +144,7 @@ ActiveRecord::Schema.define(version: 2021_04_29_042949) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "toa_status", default: "in_progress"
+    t.string "status", default: "waiting_for_approval"
     t.index ["list_module_id"], name: "index_teams_on_list_module_id"
   end
 
@@ -209,6 +219,8 @@ ActiveRecord::Schema.define(version: 2021_04_29_042949) do
   add_foreign_key "peer_feedbacks", "feedback_dates"
   add_foreign_key "problem_notes", "problems"
   add_foreign_key "problems", "teams"
+  add_foreign_key "team_feedback_dates", "feedback_dates"
+  add_foreign_key "team_feedback_dates", "teams"
   add_foreign_key "teams", "list_modules"
   add_foreign_key "tmr_signatures", "tmrs"
   add_foreign_key "tmrs", "teams"
