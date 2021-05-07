@@ -14,7 +14,7 @@
               %img.rounded-circle{alt: "Student", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "30%"}
               .mt-3
                 %h4 #{@full_name}
-                %p.text-secondary.mb-1 Department: #{@department}
+                %p.text-secondary.mb-1 Department code: #{@department}
                 //%p.text-muted.font-size-sm Bay Area, San Francisco, CA
                 //%button.btn.btn-primary Follow
                 = link_to destroy_user_session_path, class: 'btn btn-outline-primary text_dark text_dark_hover special_margin_top', method: :delete, title: "Log out of the system" do
@@ -60,7 +60,7 @@
           
           .col-sm-5
             .card.mb-3.card_border#same_height
-              .card-body
+              .card-body{id: "someting"}
                 Please select a Module to view team information.
 
         .row.gutters-sm
