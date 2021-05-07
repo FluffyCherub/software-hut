@@ -35,6 +35,10 @@
 #
 FactoryBot.define do
   factory :user do
-    
+    email {"sample@sheffield.ac.uk"}
+    givenname {"firstname"}
+    sn {"lastname"}
+    created_at {DateTime.now()}
+    updated_at {DateTime.now()}
   end
 end

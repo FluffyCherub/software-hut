@@ -76,11 +76,11 @@ class ListModule < ApplicationRecord
   #takes a file and module id, returns void
   def self.import(file, module_id)
 
-    #variable for checking if all fields in the csv are input correctly 
+    #variable for checking if all fields in the csv are input correctly
     #and there arent any missing fields
     integrity = true
 
-    transaction do 
+    transaction do
       if file != nil
         #get an array of headers from the csv file
         csv_headers = file[0].split(',')
@@ -110,15 +110,15 @@ class ListModule < ApplicationRecord
             add_username = current_user_from_csv[username_index]
             add_email = current_user_from_csv[email_index]
 
-            if(add_surname != nil && add_surname.length != 0) || 
-              (add_forename != nil && add_forename.length != 0) || 
-              (add_username != nil && add_username.length != 0) || 
+            if(add_surname != nil && add_surname.length != 0) ||
+              (add_forename != nil && add_forename.length != 0) ||
+              (add_username != nil && add_username.length != 0) ||
               (add_email != nil && add_email.length != 0)
 
               #if any of the forename, surname, username or email fields are missing, set integrity to false
               if (add_forename.nil? || add_surname.nil? || add_username.nil? || add_email.nil? ||
                 add_forename.length == 0 || add_surname.length == 0 || add_username.length == 0 || add_email.length == 0)
-                
+
                 integrity = false
                 break
               end
@@ -150,14 +150,14 @@ class ListModule < ApplicationRecord
               (add_forename == nil || add_forename.length == 0) ||
               (add_username == nil || add_username.length == 0) ||
               (add_email == nil || add_email.length == 0))
-            
+
               next
             end
 
             #check if this user is already in the system or in the module
             is_user_in_system = User.is_user_in_system(add_username)
             is_user_in_module = User.is_user_in_module(add_username, module_id)
-            
+
             #if he is already in the module and was suspended change his status to student
             if (is_user_in_system == true) && (is_user_in_module == true) && (ListModule.privilege_for_module(add_username, module_id) == "suspended")
               User.change_privilege_user_module(add_username, module_id, "student")
@@ -166,7 +166,7 @@ class ListModule < ApplicationRecord
               UserListModule.create(user_id: User.get_user_id(add_username),
                                     list_module_id: module_id,
                                     privilege: "student")
-            elsif (is_user_in_system == false) 
+            elsif (is_user_in_system == false)
               #if user wasnt in the system, then add him to the system and then to the module
               created_user = User.create(givenname: add_forename,
                                         sn: add_surname,
@@ -177,10 +177,10 @@ class ListModule < ApplicationRecord
                                     list_module_id: module_id,
                                     privilege: "student")
             end
-            
-            
+
+
             csv_usernames.append(add_username)
-            
+
           end
 
           #users who are in the module but werent in the csv get privilege changed to suspended
@@ -189,7 +189,7 @@ class ListModule < ApplicationRecord
           for i in 0..(in_module_users.length-1)
             users_privilege = ListModule.privilege_for_module(in_module_users[i].username, module_id)
             if (csv_usernames.include?(in_module_users[i].username) == false) && (users_privilege != "module_leader") && (users_privilege.include?("teaching_assistant") == false)
-              
+
               User.change_privilege_user_module(in_module_users[i].username, module_id, "suspended")
             end
           end

@@ -24,5 +24,7 @@ FactoryBot.define do
     user { nil }
     team { nil }
     signed_agreement { false }
+    created_at {DateTime.now()}
+    updated_at {DateTime.now()}
   end
 end

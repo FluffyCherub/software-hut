@@ -15,13 +15,18 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
+require 'date'
+
 FactoryBot.define do
   factory :list_module do
-    name { "MyString" }
-    code { "MyString" }
-    description { "MyString" }
-    created_by { "MyString" }
-    semester { "MyString" }
-    years { "MyString" }
+    name { "couse_name" }
+    code { "course_code" }
+    description { "description" }
+    level { 1 }
+    semester { "year" }
+    created_by {"some_user"}
+    years {"2021/2022"}
+    created_at { DateTime.now() }
+    updated_at { DateTime.now() }
   end
 end

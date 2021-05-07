@@ -26,5 +26,7 @@ FactoryBot.define do
     topic { "MyString" }
     size { "" }
     list_module { nil }
+    created_at {DateTime.now()}
+    updated_at {DateTime.now()}
   end
 end
