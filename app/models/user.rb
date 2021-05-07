@@ -38,7 +38,7 @@ class User < ApplicationRecord
   include EpiCas::DeviseHelper
   #connection to other database tables
   has_many :user_list_modules
-  has_many :list_modules, through: :user_list_modules  
+  has_many :list_modules, through: :user_list_modules
   has_many :user_teams
   has_many :teams, through: :user_teams
 
@@ -79,7 +79,7 @@ class User < ApplicationRecord
 
     if check_user.length == 0
       return false
-    else 
+    else
       return true
     end
   end
@@ -95,7 +95,7 @@ class User < ApplicationRecord
 
     if check_user_module.length == 0
       return false
-    else 
+    else
       return true
     end
   end
