@@ -1,0 +1,11 @@
+- # Partial for displaying team information to the student
+
+%h6.d-flex.align-items-center.mb-3
+  %i.material-icons.text-info.mr-2> Team 22
+  Team Members
+%hr.group_line
+- for i in 1..7
+  %img.rounded-circle.margin_right_small{alt: "Admin", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "3%"}
+  %small.small Student #{i} - student#{i}@sheffield.ac.uk
+  - if i != 7
+    %hr

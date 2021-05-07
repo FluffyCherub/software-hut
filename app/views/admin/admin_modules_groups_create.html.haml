@@ -9,7 +9,7 @@
     .container-fluid.bg_none.text_black.margin_top.bigger
       #{@module_info.name} - #{@module_info.code} - Level #{@module_info.level}
       %a.button.add.btn.btn-primary.button_topics.float_right.medium{:href => admin_modules_groups_path(:module_id => params[:module_id]), type: "button"} Go Back
-      .container-fluid.bg_none.text_black.margin_top.small.float_left.no_padding.margin_none
+      .container-fluid.bg_none.text_black.margin_top.small.float_left.no_padding.margin_none{id: "students_no_team_num"}
         Students in module: #{@num_of_students}
         %hr.group_line.margin_top_half_rem
     
@@ -51,8 +51,8 @@
         #topicCollapse.collapse
           %hr.special_line
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.margin_top.small
-            %button.add.btn.btn-primary.button_topics{type: "button", onclick: "addTopic()"}Add Topic
-            %button.remove.btn.btn-primary.button_topics{type: "button", onclick: "removeTopic()"} Remove Topic
+            %button.add.btn.btn-primary.button_topics{id: "add_topic_button", type: "button", onclick: "addTopic()"}Add Topic
+            %button.remove.btn.btn-primary.button_topics{id: "remove_topic_button",type: "button", onclick: "removeTopic()"} Remove Topic
           .container-fluid.text_black.bg_none.no_padding
             %p.margin_none.student_numbers
               %span.margin_none#student_tracker #{@num_of_students} students do not have teams
@@ -80,8 +80,8 @@
         .container-fluid.text_black.bg_none.margin_bottom_small.no_padding
           - current_time = Time.now.strftime("%Y-%m-%dT%H:%M")
           - one_day_from_now = (Time.now + 7.days).strftime("%Y-%m-%dT%H:%M")
-          %button.add.btn.btn-primary.button_topics{type: "button", onclick: "addPeriod()"}Add period
-          %button.remove.btn.btn-primary.button_topics{type: "button", onclick: "removePeriod()"} Remove period
+          %button.add.btn.btn-primary.button_topics{id: "add_period_button", type: "button", onclick: "addPeriod()"}Add period
+          %button.remove.btn.btn-primary.button_topics{id: "remove_period_button", type: "button", onclick: "removePeriod()"} Remove period
 
         - # Generating time periods
         .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small.no_padding.float_left
@@ -106,5 +106,8 @@
 
       .container-fluid.bg_none.text_black.medium.margin_bottom_2
         %hr.group_line
-        %button.add.btn.btn-primary.button_topics{type: "button", name:"create_groups_button", onclick: "create_groups();"} Create
+        - if @all_teams_approved == false
+          %button.add.btn.btn-primary.button_topics.button_off{type: "button",id: "create_groups_button", name:"create_groups_button"} Create
+        - else
+          %button.add.btn.btn-primary.button_topics{type: "button",id: "create_groups_button", name:"create_groups_button", onclick: "create_groups();"} Create
           

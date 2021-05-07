@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   match "/problem_notes", to: "problem_notes#create", via: :all
   match "/admin/modules/preview/import_users", to: "admin#import_users_csv", via: :all
   match "/student/profile", to: "pages#student_profile", via: :all
+  match "/admin/modules/groups/approve", to: "admin#approve_teams", via: :all
   
 
 

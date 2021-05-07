@@ -5,6 +5,7 @@
 #  id             :bigint           not null, primary key
 #  name           :string
 #  size           :integer
+#  status         :string           default("waiting_for_approval")
 #  toa_status     :string           default("in_progress")
 #  topic          :string           default("none")
 #  created_at     :datetime         not null
@@ -22,9 +23,14 @@
 class Team < ApplicationRecord
   #connection to other tables in the database
   belongs_to :list_module
+
   has_many :user_teams, dependent: :destroy
   has_many :users, through: :user_teams
+
   has_many :problems, dependent: :destroy
+
+  has_many :team_feedback_dates, dependent: :destroy
+  has_many :feedback_dates, through: :team_feedback_dates
 
   #every team has multiple team meeting records
   has_many :tmrs, dependent: :destroy
@@ -78,5 +84,61 @@ class Team < ApplicationRecord
     return students_in_module
   end
 
+  def self.get_students_not_in_inactive_team_but_in_module(module_id)
+    students_in_any_team_in_module = User.joins(:list_modules, :teams)
+                                         .where("list_modules.id = ? AND 
+                                                 user_list_modules.privilege = ? AND
+                                                 teams.status = ?",
+                                                 module_id,
+                                                 "student",
+                                                 "inactive").pluck(:id)
+
+
+    if students_in_any_team_in_module[0] == nil
+      students_in_module = User.joins(:list_modules)
+                               .where("list_modules.id = ? AND 
+                                       user_list_modules.privilege = ?",
+                                       module_id,
+                                       "student"
+                                       )
+    else
+      students_in_module = User.joins(:list_modules)
+                               .where("list_modules.id = ? AND 
+                                      user_list_modules.privilege = ? AND
+                                      users.id NOT IN (?)",
+                                      module_id,
+                                      "student",
+                                      students_in_any_team_in_module)
+    end
+    
+    return students_in_module
+  end
+
+  def self.get_feedback_end_date(team_id)
+    feedback_dates = FeedbackDate.joins(:teams)
+                                  .where("teams.id = ?",
+                                          team_id)
+                                  .order("feedback_dates.end_date DESC")
+
+    return feedback_dates[0].end_date
+  end
+
+  #run every minute, makes team go from active to inactive if the last feedback period ended
+  def self.update_status()
+    #get all the active teams in the system
+    active_teams = Team.where(status: "active")
+    current_date = Time.now.utc + 1.hours
+
+    #get the last end date of feedback period for all active team
+    active_teams.each do |team|
+      end_date = get_feedback_end_date(team.id)
+
+      #check if the active teams end date is in the past, if yes change teams status to inactive
+      if current_date - end_date > 0
+        team.update(status: "inactive")
+      end
+    end
+
+  end
   
 end

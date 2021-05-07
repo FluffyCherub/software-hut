@@ -13,8 +13,8 @@
             .d-flex.flex-column.align-items-center.text-center
               %img.rounded-circle{alt: "Student", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "30%"}
               .mt-3
-                %h4 John Doe
-                %p.text-secondary.mb-1 Department of General Engineering
+                %h4 #{@full_name}
+                %p.text-secondary.mb-1 Department: #{@department}
                 //%p.text-muted.font-size-sm Bay Area, San Francisco, CA
                 //%button.btn.btn-primary Follow
                 = link_to destroy_user_session_path, class: 'btn btn-outline-primary text_dark text_dark_hover special_margin_top', method: :delete, title: "Log out of the system" do
@@ -25,11 +25,15 @@
             %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small.width_100.center_text
               %h5.mb-0.width_100
                 Active modules
-              //%span.text-secondary https://bootdey.com
-            - for z in 1..10
+            - for i in 0...(@active_modules.length)
               %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small
                 %h8.mb-0.smaller
-                  Module 1
+                  %b
+                    #{@active_modules[i].code}
+                  #{@active_modules[i].name}
+                %span.text-secondary 
+                  %i.small
+                    #{@active_modules[i].semester}
 
       .col-md-8.mb-6    
         .row.gutters-sm
@@ -40,49 +44,30 @@
                   .col-sm-4
                     %h6.mb-0 Full Name
                   .col-sm-8.text-secondary
-                    Anton Minkov
+                    #{@full_name}
                 %hr/
                 .row
                   .col-sm-4
                     %h6.mb-0 Username
                   .col-sm-8.text-secondary
-                    acc19am
+                    #{@username}
                 %hr/
                 .row
                   .col-sm-4
                     %h6.mb-0 E-mail
                   .col-sm-8.text-secondary
-                    aminkov1@sheffield.ac.uk
+                    #{@email}
           
           .col-sm-5
             .card.mb-3.card_border#same_height
               .card-body
-                .row
-                  %p.margin_none.center_text.width_100 Feedback Period:
-                %hr.mb-1.mt-1
-                .row
-                  %h6.smaller.center_text.width_100 12:00 AM 12/05/21 - 12:00 AM 19/05/21
-                %hr.group_line.mb-1.mt-1
-                .row.mb-1
-                  %p.margin_none.center_text.width_100 Team Meeting Record
-                .row.mb-1
-                  %p.margin_none.center_text.width_100 Peer Feedback Matrix
-                .row
-                  %p.margin_none.center_text.width_100 Team Operation Agreement
+                Please select a Module to view team information.
 
         .row.gutters-sm
           .col-sm-12.mb-3
             .card.h-100.card_border
               .card-body
-                %h6.d-flex.align-items-center.mb-3
-                  %i.material-icons.text-info.mr-2> Team 22
-                  Team Members
-                %hr.group_line
-                - for i in 1..7
-                  %img.rounded-circle.margin_right_small{alt: "Admin", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "3%"}
-                  %small.small Student #{i} - student#{i}@sheffield.ac.uk
-                  - if i != 7
-                    %hr
+                Please select a Module to view team information.
             
 
       .col-md-12.mb-9

@@ -24,6 +24,9 @@ class FeedbackDate < ApplicationRecord
   #many peer feedbacks per feedback date window
   has_many :peer_feedbacks, dependent: :destroy
 
+  has_many :team_feedback_dates, dependent: :destroy
+  has_many :teams, through: :team_feedback_dates
+
   #get wither the current feedback period or the closest one in the future
   #takes current date and module id, returns a datetime object
   def self.get_closest_date(current_date, module_id)

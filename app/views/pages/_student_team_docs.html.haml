@@ -1,0 +1,15 @@
+.row
+  %p.margin_none.center_text.width_100 Feedback Period:
+%hr.mb-1.mt-1
+.row
+  - if @f_period_start_date.nil?
+    %h6.smaller.center_text.width_100 Unavailable
+  - else
+    %h6.smaller.center_text.width_100 #{@f_period_start_date} - #{@f_period_end_date}
+%hr.group_line.mb-1.mt-1
+.row.mb-1
+  %p.margin_none.center_text.width_100 Team Meeting Record
+.row.mb-1
+  %p.margin_none.center_text.width_100 Peer Feedback Matrix
+.row
+  %p.margin_none.center_text.width_100 Team Operating Agreement
