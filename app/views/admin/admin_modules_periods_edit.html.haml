@@ -4,6 +4,8 @@
 
 - content_for :title, "Change Time Periods"
 
+%input{id: "module_id", name: "module_id", type: "hidden", value: @module_id}
+
 .container.body_whole_custom
   .container-fluid.text_black.bg_none.margin_top
     .container-fluid.bg_none.text_black.margin_top.bigger
@@ -21,11 +23,11 @@
           -# %button.remove.btn.btn-primary.button_topics{type: "button", onclick: "removePeriod()"} Remove period
 
         - # Generating time periods
-        .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small.no_padding.float_left
+        .container-fluid.text_black.bg_none.special_margin_top.margin_bottom_small.no_padding.float_left{id: "feedback_periods_div"}
           .container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_size_2.float_left
-            - for i in 1..5
-              - current_time = Time.now.strftime("%Y-%m-%dT%H:%M")
-              - one_day_from_now = (Time.now + 7.days).strftime("%Y-%m-%dT%H:%M")
+            - for i in 1..@not_started_f_periods.length
+              - start_date = @not_started_f_periods[i-1].start_date.strftime("%Y-%m-%dT%H:%M")
+              - end_date = @not_started_f_periods[i-1].end_date.strftime("%Y-%m-%dT%H:%M")
               .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
                 %p.margin_none
                   %strong#time_name_1
@@ -34,20 +36,20 @@
                   .col.margin_none.no_padding.padding_right_small
                     - # Time period start date
                     .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
-                      %label#start_time_label_1{for: "start_time_#{i}_time"} Start Date: 
-                      %input#start_time_1.float_right{name: "start_time_#{i}", type: "datetime-local", value: "#{current_time}"}
+                      %label{id: "start_time_label_" + "#{i.to_s}", for: "start_time_#{i}_time"} Start Date: 
+                      %input.float_right{id: "start_time_" + "#{i.to_s}", name: "start_time_#{i}", type: "datetime-local", value: "#{start_date}", readonly: true}
                       //%button.add.btn.btn-primary.button_topics{type: "button", onclick: "addPeriod()"}Add period
                     
                     - # Time period end date
                     .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
-                      %label#end_time_label_1{for: "end_time_#{i}_time"} End Date:   
-                      %input#end_time_1.float_right{name: "end_time_#{i}", type: "datetime-local", value: "#{one_day_from_now}"}
+                      %label{id: "end_time_label_" + "#{i.to_s}",for: "end_time_#{i}_time"} End Date:   
+                      %input.float_right{id: "end_time_" + "#{i.to_s}", name: "end_time_#{i}", type: "datetime-local", value: "#{end_date}", readonly: true}
                   
                     %hr.special_line.margin_none
                 
                   .col.margin_none.no_padding
                     .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
-                      %button.add.btn.btn-primary.button_topics.float_left{type: "button", onclick: "addPeriod()"}
+                      %button.add.btn.btn-primary.button_topics.float_left{type: "button",id: "remove_period_button_" + "#{i}", value: "#{@not_started_f_periods[i-1].id}"}
                         Remove period
                         %strong.text_begone
                         
@@ -58,14 +60,6 @@
                     -#     Add period
                     -#     %strong.text_begone
                     -#       a2
-              
-              :javascript
-                document.getElementById('time_name_1').id = 'time_name_#{i}';
-                document.getElementById('start_time_label_1').id = 'start_time_label_#{i}';
-                document.getElementById('start_time_1').id = 'start_time_#{i}';
-                document.getElementById('end_time_label_1').id = 'end_time_label_#{i}';
-                document.getElementById('end_time_1').id = 'end_time_#{i}';
-          
-            - # Keeping track of amount of periods
-            #new_chq_period
-            %input#total_chq_period{type: "hidden",name: "total_chq_period", value: "5"}
+
+:javascript
+  edit_feedback_periods(#{@not_started_f_periods.length});

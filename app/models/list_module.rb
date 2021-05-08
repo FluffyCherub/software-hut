@@ -260,4 +260,18 @@ class ListModule < ApplicationRecord
       return false
     end
   end
+
+  def self.get_future_feedback_periods(module_id, current_time)
+    all_feedback_periods = FeedbackDate.where(list_module_id: module_id)
+
+    future_f_periods = []
+
+    for i in 0...all_feedback_periods.length
+      if all_feedback_periods[i].start_date > current_time
+        future_f_periods.append(all_feedback_periods[i])
+      end
+    end
+
+    return future_f_periods
+  end
 end

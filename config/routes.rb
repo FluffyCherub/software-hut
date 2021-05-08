@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   match "/student/profile", to: "pages#student_profile", via: :all
   match "/admin/modules/groups/approve", to: "admin#approve_teams", via: :all
   match "/admin/modules/periods/edit", to: "admin#admin_modules_periods_edit", via: :all
+  match "/edit/feedback/periods", to: "admin#edit_feedback_periods", via: :all
   
 
 

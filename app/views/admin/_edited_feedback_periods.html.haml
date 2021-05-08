@@ -1,0 +1,40 @@
+.container-fluid.text_black.bg_none.margin_bottom_small.no_padding.special_size_2.float_left
+  - for i in 1..@not_started_f_periods.length
+    - start_date = @not_started_f_periods[i-1].start_date.strftime("%Y-%m-%dT%H:%M")
+    - end_date = @not_started_f_periods[i-1].end_date.strftime("%Y-%m-%dT%H:%M")
+    .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+      %p.margin_none
+        %strong#time_name_1
+          Period #{i}
+      .row.margin_none.no_padding
+        .col.margin_none.no_padding.padding_right_small
+          - # Time period start date
+          .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+            %label{id: "start_time_label_" + "#{i.to_s}", for: "start_time_#{i}_time"} Start Date: 
+            %input.float_right{id: "start_time_" + "#{i.to_s}", name: "start_time_#{i}", type: "datetime-local", value: "#{start_date}", readonly: true}
+            //%button.add.btn.btn-primary.button_topics{type: "button", onclick: "addPeriod()"}Add period
+          
+          - # Time period end date
+          .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+            %label{id: "end_time_label_" + "#{i.to_s}",for: "end_time_#{i}_time"} End Date:   
+            %input.float_right{id: "end_time_" + "#{i.to_s}", name: "end_time_#{i}", type: "datetime-local", value: "#{end_date}", readonly: true}
+        
+          %hr.special_line.margin_none
+      
+        .col.margin_none.no_padding
+          .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+            %button.add.btn.btn-primary.button_topics.float_left{type: "button",id: "remove_period_button_" + "#{i}", value: "#{@not_started_f_periods[i-1].id}"}
+              Remove period
+              %strong.text_begone
+              
+          -# .container-fluid.text_black.bg_none.no_padding.margin_bottom_small
+          -#   %button.add.btn.btn-primary.button_topics.float_left{type: "button", onclick: "addPeriod()"}
+          -#     %strong.text_begone
+          -#       ya
+          -#     Add period
+          -#     %strong.text_begone
+          -#       a2
+
+:javascript
+  edit_feedback_periods(#{@not_started_f_periods.length});
+  myAlertTopEditableSuccess("Period removed successfully!");

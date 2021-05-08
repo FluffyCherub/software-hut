@@ -654,7 +654,7 @@ class AdminController < ApplicationController
     ListModule.approve_teams(module_id)
 
     respond_to do |format|
-      format.js { render :js => "myAlertTopEditableSuccess(\"Teams approved successfully.\");disable_approve_button();" }
+      format.js { render :js => "myAlertTopEditableSuccess(\"Teams approved successfully!\");disable_approve_button();" }
     end
   end
 
@@ -1223,9 +1223,51 @@ class AdminController < ApplicationController
 
       
       respond_to do |format|
-        format.js { render :js => "myAlertTopEditableSuccess(\"Teams created successfully.\");" }
+        format.js { render :js => "myAlertTopEditableSuccess(\"Teams created successfully!\");" }
       end
     end
+  end
+
+  def admin_modules_periods_edit
+    @module_id = params['module_id']
+
+    #getting all future feedback periods for this module
+    @not_started_f_periods = ListModule.get_future_feedback_periods(@module_id, Time.now)
+
+  end
+
+  def edit_feedback_periods
+    feedback_date_id = params['feedback_period_id']
+    @module_id = params['module_id']
+
+    f_period_integrity = true
+
+    #check if the selected feedback period hasnt started
+    f_period_start_date = FeedbackDate.find(feedback_date_id.to_i).start_date
+    if Time.now - f_period_start_date > 0 
+
+      #the period has already started
+      f_period_integrity = false
+
+      respond_to do |format|
+        format.js { render :js => "myAlertTopEditableError(\"This period has already started\");" }
+      end
+    end
+
+
+    if f_period_integrity == true
+
+      #remove the selected period
+      FeedbackDate.find(feedback_date_id.to_i).destroy
+
+      #getting all future feedback periods for this module
+      @not_started_f_periods = ListModule.get_future_feedback_periods(@module_id, Time.now)
+
+      respond_to do |format|
+        format.js {render layout: false}
+      end
+    end
+
   end
 
 end

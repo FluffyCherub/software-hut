@@ -22,4 +22,5 @@
 //= require import_csv
 //= require wizard
 //= require feedback_charts
+//= require edit_periods
 
