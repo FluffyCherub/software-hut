@@ -78,12 +78,9 @@
                 %h6.d-flex.align-items-center.mb-3.text_center
                   %i.material-icons.text-info.mr-2#poopoos feedback
                   Feedback Graph  
-                %div
-                  %canvas#feedback_Chart
-                  - # Generate the canvas chart
+                %div{style: "height: 400px"}
+                  %canvas#feedback_chart
+
                   :javascript
-                    var feedbackChart = new Chart(
-                      document.getElementById('feedback_Chart'),
-                      config
-                    );
+                    generateFeedbackChart();
          
