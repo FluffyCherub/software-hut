@@ -7,7 +7,7 @@
 .container
   .main-body.no_padding_top
     .row.gutters-sm
-      .col-md-4.mb-3
+      .col-md-4.mb-2
         .card.card_border
           .card-body
             .d-flex.flex-column.align-items-center.text-center
@@ -20,7 +20,7 @@
                 = link_to destroy_user_session_path, class: 'btn btn-outline-primary text_dark text_dark_hover special_margin_top', method: :delete, title: "Log out of the system" do
                   = icon 'fas', 'sign-out-alt', 'Log out'
 
-        .card.mt-3.card_border
+        .card.mt-2.card_border
           %ul.list-group.list-group-flush
             %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small.width_100.center_text
               %h5.mb-0.width_100
@@ -35,10 +35,10 @@
                   %i.small
                     #{@active_modules[i].semester}
 
-      .col-md-8.mb-6    
+      .col-md-8.mb-2    
         .row.gutters-sm
           .col-sm-7   
-            .card.mb-3.card_border#need_height
+            .card.mb-2.card_border#need_height
               .card-body
                 .row
                   .col-sm-4
@@ -59,28 +59,82 @@
                     #{@email}
           
           .col-sm-5
-            .card.mb-3.card_border#same_height
+            .card.mb-2.card_border#same_height
               .card-body{id: "someting"}
                 Please select a Module to view team information.
 
         .row.gutters-sm
-          .col-sm-12.mb-3
+          .col-sm-12.mb-2
             .card.h-100.card_border
               .card-body
                 Please select a Module to view team information.
-            
 
-      .col-md-12.mb-9
+      - # Check if student is level 4 or 5     
+      - if 5 > 2
+        .col-md-12.mb-2
+          .row.gutters-sm
+            .col-sm-12.mb-6
+              .card.h-100.card_border
+                .card-body
+                  %h6.d-flex.align-items-center.text_center
+                    %i.material-icons.text-info.mr-2 feedback
+                    Feedback Graph  
+                  .hr.group_line.mb-1
+                  %div{style: "height: 400px"}
+                    %canvas#feedback_chart
+
+                    :javascript
+                      generateFeedbackChart();
+
+      .col-md-12.mb-3
         .row.gutters-sm
-          .col-sm-12.mb-6
+          - # Check if student is level 4 or 5
+          - if 5 > 2
+            .col-sm-7.mb-2
+              .card.h-100.card_border
+                .card-body
+                  %h6.d-flex.align-items-center.mb-2.text_center
+                    %i.material-icons.text-info.mr-2 feedback
+                    Overall Average Feedback 
+                  .hr.group_line.mb-3
+                  - # Store the values
+                  - feedback_values = ['Average',
+                  - 'Attendance and Punctuality',
+                  - 'Attitude and Commitment',
+                  - 'Quality, accuracy and completeness',
+                  - 'Communication',
+                  - 'Collaboration',
+                  - 'Leadership',
+                  - 'Professionalism and ethics']
+
+                  - feedback_average = ['Unsatisfactory',
+                  - 'Needs Improvement',
+                  - 'Meets Expectations',
+                  - 'Exceeds Expectations']
+
+                  - for x in 1..feedback_values.length
+                    %p
+                      %strong
+                        #{feedback_values[x-1]}:
+                      - if  feedback_average[3] == 'Unsatisfactory'
+                        %span.text_red Unsatisfactory
+                      - elsif feedback_average[2] == 'Needs Improvement'
+                        %span.text_yellow Needs Improvement
+                      - else
+                        %span.text_green Meets Expectations
+                    %hr
+          
+          .col-sm-5.mb-2
             .card.h-100.card_border
               .card-body
-                %h6.d-flex.align-items-center.mb-3.text_center
-                  %i.material-icons.text-info.mr-2#poopoos feedback
-                  Feedback Graph  
-                %div{style: "height: 400px"}
-                  %canvas#feedback_chart
-
-                  :javascript
-                    generateFeedbackChart();
-         
+                %h6.d-flex.align-items-center.mb-2.text_center
+                  %i.material-icons.text-info.mr-2 records
+                  Old Records 
+                .hr.group_line.mb-3
+                %p 
+                  %a Previous Feedback
+                %hr
+                %p 
+                  %a Previous Documents(TOA/TMR)
+                %hr
+                
