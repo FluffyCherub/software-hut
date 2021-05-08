@@ -14,7 +14,6 @@ class FeedbackController < ApplicationController
     @team_id = params['team_id']
     @feedback_date_id = params['feedback_date_id']
 
-  
     #get students that the current user has to give feedback on
     @in_team_without_current_user = User.joins(:teams)
                                         .where("teams.id = ? AND 
@@ -28,6 +27,7 @@ class FeedbackController < ApplicationController
 
     if @is_feedback_completed
       render "errors/error_403"
+      return
     end
 
     @feedback_dates = FeedbackDate.get_closest_date(Time.now, @module_id)
@@ -75,14 +75,17 @@ class FeedbackController < ApplicationController
           break
         end
 
-        if current_feedback.first.appreciate.nil? || current_feedback.first.appreciate.length < 1
-          feedback_completion = false
-          break
-        end
+        #checking if appreciate/request fields are not empty for level 5 modules
+        if @module_info.level == 5
+          if current_feedback.first.appreciate.nil? || current_feedback.first.appreciate.length < 1
+            feedback_completion = false
+            break
+          end
 
-        if current_feedback.first.request.nil? || current_feedback.first.request.length < 1
-          feedback_completion = false
-          break
+          if current_feedback.first.request.nil? || current_feedback.first.request.length < 1
+            feedback_completion = false
+            break
+          end
         end
 
 

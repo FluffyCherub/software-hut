@@ -78,3 +78,28 @@ function userFunction(number) {
   document.getElementById('form_username').value = "index";
   document.getElementById("myForm").submit();
 }
+
+function selectModule(num_of_modules) {
+
+  for(let i=0; i<num_of_modules; i++) {
+    let mod_line_name = "#mod_line_" + i.toString();
+
+    
+
+    let selected_mod_id = $(mod_line_name).val();
+
+    $(mod_line_name).click(function(){
+
+      $('.highlight_module').each(function() {
+        $(this).removeClass("highlight_module");
+      });
+
+      $(mod_line_name).addClass("highlight_module");
+
+      
+      
+      $.post('/student/profile/select/module', { module_id: selected_mod_id }, function(data) {
+      });
+    });
+  }
+}

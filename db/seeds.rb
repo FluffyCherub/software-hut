@@ -115,8 +115,11 @@ test_teams_robot = []
 for j in 1..NUM_OF_TEAMS 
   new_team_name = "Team " + j.to_s
   new_team_topic = "none"
-  new_team = Team.create(name: new_team_name, topic: new_team_topic, size: TEAM_SIZE, list_module: modules[1])
+  new_team = Team.create(name: new_team_name, topic: new_team_topic, size: TEAM_SIZE, list_module: modules[1], status: "active")
   test_teams_robot.append(new_team)
+
+  
+
   for i in 0...TEAM_SIZE
     UserTeam.create(team: new_team, user: shuffled_test_users_robot[0], signed_agreement: false)
     shuffled_test_users_robot.shift(1)
@@ -131,10 +134,14 @@ end_date_soft = DateTime.new(2020,2,10,4,5,6)
 feedback_period_soft = FeedbackDate.create(start_date: start_date_soft, end_date: end_date_soft, list_module: modules[0])
 
 
-#creating the feedback period for robotics
-start_date_robot = DateTime.new(2021,4,25,10,0,0)
-end_date_robot = DateTime.new(2021,5,3,10,0,0)
-feedback_period_robot = FeedbackDate.create(start_date: start_date_robot, end_date: end_date_robot, list_module: modules[1])
+#creating the feedback periods for robotics
+feedback_periods_robots = []
+feedback_periods_robots.append(FeedbackDate.create(start_date: DateTime.new(2021,4,25,10,0,0), end_date: DateTime.new(2022,5,3,10,0,0), list_module: modules[1]))
+feedback_periods_robots.append(FeedbackDate.create(start_date: DateTime.new(2005,4,25,10,0,0), end_date: DateTime.new(2006,5,3,10,0,0), list_module: modules[1]))
+feedback_periods_robots.append(FeedbackDate.create(start_date: DateTime.new(2007,4,25,10,0,0), end_date: DateTime.new(2008,5,3,10,0,0), list_module: modules[1]))
+feedback_periods_robots.append(FeedbackDate.create(start_date: DateTime.new(2009,4,25,10,0,0), end_date: DateTime.new(2010,5,3,10,0,0), list_module: modules[1]))
+feedback_periods_robots.append(FeedbackDate.create(start_date: DateTime.new(2011,4,25,10,0,0), end_date: DateTime.new(2012,5,3,10,0,0), list_module: modules[1]))
+feedback_periods_robots.append(FeedbackDate.create(start_date: DateTime.new(2013,4,25,10,0,0), end_date: DateTime.new(2014,5,3,10,0,0), list_module: modules[1]))
 
 
 #connecting teams in software hut to feedback periods
@@ -144,9 +151,11 @@ end
 
 #connecting teams in robotics to feedback periods
 for i in 0...(test_teams_robot.length)
-  TeamFeedbackDate.create(feedback_date_id: feedback_period_robot.id, team_id: test_teams_robot[i].id)
-end
+  for j in 0...feedback_periods_robots.length
+    TeamFeedbackDate.create(feedback_date_id: feedback_periods_robots[j].id, team_id: test_teams_robot[i].id)
 
+  end
+end
 
 
 appreciate_messages = ["He is a very good teammate.",
@@ -241,7 +250,49 @@ for i in 0...test_teams_soft.length
       end
     end
   end
+end
 
+#adding peer feedback for robotics
+for k in 0...feedback_periods_robots.length
+  for i in 0...test_teams_robot.length
+
+    team_members = User.joins(:teams).where("teams.id = ?", test_teams_robot[i].id)
+  
+    for j in 0...team_members.length
+      for z in 0...team_members.length
+        rand_attendace = rand(4) + 1
+        rand_attitude = rand(4) + 1
+        rand_collaboration = rand(4) + 1
+        rand_communication = rand(4) + 1
+        rand_ethics = rand(4) + 1
+        rand_leadership = rand(4) + 1
+        rand_qac = rand(4) + 1
+
+        aprreciate_random = appreciate_messages.shuffle.take(rand(1..appreciate_messages.length))
+        request_random = request_messages.shuffle.sample(rand(1..request_messages.length))
+
+        if rand(1..25) == 10
+          request_random.append(dumb_var)
+        end
+
+        PeerFeedback.create(feedback_date: feedback_periods_robots[k],
+                            attendance: rand_attendace,  
+                            attitude: rand_attitude,    
+                            collaboration: rand_collaboration,
+                            communication: rand_communication,
+                            ethics: rand_ethics,   
+                            leadership: rand_leadership,
+                            qac: rand_qac,
+                            appreciate: aprreciate_random,
+                            request: request_random,
+                            appreciate_edited: aprreciate_random.join(" "),
+                            request_edited: request_random.join(" "),
+                            created_by: team_members[j].username,
+                            created_for: team_members[z].username)
+      end
+    end
+
+  end
 end
 
 

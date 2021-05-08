@@ -1,11 +1,16 @@
 - # Partial for displaying team information to the student
 
-%h6.d-flex.align-items-center.mb-3
-  %i.material-icons.text-info.mr-2> Team 22
-  Team Members
-%hr.group_line
-- for i in 1..7
-  %img.rounded-circle.margin_right_small{alt: "Admin", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "3%"}
-  %small.small Student #{i} - student#{i}@sheffield.ac.uk
-  - if i != 7
-    %hr
+- if @team_info.nil?
+  You are not in an active team in this module.
+  - if @module_info.team_type == "free_join" && @unapproved_team_info.nil?
+    %a.button{:href => student_groups_path(:module_id => @module_info.id), type: "button", name: "join_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Join Teams
+- else
+  %h6.d-flex.align-items-center.mb-3
+    %i.material-icons.text-info.mr-2> #{@team_info.name}
+    Team Members
+  %hr.group_line
+  - for i in 1..@team_members.length
+    %img.rounded-circle.margin_right_small{alt: "Admin", src: "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png", width: "3%"}
+    %small.small #{@team_members[i-1].givenname} #{@team_members[i-1].sn} - #{@team_members[i-1].email}
+    - if i != @team_members.length
+      %hr

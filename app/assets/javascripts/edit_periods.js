@@ -1,7 +1,7 @@
 function edit_feedback_periods(num_of_periods) {
 
   for(let i=1; i<=num_of_periods; i++) {
-    remove_button_name = '#remove_period_button_' + i.toString()
+    let remove_button_name = '#remove_period_button_' + i.toString()
 
     let feedback_period_id = $(remove_button_name).val();
     let module_id = $("#module_id").val();

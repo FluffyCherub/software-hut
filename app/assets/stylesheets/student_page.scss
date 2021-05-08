@@ -170,3 +170,12 @@
 .text_green {
     color: rgb(14, 160, 14) !important;
 }
+
+.module_hover:hover {
+  background-color: #EEEEFF;
+  cursor: pointer;
+}
+
+.highlight_module {
+  background-color: #cdcdff;
+}

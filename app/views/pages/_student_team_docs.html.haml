@@ -1,15 +1,25 @@
-.row
-  %p.margin_none.center_text.width_100 Feedback Period:
-%hr.mb-1.mt-1
-.row
-  - if @f_period_start_date.nil?
-    %h6.smaller.center_text.width_100 Unavailable
-  - else
-    %h6.smaller.center_text.width_100 #{@f_period_start_date} - #{@f_period_end_date}
-%hr.group_line.mb-1.mt-1
-.row.mb-1
-  %p.margin_none.center_text.width_100 Team Meeting Record
-.row.mb-1
-  %p.margin_none.center_text.width_100 Peer Feedback Matrix
-.row
-  %p.margin_none.center_text.width_100 Team Operating Agreement
+- if @team_info.nil?
+  You are not in an active team in this module.
+- else
+  .row
+    %p.margin_none.center_text.width_100 Feedback Period:
+  %hr.mb-1.mt-1
+  .row
+    - if @f_period_start_date.nil?
+      %h6.smaller.center_text.width_100 Unavailable
+    - else
+      %h6.smaller.center_text.width_100 #{@f_period_start_date} - #{@f_period_end_date}
+  %hr.group_line.mb-1.mt-1
+  .row.mb-1
+    - if @in_feedback_window == true && @is_feedback_completed == false
+      %a.margin_none.center_text.width_100{href: feedback_matrix_path(:team_id => @team_info.id, :module_id => @module_info.id, :feedback_date_id => @closest_date.id)} Peer Feedback Matrix
+    - elsif @in_feedback_window == true && @is_feedback_completed == true 
+      %p.margin_none.center_text.width_100
+        Peer Feedback Matrix 
+        %span.green_text (Done)
+    - else
+      %p.margin_none.center_text.width_100 Peer Feedback Matrix Unavailable
+  .row.mb-1
+    %a.margin_none.center_text.width_100{href: toa_path(:team_id => @team_info.id)} Team Operating Agreement
+  .row.mb-1
+    %a.margin_none.center_text.width_100{href: tmr_path(:team_id => @team_info.id, :module_id => @module_info.id)} Team Meeting Record

@@ -2,22 +2,28 @@
 // // Authors: Anton Minkov && Laney Deveson
 // // Date: 07/05/2021
 
-function generateFeedbackChart() {
+function generateFeedbackChart(feedback_data, num_of_periods) {
+  
+  labels = []
+  for(let i=0; i<parseInt(num_of_periods); i++) {
+    labels.push("Week" + (i+1).toString());
+  }
+  console.log(labels);
 
-	const labels = [
-		'Week 1',
-		'Week 2',
-		'Week 3',
-		'Week 4',
-		'Week 5',
-		'Week 6',
-		'Week 7',
-		'Week 8',
-		'Week 9',
-		'Week 10',
-		'Week 11',
-		'Week 12'
-	];
+	// const labels = [
+	// 	'Week 1',
+	// 	'Week 2',
+	// 	'Week 3',
+	// 	'Week 4',
+	// 	'Week 5',
+	// 	'Week 6',
+	// 	'Week 7',
+	// 	'Week 8',
+	// 	'Week 9',
+	// 	'Week 10',
+	// 	'Week 11',
+	// 	'Week 12'
+	// ];
 
 	var yLabels = {
 		1 : 'Unsatisfactory', 2 : ['Needs', 'Improvement'], 3 : ['Meets', 'Expectations'], 4 : ['Exceeds', 'Expectations']
@@ -34,16 +40,18 @@ function generateFeedbackChart() {
 	// Leadership
 	// Professionalism and ethics
 
-	var feedbackDataArray = [
-		[2,4,4,1,2,3,3,2,1,3,2,4],
-		[1,4,2,3,1,2,3,4,2,1,1,2],
-		[2,3,4,1,2,3,4,1,2,3,3,1],
-		[4,1,2,3,4,1,2,3,4,1,2,4],
-		[2,1,3,1,4,2,1,3,4,4,1,3],
-		[2,3,1,4,2,3,1,4,1,4,3,4],
-		[3,2,1,4,2,3,1,3,4,1,2,2],
-		[3,3,1,1,4,3,2,2,3,4,3,1]
-	]
+	// var feedbackDataArray = [
+	// 	[2,4,4,1,2,3,3,2,1,3,2,4],
+	// 	[1,4,2,3,1,2,3,4,2,1,1,2],
+	// 	[2,3,4,1,2,3,4,1,2,3,3,1],
+	// 	[4,1,2,3,4,1,2,3,4,1,2,4],
+	// 	[2,1,3,1,4,2,1,3,4,4,1,3],
+	// 	[2,3,1,4,2,3,1,4,1,4,3,4],
+	// 	[3,2,1,4,2,3,1,3,4,1,2,2],
+	// 	[3,3,1,1,4,3,2,2,3,4,3,1]
+	// ]
+
+  let feedbackDataArray = feedback_data
 
 	const data = {
 		labels: labels,

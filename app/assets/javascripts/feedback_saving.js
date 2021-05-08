@@ -9,7 +9,7 @@
 //(adds event listeners to submit form on all radio fields)
 function submit_on_radio() {
   //get number of students
-  let num_of_students = document.getElementById("feedback_id").getAttribute("name");
+  let num_of_students = parseInt(document.getElementById("feedback_id").getAttribute("name"));
 
   //loop over all students
   for(let i = 1; i <= num_of_students; i++) {
@@ -68,8 +68,18 @@ function submit_on_radio() {
     appreciate_note = "appreciate_note_" + i.toString();
     request_note = "request_note_" + i.toString();
 
-    document.getElementsByName(appreciate_note)[0].onchange = function(){submit_feedback_form();};
-    document.getElementsByName(request_note)[0].onchange = function(){submit_feedback_form();};
+    appreciate_note_element = document.getElementsByName(appreciate_note)[0]
+    request_note_element = document.getElementsByName(request_note)[0]
+
+    if(appreciate_note_element !== undefined) {
+      appreciate_note_element.onchange = function(){submit_feedback_form();};
+    }
+
+    if(request_note_element !== undefined) {
+      request_note_element.onchange = function(){submit_feedback_form();};
+    }
+      
+    
 
   }
 
@@ -137,9 +147,17 @@ function load_appreciate_request_notes(appreciate_note, request_note, student_nu
   appreciate_name = "appreciate_note_" + student_number.toString();
   request_name = "request_note_" + student_number.toString();
 
+  appreciate_name_object = document.getElementsByName(appreciate_name)[0];
+  request_name_object = document.getElementsByName(request_name)[0]
+
   //set values of these fields to ones provided from the database
-  document.getElementsByName(appreciate_name)[0].value = appreciate_note;
-  document.getElementsByName(request_name)[0].value = request_note;
+  if(appreciate_name_object !== undefined) {
+    appreciate_name_object.value = appreciate_note;
+  }
+
+  if(request_name_object !== undefined) {
+    request_name_object.value = request_note;
+  }
 }
 
 //saving the edited mailmerge message(done by the module leader)

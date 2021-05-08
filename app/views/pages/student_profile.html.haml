@@ -2,7 +2,7 @@
 - # Authors: Anton Minkov && Laney Deveson
 - # Date: 06/05/2021
 
-- content_for :title, "Profile - Student Name"
+- content_for :title, "Profile - #{@full_name}"
 
 .container
   .main-body.no_padding_top
@@ -26,16 +26,16 @@
               %h5.mb-0.width_100
                 Active modules
             - for i in 0...(@active_modules.length)
-              %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small
+              %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small.module_hover{id: "mod_line_" + "#{i.to_s}", value: @active_modules[i].id}
                 %h8.mb-0.smaller
                   %b
                     #{@active_modules[i].code}
                   #{@active_modules[i].name}
                 %span.text-secondary 
-                  %i.small
+                  %i.smaller
                     #{@active_modules[i].semester}
 
-      .col-md-8.mb-2    
+      .col-md-8.mb-2{id: "team_info_big_div"} 
         .row.gutters-sm
           .col-sm-7   
             .card.mb-2.card_border#need_height
@@ -60,31 +60,24 @@
           
           .col-sm-5
             .card.mb-2.card_border#same_height
-              .card-body{id: "someting"}
+              .card-body{id: "feedback_links_div"}
                 Please select a Module to view team information.
 
         .row.gutters-sm
           .col-sm-12.mb-2
             .card.h-100.card_border
-              .card-body
+              .card-body{id: "teammates_info_div"}
                 Please select a Module to view team information.
 
-      - # Check if student is level 4 or 5     
-      - if 5 > 2
-        .col-md-12.mb-2
-          .row.gutters-sm
-            .col-sm-12.mb-6
-              .card.h-100.card_border
-                .card-body
-                  %h6.d-flex.align-items-center.text_center
-                    %i.material-icons.text-info.mr-2 feedback
-                    Feedback Graph  
-                  .hr.group_line.mb-1
-                  %div{style: "height: 400px"}
-                    %canvas#feedback_chart
-
-                    :javascript
-                      generateFeedbackChart();
+      
+      .col-md-12.mb-2
+        .row.gutters-sm
+          .col-sm-12.mb-6
+            .card.h-100.card_border
+              .card-body{id: "feedback_graph_active_div"}
+                Please select a Module to view feedback from your team.
+                - # Check if selected module is level 4 or 5     
+                
 
       .col-md-12.mb-3
         .row.gutters-sm
@@ -138,3 +131,5 @@
                   %a{href: student_profile_docs_old_path()} Previous Documents(TOA/TMR)
                 %hr
                 
+:javascript
+  selectModule(#{@active_modules.length});

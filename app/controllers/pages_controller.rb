@@ -91,7 +91,7 @@ class PagesController < ApplicationController
 
     if params['join_team_button'] == "join_team"
       UserTeam.put_student_in_team(current_user.id, params['team_id'])
-      redirect_to modules_path(:module_id => params[:module_id])
+      redirect_to student_profile_path(:module_id => params[:module_id])
     end
     
     #setting the search input parameter to display the correct teams
@@ -173,20 +173,110 @@ class PagesController < ApplicationController
                                  current_user.username,
                                  "student")
 
-    #get the closest feedback period(either the current or future)
-    # closest_date = FeedbackDate.get_closest_date(Time.now, @module_id)
-    # if closest_date != nil
-    #   @f_period_start_date = closest_date.start_date.strftime("%I:%M %p %d/%m/%Y")
-    #   @f_period_end_date = closest_date.end_date.strftime("%I:%M %p %d/%m/%Y")
-    # end
   end
 
   def student_profile_select_module
     selected_module_id = params['module_id']
-    puts "------------------"
-    puts params['module_id']
 
+    #get module info from module id
+    @module_info = ListModule.find(selected_module_id)
 
+    #check if youre currently in a feedback period
+    @in_feedback_window = FeedbackDate.is_in_feedback_window(Time.now, @module_info.id)
+
+    #get the team info based on the current username and chosen module
+    @team_info = Team.joins(:users, :list_module)
+                      .where("users.username = ? AND list_modules.id = ? AND teams.status = ?", 
+                              current_user.username, 
+                              selected_module_id,
+                              "active").first
+
+    
+    if @team_info != nil
+      #get all team members for the selected team
+      @team_members = User.joins(:teams)
+                          .where("teams.id = ?",
+                                  @team_info.id)
+
+      #get all team members without the current user
+      @team_members_without_current_user = User.joins(:teams)
+                                                .where("teams.id = ? AND
+                                                        users.id != ?",
+                                                        @team_info.id,
+                                                        current_user.id)
+
+      #get the closest feedback period(either the current or future)
+      @closest_date = FeedbackDate.get_closest_date(Time.now, @module_info.id)
+    
+      if @closest_date != nil
+        @f_period_start_date = @closest_date.start_date.strftime("%I:%M %p %d/%m/%Y")
+        @f_period_end_date = @closest_date.end_date.strftime("%I:%M %p %d/%m/%Y")
+
+        if @in_feedback_window == true
+          #check if feedback is completed and submitted 
+          @is_feedback_completed = PeerFeedback.check_feedback_completion(@team_members_without_current_user, current_user.username, @closest_date.id)
+        end
+      end
+
+      #store team members usernames in an array
+      teams_members_usernames = @team_members_without_current_user.pluck(:username)
+
+      #get feedback periods fot this team
+      f_periods = FeedbackDate.joins(:teams).where("teams.id = ?", @team_info.id)
+      @num_of_periods = f_periods.length
+
+      #array for storing all the feedback averages
+      width = f_periods.length
+      height = 7
+      @average_feedback_data = Array.new(height){Array.new(width)}
+
+      #average of averages of all periods
+      average_for_all_periods = Array.new(f_periods.length)
+
+      #get feedback data for every period and calculate the averages
+      for k in 0...f_periods.length
+
+        current_feedback_data = PeerFeedback.where("created_for = ? AND
+                                                    created_by IN (?) AND
+                                                    feedback_date_id = ?",
+                                                    current_user.username,
+                                                    teams_members_usernames,
+                                                    f_periods[k].id)
+                                            .pluck(:attendance, :attitude, :qac, :communication, :collaboration, :leadership, :ethics)
+
+        #calculating average data for every on of the seven criteria
+        for z in 0...7
+          data_for_one_criteria = current_feedback_data.collect {|ind| ind[z]}
+          average_data_for_one_criteria = data_for_one_criteria.inject{ |sum, el| sum + el }.to_f / data_for_one_criteria.size
+
+          @average_feedback_data[z][k] = average_data_for_one_criteria
+        end
+
+      end
+
+      #loop through the averages and get the ultimate average
+      for z in 0...f_periods.length
+        data_for_one_criteria = @average_feedback_data.collect {|ind| ind[z]}
+        average_data_for_one_criteria = data_for_one_criteria.inject{ |sum, el| sum + el }.to_f / data_for_one_criteria.size
+
+        average_for_all_periods[z] = (average_data_for_one_criteria)
+      end
+      
+      #adding the average of averages to the other averages
+      @average_feedback_data.prepend(average_for_all_periods)
+
+    else
+      @unapproved_team_info = Team.joins(:users, :list_module)
+                                  .where("users.username = ? AND list_modules.id = ? AND teams.status = ?", 
+                                          current_user.username, 
+                                          selected_module_id,
+                                          "waiting_for_approval").first
+    end
+
+      
+    respond_to do |format|
+      format.js {render layout: false}
+    end
   end
 
 end
