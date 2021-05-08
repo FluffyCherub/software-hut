@@ -154,6 +154,16 @@ class PagesController < ApplicationController
 
   end
 
+  def student_profile_feedback_old
+    puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+    render layout: 'extra_wide'
+  end
+
+  def student_profile_docs_old
+    puts "STROOOOOOOOONNNNNNNNNKKKKKKKKK"
+    render layout: 'extra_wide'
+  end
+
   def student_profile
     @full_name = current_user.givenname + " " +  current_user.sn
     @department = current_user.ou
@@ -171,6 +181,14 @@ class PagesController < ApplicationController
     #   @f_period_start_date = closest_date.start_date.strftime("%I:%M %p %d/%m/%Y")
     #   @f_period_end_date = closest_date.end_date.strftime("%I:%M %p %d/%m/%Y")
     # end
+  end
+
+  def student_profile_select_module
+    selected_module_id = params['module_id']
+    puts "------------------"
+    puts params['module_id']
+
+
   end
 
 end
