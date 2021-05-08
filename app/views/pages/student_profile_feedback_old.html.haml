@@ -4,34 +4,46 @@
 
 - content_for :title, "Profile - Previous Feedback"
 
-.container
+.container-fluid.bg_none.no_padding
   .main-body.no_padding_top
     .row.gutters-sm
-      .col-md-4.mb-2
-        .card.card_border
+      .col-md-3.mb-2
+        .card.card_border.text_black
           %ul.list-group.list-group-flush
-            %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small.width_100.center_text
+            %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small.width_100.center_text.list-group-item_special 
               %h5.mb-0.width_100
-                Active modules
-            - for i in 0...5
-              %li.list-group-item.d-flex.justify-content-between.align-items-center.flex-wrap.list_padding_small
+                Previous Modules
+            - # Loop trough PREVIOUS modules that student is in
+            - for i in 0...10
+              %li.list-group-item.justify-content-between.align-items-center.flex-wrap.list_padding_smaller.list-group-item_special 
                 %h8.mb-0.smaller
                   %b
                     COM3214
                   Software Hut
-                %span.text-secondary 
+                %span.text-secondary.float_right
                   %i.small
                     Spring
-      .col-md-8.mb-2
+                %hr.no_padding.margin_none
+                %ul
+                  - # Loop trough teams that the student is in for that module
+                  - for z in 1..2
+                    %li.list-group-item.justify-content-between.align-items-center.flex-wrap.list_padding_smaller.bg_none
+                      %h8.mb-0.smaller
+                        %i
+                          Team #{z}
+                    %hr.no_padding.margin_none
+                
+
+      .col-md-9.mb-2
         .row.gutters-sm
           .col-sm-12.mb-6
-            .card.h-100.card_border
+            .card.h-100.card_border.text_black
               .card-body
                 %h6.d-flex.align-items-center.text_center
                   %i.material-icons.text-info.mr-2 feedback
                   Feedback Graph  
                 .hr.group_line.mb-1
-                %div{style: "height: 400px"}
+                %div{style: "height: 600px"}
                   %canvas#feedback_chart
 
                   :javascript

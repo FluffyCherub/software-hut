@@ -108,3 +108,17 @@ a.text_dark_hover:hover {
   border-radius: 4px;
   border: transparent;
 }
+
+@media (min-width: 1200px) {
+  .container-xl {
+    max-width: 1500px;
+  }
+}
+
+.list-group-item_special {
+  border: thin solid black;
+}
+
+.list_padding_smaller {
+  padding: 0.10rem 0.40rem !important;
+}

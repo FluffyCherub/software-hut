@@ -13,10 +13,11 @@
     = javascript_include_tag "application"
     = favicon_link_tag '/images/teamworks_icon2.png'
     = csrf_meta_tags
+    %script{src: "https://cdn.jsdelivr.net/npm/chart.js"}
 
 
   // %body{ class: environment_notice_body_class , onload: "myFunction()"}
-  %body{ class: environment_notice_body_class, onload: "filterProfanity()"}
+  %body{ class: environment_notice_body_class}
     = render 'layouts/environment_notice'    
   
     #wrap
@@ -51,7 +52,7 @@
       %nav.blue_line.small#bottom_line
         %p blue line
       %main
-        #main-container.container-fluid.bg_none
+        #main-container.container-xl.bg_none
           = yield
   
   - # Footer
