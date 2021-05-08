@@ -76,5 +76,9 @@ describe Team do
     end
   end
 
-  describe '#'
+  describe '#get_feedback_end_date' do
+    it 'returns end date ' do
+      
+    end
+  end
 end

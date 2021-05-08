@@ -22,5 +22,7 @@ FactoryBot.define do
   factory :feedback_date do
     start_date { "2021-04-20 02:09:48" }
     end_date { "2021-04-20 02:09:48" }
+    created_at { DateTime.now() }
+    updated_at { DateTime.now() }
   end
 end
