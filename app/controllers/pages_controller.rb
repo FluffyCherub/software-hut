@@ -155,13 +155,11 @@ class PagesController < ApplicationController
   end
 
   def student_profile_feedback_old
-    puts "BOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-    render layout: 'extra_wide'
+    render layout: 'extra_wide_left'
   end
 
   def student_profile_docs_old
-    puts "STROOOOOOOOONNNNNNNNNKKKKKKKKK"
-    render layout: 'extra_wide'
+    render layout: 'extra_wide_left'
   end
 
   def student_profile
