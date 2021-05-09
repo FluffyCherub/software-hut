@@ -6,5 +6,66 @@
 
 .container.body_whole_custom
   .container-fluid.text_black.bg_none.margin_top
-    .container-fluid.bg_none.text_black.margin_top.bigger
-      docs
+    .container-fluid.bg_none.text_black
+      .container-fluid.bg_none.text_black.text_center
+        %h.bigger.width_100
+          Old Records
+        %hr.group_line
+      .container-fluid.bg_none.text_black.margin_top.bigger
+        - # Loop trough all academic years(+ the current one, as you may have inactive modules in it)
+        - for i in 1..5
+          .container-fluid.bg_none.text_black.no_padding.margin_none
+            %h4
+              %strong
+                Academic Year #{i}
+            %hr
+            %ul
+              - # Loop trough all past(inactive) modules for that academic year
+              - for z in 1..3
+                %li
+                  %h5
+                    Module #{z}
+                  %hr
+                  %ul
+                    - # Loop trough all the teams for that module
+                    - for x in 1..2
+                      %li
+                        %p.small
+                          %i
+                            Team #{x}
+                        %hr
+                        %p.small
+                          %strong
+                            TOA Download 
+                        %hr
+                        %ul
+                          %li
+                            - # Display the download TOP option
+                            %p.small
+                              %i
+                                Team Operating Agreement 11/06/2021
+                        %hr
+                        %p.small
+                          %strong
+                            TMR Download 
+                        %hr
+                        %ul
+                          - # Loop trough all the TOA's for that team
+                          - for y in 1..7
+                            %li
+                              - if y != 7
+                                - # Display the download TOP option
+                                %p.small
+                                  %i
+                                    Team Operating Agreement 11/06/2021
+                                %hr
+                              - else
+                                - # Display the download TOP option (THE LAST TOA)
+                                %p.small
+                                  %i
+                                    Team Operating Agreement 11/06/2021
+                  
+                        %hr.group_line
+                  %hr.group_line
+          %hr.group_line     
+                
