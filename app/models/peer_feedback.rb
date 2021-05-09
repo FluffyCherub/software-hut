@@ -221,7 +221,6 @@ class PeerFeedback < ApplicationRecord
     #adding the average of averages to the other averages
     average_feedback_data.prepend(average_for_every_period)
 
-
     #averages for every criteria for all periods combined
     average_overall = []
 
@@ -231,7 +230,11 @@ class PeerFeedback < ApplicationRecord
     end
 
     #rounding the overall average
-    average_overall = average_overall.map { |number| number.round() }
+    for i in 0...average_overall.length
+      if !average_overall[i].nan?
+        average_overall[i] = average_overall[i].round()
+      end
+    end
 
     return average_feedback_data, num_of_periods, average_overall, team_members_without_current_user, team_members
   end

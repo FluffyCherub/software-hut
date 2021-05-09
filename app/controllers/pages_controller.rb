@@ -164,8 +164,6 @@ class PagesController < ApplicationController
                                   .group(:id)
 
 
-    #feedback_data = PeerFeedback.get_average_feedback_data(current_user.username, team_id)
-
     render layout: 'extra_wide_left'
   end
 
@@ -177,6 +175,15 @@ class PagesController < ApplicationController
 
     @average_feedback_data = feedback_data[0]
     @num_of_periods = feedback_data[1]
+
+    #rounding average feeback data
+    for i in 0...@average_feedback_data.length
+      for j in 0...@average_feedback_data[i].length
+        if !@average_feedback_data[i][j].nan?
+          @average_feedback_data[i][j] = @average_feedback_data[i][j].round()
+        end
+      end
+    end
 
     respond_to do |format|
       format.js {render layout: false}
@@ -195,11 +202,10 @@ class PagesController < ApplicationController
 
     @active_modules = ListModule.joins(:users, :teams)
                          .where("users.username = ? AND 
-                                 user_list_modules.privilege = ? AND
-                                 teams.status = ?", 
+                                 user_list_modules.privilege = ?", 
                                  current_user.username,
                                  "student",
-                                 "active")
+                                  )
                          .group(:id)
 
   end
@@ -231,6 +237,15 @@ class PagesController < ApplicationController
       @average_overall =  feedback_data[2]
       @team_members_without_current_user = feedback_data[3]
       @team_members = feedback_data[4]
+
+      #rounding average feeback data
+      for i in 0...@average_feedback_data.length
+        for j in 0...@average_feedback_data[i].length
+          if !@average_feedback_data[i][j].nan?
+            @average_feedback_data[i][j] = @average_feedback_data[i][j].round()
+          end
+        end
+      end
 
       #CLOSEST DATES SECTION-------------------------------------------------------
       #get the closest feedback period(either the current or future)
