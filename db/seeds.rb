@@ -35,9 +35,9 @@ ta_3_soft = User.create(givenname: "Test", sn: "User427", username: "test_user42
 
 modules = ListModule.create([
   {name: 'Software Hut', code: 'COM3420', description: 'The Software Hut (a microcosm of a real Software House) gives students an opportunity to experience the processes of engineering a real software system for a real client in a competitive environment. The taught element covers the tools and technologies needed to manage software development projects successfully and to deliver software products that meet both client expectations and quality standards. Topics that are put into practice include: the requirements engineering process; software modelling and testing; using specific software development framework(s); group project management etc. Tutorials take the form of project meetings, and so are concerned with team management, conduct of meetings and action minutes.', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021', level: '5'},
-  {name: 'Robotics', code: 'COM2009', description: 'Robots go brr', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021', level: '4'},
-  {name: 'Automata, Computation and Complexity', code: 'COM2109', description: 'Connect circles with lines', created_by: 'aca19dl', semester: 'ACADEMIC YEAR', years: '2020/2021', level: '5'},
-  {name: 'Functional Programming', code: 'COM2108', description: 'Worse programming', created_by: 'aca19dl', semester: 'AUTUMN', years: '2020/2021', level: '4'},
+  {name: 'Robotics', code: 'COM2009', description: 'Robots go brr', created_by: 'aca19dl', semester: 'SPRING', years: '2019/2020', level: '4'},
+  {name: 'Automata, Computation and Complexity', code: 'COM2109', description: 'Connect circles with lines', created_by: 'aca19dl', semester: 'ACADEMIC YEAR', years: '2018/2019', level: '5'},
+  {name: 'Functional Programming', code: 'COM2108', description: 'Worse programming', created_by: 'aca19dl', semester: 'AUTUMN', years: '2017/2018', level: '4'},
   {name: 'Data Driven Computing', code: 'COM2004', description: 'poopoo', created_by: 'aca19dl', semester: 'AUTUMN', years: '2020/2021', level: '6'},
 
   {name: 'Java Programming', code: 'COM1003', description: 'java stuff', created_by: 'aca19dl', semester: 'ACADEMIC YEAR', years: '2019/2020', level: '5'},
@@ -105,6 +105,8 @@ end
 TEAM_SIZE = 5
 NUM_OF_TEAMS = 16
 
+#FILE = File.open('app/assets/docs/toa.pdf')
+
 #creating teams in software hut
 shuffled_test_users_soft = test_users.shuffle
 shuffled_test_users_soft.append(user1)
@@ -117,6 +119,10 @@ for j in 1..NUM_OF_TEAMS
   new_team_topic = "none"
   new_team = Team.create(name: new_team_name, topic: new_team_topic, size: TEAM_SIZE, list_module: modules[0])
   test_teams_soft.append(new_team)
+
+  #attaching toa to new team
+  #new_team.document.attach(io: FILE, filename: 'toa.pdf')
+
   for i in 0...TEAM_SIZE
     UserTeam.create(team: new_team, user: shuffled_test_users_soft[0], signed_agreement: false)
     shuffled_test_users_soft.shift(1)
@@ -136,7 +142,8 @@ for j in 1..NUM_OF_TEAMS
   new_team = Team.create(name: new_team_name, topic: new_team_topic, size: TEAM_SIZE, list_module: modules[1], status: "active")
   test_teams_robot.append(new_team)
 
-  
+  #attaching toa to new team
+  #new_team.document.attach(io: FILE, filename: 'toa.pdf')
 
   for i in 0...TEAM_SIZE
     UserTeam.create(team: new_team, user: shuffled_test_users_robot[0], signed_agreement: false)
@@ -157,7 +164,8 @@ for j in 1..NUM_OF_TEAMS
   new_team = Team.create(name: new_team_name, topic: new_team_topic, size: TEAM_SIZE, list_module: modules[2], status: "active")
   test_teams_automata.append(new_team)
 
-  
+  #attaching toa to new team
+  #new_team.document.attach(io: FILE, filename: 'toa.pdf')
 
   for i in 0...TEAM_SIZE
     UserTeam.create(team: new_team, user: shuffled_test_users_automata[0], signed_agreement: false)
@@ -178,7 +186,8 @@ for j in 1..NUM_OF_TEAMS
   new_team = Team.create(name: new_team_name, topic: new_team_topic, size: TEAM_SIZE, list_module: modules[3], status: "active")
   test_teams_functional.append(new_team)
 
-  
+  #attaching toa to new team
+  #new_team.document.attach(io: FILE, filename: 'toa.pdf')
 
   for i in 0...TEAM_SIZE
     UserTeam.create(team: new_team, user: shuffled_test_users_functional[0], signed_agreement: false)

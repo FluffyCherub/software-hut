@@ -9,7 +9,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.paths << Rails.root.join('node_modules')
 
 #THIS MAKES FONTS WORK. DO NOT TOUCH!
-Rails.application.config.assets.paths << Rails.root.join('app', 'public', 'assets', 'fonts', 'images')
+Rails.application.config.assets.paths << Rails.root.join('app', 'public', 'assets', 'fonts', 'images', 'storage')
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets

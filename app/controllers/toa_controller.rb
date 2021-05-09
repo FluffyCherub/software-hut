@@ -35,6 +35,7 @@ class ToaController < ApplicationController
       #if a student rejected the toa, changing its status back to in_progress
       @current_team.update(toa_status: "in_progress")
       UserTeam.un_sign_toa(params['team_id'])
+      @current_team.document.destroy
 
       redirect_to toa_path(team_id: params['team_id'])
     end

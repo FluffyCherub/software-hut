@@ -127,6 +127,7 @@ class Team < ApplicationRecord
 
   #run every minute, makes team go from active to inactive if the last feedback period ended
   def self.update_status()
+
     #get all the active teams in the system
     active_teams = Team.where("status = ? OR status = ?", "active", "waiting_for_approval")
     current_date = Time.now.utc + 1.hours

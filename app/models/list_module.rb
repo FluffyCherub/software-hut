@@ -287,4 +287,17 @@ class ListModule < ApplicationRecord
 
     return inactive_teams
   end
+
+  def self.get_inactive_modules_for_years(years, username)
+    inactive_modules = ListModule.joins(:teams, :users)
+                                  .where("teams.status = ? AND 
+                                          users.username = ? AND
+                                          list_modules.years = ?", 
+                                          "inactive", 
+                                          username,
+                                          years)
+                                  .group(:id)
+                                  
+    return inactive_modules
+  end
 end
