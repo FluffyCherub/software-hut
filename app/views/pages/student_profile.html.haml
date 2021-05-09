@@ -35,7 +35,7 @@
                   %i.smaller
                     #{@active_modules[i].semester}
 
-      .col-md-8.mb-2{id: "team_info_big_div"} 
+      .col-md-8.mb-2.no_padding_left_force{id: "team_info_big_div"} 
         .row.gutters-sm
           .col-sm-7   
             .card.mb-2.card_border#need_height
@@ -58,7 +58,7 @@
                   .col-sm-8.text-secondary
                     #{@email}
           
-          .col-sm-5
+          .col-sm-5.no_padding_left_force
             .card.mb-2.card_border#same_height
               .card-body{id: "feedback_links_div"}
                 Please select a Module to view team information.
@@ -87,7 +87,7 @@
                 .card-body{id: "feedback_overall_div"}
                   Please select a Module to view feedback from your team.
           
-          .col-sm-5.mb-2
+          .col-sm-5.mb-2.no_padding_left_force
             .card.h-100.card_border
               .card-body
                 %h6.d-flex.align-items-center.mb-2.text_center
