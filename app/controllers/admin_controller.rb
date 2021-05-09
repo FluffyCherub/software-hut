@@ -525,7 +525,7 @@ class AdminController < ApplicationController
     current_ability(User.get_module_privilege(@module_id, current_user.id))
     authorize! :manage, :admin_modules_groups
 
-    #checking if all teams in this modules are approvesd
+    #checking if all teams in this modules are approved
     @all_teams_approved = ListModule.all_approved(@module_id)
 
     #getting the number of students in a module
@@ -653,8 +653,12 @@ class AdminController < ApplicationController
 
     ListModule.approve_teams(module_id)
 
+    wizard = "add_wizard_toast(\"You just approved Teams\", 
+              \"You are now done with the proccess of setting up this module, to see more information about this module click here:\", 
+              \"/admin/modules/preview?module_id=" + module_id + "\")"
+
     respond_to do |format|
-      format.js { render :js => "myAlertTopEditableSuccess(\"Teams approved successfully!\");disable_approve_button();" }
+      format.js { render :js => "myAlertTopEditableSuccess(\"Teams approved successfully!\");disable_approve_button();" + wizard }
     end
   end
 
