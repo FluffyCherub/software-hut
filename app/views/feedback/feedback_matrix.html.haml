@@ -50,7 +50,7 @@
   - # Displaying current feedback period
   .container-fluid.no_padding.bg_none.text_black.center_text.special_margin_top
     .container-fluid.no_padding.bg_none.text_black.center_text
-      %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_3.medium{:href => modules_path(module_id: @module_id), type: "button"} Go Back
+      %a.button.float_right.no_padding.btn.btn-primary.agreement_buttons.justify-content-center.button_go_back_3.medium{:href => student_profile_path(module_id: @module_id), type: "button"} Go Back
     - start_date = @feedback_dates.start_date.strftime("%I:%M %p %d/%m/%Y")
     - end_date = @feedback_dates.end_date.strftime("%I:%M %p %d/%m/%Y")
     %h5.bigger Peer Feedback Matrix 
@@ -273,7 +273,7 @@
               
     - # Submit feedback         
     .container-fluid.no_padding.bg_none.margin_bottom_small
-      %button{type: "submit", name: "submit_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_feedback", id:"submit_feedback_button", value: "submit_feedback", onclick: "redirect_to_modules('#{@module_id}');"}Submit Peer Feedback
+      %button{type: "submit", name: "submit_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_feedback", id:"submit_feedback_button", value: "submit_feedback", onclick: "redirect_to_student_profile();"}Submit Peer Feedback
 
 :javascript
   submit_on_radio();

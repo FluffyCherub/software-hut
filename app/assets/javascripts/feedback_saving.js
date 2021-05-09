@@ -136,9 +136,9 @@ function load_selected_feedback_radios(feedback, student_number) {
   }
 }
 
-//redirect to the modules page
-function redirect_to_modules(module_id) {
-  window.location.replace("/modules?module_id=" + module_id);
+//redirect to the student profile page
+function redirect_to_student_profile() {
+  window.location.replace("/student/profile");
 }
 
 //load appreciate and request notes from the database
