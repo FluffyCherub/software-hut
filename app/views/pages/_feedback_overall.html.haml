@@ -1,0 +1,35 @@
+- if @module_info.level == 4 || @module_info.level == 5
+  %h6.d-flex.align-items-center.mb-2.text_center
+    %i.material-icons.text-info.mr-2 feedback
+    Overall Average Feedback 
+  .hr.group_line.mb-3
+  - # Store the values
+  - feedback_values = ['Average',
+  - 'Attendance and Punctuality',
+  - 'Attitude and Commitment',
+  - 'Quality, accuracy and completeness',
+  - 'Communication',
+  - 'Collaboration',
+  - 'Leadership',
+  - 'Professionalism and ethics']
+
+  - feedback_average = PeerFeedback.array_int_to_feedback(@average_overall)
+  - puts feedback_average
+
+  - for x in 0...feedback_values.length
+    %p
+      %strong
+        #{feedback_values[x]}:
+      - if  feedback_average[x] == 'Unsatisfactory'
+        %span.text_red Unsatisfactory
+      - elsif feedback_average[x] == 'Needs Improvement'
+        %span.text_yellow Needs Improvement
+      - elsif feedback_average[x] == 'Meets Expectations'
+        %span.text_green Meets Expectations
+      - elsif feedback_average[x] == 'Exceeds Expectations'
+        %span.text_green Exceeds Expectations
+      - else
+        %span N/A
+    %hr
+- else
+  %p No feedback data for module on this level.

@@ -75,8 +75,7 @@
           .col-sm-12.mb-6
             .card.h-100.card_border
               .card-body{id: "feedback_graph_active_div"}
-                Please select a Module to view feedback from your team.
-                - # Check if selected module is level 4 or 5     
+                Please select a Module to view feedback from your team.   
                 
 
       .col-md-12.mb-3
@@ -85,37 +84,8 @@
           - if 5 > 2
             .col-sm-7.mb-2
               .card.h-100.card_border
-                .card-body
-                  %h6.d-flex.align-items-center.mb-2.text_center
-                    %i.material-icons.text-info.mr-2 feedback
-                    Overall Average Feedback 
-                  .hr.group_line.mb-3
-                  - # Store the values
-                  - feedback_values = ['Average',
-                  - 'Attendance and Punctuality',
-                  - 'Attitude and Commitment',
-                  - 'Quality, accuracy and completeness',
-                  - 'Communication',
-                  - 'Collaboration',
-                  - 'Leadership',
-                  - 'Professionalism and ethics']
-
-                  - feedback_average = ['Unsatisfactory',
-                  - 'Needs Improvement',
-                  - 'Meets Expectations',
-                  - 'Exceeds Expectations']
-
-                  - for x in 1..feedback_values.length
-                    %p
-                      %strong
-                        #{feedback_values[x-1]}:
-                      - if  feedback_average[3] == 'Unsatisfactory'
-                        %span.text_red Unsatisfactory
-                      - elsif feedback_average[2] == 'Needs Improvement'
-                        %span.text_yellow Needs Improvement
-                      - else
-                        %span.text_green Meets Expectations
-                    %hr
+                .card-body{id: "feedback_overall_div"}
+                  Please select a Module to view feedback from your team.
           
           .col-sm-5.mb-2
             .card.h-100.card_border

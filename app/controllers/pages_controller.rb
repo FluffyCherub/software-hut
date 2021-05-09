@@ -230,8 +230,10 @@ class PagesController < ApplicationController
       height = 7
       @average_feedback_data = Array.new(height){Array.new(width)}
 
-      #average of averages of all periods
-      average_for_all_periods = Array.new(f_periods.length)
+      #average of averages for every periods
+      average_for_every_period = Array.new(f_periods.length)
+
+      
 
       #get feedback data for every period and calculate the averages
       for k in 0...f_periods.length
@@ -259,11 +261,26 @@ class PagesController < ApplicationController
         data_for_one_criteria = @average_feedback_data.collect {|ind| ind[z]}
         average_data_for_one_criteria = data_for_one_criteria.inject{ |sum, el| sum + el }.to_f / data_for_one_criteria.size
 
-        average_for_all_periods[z] = (average_data_for_one_criteria)
+        average_for_every_period[z] = (average_data_for_one_criteria)
       end
       
       #adding the average of averages to the other averages
-      @average_feedback_data.prepend(average_for_all_periods)
+      @average_feedback_data.prepend(average_for_every_period)
+
+
+      #averages for every criteria for all periods combined
+      @average_overall = []
+
+      for k in 0...@average_feedback_data.length
+        current_data_row = @average_feedback_data[k]
+        @average_overall.append(current_data_row.inject{ |sum, el| sum + el }.to_f / current_data_row.size)
+      end
+
+      puts "----------------------"
+      print @average_overall
+
+      #rounding the overall average
+      @average_overall = @average_overall.map { |number| number.round() }
 
     else
       @unapproved_team_info = Team.joins(:users, :list_module)

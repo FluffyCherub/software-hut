@@ -140,4 +140,23 @@ class PeerFeedback < ApplicationRecord
 
     return result
   end
+
+  def self.array_int_to_feedback(feedback_int_array)
+    result = []
+    for i in 0...feedback_int_array.length
+      if feedback_int_array[i] == 1
+        result.append("Unsatisfactory") 
+      elsif feedback_int_array[i] == 2
+        result.append("Needs Improvement")
+      elsif feedback_int_array[i] == 3
+        result.append("Meets Expectations")
+      elsif feedback_int_array[i] == 4
+        result.append("Exceeds Expectations")
+      else
+        result.append(nil)
+      end
+    end
+    
+    return result
+  end
 end

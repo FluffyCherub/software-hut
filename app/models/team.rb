@@ -86,14 +86,16 @@ class Team < ApplicationRecord
 
   def self.get_students_not_in_inactive_team_but_in_module(module_id)
     students_in_any_team_in_module = User.joins(:list_modules, :teams)
-                                         .where("list_modules.id = ? AND 
+                                         .where("teams.list_module_id = ? AND 
                                                  user_list_modules.privilege = ? AND
                                                  teams.status = ?",
                                                  module_id,
                                                  "student",
                                                  "inactive").pluck(:id)
 
-
+    puts "----------------------------"
+    puts students_in_any_team_in_module
+    puts module_id
     if students_in_any_team_in_module[0] == nil
       students_in_module = User.joins(:list_modules)
                                .where("list_modules.id = ? AND 
