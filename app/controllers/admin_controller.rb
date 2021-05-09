@@ -914,7 +914,7 @@ class AdminController < ApplicationController
     @module_info = ListModule.where("id = ?", module_id).first
     @num_of_students = Team.get_students_not_in_inactive_team_but_in_module(module_id).length
 
-    #checking if all teams in this modules are approvesd
+    #checking if all teams in this modules are approved
     @all_teams_approved = ListModule.all_approved(@module_id)
 
     #check if submit button was pressed
@@ -1220,10 +1220,12 @@ class AdminController < ApplicationController
         #popup
       end
       
-
+      wizard = "add_wizard_toast(\"You just created teams for this module!\", 
+              \"The next step we suggest is to review and approve teams, you can do that on this page at the bottom:\",
+              \"/admin/modules/groups?module_id=" + @module_info.id.to_s + "\");"
       
       respond_to do |format|
-        format.js { render :js => "myAlertTopEditableSuccess(\"Teams created successfully!\");" }
+        format.js { render :js => "myAlertTopEditableSuccess(\"Teams created successfully!\");" + wizard }
       end
     end
   end
