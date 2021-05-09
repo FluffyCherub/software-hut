@@ -23,4 +23,5 @@
 //= require wizard
 //= require feedback_charts
 //= require edit_periods
+//= require feedback_old
 
