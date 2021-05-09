@@ -159,4 +159,81 @@ class PeerFeedback < ApplicationRecord
     
     return result
   end
+
+  def self.get_average_feedback_data(username, team_id)
+    #get all team members for the selected team
+    team_members = User.joins(:teams)
+                        .where("teams.id = ?",
+                                team_id)
+
+    #get all team members without the current user
+    team_members_without_current_user = User.joins(:teams)
+                                              .where("teams.id = ? AND
+                                                      users.username != ?",
+                                                      team_id,
+                                                      username)
+
+    
+    #store team members usernames in an array
+    teams_members_usernames = team_members_without_current_user.pluck(:username)
+
+    #get feedback periods fot this team
+    f_periods = FeedbackDate.joins(:teams).where("teams.id = ?", team_id)
+    num_of_periods = f_periods.length
+
+    #array for storing all the feedback averages
+    width = f_periods.length
+    height = 7
+    average_feedback_data = Array.new(height){Array.new(width)}
+
+    #average of averages for every periods
+    average_for_every_period = Array.new(f_periods.length)
+
+    #get feedback data for every period and calculate the averages
+    for k in 0...f_periods.length
+
+      current_feedback_data = PeerFeedback.where("created_for = ? AND
+                                                  created_by IN (?) AND
+                                                  feedback_date_id = ?",
+                                                  username,
+                                                  teams_members_usernames,
+                                                  f_periods[k].id)
+                                          .pluck(:attendance, :attitude, :qac, :communication, :collaboration, :leadership, :ethics)
+
+      #calculating average data for every on of the seven criteria
+      for z in 0...7
+        data_for_one_criteria = current_feedback_data.collect {|ind| ind[z]}
+        average_data_for_one_criteria = data_for_one_criteria.inject{ |sum, el| sum + el }.to_f / data_for_one_criteria.size
+
+        average_feedback_data[z][k] = average_data_for_one_criteria
+      end
+
+    end
+
+    #loop through the averages and get the ultimate average
+    for z in 0...f_periods.length
+      data_for_one_criteria = average_feedback_data.collect {|ind| ind[z]}
+      average_data_for_one_criteria = data_for_one_criteria.inject{ |sum, el| sum + el }.to_f / data_for_one_criteria.size
+
+      average_for_every_period[z] = (average_data_for_one_criteria)
+    end
+    
+    #adding the average of averages to the other averages
+    average_feedback_data.prepend(average_for_every_period)
+
+
+    #averages for every criteria for all periods combined
+    average_overall = []
+
+    for k in 0...average_feedback_data.length
+      current_data_row = average_feedback_data[k]
+      average_overall.append(current_data_row.inject{ |sum, el| sum + el }.to_f / current_data_row.size)
+    end
+
+    #rounding the overall average
+    average_overall = average_overall.map { |number| number.round() }
+
+    return average_feedback_data, num_of_periods, average_overall, team_members_without_current_user, team_members
+  end
+
 end

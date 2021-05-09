@@ -155,7 +155,32 @@ class PagesController < ApplicationController
   end
 
   def student_profile_feedback_old
+
+    #getting modules wiith only inactive teams fo the current user
+    @inactive_modules = ListModule.joins(:teams, :users)
+                                  .where("users.username = ? AND teams.status = ?",
+                                          current_user.username,
+                                          "inactive")
+                                  .group(:id)
+
+
+    #feedback_data = PeerFeedback.get_average_feedback_data(current_user.username, team_id)
+
     render layout: 'extra_wide_left'
+  end
+
+  def feedback_old_show
+    selected_team_id = params['selected_team_id']
+
+    #get the feedback averages for the selected team feedback
+    feedback_data = PeerFeedback.get_average_feedback_data(current_user.username, selected_team_id.to_i)
+
+    @average_feedback_data = feedback_data[0]
+    @num_of_periods = feedback_data[1]
+
+    respond_to do |format|
+      format.js {render layout: false}
+    end
   end
 
   def student_profile_docs_old
@@ -168,10 +193,14 @@ class PagesController < ApplicationController
     @username = current_user.username
     @email = current_user.email
 
-    @active_modules = ListModule.joins(:users)
-                         .where("users.username = ? AND user_list_modules.privilege = ?", 
+    @active_modules = ListModule.joins(:users, :teams)
+                         .where("users.username = ? AND 
+                                 user_list_modules.privilege = ? AND
+                                 teams.status = ?", 
                                  current_user.username,
-                                 "student")
+                                 "student",
+                                 "active")
+                         .group(:id)
 
   end
 
@@ -193,18 +222,17 @@ class PagesController < ApplicationController
 
     
     if @team_info != nil
-      #get all team members for the selected team
-      @team_members = User.joins(:teams)
-                          .where("teams.id = ?",
-                                  @team_info.id)
 
-      #get all team members without the current user
-      @team_members_without_current_user = User.joins(:teams)
-                                                .where("teams.id = ? AND
-                                                        users.id != ?",
-                                                        @team_info.id,
-                                                        current_user.id)
+      #get the feedback averages for the selected team feedback
+      feedback_data = PeerFeedback.get_average_feedback_data(current_user.username, @team_info.id)
 
+      @average_feedback_data = feedback_data[0]
+      @num_of_periods = feedback_data[1]
+      @average_overall =  feedback_data[2]
+      @team_members_without_current_user = feedback_data[3]
+      @team_members = feedback_data[4]
+
+      #CLOSEST DATES SECTION-------------------------------------------------------
       #get the closest feedback period(either the current or future)
       @closest_date = FeedbackDate.get_closest_date(Time.now, @module_info.id)
     
@@ -217,70 +245,6 @@ class PagesController < ApplicationController
           @is_feedback_completed = PeerFeedback.check_feedback_completion(@team_members_without_current_user, current_user.username, @closest_date.id)
         end
       end
-
-      #store team members usernames in an array
-      teams_members_usernames = @team_members_without_current_user.pluck(:username)
-
-      #get feedback periods fot this team
-      f_periods = FeedbackDate.joins(:teams).where("teams.id = ?", @team_info.id)
-      @num_of_periods = f_periods.length
-
-      #array for storing all the feedback averages
-      width = f_periods.length
-      height = 7
-      @average_feedback_data = Array.new(height){Array.new(width)}
-
-      #average of averages for every periods
-      average_for_every_period = Array.new(f_periods.length)
-
-      
-
-      #get feedback data for every period and calculate the averages
-      for k in 0...f_periods.length
-
-        current_feedback_data = PeerFeedback.where("created_for = ? AND
-                                                    created_by IN (?) AND
-                                                    feedback_date_id = ?",
-                                                    current_user.username,
-                                                    teams_members_usernames,
-                                                    f_periods[k].id)
-                                            .pluck(:attendance, :attitude, :qac, :communication, :collaboration, :leadership, :ethics)
-
-        #calculating average data for every on of the seven criteria
-        for z in 0...7
-          data_for_one_criteria = current_feedback_data.collect {|ind| ind[z]}
-          average_data_for_one_criteria = data_for_one_criteria.inject{ |sum, el| sum + el }.to_f / data_for_one_criteria.size
-
-          @average_feedback_data[z][k] = average_data_for_one_criteria
-        end
-
-      end
-
-      #loop through the averages and get the ultimate average
-      for z in 0...f_periods.length
-        data_for_one_criteria = @average_feedback_data.collect {|ind| ind[z]}
-        average_data_for_one_criteria = data_for_one_criteria.inject{ |sum, el| sum + el }.to_f / data_for_one_criteria.size
-
-        average_for_every_period[z] = (average_data_for_one_criteria)
-      end
-      
-      #adding the average of averages to the other averages
-      @average_feedback_data.prepend(average_for_every_period)
-
-
-      #averages for every criteria for all periods combined
-      @average_overall = []
-
-      for k in 0...@average_feedback_data.length
-        current_data_row = @average_feedback_data[k]
-        @average_overall.append(current_data_row.inject{ |sum, el| sum + el }.to_f / current_data_row.size)
-      end
-
-      puts "----------------------"
-      print @average_overall
-
-      #rounding the overall average
-      @average_overall = @average_overall.map { |number| number.round() }
 
     else
       @unapproved_team_info = Team.joins(:users, :list_module)

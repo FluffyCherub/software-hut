@@ -1,0 +1,9 @@
+%h6.d-flex.align-items-center.text_center
+  %i.material-icons.text-info.mr-2 feedback
+  Feedback Graph  
+.hr.group_line.mb-1
+%div{style: "height: 600px"}
+  %canvas#feedback_chart
+
+  :javascript
+    generateFeedbackChart(#{@average_feedback_data}, #{@num_of_periods});
