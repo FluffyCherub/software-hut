@@ -106,3 +106,7 @@ function create_groups() {
 
   
 }
+
+function loadTooltips() {
+  $('[data-toggle="tooltip"]').tooltip();  
+}
