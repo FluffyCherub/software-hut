@@ -20,7 +20,7 @@
 #
 FactoryBot.define do
   factory :team_feedback_date do
-    teams { nil }
-    feedback_dates { nil }
+    created_at { DateTime.now() }
+    updated_at { DateTime.now() }
   end
 end
