@@ -130,7 +130,7 @@ class Team < ApplicationRecord
 
     #get all the active teams in the system
     active_teams = Team.where("status = ? OR status = ?", "active", "waiting_for_approval")
-    current_date = Time.now.utc + 1.hours
+    current_date = Time.now
 
     #get the last end date of feedback period for all active team
     active_teams.each do |team|
