@@ -7,7 +7,7 @@
 #  size           :integer
 #  status         :string           default("waiting_for_approval")
 #  toa_status     :string           default("in_progress")
-#  topic          :string
+#  topic          :string           default("none")
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  list_module_id :bigint
@@ -93,9 +93,6 @@ class Team < ApplicationRecord
                                                  "student",
                                                  "inactive").pluck(:id)
 
-    puts "----------------------------"
-    puts students_in_any_team_in_module
-    puts module_id
     if students_in_any_team_in_module[0] == nil
       students_in_module = User.joins(:list_modules)
                                .where("list_modules.id = ? AND
@@ -136,9 +133,17 @@ class Team < ApplicationRecord
     active_teams = Team.where("status = ? OR status = ?", "active", "waiting_for_approval")
     current_date = Time.now
 
+    puts "=============================="
+    
+
     #get the last end date of feedback period for all active team
     active_teams.each do |team|
       end_date = get_feedback_end_date(team.id)
+
+      puts "-------------"
+      puts "current time " + Time.now.to_s
+      puts "end time " + end_date.to_s
+      puts current_date - end_date
 
       #check if the active teams end date is in the past, if yes change teams status to inactive
       if current_date - end_date > 0
