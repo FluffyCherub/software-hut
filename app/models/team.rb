@@ -7,7 +7,7 @@
 #  size           :integer
 #  status         :string           default("waiting_for_approval")
 #  toa_status     :string           default("in_progress")
-#  topic          :string           default("none")
+#  topic          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  list_module_id :bigint
@@ -58,7 +58,7 @@ class Team < ApplicationRecord
   #returns array of User objects
   def self.get_students_not_in_team_but_in_module(module_id)
     students_in_any_team_in_module = User.joins(:list_modules, :teams)
-                                         .where("list_modules.id = ? AND 
+                                         .where("list_modules.id = ? AND
                                                  user_list_modules.privilege = ?",
                                                  module_id,
                                                  "student").pluck(:id)
@@ -66,27 +66,27 @@ class Team < ApplicationRecord
 
     if students_in_any_team_in_module[0] == nil
       students_in_module = User.joins(:list_modules)
-                               .where("list_modules.id = ? AND 
+                               .where("list_modules.id = ? AND
                                        user_list_modules.privilege = ?",
                                        module_id,
                                        "student"
                                        )
     else
       students_in_module = User.joins(:list_modules)
-                               .where("list_modules.id = ? AND 
+                               .where("list_modules.id = ? AND
                                       user_list_modules.privilege = ? AND
                                       users.id NOT IN (?)",
                                       module_id,
                                       "student",
                                       students_in_any_team_in_module)
     end
-    
+
     return students_in_module
   end
 
   def self.get_students_not_in_inactive_team_but_in_module(module_id)
     students_in_any_team_in_module = User.joins(:list_modules, :teams)
-                                         .where("teams.list_module_id = ? AND 
+                                         .where("teams.list_module_id = ? AND
                                                  user_list_modules.privilege = ? AND
                                                  teams.status = ?",
                                                  module_id,
@@ -98,21 +98,21 @@ class Team < ApplicationRecord
     puts module_id
     if students_in_any_team_in_module[0] == nil
       students_in_module = User.joins(:list_modules)
-                               .where("list_modules.id = ? AND 
+                               .where("list_modules.id = ? AND
                                        user_list_modules.privilege = ?",
                                        module_id,
                                        "student"
                                        )
     else
       students_in_module = User.joins(:list_modules)
-                               .where("list_modules.id = ? AND 
+                               .where("list_modules.id = ? AND
                                       user_list_modules.privilege = ? AND
                                       users.id NOT IN (?)",
                                       module_id,
                                       "student",
                                       students_in_any_team_in_module)
     end
-    
+
     return students_in_module
   end
 
@@ -121,8 +121,12 @@ class Team < ApplicationRecord
                                   .where("teams.id = ?",
                                           team_id)
                                   .order("feedback_dates.end_date DESC")
+    if feedback_dates.empty?
+      return nil
+    else
+      return feedback_dates[0].end_date
+    end
 
-    return feedback_dates[0].end_date
   end
 
   #run every minute, makes team go from active to inactive if the last feedback period ended
@@ -143,5 +147,5 @@ class Team < ApplicationRecord
     end
 
   end
-  
+
 end
