@@ -480,22 +480,15 @@ class PeerFeedback < ApplicationRecord
           end 
 
           #here email user
-          if team_members[k].username == "aca19dl"
-
-            if gave_feedback == true
-              UserMailer.peer_feedback_reminder(email, receiver_full_name, feedback_date, team_info, module_info).deliver
-              f_periods[i].update(reminder_sent: true)
-            end
-
-
-            
+          if gave_feedback == true
+            UserMailer.peer_feedback_reminder(email, receiver_full_name, feedback_date, team_info, module_info).deliver
+            f_periods[i].update(reminder_sent: true)
           end
+
         end
       end 
     end
   end
 
-  def self.feedback_period_open
-
-  end
+ 
 end
