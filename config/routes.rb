@@ -37,6 +37,8 @@ Rails.application.routes.draw do
   match "/student/profile/docs/old", to: "pages#student_profile_docs_old", via: :all
   match "/student/profile/select/module", to: "pages#student_profile_select_module", via: :all
   match "/feedback/old/show", to: "pages#feedback_old_show", via: :all
+  match "/send/feedback/mailmerge", to: "admin#send_feedback_mailmerge", via: :all
+  
   
 
 

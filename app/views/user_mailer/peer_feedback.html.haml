@@ -1,0 +1,101 @@
+- # View for peer feedback email
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 29/04/2021
+
+- content_for :title, "Peer Feedback"
+
+%form{id: "save_mailmerge", name: "save_mailmerge"}
+  .container.body_whole_custom
+    - # Replicate template provided by client - simple text, easy to edit
+    - # Set at department level
+    %hr.group_line
+    - period_dates = @feedback_date.start_date.strftime("%d/%m/%Y") + " - " + @feedback_date.end_date.strftime("%d/%m/%Y")
+    .container-fluid.bg_none.no_padding.text_black
+      %p.small Dear #{@receiver_full_name},
+      
+      %p.small Please see below your peer feedback for #{@module_info.code} - #{@module_info.name} for Week #{@period_number}. 
+      
+      %p.small 
+        Your team rated you across seven teamworking values, using the Department of Mechanical Engineering's Peer Evaluation Matrix. You can find this matrix here: 
+        %a{href: "https://tinyurl.com/TUoS-MEC-PFM1"} Peer Feedback Matrix
+
+      %p.small We encourage you to take the time to reflect on this feedback and to think about your strengths as a team member, and which areas you might want to improve.
+      
+      - # Custom text set by the module leader
+      %p.small
+        #{@module_info.mailmerge_message}
+      %p.small
+        Best wishes,
+        %br
+          #{@submitter_full_name}
+    
+    %hr.group_line
+
+    .container-fluid.bg_none.no_padding.text_black
+      %p.medium Peer Feedback for #{@receiver_full_name} for Week #{@period_number}
+      
+      %p.small
+        %strong
+          #{@feedback_descriptions[0][0] + ":"}
+        %br
+          #{@feedback_descriptions[0][1]}
+      
+      %p.small
+        %strong
+          #{@feedback_descriptions[1][0] + ":"}
+        %br
+          #{@feedback_descriptions[1][1]}
+      
+      %p.small
+        %strong
+          #{@feedback_descriptions[2][0] + ":"}
+        %br
+          #{@feedback_descriptions[2][1]}
+
+      %p.small
+        %strong
+          #{@feedback_descriptions[3][0] + ":"}
+        %br
+          #{@feedback_descriptions[3][1]}
+
+      %p.small
+        %strong
+          #{@feedback_descriptions[4][0] + ":"}
+        %br
+          #{@feedback_descriptions[4][1]}
+
+      %p.small
+        %strong
+          #{@feedback_descriptions[5][0] + ":"}
+        %br
+          #{@feedback_descriptions[5][1]}
+
+      %p.small
+        %strong
+          #{@feedback_descriptions[6][0] + ":"}
+        %br
+          #{@feedback_descriptions[6][1]}
+    
+
+    - # Additional feedback depending on level
+    - if @module_info.level == 5
+      %hr.group_line
+      .container-fluid.bg_none.no_padding.text_black
+        %p.medium PEER COMMENTS
+
+        %p.small
+          %strong
+            Things I appreciate about this group member:
+          - for i in 0...@appreciate_array.length
+            %br
+              #{@appreciate_array[i]}
+      
+        %p.small
+          %strong
+            Things I request from this group member:
+          - for i in 0...@request_array.length
+            %br
+              #{@request_array[i]}
+      
+
+

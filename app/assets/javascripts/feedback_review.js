@@ -73,3 +73,10 @@ function approve_feedback() {
 
   });
 }
+
+function send_feedback(module_id) {
+  $('#send_feedback_button').click(function(){
+    $.post('/send/feedback/mailmerge', { module_id: module_id }, function(data) {
+    });
+  });
+}

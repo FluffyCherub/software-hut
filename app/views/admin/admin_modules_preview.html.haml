@@ -46,7 +46,10 @@
           .container.col-xs-4.col-sm-3.no_padding_left.margin_none
             = f.button :submit, "Search", name:"search_button", class: "btn btn-primary agreement_buttons justify-content-center button_search_2 float_left", id:"search_choice"
           .container.col-xs-6.col-sm-3.no_padding_left.no_padding_right.margin_none.margin_left_auto
-            %button.medium{onclick: "window.open('/module_handbook','Handbook','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=650'); return false;", type: "button", name: "handbook _button",  class: "btn btn-primary agreement_buttons justify-content-center button_mailmerge_send_1", id:"submit_choice"}Send Feedback
+            - if @last_finished_period != nil && @last_finished_period.feedback_status == "approved"
+              %button.medium{type: "button", name: "send_feedback_button",  class: "btn btn-primary agreement_buttons justify-content-center button_mailmerge_send_1", id:"send_feedback_button"}Send Feedback
+            - else
+              %button.medium{type: "button", class: "btn btn-primary agreement_buttons justify-content-center button_mailmerge_send_1", disabled: true}Send Feedback
           .container.col-xs-1.col-sm-1.no_padding_left.no_padding_right.col-sm-1_special.no_padding.margin_none.padding_left_small
             %a.button.medium.btn.btn-primary.justify-content-center.agreement_buttons.button_mailmerge_edit.no_text{:href => feedback_mailmerge_edit_path(module_id: params[:module_id])} !!!
 
@@ -166,6 +169,7 @@
 
 :javascript
   no_file_selected();
+  send_feedback('#{params['module_id']}');
 
 - if ListModule.num_students_in_mod(params['module_id']) == 0
   :javascript

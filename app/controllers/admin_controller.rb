@@ -1276,4 +1276,58 @@ class AdminController < ApplicationController
 
   end
 
+  def send_feedback_mailmerge
+    module_id = params['module_id']
+
+    #latest finished feedback period for this module
+    last_finished_period = FeedbackDate.get_last_finished_period(Time.now, module_id)
+    last_feedback_status = last_finished_period.feedback_status
+
+    
+
+    #check if latest feedback is approved
+    if last_feedback_status == "not_approved"
+      render "errors/error_500"
+    elsif last_feedback_status == "approved"
+      period_number = FeedbackDate.get_period_number(last_finished_period.id)
+      module_info = ListModule.find(module_id.to_i)
+
+      #teams in this module, that are connected to the latest finished feedback period
+      teams_in_module = Team.joins(:feedback_dates)
+                            .where("teams.list_module_id = ? AND 
+                                    feedback_dates.id = ?", 
+                                    module_id,
+                                    last_finished_period.id)
+      
+      #loop through teams in module
+      for i in 0...teams_in_module.length
+
+        #get all team members
+        team_members = User.joins(:teams).where("teams.id = ?", teams_in_module[i].id)
+
+        #loop through all the team members
+        for j in 0...team_members.length
+          email = team_members[j].email
+          receiver_full_name = team_members[j].givenname + " " + team_members[j].sn
+          submitter_full_name = current_user.givenname + " " + current_user.sn
+          feedback_averages = PeerFeedback.get_average_feedback_data_for_period(team_members[j].username, teams_in_module[i].id, last_finished_period)
+          feedback_descriptions = PeerFeedback.array_int_to_feedback_long(feedback_averages)
+          appreciate_request = PeerFeedback.get_appreciate_request_for_student(team_members[j].username, teams_in_module[i].id, last_finished_period.id)
+          appreciate_array = appreciate_request[0]
+          request_array = appreciate_request[1]
+       
+          #sending an email with the correct peer feedback
+          UserMailer.peer_feedback(email, receiver_full_name, submitter_full_name, last_finished_period, feedback_descriptions, module_info, appreciate_array, request_array, period_number).deliver
+          
+        end
+      end
+
+      respond_to do |format|
+        format.js { render :js => "myAlertTopEditableSuccess(\"Emails with Peer feedback have been sent successfully!\");" }
+      end
+
+      
+    end
+  end
+
 end

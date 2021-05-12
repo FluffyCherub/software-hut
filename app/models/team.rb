@@ -133,17 +133,9 @@ class Team < ApplicationRecord
     active_teams = Team.where("status = ? OR status = ?", "active", "waiting_for_approval")
     current_date = Time.now
 
-    puts "=============================="
-    
-
     #get the last end date of feedback period for all active team
     active_teams.each do |team|
       end_date = get_feedback_end_date(team.id)
-
-      puts "-------------"
-      puts "current time " + Time.now.to_s
-      puts "end time " + end_date.to_s
-      puts current_date - end_date
 
       #check if the active teams end date is in the past, if yes change teams status to inactive
       if current_date - end_date > 0

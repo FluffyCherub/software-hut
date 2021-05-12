@@ -103,5 +103,25 @@ class FeedbackDate < ApplicationRecord
 
     return last_finished_period
   end
+
+  def self.get_period_number(feedback_date_id)
+    period_number = 0
+
+    #get a team connected to this feedback date
+    team = Team.joins(:feedback_dates).where("feedback_dates.id = ?", feedback_date_id).first
+
+    #get all feedback dates connected to this team
+    f_dates = FeedbackDate.joins(:teams).where("teams.id = ?", team.id).order("end_date DESC")
+
+    for i in 0...f_dates.length
+      
+      if f_dates[i].id = feedback_date_id
+        period_number = i+1
+      end
+
+    end
+
+    return period_number
+  end
   
 end
