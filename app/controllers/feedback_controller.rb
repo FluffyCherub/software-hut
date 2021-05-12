@@ -7,6 +7,11 @@
 
 class FeedbackController < ApplicationController
 
+  #called to change the current ability(used for cancancan)
+  def current_ability(module_privilege = "student")
+    @current_ability ||= Ability.new(current_user, module_privilege)
+  end
+
   #action used for saving/dispalying data to the feedback matrix
   def feedback_matrix
     #getting ids of module and team
@@ -162,6 +167,11 @@ class FeedbackController < ApplicationController
   #action for editing the mailmerge message(only module leader and admin)
   def feedback_mailmerge_edit
     module_id = params['module_id']
+
+    #checking if the current user has access to this page
+    current_ability(User.get_module_privilege(module_id, current_user.id))
+    authorize! :manage, :feedback_mailmerge_edit
+
     @module_info = ListModule.find(module_id.to_i)
 
     #if save button clicked, saving and dispaying alert

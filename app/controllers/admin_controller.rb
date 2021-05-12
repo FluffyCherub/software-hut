@@ -15,12 +15,17 @@ class AdminController < ApplicationController
   require 'active_support/core_ext'
   
   #called to change the current ability(used for cancancan)
-  def current_ability(module_privilege = "module_leader")
+  def current_ability(module_privilege = "student")
     @current_ability ||= Ability.new(current_user, module_privilege)
   end
 
   #the default page which an admin user gets redirected to
   def admin_page
+    if User.is_mod_lead(current_user.username)
+      current_ability("module_leader")
+    elsif User.is_ta(current_user.username)
+      current_ability("teaching_assistant_16")
+    end
     authorize! :manage, :admin_page
 
     #redirect to different admin subpages based on the button pressed
@@ -65,6 +70,11 @@ class AdminController < ApplicationController
   
   #correlates with the view for viewwing all modules inside the system
   def admin_modules
+    if User.is_mod_lead(current_user.username)
+      current_ability("module_leader")
+    elsif User.is_ta(current_user.username)
+      current_ability("teaching_assistant_16")
+    end
     authorize! :manage, :admin_modules
 
     #find the accroding entries in modules table based on search input
@@ -602,12 +612,12 @@ class AdminController < ApplicationController
 
     #getting teams for the current search input
     @groups_for_module = Team.left_outer_joins(:users).where("teams.list_module_id = ? AND
-                                                    (users.givenname LIKE ? OR
+                                                    ((users.givenname LIKE ? OR
                                                     users.sn LIKE ? OR
                                                     users.email LIKE ? OR
                                                     teams.name LIKE ? OR 
                                                     teams.topic LIKE ? OR
-                                                    users.username LIKE ? AND
+                                                    users.username LIKE ?) AND
                                                     (teams.status = ? OR teams.status = ?))",
                                                     @module_id,
                                                     "%" + search_input + "%",
@@ -650,6 +660,10 @@ class AdminController < ApplicationController
 
   def approve_teams
     module_id = params['module_id']
+
+    #checking if current user has privilege to access this page
+    current_ability(User.get_module_privilege(module_id, current_user.id))
+    authorize! :manage, :admin_modules_groups
 
     ListModule.approve_teams(module_id)
 
@@ -916,7 +930,7 @@ class AdminController < ApplicationController
 
     #getting the module information about the currently displayed module
     @module_info = ListModule.where("id = ?", module_id).first
-    @num_of_students = Team.get_students_not_in_inactive_team_but_in_module(module_id).length
+    @num_of_students = ListModule.num_students_in_mod(module_id)
 
     #checking if all teams in this modules are approved
     @all_teams_approved = ListModule.all_approved(@module_id)
@@ -943,7 +957,7 @@ class AdminController < ApplicationController
         num_of_dates = params['total_chq_period']
 
         #getting students that are not in any team in this module
-        students_in_mod = Team.get_students_not_in_inactive_team_but_in_module(module_id).shuffle
+        students_in_mod = ListModule.students_in_module(module_id).shuffle
 
         #create teams and randomly put students in them
         if params['random_free_join'].nil?
@@ -1145,7 +1159,7 @@ class AdminController < ApplicationController
             #here put students in newly created teams at random
 
             #getting students that are not in any team in this module
-            students_in_mod = Team.get_students_not_in_inactive_team_but_in_module(module_id).shuffle
+            students_in_mod = ListModule.students_in_module(module_id).shuffle
 
             num_students_in_teams = 0
 
@@ -1237,6 +1251,11 @@ class AdminController < ApplicationController
   def admin_modules_periods_edit
     @module_id = params['module_id']
 
+    #checking if the current user has access to this page
+    current_ability(User.get_module_privilege(@module_id, current_user.id))
+    authorize! :manage, :admin_modules_periods_edit
+
+
     #getting all future feedback periods for this module
     @not_started_f_periods = ListModule.get_future_feedback_periods(@module_id, Time.now)
 
@@ -1279,11 +1298,13 @@ class AdminController < ApplicationController
   def send_feedback_mailmerge
     module_id = params['module_id']
 
+    #checking if the current user has access to this page
+    current_ability(User.get_module_privilege(@module_id, current_user.id))
+    authorize! :manage, :send_feedback_mailmerge
+
     #latest finished feedback period for this module
     last_finished_period = FeedbackDate.get_last_finished_period(Time.now, module_id)
     last_feedback_status = last_finished_period.feedback_status
-
-    
 
     #check if latest feedback is approved
     if last_feedback_status == "not_approved"

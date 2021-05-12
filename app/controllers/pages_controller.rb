@@ -10,6 +10,11 @@ class PagesController < ApplicationController
 
   skip_authorization_check
 
+  #called to change the current ability(used for cancancan)
+  def current_ability(module_privilege = "student")
+    @current_ability ||= Ability.new(current_user, module_privilege)
+  end
+
   def home
     @current_nav_identifier = :home
   end
@@ -18,7 +23,7 @@ class PagesController < ApplicationController
   #admin/super admin => admin page
   #student/TA/module leader => modules page
   def index
-    if current_user.admin?
+    if current_user.admin? || User.is_ta_or_mod_lead(current_user.username)
       #redirect to the admin/super admin page
       redirect_to admin_path
     else
@@ -87,7 +92,9 @@ class PagesController < ApplicationController
   end
 
   def student_groups_join
-    authorize! :manage, :admin_modules_groups
+    #checking if the current user has access to this page
+    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
+    authorize! :manage, :student_groups_join
 
     if params['join_team_button'] == "join_team"
       UserTeam.put_student_in_team(current_user.id, params['team_id'])
@@ -155,6 +162,8 @@ class PagesController < ApplicationController
   end
 
   def student_profile_feedback_old
+    #checking if the current user has access to this page
+    authorize! :manage, :student_profile_feedback_old
 
     #getting modules wiith only inactive teams fo the current user
     @inactive_modules = ListModule.joins(:teams, :users)
@@ -191,6 +200,8 @@ class PagesController < ApplicationController
   end
 
   def student_profile_docs_old
+    #checking if the current user has access to this page
+    authorize! :manage, :student_profile_docs_old
 
     #modules with at least one inactive team inside of them for the current user
     @academic_years = ListModule.joins(:users)
@@ -203,6 +214,10 @@ class PagesController < ApplicationController
   end
 
   def student_profile
+    #checking if the current user has access to this page
+    authorize! :manage, :student_profile
+
+
     @full_name = current_user.givenname + " " +  current_user.sn
     @department = current_user.ou
     @username = current_user.username

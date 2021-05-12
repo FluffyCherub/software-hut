@@ -67,7 +67,7 @@ class User < ApplicationRecord
     if privilege != nil
       return privilege.privilege
     else
-      return privilege
+      return "student"
     end
   end
 
@@ -137,4 +137,48 @@ class User < ApplicationRecord
 
     return user.email
   end
+
+  #checks if user is a ta or mod lead for at least one module
+  def self.is_ta_or_mod_lead(username)
+    ta_or_mod_lead_modules = ListModule.joins(:users)
+                                       .where("user_list_modules.privilege = ? OR
+                                              user_list_modules.privilege LIKE ?",
+                                              "module_leader",
+                                              "%teaching_assistant%")
+
+    if ta_or_mod_lead_modules.length > 0
+      return true
+    else
+      return false
+    end
+  end
+
+  #checks if user is a mod lead for at least one module
+  def self.is_mod_lead(username)
+    mod_lead_modules = ListModule.joins(:users)
+                                  .where("user_list_modules.privilege = ?",
+                                        "module_leader")
+
+    if mod_lead_modules.length > 0
+      return true
+    else
+      return false
+    end
+  end
+
+  #checks if user is a ta for at least one module
+  def self.is_ta(username)
+    ta_modules = ListModule.joins(:users)
+                            .where("user_list_modules.privilege LIKE ?",
+                                  "%teaching_assistant%")
+
+    if ta_modules.length > 0
+      return true
+    else
+      return false
+    end
+  end
+
+
+
 end

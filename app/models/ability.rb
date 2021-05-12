@@ -33,6 +33,10 @@ class Ability
           can :manage, :admin_modules_groups_add
           can :manage, :admin_modules_groups_create
           can :manage, :add_remove_students_from_module
+          can :manage, :admin_modules_periods_edit
+          can :manage, :send_feedback_mailmerge
+          can :manage, :approve_teams
+          can :manage, :feedback_mailmerge_edit
         end
 
         #privileges for the student
@@ -41,11 +45,15 @@ class Ability
           can :manage, :toa_doc
           can :manage, :tmr_doc
           can :manage, :student_groups_join
+          can :manage, :student_profile
+          can :manage, :student_profile_feedback_old
+          can :manage, :student_profile_docs_old
         end
 
         #TEACHING ASSISTANT SECTION -----------------------------------------------------------
         #1 mail-merge feedback
-
+        # can :manage, :send_feedback_mailmerge
+        
         #2 teams with problems
         # can :manage, :admin_modules_groups
 
@@ -59,6 +67,8 @@ class Ability
         # can :manage, :admin_modules_groups_create
         # can :manage, :problems
         # can :manage, :add_remove_students_from_module
+        # can :manage, :admin_modules_periods_edit
+        # can :manage, :approve_teams
 
         if module_privilege.include? "teaching_assistant"
           can :manage, :admin_page
@@ -66,7 +76,8 @@ class Ability
           can :manage, :admin_modules_preview
 
           if module_privilege == "teaching_assistant_1"
-            
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
           end
 
           if module_privilege == "teaching_assistant_2"
@@ -87,9 +98,14 @@ class Ability
             can :manage, :admin_modules_groups_create
             can :manage, :problems
             can :manage, :add_remove_students_from_module
+            can :manage, :admin_modules_periods_edit
+            can :manage, :approve_teams
           end
 
           if module_privilege == "teaching_assistant_5"
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
+
             #2teams with problems
             can :manage, :admin_modules_groups
           end
@@ -113,14 +129,22 @@ class Ability
             can :manage, :admin_modules_groups_create
             can :manage, :problems
             can :manage, :add_remove_students_from_module
+            can :manage, :admin_modules_periods_edit
+            can :manage, :approve_teams
           end
 
           if module_privilege == "teaching_assistant_8"
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
+
             #3module edit/clone
             can :manage, :admin_modules_edit
           end
 
           if module_privilege == "teaching_assistant_9"
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
+
             #4managing teams
             can :manage, :admin_modules_groups
             can :manage, :admin_modules_groups_preview
@@ -141,9 +165,14 @@ class Ability
             can :manage, :admin_modules_groups_create
             can :manage, :problems
             can :manage, :add_remove_students_from_module
+            can :manage, :admin_modules_periods_edit
+            can :manage, :approve_teams
           end
 
           if module_privilege == "teaching_assistant_11"
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
+
             #2teams with problems
             can :manage, :admin_modules_groups
 
@@ -165,9 +194,14 @@ class Ability
             can :manage, :admin_modules_groups_create
             can :manage, :problems
             can :manage, :add_remove_students_from_module
+            can :manage, :admin_modules_periods_edit
+            can :manage, :approve_teams
           end
 
           if module_privilege == "teaching_assistant_13"
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
+
             #3module edit/clone
             can :manage, :admin_modules_edit
 
@@ -178,9 +212,14 @@ class Ability
             can :manage, :admin_modules_groups_create
             can :manage, :problems
             can :manage, :add_remove_students_from_module
+            can :manage, :admin_modules_periods_edit
+            can :manage, :approve_teams
           end
 
           if module_privilege == "teaching_assistant_14"
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
+
             #2teams with problems
             can :manage, :admin_modules_groups
 
@@ -191,9 +230,14 @@ class Ability
             can :manage, :admin_modules_groups_create
             can :manage, :problems
             can :manage, :add_remove_students_from_module
+            can :manage, :admin_modules_periods_edit
+            can :manage, :approve_teams
           end
 
           if module_privilege == "teaching_assistant_15"
+            #1 mail-merge feedback
+            can :manage, :send_feedback_mailmerge
+
             #2teams with problems
             can :manage, :admin_modules_groups
 
@@ -207,6 +251,8 @@ class Ability
             can :manage, :admin_modules_groups_create
             can :manage, :problems
             can :manage, :add_remove_students_from_module
+            can :manage, :admin_modules_periods_edit
+            can :manage, :approve_teams
           end
 
           if module_privilege == "teaching_assistant_16"

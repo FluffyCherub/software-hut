@@ -286,10 +286,36 @@ class ListModule < ApplicationRecord
     return inactive_teams
   end
 
+  def self.get_inactive_teams_for_user(module_id, username)
+
+    inactive_teams = Team.joins(:users)
+                          .where("teams.list_module_id = ? AND
+                                  teams.status = ? AND
+                                  users.username = ?",
+                                  module_id,
+                                  "inactive",
+                                  username)
+
+    return inactive_teams
+  end
+
   def self.get_modules_for_years(years, username)
     inactive_modules = ListModule.joins(:users)
                                   .where("users.username = ? AND
                                           list_modules.years = ?", 
+                                          username,
+                                          years)
+                                  .group(:id)
+                                  
+    return inactive_modules
+  end
+
+  def self.get_inactive_modules_for_years(years, username)
+    inactive_modules = ListModule.joins(:teams, :users)
+                                  .where("teams.status = ?
+                                          users.username = ? AND
+                                          list_modules.years = ?", 
+                                          "inactive",
                                           username,
                                           years)
                                   .group(:id)
