@@ -23,5 +23,14 @@ class UserMailer < ApplicationMailer
     mail(to: email,
          subject: 'Peer Feedback - ' + module_info.name + " - Week " + period_number.to_s)
   end
+
+  def peer_feedback_reminder(email, receiver_full_name, feedback_date, team_info, module_info)
+    @receiver_full_name = receiver_full_name
+    @feedback_date = feedback_date
+    @team_info = team_info
+    @module_info = module_info
+    mail(to: email,
+         subject: 'Peer Feedback Reminder - ' + module_info.name)
+  end
     
 end

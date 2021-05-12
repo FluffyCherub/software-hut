@@ -446,4 +446,56 @@ class PeerFeedback < ApplicationRecord
     
   end
 
+  #reminds students to do the peer feedback matrix one day before the deadline
+  def self.remind
+
+    #get feedback periods which need reminders sent
+    f_periods = FeedbackDate.where("feedback_dates.end_date < ? AND feedback_dates.end_date > ? AND reminder_sent = ?", Time.now + 1.days, Time.now, false)
+    
+    for i in 0...f_periods.length
+      #get all teams connected to the current feedback period
+      teams_to_remind = Team.joins(:feedback_dates).where("feedback_dates.id = ?", f_periods[i].id)
+
+      #get module info
+      module_info = ListModule.find(f_periods[i].list_module_id)
+
+      for j in 0...teams_to_remind.length
+
+        team_members = User.joins(:teams).where("teams.id = ?", teams_to_remind[j].id)
+        for k in 0...team_members.length
+          email = team_members[k].email
+          receiver_full_name = team_members[k].givenname + " " + team_members[k].sn
+          feedback_date = f_periods[i]
+          team_info = teams_to_remind[j]
+
+          gave_feedback = true
+          
+          for z in 0...team_members.length
+            if k != z
+              feedback = PeerFeedback.where(created_for: team_members[z].username, created_by: team_members[k].username)
+              if feedback.nil? || feedback.status != "finished"
+                gave_feedback = false
+              end
+            end
+          end 
+
+          #here email user
+          if team_members[k].username == "aca19dl"
+
+            if gave_feedback == true
+              UserMailer.peer_feedback_reminder(email, receiver_full_name, feedback_date, team_info, module_info).deliver
+              f_periods[i].update(reminder_sent: true)
+            end
+
+
+            
+          end
+        end
+      end 
+    end
+  end
+
+  def self.feedback_period_open
+
+  end
 end

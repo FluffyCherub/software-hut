@@ -26,4 +26,5 @@ set :output, "log/teams.log"
 
 every 1.minute do
   rake "team:status_update"
+  rake "peer_feedback_reminder:remind"
 end

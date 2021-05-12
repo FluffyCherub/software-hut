@@ -5,6 +5,7 @@
 #  id              :bigint           not null, primary key
 #  end_date        :datetime
 #  feedback_status :string           default("not_approved")
+#  reminder_sent   :boolean          default(FALSE)
 #  start_date      :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

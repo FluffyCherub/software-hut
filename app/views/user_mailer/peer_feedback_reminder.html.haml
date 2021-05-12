@@ -1,0 +1,26 @@
+- # View for peer feedback email
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 29/04/2021
+
+- content_for :title, "Peer Feedback Remainder"
+
+
+.container.body_whole_custom
+  %hr.group_line
+  - period_end_date =  @feedback_date.end_date.strftime("%I:%M %p %d/%m/%Y")
+  .container-fluid.bg_none.no_padding.text_black
+    %p.small Dear #{@receiver_full_name},
+    
+    %p.small 
+      This email is a remainder, that you should fill out and submit the Peer Feedback Matrix 
+      for #{@team_info.name} in module: #{@module_info.code} - #{@module_info.name}.
+      %br
+        You have until #{period_end_date} to do so.
+      %br
+      %br
+        Best wishes,
+        %br
+          The TeamWorks team
+  
+  
+
