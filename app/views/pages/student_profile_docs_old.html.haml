@@ -20,7 +20,7 @@
                 Academic Year #{@academic_years[i].years}
             %hr
             %ul
-              - inactive_modules = ListModule.get_inactive_modules_for_years(@academic_years[i].years, current_user.username)
+              - inactive_modules = ListModule.get_modules_for_years(@academic_years[i].years, current_user.username)
               - # Loop trough all past(inactive) modules for that academic year
               - for z in 0...inactive_modules.length
                 %li
@@ -28,7 +28,7 @@
                     #{inactive_modules[z].name}
                   %hr
                   %ul
-                    - inactive_teams = ListModule.get_inactive_teams_for_user(inactive_modules[z].id, current_user.username)
+                    - inactive_teams = ListModule.get_teams_for_user(inactive_modules[z].id, current_user.username)
                     - # Loop trough all the teams for that module
                     - for x in 0...inactive_teams.length
                       %li
@@ -44,7 +44,7 @@
                           %li
                             - # Display the download TOP option
                             %p.small
-                              - if inactive_teams[x].document.attached?
+                              - if inactive_teams[x].document.attached? && inactive_teams[x].toa_status == "finished"
                                 %i
                                   = link_to 'Team Operating Agreement - ' + inactive_teams[x].document.created_at.strftime("%d/%m/%Y").to_s, rails_blob_path(inactive_teams[x].document, disposition: "attachment")
                               - else

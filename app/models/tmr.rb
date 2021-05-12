@@ -66,7 +66,8 @@ class Tmr < ApplicationRecord
   end
 
   def self.get_all_tmr_for_team(team_id)
-    tmrs = Tmr.where(team_id: team_id)
+    tmrs = Tmr.where(team_id: team_id,
+                     status: "finished")
 
     return tmrs
   end

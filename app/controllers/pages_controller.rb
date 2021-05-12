@@ -193,10 +193,8 @@ class PagesController < ApplicationController
   def student_profile_docs_old
 
     #modules with at least one inactive team inside of them for the current user
-    @academic_years = ListModule.joins(:teams, :users)
-                                .where("teams.status = ? AND 
-                                        users.username = ?", 
-                                        "inactive", 
+    @academic_years = ListModule.joins(:users)
+                                .where("users.username = ?",  
                                         current_user.username)
                                 .group(:id)
                                 .select(:years).distinct
