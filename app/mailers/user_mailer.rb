@@ -32,5 +32,15 @@ class UserMailer < ApplicationMailer
     mail(to: email,
          subject: 'Peer Feedback Reminder - ' + module_info.name)
   end
+
+  def peer_feedback_open(email, receiver_full_name, feedback_date, module_info)
+    @receiver_full_name = receiver_full_name
+    @feedback_date = feedback_date
+    @module_info = module_info
+    mail(to: email,
+         subject: 'Feedback Period open - ' + module_info.name)
+  end
+
+
     
 end

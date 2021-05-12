@@ -490,5 +490,28 @@ class PeerFeedback < ApplicationRecord
     end
   end
 
- 
+  def self.feedback_period_open
+    #get feedback periods that are currently going
+    f_periods = FeedbackDate.where("start_date < ? AND end_date > ? AND period_open_sent = ?", Time.now, Time.now, false)
+
+    #loop thorugh all periods that are currently going on
+    for i in 0...f_periods.length
+
+      #get module connected to the current feedback date object
+      module_info = ListModule.find(f_periods[i].list_module_id)
+
+      students = FeedbackDate.get_all_connected_students(f_periods[i].id)
+
+      for j in 0...students.length
+        email = students[j].email
+        receiver_full_name = students[j].givenname + " " + students[j].sn
+        feedback_date = f_periods[i]
+
+        #send email
+        UserMailer.peer_feedback_open(email, receiver_full_name, feedback_date, module_info).deliver
+        f_periods[i].update(period_open_sent: true)
+      end
+      
+    end
+  end
 end

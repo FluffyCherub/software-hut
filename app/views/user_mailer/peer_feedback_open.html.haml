@@ -1,0 +1,26 @@
+- # View for peer feedback email
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 29/04/2021
+
+- content_for :title, "Feedback Period open"
+
+
+.container.body_whole_custom
+  %hr.group_line
+  - period_start_date =  @feedback_date.start_date.strftime("%I:%M %p %d/%m/%Y")
+  - period_end_date =  @feedback_date.end_date.strftime("%I:%M %p %d/%m/%Y")
+  .container-fluid.bg_none.no_padding.text_black
+    %p.small Dear #{@receiver_full_name},
+    
+    %p.small 
+      We would like to inform you, that a new feedback period in module: #{@module_info.code} - #{@module_info.name}, has started.
+      %br
+        You have until  #{period_end_date} to send feedback for your teammates.
+      %br
+      %br
+        Best wishes,
+        %br
+          The TeamWorks team
+  
+  
+

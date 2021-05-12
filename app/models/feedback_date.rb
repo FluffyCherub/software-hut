@@ -2,14 +2,15 @@
 #
 # Table name: feedback_dates
 #
-#  id              :bigint           not null, primary key
-#  end_date        :datetime
-#  feedback_status :string           default("not_approved")
-#  reminder_sent   :boolean          default(FALSE)
-#  start_date      :datetime
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  list_module_id  :bigint
+#  id               :bigint           not null, primary key
+#  end_date         :datetime
+#  feedback_status  :string           default("not_approved")
+#  period_open_sent :boolean          default(FALSE)
+#  reminder_sent    :boolean          default(FALSE)
+#  start_date       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  list_module_id   :bigint
 #
 # Indexes
 #
@@ -123,6 +124,16 @@ class FeedbackDate < ApplicationRecord
     end
 
     return period_number
+  end
+
+  def self.get_all_connected_students(feedback_date_id)
+
+    #get all teams connected to the feedback date
+    teams = Team.joins(:feedback_dates).where("feedback_dates.id = ?", feedback_date_id).group(:id).pluck(:id)
+
+    users = User.joins(:teams).where("teams.id IN (?)", teams).group(:id)
+
+    return users
   end
   
 end
