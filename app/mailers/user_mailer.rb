@@ -41,6 +41,19 @@ class UserMailer < ApplicationMailer
          subject: 'Feedback Period open - ' + module_info.name)
   end
 
+  def new_problem(email, receiver_full_name, created_by, module_info, team_info, current_time, problem_note)
+    @receiver_full_name = receiver_full_name
+    @created_by = created_by
+    @module_info = module_info
+    @team_info = team_info
+    @current_time = current_time
+    @problem_note = problem_note
+    mail(to: email,
+         subject: 'New Problem - ' + module_info.name)
+  end
+
+  
+
 
     
 end

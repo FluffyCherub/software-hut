@@ -322,4 +322,14 @@ class ListModule < ApplicationRecord
                                   
     return inactive_modules
   end
+
+  def self.get_mod_leads(module_id)
+    mod_leads = User.joins(:list_modules)
+                    .where("list_modules.id = ? AND 
+                            user_list_modules.privilege = ?",
+                            module_id, 
+                            "module_leader")
+
+    return mod_leads
+  end
 end

@@ -1,0 +1,28 @@
+- # View for new problem email notification
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 29/04/2021
+
+- content_for :title, "New Problem"
+
+
+.container.body_whole_custom
+  %hr.group_line
+  .container-fluid.bg_none.no_padding.text_black
+    %p.small Dear #{@receiver_full_name},
+    
+    %p.small 
+      There is a new problem submission created by #{@created_by.givenname} #{@created_by.sn} - #{@created_by.email}, at #{@current_time.strftime("%I:%M %p %d/%m/%Y")}.
+      %br
+      %br
+        %strong
+          Problem Note:
+      %br
+        #{@problem_note}
+      %br
+      %br
+        Best wishes,
+        %br
+          The TeamWorks team
+  
+  
+

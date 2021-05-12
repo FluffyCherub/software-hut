@@ -1195,7 +1195,6 @@ class AdminController < ApplicationController
 
       #--------------------------------FEEDBACK DATES SECTION--------------------------------#
 
-      
 
       #setting up new start and end dates for giving peer feedback
       dates_integrity = true
