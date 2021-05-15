@@ -872,22 +872,19 @@ class AdminController < ApplicationController
       search_input = params['search_input']
     end
 
-
-    #getting users that are in the module and match the search input
-    @users_in_module = User.joins(:list_modules).where("list_modules.id = ? AND
-                                                        (username LIKE ? OR
-                                                        givenname LIKE ? OR
-                                                        sn LIKE ? OR
-                                                        email LIKE ?)",
-                                                        module_id,
-                                                        "%" + search_input + "%",
-                                                        "%" + search_input + "%",
-                                                        "%" + search_input + "%",
-                                                        "%" + search_input + "%"
-                                                        )
          
     #getting users that are not in any team in this module
     @users_in_module_but_not_in_team = Team.get_students_not_in_team_but_in_module(module_id)
+
+    @users_in_module_but_not_in_team = @users_in_module_but_not_in_team.where("username LIKE ? OR
+                                                                              givenname LIKE ? OR
+                                                                              sn LIKE ? OR
+                                                                              email LIKE ?",
+                                                                              "%" + search_input + "%",
+                                                                              "%" + search_input + "%",
+                                                                              "%" + search_input + "%",
+                                                                              "%" + search_input + "%"
+                                                                              )
       
     #adding a student to a group
     if params['add_student_button'] == "add_student"

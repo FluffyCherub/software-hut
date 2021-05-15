@@ -57,14 +57,21 @@ class Team < ApplicationRecord
   #takes module_id(integer)
   #returns array of User objects
   def self.get_students_not_in_team_but_in_module(module_id)
+    teams_in_module = Team.where(list_module_id: module_id).pluck(:id)
+
+
     students_in_any_team_in_module = User.joins(:list_modules, :teams)
-                                         .where("list_modules.id = ? AND
-                                                 user_list_modules.privilege = ?",
-                                                 module_id,
-                                                 "student").pluck(:id)
+                                          .where("list_modules.id = ? AND
+                                                  user_list_modules.privilege = ? AND
+                                                  teams.id IN (?)",
+                                                  module_id,
+                                                  "student",
+                                                  teams_in_module).group(:id).pluck(:id)
 
+    #students_in_any_team_in_module = students_in_module.joins(:teams).group("users.id").pluck("users.username")
 
-    if students_in_any_team_in_module[0] == nil
+    puts students_in_any_team_in_module
+    if students_in_any_team_in_module.length == 0
       students_in_module = User.joins(:list_modules)
                                .where("list_modules.id = ? AND
                                        user_list_modules.privilege = ?",
