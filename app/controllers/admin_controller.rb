@@ -545,15 +545,11 @@ class AdminController < ApplicationController
     @has_active_teams = ListModule.has_active_teams(@module_id)
 
     #getting a list of ta's and modules leaders for assigning problems
-    @ta_and_mod_lead = []
-    users_in_module = ListModule.users_in_module(@module_id)
-    for i in 0..(users_in_module.length-1) 
-      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, @module_id)
-      current_user_names = users_in_module[i].givenname + " " + users_in_module[i].sn + " - " + users_in_module[i].username
-      if current_user_privilege.include?("teaching_assistant") || current_user_privilege.include?("module_leader")
-        @ta_and_mod_lead.append(current_user_names)
-      end
-    end
+    ta_and_mod_lead_object = ListModule.get_ta_and_mod_lead(@module_id)
+
+    @ta_and_mod_lead = ta_and_mod_lead_object.pluck("users.givenname || ' ' || users.sn || ' - ' || users.username")
+
+    @ta_and_mod_lead_usernames = ta_and_mod_lead_object.pluck(:username)
 
     #assigning and solving problems
     if params['problem_form'] != nil
@@ -1334,7 +1330,6 @@ class AdminController < ApplicationController
   end
 
   def remove_student_from_team
-    #{"student_remove_id"=>"91", "team_id"=>"76", "module_id"=>"12"}
     @student_to_remove_id = params['student_remove_id']
     @team_id = params['team_id']
     @module_id = params['module_id']
@@ -1346,6 +1341,79 @@ class AdminController < ApplicationController
 
     @team_members = Team.get_current_team_members(@team_id)
 
+    @team_header_div = "#team_header_" + @team_number
+
+    @has_unsolved_problems = Team.has_unsolved_problems(@team_id)
+    @has_assigned_problems = Team.has_assigned_problems(@team_id)
+
+    @team_object = Team.find(@team_id.to_i)
+
+    @team_current_size = Team.get_current_team_size(@team_object.id)
+    @team_size_limit = @team_object.size
+
+    respond_to do |format|
+      format.js {render layout: false}
+    end
+  end
+
+  def assign_solve_problem
+    puts "BOI1"
+    #{"problem_id"=>"3", "team_number"=>"4", "problem_number"=>"2", "assign_list"=>"usernametest11", "solve_button"=>"solve_button", "module_id"=>"11"}
+    @problem_id = params['problem_id']
+    @team_number = params['team_number']
+    @problem_number = params['problem_number']
+    @assign_list = params['assign_list']
+    @module_id = params['module_id']
+    @team_id = params['team_id']
+    @assign_button = params['assign_button']
+    @solve_button = params['solve_button']
+
+    
+    @team_object = Team.find(@team_id.to_i)
+
+
+    #assign problem if assign button was clicked
+    if @assign_button == "assign_button"
+      Problem.assign(@assign_list, @problem_id)
+      Problem.change_status(@problem_id, "assigned")
+    end
+
+
+    #solve problem if mark as solved was clicked
+    if @solve_button == "solve_button"
+      if Problem.is_assigned(@problem_id) == false
+        Problem.assign(current_user.username, @problem_id)
+      end
+
+      Problem.solve(current_user.username, @problem_id, Time.now)
+      Problem.change_status(@problem_id, "solved")
+    end
+
+
+    #get who is the problem assigned to
+    @assigned_to = User.get_first_last(Problem.assigned_to(@problem_id))
+
+    #get by who was the problem solved and the date
+    @solved_by = ""
+    @solved_on = ""
+    @problem_object = Problem.find(@problem_id.to_i)
+
+    if @problem_object.status == "solved"
+      @solved_by = User.get_first_last(@problem_object.solved_by)
+      @solved_on = @problem_object.solved_on.strftime("%I:%M %p %d/%m/%Y")
+    end
+
+    @problem_assigned_div = "#problem_assigned_" + @team_number + "_" + @problem_number
+    @problem_solved_div = "#problem_solved_info_" + @team_number + "_" + @problem_number
+    @team_header_div = "#team_header_" + @team_number
+    @assign_solve_buttons_div = "#assign_solve_buttons_" + (@team_number.to_i+1).to_s + "_" + (@problem_number.to_i+1).to_s
+
+    @has_unsolved_problems = Team.has_unsolved_problems(@team_id)
+    @has_assigned_problems = Team.has_assigned_problems(@team_id)
+
+    @team_current_size = Team.get_current_team_size(@team_object.id)
+    @team_size_limit = @team_object.size
+    
     respond_to do |format|
       format.js {render layout: false}
     end

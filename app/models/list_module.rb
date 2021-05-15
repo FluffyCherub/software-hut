@@ -332,4 +332,36 @@ class ListModule < ApplicationRecord
 
     return mod_leads
   end
+
+  #get all teaching assistants and module leaders for a module(User objects)
+  def self.get_ta_and_mod_lead(module_id)
+    ta_and_mod_lead = User.joins(:list_modules)
+                          .where("list_modules.id = ? AND 
+                                  (user_list_modules.privilege = ? OR 
+                                  user_list_modules.privilege LIKE ?)",
+                                  module_id,
+                                  "module_leader",
+                                  "%teaching_assistant%")
+
+    return ta_and_mod_lead
+  end
+
+  #get all teaching assistants and module leaders for a module(full name and email)
+  def self.get_ta_and_mod_lead_names_username(module_id)
+    ta_and_mod_lead = User.joins(:list_modules)
+                          .where("list_modules.id = ? AND 
+                                  (user_list_modules.privilege = ? OR 
+                                  user_list_modules.privilege LIKE ?)",
+                                  module_id,
+                                  "module_leader",
+                                  "%teaching_assistant%")
+
+    result = []
+
+    for i in 0...ta_and_mod_lead.length
+      result.append(ta_and_mod_lead[i].givenname + " " + ta_and_mod_lead[i].sn + " - " + ta_and_mod_lead[i].username)
+    end
+
+    return result
+  end
 end

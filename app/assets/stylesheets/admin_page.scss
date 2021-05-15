@@ -49,3 +49,7 @@
 
 //rgb(31, 20, 93);
 //rgb(0, 159, 218);
+
+.no_after:after {
+  content: none !important;
+}

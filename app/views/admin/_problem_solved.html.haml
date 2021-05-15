@@ -1,0 +1,6 @@
+%p Solved by: #{@solved_by}
+%p Solved on: #{@solved_on}
+
+- if @assign_button.nil?
+  :javascript
+    myAlertTopEditableSuccess("Problem has been marked as solved!")

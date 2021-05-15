@@ -159,4 +159,27 @@ class Team < ApplicationRecord
     user_team_connection.first.destroy
   end
 
+  #check if team has at least one unsolved problem(red dot)
+  def self.has_unsolved_problems(team_id)
+    problems = Problem.where(team_id: team_id.to_i,
+                             status: "unsolved")
+
+    if problems.length > 0
+      return true
+    else
+      return false
+    end
+  end
+
+  #check if team has at least one assigned problem(yellow dot)
+  def self.has_assigned_problems(team_id)
+    problems = Problem.where(team_id: team_id.to_i,
+                             status: "assigned")
+
+    if problems.length > 0
+      return true
+    else
+      return false
+    end
+  end
 end

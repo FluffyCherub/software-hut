@@ -1,0 +1,6 @@
+- if @has_unsolved_problems
+  %span.dot_red
+- elsif @has_assigned_problems
+  %span.dot_yellow
+
+#{@team_current_size}/#{@team_size_limit}

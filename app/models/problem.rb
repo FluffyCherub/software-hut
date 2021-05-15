@@ -54,11 +54,11 @@ class Problem < ApplicationRecord
   #solve a problem
   #takes username(string) and problem_id(integer)
   #returns void
-  def self.solve(username, problem_id)
+  def self.solve(username, problem_id, current_time)
     current_problem = Problem.where(id: problem_id)
 
     current_problem.update(solved_by: username,
-                           solved_on: Time.zone.now,
+                           solved_on: current_time,
                            )
   end
 
@@ -73,6 +73,13 @@ class Problem < ApplicationRecord
     else
       return false
     end
+  end
+
+  #get username of the person a problem is assigned to
+  def self.assigned_to(problem_id)
+    assigned_to = Problem.find(problem_id.to_i).assigned_to
+
+    return assigned_to
   end
 
 end

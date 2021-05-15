@@ -1,0 +1,15 @@
+- if @problem_object.status != "solved"
+  Problem #{@problem_number.to_i+1} - Assigned to #{@assigned_to}
+- else
+  Problem #{@problem_number.to_i+1}
+
+- if @problem_object.status == "unsolved"
+  %span.dot_red.float_right
+- elsif @problem_object.status == "assigned"
+  %span.dot_yellow.float_right
+- elsif @problem_object.status == "solved"
+  %span.dot_green.float_right
+
+- if @solve_button.nil?
+  :javascript
+    myAlertTopEditableSuccess("Problem has been assigned to: " + '#{@problem_object.assigned_to}')

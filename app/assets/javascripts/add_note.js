@@ -26,14 +26,19 @@ function add_note_function() {
         // get the value inside the text field
         var note_value = $(textarea_id).val();
 
-        var problem_id_value = $(problem_id).val();
-        var team_number_value = $(team_number).val();
-        var problem_number_value = $(problem_number).val();
-  
-        $.post('/problem_notes', { new_note: note_value, problem_id: problem_id_value, problem_number: problem_number_value, team_number: team_number_value }, function(data) {
-            // log the result from the server, or whatever...
-            
-        });
+        if(note_value == null || note_value.length == 0) {
+          myAlertTopEditableError("Note cannot be empty!")
+        }
+        else {
+          var problem_id_value = $(problem_id).val();
+          var team_number_value = $(team_number).val();
+          var problem_number_value = $(problem_number).val();
+    
+          $.post('/problem_notes', { new_note: note_value, problem_id: problem_id_value, problem_number: problem_number_value, team_number: team_number_value }, function(data) {
+          });
+        }
+
+        
       });
     }
   }

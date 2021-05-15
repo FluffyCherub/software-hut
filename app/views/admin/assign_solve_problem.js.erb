@@ -1,0 +1,10 @@
+$("<%= @problem_assigned_div %>").html("<%= escape_javascript(render partial: 'admin/problem_assigned') %>");
+
+$("<%= @problem_solved_div %>").html("<%= escape_javascript(render partial: 'admin/problem_solved') %>");
+
+$("<%= @team_header_div %>").html("<%= escape_javascript(render partial: 'admin/team_header') %>");
+
+<% if @problem_object.status == "solved" %>
+  $("<%= @assign_solve_buttons_div %>").empty();
+<% end %>
+
