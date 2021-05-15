@@ -224,12 +224,14 @@ class PagesController < ApplicationController
     @email = current_user.email
 
     @active_modules = ListModule.joins(:users, :teams)
-                         .where("users.username = ? AND 
-                                 user_list_modules.privilege = ?", 
-                                 current_user.username,
-                                 "student",
-                                  )
-                         .group(:id)
+                                .where("users.username = ? AND 
+                                        user_list_modules.privilege = ? AND
+                                        teams.status = ?", 
+                                        current_user.username,
+                                        "student",
+                                        "active"
+                                          )
+                                .group(:id)
 
   end
 
