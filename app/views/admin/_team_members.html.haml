@@ -1,0 +1,43 @@
+- current_team_users = @team_members
+- if current_team_users.length <= 0
+  .container.no_results
+    %h.center_element.bigger.text_black No students in the team
+- else
+  .container-fluid.bg_none.overflow_style.scroll_down.no_padding.table_div
+    %table.table.table-hover.table-dark 
+      %tbody
+        %tr.medium
+          %th.black_text{:colspan => "1", :style => "width: 5%;"} #
+          %th.black_text{:colspan => "1", :style => "width: 30%;"} Name
+          %th.black_text.center_element{:colspan => "1", :style => "width: 10%;"} Username
+          %th.black_text.center_element{:colspan => "1", :style => "width: 20%;"} Email
+          %th.black_text.center_element{:colspan => "1", :style => "width: 15%;"} Last Login
+          %th.black_text.center_element{:colspan => "4", :style => "width: 20%;"} Action
+          - current_team_users.to_a.each_with_index do |user, index|
+            - if user[:givenname] == nil  
+              - user[:givenname] = ""
+            - if user[:sn] == nil 
+              - user[:sn] = ""
+            - whole_name = user[:givenname] + " " + user[:sn]
+            %tr.small.hover_color
+              - form_id = "remove_student_form_" + user[:id].to_s
+              = form_tag remove_student_from_team_path(module_id: @module_id), :method => :post, :id => form_id, remote: true do
+                %input#user_remove_id{name: "student_remove_id", type: "hidden", value: user[:id], form: form_id}
+                %input#team_id{name: "team_id", type: "hidden", value: @team_id, form: form_id}
+                %input#team_number{name: "team_number", type: "hidden", value: @team_number, form: form_id}
+                - last_login = user[:last_sign_in_at]
+                - if last_login.nil?
+                  - last_login = ""
+                - else
+                  - last_login = user[:last_sign_in_at].strftime("%d/%m/%Y")
+                %td{:colspan => "1", :style => "width: 5%;"} #{index+1}
+                %td{:colspan => "1", :style => "width: 30%;"} #{whole_name}
+                %td.center_element{:colspan => "1", :style => "width: 10%;"} #{user[:username]}
+                %td.center_element{:colspan => "1", :style => "width: 20%;"} #{user[:email]}
+                %td.center_element{:colspan => "1", :style => "width: 15%;"} #{last_login}
+                %td.center_element{:colspan => "1", :style => "width: 20%;"} 
+                  - if can? :manage, :admin_modules_groups_add
+                    %button{type: "submit", name: "remove_student_button", form: form_id, class: "btn btn-primary action_buttons justify-content-center small", id:"remove_user_button", value: "remove_student"}Remove Student
+
+:javascript
+  myAlertTopEditableSuccess("User removed successfully");

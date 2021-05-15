@@ -145,4 +145,11 @@ class Team < ApplicationRecord
 
   end
 
+  def self.remove_student(user_id, team_id)
+    user_team_connection = UserTeam.where(user_id: user_id,
+                                          team_id: team_id)
+
+    user_team_connection.first.destroy
+  end
+
 end

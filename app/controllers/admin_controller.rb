@@ -642,20 +642,6 @@ class AdminController < ApplicationController
       redirect_to admin_modules_groups_path(module_id: mod_id, search_input: params['search_form']['search_input'], search_type: params['search_form']['search_type'])
     end
 
-    #removing a student from a group
-    if params['remove_student_button'] == "remove_student"
-     
-      user_to_remove = UserTeam.where("user_id = ? AND team_id =?",
-                                       params['student_remove_id'],
-                                       params['team_id'])
-
-      if user_to_remove != nil
-        user_to_remove.first.destroy
-      end
-
-      redirect_back(fallback_location: root_path)
-    end
-
   end
 
   def approve_teams
@@ -1347,6 +1333,24 @@ class AdminController < ApplicationController
       end
 
       
+    end
+  end
+
+  def remove_student_from_team
+    #{"student_remove_id"=>"91", "team_id"=>"76", "module_id"=>"12"}
+    @student_to_remove_id = params['student_remove_id']
+    @team_id = params['team_id']
+    @module_id = params['module_id']
+    @team_number = params['team_number']
+
+    @div_name = "#team_" + @team_number
+
+    Team.remove_student(@student_to_remove_id, @team_id)
+
+    @team_members = Team.get_current_team_members(@team_id)
+
+    respond_to do |format|
+      format.js {render layout: false}
     end
   end
 
