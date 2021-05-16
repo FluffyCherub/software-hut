@@ -179,55 +179,6 @@ class AdminController < ApplicationController
       mod_id = params['search_form']['form_module_id']
       redirect_to admin_modules_preview_path(module_id: mod_id, search_input: params['search_form']['search_input'])
     end
-
-
-    if params['add_user_button'] == "add_user"
-      add_username = params['add_username']
-      add_email = params['add_email']
-      add_first_name = params['add_first_name']
-      add_last_name = params['add_last_name']
-
-      #check if all the fields were provided
-      if add_username.length>0 && add_email.length>0 && add_first_name.length>0 && add_last_name.length>0 && add_email.include?('@') == false
-
-        #check if user with this username doesn't exist in the system
-        check_user_exist = User.where("username = ?",
-                                      add_username
-                                      )
-
-        user_to_add = ''
-        #if user does not exist, create him
-        if check_user_exist.length == 0 && add_username != nil
-          user_to_add = User.create(username: add_username,
-                                    email: add_email,
-                                    givenname: add_first_name,
-                                    sn: add_last_name)
-        else
-          user_to_add = User.where("username = ?",
-                                    add_username
-                                    ).first
-        end
-
-        #add the user to the module if he is not already in it
-        check_user_in_module = User.joins(:list_modules).where("users.username = ? AND list_modules.id = ?",
-                                                                add_username,
-                                                                params[:module_id])
-
-        if check_user_in_module.length == 0
-          UserListModule.find_or_create_by(list_module_id: params[:module_id],
-                                          user_id: user_to_add.id,
-                                          privilege: "student")
-        elsif ListModule.privilege_for_module(add_username, params[:module_id]) == "suspended"
-          get_privilege = UserListModule.where(list_module_id: params[:module_id],
-                                                user_id: user_to_add.id
-                                                )
-
-          get_privilege.update(privilege: "student")
-        end
-      else
-        #popup one of the values was not provided, so user not created
-      end
-    end
   
   end
 
@@ -1417,6 +1368,99 @@ class AdminController < ApplicationController
     respond_to do |format|
       format.js {render layout: false}
     end
+  end
+
+  def add_individual_user
+    user_integrity = true
+
+    add_username = params['add_username']
+    add_email = params['add_email']
+    add_first_name = params['add_first_name']
+    add_last_name = params['add_last_name']
+
+    #check if all the fields were provided
+    if add_username.length>0 && add_email.length>0 && add_first_name.length>0 && add_last_name.length>0 && add_email.include?('@') == false
+
+      #check if user with this username doesn't exist in the system
+      check_user_exist = User.where("username = ?",
+                                    add_username
+                                    )
+
+      user_to_add = ''
+      #if user does not exist, create him
+      if check_user_exist.length == 0 && add_username != nil
+        user_to_add = User.create(username: add_username,
+                                  email: add_email,
+                                  givenname: add_first_name,
+                                  sn: add_last_name)
+      else
+        user_to_add = User.where("username = ?",
+                                  add_username
+                                  ).first
+      end
+
+      #add the user to the module if he is not already in it
+      check_user_in_module = User.joins(:list_modules).where("users.username = ? AND list_modules.id = ?",
+                                                              add_username,
+                                                              params[:module_id])
+
+      if check_user_in_module.length == 0
+        UserListModule.find_or_create_by(list_module_id: params[:module_id],
+                                        user_id: user_to_add.id,
+                                        privilege: "student")
+      elsif ListModule.privilege_for_module(add_username, params[:module_id]) == "suspended"
+        get_privilege = UserListModule.where(list_module_id: params[:module_id],
+                                              user_id: user_to_add.id
+                                              )
+
+        get_privilege.update(privilege: "student")
+        
+      else
+        user_integrity = false
+
+        #popup this user is already in this module
+        respond_to do |format|
+          format.js { render :js => "myAlertTopEditableError(\"This user is already in this module.\")" }
+        end
+      end
+    else
+      user_integrity = false
+
+      #popup one of the values was not provided
+      if add_username.length == 0
+        respond_to do |format|
+          format.js { render :js => "myAlertTopEditableError(\"Please provide a username.\")" }
+        end
+      elsif add_email.length == 0
+        respond_to do |format|
+          format.js { render :js => "myAlertTopEditableError(\"Please provide an email.\")" }
+        end
+      elsif add_first_name.length == 0
+        respond_to do |format|
+          format.js { render :js => "myAlertTopEditableError(\"Please provide a first name.\")" }
+        end
+      elsif add_last_name.length == 0
+        respond_to do |format|
+          format.js { render :js => "myAlertTopEditableError(\"Please provide a last name.\")" }
+        end
+      elsif add_email.include?('@') == true
+        respond_to do |format|
+          format.js { render :js => "myAlertTopEditableError(\"Please provide an email without the domain.\")" }
+        end
+
+      end
+
+
+    end
+
+
+    if user_integrity
+      respond_to do |format|
+        format.js { render :js => "myAlertTopEditableSuccess(\"User added to module successfully!\")" }
+      end
+    end
+
+
   end
 
 end

@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   match "/send/feedback/mailmerge", to: "admin#send_feedback_mailmerge", via: :all
   match "/remove/student/from/team", to: "admin#remove_student_from_team", via: :all
   match "/assign/solve/problem", to: "admin#assign_solve_problem", via: :all
+  match "/add/individual/user", to: "admin#add_individual_user", via: :all
   
   
 
