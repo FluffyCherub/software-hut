@@ -32,5 +32,171 @@
 require 'rails_helper'
 
 RSpec.describe PeerFeedback, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before :all do
+    
+    @user = create(:user, id: 1, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
+    @user2 = create(:user, id: 2, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
+    @user3 = create(:user, id: 3, givenname: 'Andy', sn: 'Brock', username: 'efg14ij', email: 'abrock1@sheffield.ac.uk')
+    @user9 = create(:user, id: 4, givenname: 'Wendy', sn: 'Boby', username: '123561', email: 'wboby2@sheffield.ac.uk')
+    @listmodule = create(:list_module, id: 1)
+    
+    #create team
+    @team1 = create(:team,  id: 1, size: 3, list_module_id: 1)
+
+    #fill the teams
+    @userteam1 = create(:user_team, id: 1, team_id: 1, user_id: 1)
+    @userteam2 = create(:user_team, id: 2, team_id: 1, user_id: 2)
+    @userteam3 = create(:user_team, id: 3, team_id: 1, user_id: 3)
+
+
+    # creates some feedbacks
+    @feedback_date = create(:feedback_date, id: 2, created_at: Time.new(2021, 5, 8) ,updated_at: Time.new(2021, 5, 15), list_module_id: 1)
+    @team_feedback_date1 = create(:team_feedback_date, id: 1, feedback_date_id: 2, team_id: 1)
+
+    @feedback13 = create(:peer_feedback, id:1, created_by: @user.username, created_for: @user3.username, feedback_date_id: 2,\
+      attendance:1, attitude:2, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, \
+      appreciate_edited: 'good job!', request_edited:'no'
+      )
+    @feedback23 = create(:peer_feedback, id:2, created_by: @user2.username, created_for: @user3.username, feedback_date_id: 2,\
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete', \
+      appreciate_edited: 'good job2!', request_edited:'no2')
+    @feedback21 = create(:peer_feedback, id:3, created_by: @user2.username, created_for: @user.username, feedback_date_id: 2,\
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
+    @feedback22 = create(:peer_feedback, id:4, created_by: @user2.username, created_for: @user2.username, feedback_date_id: 2,\
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
+      
+    @feedback31 = create(:peer_feedback, id:5, created_by: @user3.username, created_for: @user.username, feedback_date_id: 2,\
+    attendance:4, attitude:4, qac:4, communication:4, collaboration:4, leadership:4, ethics:4, status: 'complete')
+    @feedback32 = create(:peer_feedback, id:6, created_by: @user3.username, created_for: @user2.username, feedback_date_id: 2,\
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
+    @feedback33 = create(:peer_feedback, id:7, created_by: @user3.username, created_for: @user3.username, feedback_date_id: 2,\
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3)
+
+    # unused feedback date
+    @feedback_date2 = create(:feedback_date, id: 3, created_at: Time.new(2021, 5, 22) ,updated_at: Time.new(2021, 5, 29), list_module_id: 1)
+
+  end
+  describe '#feedback_to_int' do
+    it 'return the id of the feedback type' do
+      expect(PeerFeedback.feedback_to_int("unsatisfactory")).to eq 1
+      expect(PeerFeedback.feedback_to_int("needs_improvement")).to eq 2
+      expect(PeerFeedback.feedback_to_int("meets_expectations")).to eq 3
+      expect(PeerFeedback.feedback_to_int("exceeds_expectations")).to eq 4
+    end
+    it 'return nil id if no/false input is given' do
+      expect(PeerFeedback.feedback_to_int()).to eq nil
+      expect(PeerFeedback.feedback_to_int('anytThing')).to eq nil
+    end
+  end
+  describe '#get_feedback_array_for_user' do
+    it 'return the list of feedback items from user i to user j at time t' do
+      expect(PeerFeedback.get_feedback_array_for_user(@user.username, @user3.username, @feedback_date.id)).to eq \
+        [@feedback13.attendance, @feedback13.attitude, @feedback13.qac, @feedback13.communication, @feedback13.collaboration, @feedback13.leadership, @feedback13.ethics]
+
+    end
+    it 'return nil when no feedback matches the query' do
+      expect(PeerFeedback.get_feedback_array_for_user(@user.username, @user2.username, @feedback_date.id)).to eq nil
+    end
+  end
+  describe '#get_feedback_for_user' do
+    it 'return feedback object from user i to user j at time t' do
+      expect(PeerFeedback.get_feedback_for_user(@user.username, @user3.username, @feedback_date.id)).to eq [@feedback13]
+    end
+    it 'return nil when no feedback matches the query' do
+      expect(PeerFeedback.get_feedback_for_user(@user.username, @user2.username, @feedback_date.id)).to eq nil
+    end
+  end
+  describe '#get_feedback_for_user_by_date' do
+    it 'return feedback object to user j at time t' do
+      expect(PeerFeedback.get_feedback_for_user_by_date(@user3.username, @feedback_date.id)).to include(@feedback13, @feedback23)
+    end
+    it 'return nil when no feedback matches the query' do
+      expect(PeerFeedback.get_feedback_for_user_by_date(@user9.username, @feedback_date.id)).to eq nil
+    end
+  end
+  
+  describe '#check_feedback_completion' do
+    it 'return true when all students complete feedback from user i' do
+      student_list = [@user, @user2, @user3]
+      expect(PeerFeedback.check_feedback_completion(student_list, @user2.username, @feedback_date.id)).to eq true
+    end
+    it 'return false when exist students NOT given feedback to another student' do
+      student_list = [@user, @user2, @user3]
+      expect(PeerFeedback.check_feedback_completion(student_list, @user.username, @feedback_date.id)).to eq false
+    end
+    it 'return false when exist students feedback NOT complete' do
+      student_list = [@user, @user2, @user3]
+      expect(PeerFeedback.check_feedback_completion(student_list, @user3.username, @feedback_date.id)).to eq false
+    end
+    it 'return true when empty student list given' do
+      expect(PeerFeedback.check_feedback_completion([], @user.username, @feedback_date.id)).to eq true
+    end
+  end
+
+
+  describe '#array_int_to_feedback_long' do
+    it 'return the text of the feedback' do
+      expect(PeerFeedback.array_int_to_feedback_long(
+        [0,1, 3, 2, 2, \
+        2, 2, 4]
+      )).to eq [
+        ["Attendance and Punctuality", "You have had one of more absences or late arrivals to scheduled team activities and have not explained these to the team. You may have let other commitments impact your contribution. Your performance is detracting from the team’s work."],
+        ["Attitude and Commitment",     "You bring a positive attitude to the team, are generally focused, and work hard most of the time. You you are undertaking your fair share of the workload, and complete work to the agreed schedule."],
+        ["Quality, accuracy and completeness",     "You have not made as much progress as you could have done with your contributions. Work that has been completed is on the right lines, but needs checking for basic errors. You need to put in extra effort to complete work to the standard agreed in our team vision/mission."],
+        ["Communication",    "Your contribution is patchy with minimal input to discussions and generally poor responses to messages. You do not always listen effectively to others, and need to think about how you share important information the rest of the team needs to succeed."],
+        ["Collaboration",     "You come across abrupt and offhand, and tend to work in isolation without consulting the team. You are not receptive to feedback from others. You may sometimes cause conflicts within the team and could do more to help the team work together."],
+        ["Leadership",     "You did not make much contribution to setting team goals, and focus on your own contributions rather than the overall objectives. Your input to idea generation and problem solving is minimal."],
+        ["Professionalism and ethics",     "You are a role model for others, behaving professionally and ethically even in difficult circumstances. You take great care to ensure that your interactions with others are positive and do not have a negative impact."]
+      ]
+    end
+  end
+
+
+  describe '#get_average_feedback_data' do
+    it 'return the correct output (average feedback, number of period, feedback id, ...) of user i in team j' do
+      result = PeerFeedback.get_average_feedback_data(@user.username, @team1.id)
+      expect(result[0]).to eq [[3.5714285714285716], [3.5], [3.5], [3.5], [4.0], [4.0], [3.0], [3.5]]
+      expect(result[1]).to eq 1
+      expect(result[2]).to eq [4, 4, 4, 4, 4, 4, 3, 4]
+      expect(result[3]).to include(@user2, @user3) # users in team without the query user
+      expect(result[4]).to include(@user, @user2, @user3) # users in team
+    end
+    it 'return the empty output when user i not in team j' do
+      result = PeerFeedback.get_average_feedback_data(@user9.username, @team1.id)
+      for i in 0...8
+        expect(result[0][i][0].to_f.nan?).to eq true
+      end
+      expect(result[1]).to eq 1
+      for i in 0...8
+        expect(result[2][i].to_f.nan?).to eq true
+      end
+      expect(result[3]).to include(@user, @user2, @user3)
+      expect(result[4]).to include(@user, @user2, @user3)
+    end
+  end
+
+  describe '#get_average_feedback_data_for_period' do
+    it 'return the average feedback of user i in team j at time k' do
+      expect(PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date)).to eq [4, 4, 4, 4, 4, 4, 3, 4]
+
+    end
+    # it 'return the average feedback of user i in team j at time k if there is no feedback' do
+    #   results = PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date2)
+    #   # expect(results).to eq nil
+    #   for i in 0...8
+    #     expect(result[i].to_f.nan?).to eq true
+    #   end
+    # end
+  end
+
+  
+  describe '#get_appreciate_request_for_student' do
+    it 'return the appreciate/request from other students in the team' do
+      expect(PeerFeedback.get_appreciate_request_for_student(@user3.username, @team1.id, @feedback_date)).to include(["good job!", "good job2!"], ["no", "no2"])
+    end
+    it 'return an empty feedback if no appreciate/request get' do
+      expect(PeerFeedback.get_appreciate_request_for_student(@user.username, @team1.id, @feedback_date)).to eq [["", ""], ["", ""]]
+    end
+  end
+
 end
