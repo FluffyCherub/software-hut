@@ -38,3 +38,25 @@
       - # Submiting the form
       = f.button :submit, "Edit", name:"edit_module_button", class: "btn btn-primary agreement_buttons justify-content-center button_create_module float_left special_margin_top", id:"submit_choice"
       = f.button :submit, "Clone", name:"clone_module_button", class: "btn btn-primary agreement_buttons justify-content-center button_create_module float_left margin_left_small special_margin_top", id:"submit_choice"
+
+- # Alerts
+.myAlert-top-success.alert.alert-success
+  %strong Module edited successfully!
+
+.myAlert-top-success2.alert.alert-success
+  %strong Module cloned successfully!
+
+.myAlert-top-unknown.alert.alert-danger
+  %strong Something went wrong! Please try again!
+
+.myAlert-top-error-1.alert.alert-warning
+  %strong Please enter a Module Name
+
+.myAlert-top-error-2.alert.alert-warning
+  %strong Please enter a Module Code
+
+.myAlert-top-error-3.alert.alert-warning
+  %strong Please enter a Description
+
+.myAlert-top-error-4.alert.alert-warning
+  %strong This Module already exists
