@@ -337,12 +337,12 @@ class AdminController < ApplicationController
           
           #popup that module was updated successfully
           respond_to do |format|
-            format.js { render :js => "myAlertTopSuccess();" }
+            format.js { render :js => "myAlertTopEditableSuccess(\"Module edited successfully!\")" }
           end
         else
           #popup that this module already exists
           respond_to do |format|
-            format.js { render :js => "myAlertTopError4();" }
+            format.js { render :js => "myAlertTopEditableError(\"This Module already exists.\")" }
           end
         end
 
@@ -352,15 +352,15 @@ class AdminController < ApplicationController
         #popups for missing fields
         if module_name.nil? || module_name.length == 0
           respond_to do |format|
-            format.js { render :js => "myAlertTopError1();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter the Module Name.\")" }
           end
         elsif module_code.nil? || module_code.length == 0
           respond_to do |format|
-            format.js { render :js => "myAlertTopError2();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter the Module Code\")" }
           end
         elsif module_description.nil? || module_description.length == 0
           respond_to do |format|
-            format.js { render :js => "myAlertTopError3();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter a Description.\")" }
           end
         end
       end
@@ -427,27 +427,27 @@ class AdminController < ApplicationController
 
           #popup that module was cloned successfully
           respond_to do |format|
-            format.js { render :js => "myAlertTopSuccess2();" }
+            format.js { render :js => "myAlertTopEditableSuccess(\"Module cloned successfully!\")" }
           end
         else
           #popup that this module already exists
           respond_to do |format|
-            format.js { render :js => "myAlertTopError4();" }
+            format.js { render :js => "myAlertTopEditableError(\"This Module already exists.\")" }
           end
         end
       else
         #popups if empty fields
         if module_name.nil? || module_name.length == 0
           respond_to do |format|
-            format.js { render :js => "myAlertTopError1();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter the Module Name.\")" }
           end
         elsif module_code.nil? || module_code.length == 0
           respond_to do |format|
-            format.js { render :js => "myAlertTopError2();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter the Module Code\")" }
           end
         elsif module_description.nil? || module_description.length == 0
           respond_to do |format|
-            format.js { render :js => "myAlertTopError3();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter a Description.\")" }
           end
         end
       end
