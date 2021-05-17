@@ -7,7 +7,7 @@
 #  size           :integer
 #  status         :string           default("waiting_for_approval")
 #  toa_status     :string           default("in_progress")
-#  topic          :string           default("none")
+#  topic          :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  list_module_id :bigint

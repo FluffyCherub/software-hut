@@ -23,7 +23,7 @@ FactoryBot.define do
     code { "course_code" }
     description { "description" }
     level { 1 }
-    semester { "year" }
+    semester { "SPRING" }
     created_by {"some_user"}
     years {"2021/2022"}
     created_at { DateTime.now() }
