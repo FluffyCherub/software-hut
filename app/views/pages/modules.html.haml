@@ -16,7 +16,7 @@
 
 - if params["module_id"] == nil
   .container.module_body.see_trough
-    %img.choose_logo_middle{:src => "/images/choose_logo.png", :alt => "Please choose"}
+    = image_tag('choose_logo.png', alt: 'Please choose', class: 'choose_logo_middle')
 - else
   .container.module_body
     %h1{:id => "module_name", :class => "bigger"} #{@module_info.name}

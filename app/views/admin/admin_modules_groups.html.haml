@@ -12,7 +12,7 @@
     = simple_form_for :search_form do |f|
       = f.input :form_module_id, :as => :hidden, :input_html => {:id => "form_module_id", :value => params[:module_id] }
       .container-fluid.bg_none.no_padding
-        %img.search_logo{:src => "/images/search_logo.jpg", :alt => "Search Modules"}
+        = image_tag('search_logo.jpg', alt: 'Search Users/Teams', class: 'search_logo')
       .container-fluid.bg_none.row.no_padding
         .container.col-xs-5.col-sm-4.no_padding_right
           = f.input :search_input, as: :string, label: false , required: false, input_html: {:value => @saved_input}

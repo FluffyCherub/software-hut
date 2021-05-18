@@ -10,7 +10,7 @@
   .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white
     = simple_form_for :search_form do |f|
       .container-fluid.bg_none.no_padding
-        %img.search_logo{:src => "/images/search_modules.jpg", :alt => "Search Modules"}
+        = image_tag('search_modules.jpg', alt: 'Search Modules', class: 'search_logo')
       .container-fluid.bg_none.row.no_padding.margin_bottom_small
         .container.col-xs-6.col-sm-5.no_padding_right
           = f.input :search_input, as: :string, label: false , required: false

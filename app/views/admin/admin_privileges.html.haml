@@ -13,7 +13,7 @@
       .container-fluid.bg_none.text_black.center_text.special_margin_top
         %a.button.add.btn.btn-primary.button_topics.float_right.medium{:href => admin_path(module_id: params['module_id']), type: "button"} Go back
       .container-fluid.bg_none.no_padding
-        %img.search_logo_special{:src => "/images/search_logo.jpg", :alt => "Search Users"}
+        = image_tag('search_logo.jpg', alt: 'Search Modules', class: 'search_logo_special')
       .container-fluid.bg_none.row.no_padding
         .container.col-xs-14.col-sm-9.no_padding_right
           = f.input :search_input, as: :string, label: false , required: false
