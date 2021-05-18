@@ -172,8 +172,11 @@
 :javascript
   no_file_selected();
   send_feedback('#{params['module_id']}');
+  myAlertTopEditableErrorPermanent("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.");
 
 - if ListModule.num_students_in_mod(params['module_id']) == 0 && (can? :manage, :add_remove_students_from_module)
   :javascript
     add_wizard_toast_no_href("You just created this module!", 
                     "The next step we suggest is to add students to this module, by clicking on <strong>\'Upload a .CSV file\'</strong>.");
+
+

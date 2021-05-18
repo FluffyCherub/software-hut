@@ -37,10 +37,8 @@
             = image_tag('uni_logo.jpg', alt: 'University of Sheffield', class: 'logo_top_left')
           .container.nav_bar_menu
             .navbar-header
-              - if user_signed_in?
-                = link_to :root, class: 'navbar-brand hidden-sm' do
-                  Teamworks
-              
+              = link_to :root, class: 'navbar-brand hidden-sm' do
+                Teamworks
             %button.navbar-toggler{ aria: { controls: "navbar-content", expanded: false, label: "Toggle navigation" }, data: { target: "#navbar-content", toggle: "collapse" }, type: "button" }
               %span.navbar-toggler-icon
 
