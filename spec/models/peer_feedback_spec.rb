@@ -34,46 +34,46 @@ require 'rails_helper'
 RSpec.describe PeerFeedback, type: :model do
   before :all do
     
-    @user = create(:user, id: 1, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
-    @user2 = create(:user, id: 2, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
-    @user3 = create(:user, id: 3, givenname: 'Andy', sn: 'Brock', username: 'efg14ij', email: 'abrock1@sheffield.ac.uk')
-    @user9 = create(:user, id: 4, givenname: 'Wendy', sn: 'Boby', username: '123561', email: 'wboby2@sheffield.ac.uk')
-    @listmodule = create(:list_module, id: 1)
+    @user = create(:user, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
+    @user2 = create(:user, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
+    @user3 = create(:user, givenname: 'Andy', sn: 'Brock', username: 'efg14ij', email: 'abrock1@sheffield.ac.uk')
+    @user9 = create(:user, givenname: 'Wendy', sn: 'Boby', username: '123561', email: 'wboby2@sheffield.ac.uk')
+    @listmodule = create(:list_module)
     
     #create team
-    @team1 = create(:team,  id: 1, size: 3, list_module_id: 1)
+    @team1 = create(:team, size: 3, list_module_id: @listmodule.id)
 
     #fill the teams
-    @userteam1 = create(:user_team, id: 1, team_id: 1, user_id: 1)
-    @userteam2 = create(:user_team, id: 2, team_id: 1, user_id: 2)
-    @userteam3 = create(:user_team, id: 3, team_id: 1, user_id: 3)
+    @userteam1 = create(:user_team, team_id: @team1.id, user_id: @user.id)
+    @userteam2 = create(:user_team, team_id: @team1.id, user_id: @user2.id)
+    @userteam3 = create(:user_team, team_id: @team1.id, user_id: @user3.id)
 
 
     # creates some feedbacks
-    @feedback_date = create(:feedback_date, id: 2, created_at: Time.new(2021, 5, 8) ,updated_at: Time.new(2021, 5, 15), list_module_id: 1)
-    @team_feedback_date1 = create(:team_feedback_date, id: 1, feedback_date_id: 2, team_id: 1)
+    @feedback_date = create(:feedback_date, created_at: Time.new(2021, 5, 8) ,updated_at: Time.new(2021, 5, 15), list_module_id: @listmodule.id)
+    @team_feedback_date1 = create(:team_feedback_date, feedback_date_id: @feedback_date.id, team_id: @team1.id)
 
-    @feedback13 = create(:peer_feedback, id:1, created_by: @user.username, created_for: @user3.username, feedback_date_id: 2,\
+    @feedback13 = create(:peer_feedback, created_by: @user.username, created_for: @user3.username, feedback_date_id: @feedback_date.id,\
       attendance:1, attitude:2, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, \
       appreciate_edited: 'good job!', request_edited:'no'
       )
-    @feedback23 = create(:peer_feedback, id:2, created_by: @user2.username, created_for: @user3.username, feedback_date_id: 2,\
+    @feedback23 = create(:peer_feedback, created_by: @user2.username, created_for: @user3.username, feedback_date_id: @feedback_date.id,\
       attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete', \
       appreciate_edited: 'good job2!', request_edited:'no2')
-    @feedback21 = create(:peer_feedback, id:3, created_by: @user2.username, created_for: @user.username, feedback_date_id: 2,\
+    @feedback21 = create(:peer_feedback, created_by: @user2.username, created_for: @user.username, feedback_date_id: @feedback_date.id,\
       attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
-    @feedback22 = create(:peer_feedback, id:4, created_by: @user2.username, created_for: @user2.username, feedback_date_id: 2,\
+    @feedback22 = create(:peer_feedback, created_by: @user2.username, created_for: @user2.username, feedback_date_id: @feedback_date.id,\
       attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
       
-    @feedback31 = create(:peer_feedback, id:5, created_by: @user3.username, created_for: @user.username, feedback_date_id: 2,\
+    @feedback31 = create(:peer_feedback, created_by: @user3.username, created_for: @user.username, feedback_date_id: @feedback_date.id,\
     attendance:4, attitude:4, qac:4, communication:4, collaboration:4, leadership:4, ethics:4, status: 'complete')
-    @feedback32 = create(:peer_feedback, id:6, created_by: @user3.username, created_for: @user2.username, feedback_date_id: 2,\
+    @feedback32 = create(:peer_feedback, created_by: @user3.username, created_for: @user2.username, feedback_date_id: @feedback_date.id,\
       attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
-    @feedback33 = create(:peer_feedback, id:7, created_by: @user3.username, created_for: @user3.username, feedback_date_id: 2,\
-      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3)
+    @feedback33 = create(:peer_feedback,  created_by: @user3.username, created_for: @user3.username, feedback_date_id: @feedback_date.id,\
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'in_progress')
 
     # unused feedback date
-    @feedback_date2 = create(:feedback_date, id: 3, created_at: Time.new(2021, 5, 22) ,updated_at: Time.new(2021, 5, 29), list_module_id: 1)
+    @feedback_date2 = create(:feedback_date, created_at: Time.new(2021, 5, 22) ,updated_at: Time.new(2021, 5, 29), list_module_id: @listmodule.id)
 
   end
   describe '#feedback_to_int' do
@@ -124,7 +124,7 @@ RSpec.describe PeerFeedback, type: :model do
       student_list = [@user, @user2, @user3]
       expect(PeerFeedback.check_feedback_completion(student_list, @user.username, @feedback_date.id)).to eq false
     end
-    it 'return false when exist students feedback NOT complete' do
+    it 'return false when exist students feedback in progress' do
       student_list = [@user, @user2, @user3]
       expect(PeerFeedback.check_feedback_completion(student_list, @user3.username, @feedback_date.id)).to eq false
     end
@@ -180,19 +180,17 @@ RSpec.describe PeerFeedback, type: :model do
       expect(PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date)).to eq [4, 4, 4, 4, 4, 4, 3, 4]
 
     end
-    # it 'return the average feedback of user i in team j at time k if there is no feedback' do
-    #   results = PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date2)
-    #   # expect(results).to eq nil
-    #   for i in 0...8
-    #     expect(result[i].to_f.nan?).to eq true
-    #   end
-    # end
+    it 'return nil if there is no feedback of user i in team j at time k' do
+      # the function did not run when there are NO feedback
+      results = PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date2)
+      expect(results).to eq nil
+    end
   end
 
   
   describe '#get_appreciate_request_for_student' do
     it 'return the appreciate/request from other students in the team' do
-      expect(PeerFeedback.get_appreciate_request_for_student(@user3.username, @team1.id, @feedback_date)).to include(["good job!", "good job2!"], ["no", "no2"])
+      expect(PeerFeedback.get_appreciate_request_for_student(@user3.username, @team1.id, @feedback_date)).to include(["good job2!","good job!", ], ["no2","no", ])
     end
     it 'return an empty feedback if no appreciate/request get' do
       expect(PeerFeedback.get_appreciate_request_for_student(@user.username, @team1.id, @feedback_date)).to eq [["", ""], ["", ""]]

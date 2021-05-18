@@ -22,38 +22,39 @@ RSpec.describe Tmr, type: :model do
   
   before :all do
 
-    @user = create(:user, id: 1, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
-    @user2 = create(:user, id: 2, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
-    @user3 = create(:user, id: 3, givenname: 'Andy', sn: 'Brock', username: 'efg14ij', email: 'abrock1@sheffield.ac.uk')
-    @user4 = create(:user, id: 4, givenname: 'Wendy', sn: 'Boby', username: '123561', email: 'wboby2@sheffield.ac.uk')
-    @listmodule = create(:list_module, id: 1)
+    @user = create(:user, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
+    @user2 = create(:user, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
+    @user3 = create(:user, givenname: 'Andy', sn: 'Brock', username: 'efg14ij', email: 'abrock1@sheffield.ac.uk')
+    @user4 = create(:user, givenname: 'Wendy', sn: 'Boby', username: '123561', email: 'wboby2@sheffield.ac.uk')
+    @listmodule = create(:list_module)
     
     #create teams
-    @team1 = create(:team,  id: 1, size: 3, list_module_id: 1)
-    @team2 = create(:team,  id: 2, size: 3, list_module_id: 1)
-    @team3 = create(:team,  id: 3, size: 3, list_module_id: 1)
-    @team4 = create(:team,  id: 4, size: 3, list_module_id: 1)
+    @team1 = create(:team, size: 3, list_module_id: @listmodule.id)
+    @team2 = create(:team, size: 3, list_module_id: @listmodule.id)
+    @team3 = create(:team, size: 3, list_module_id: @listmodule.id)
+    @team4 = create(:team, size: 3, list_module_id: @listmodule.id)
 
     #fill the teams
-    @userteam1 = create(:user_team, team_id: 1, user_id: 1)
-    @userteam2 = create(:user_team, team_id: 1, user_id: 2)
-    @userteam3 = create(:user_team, team_id: 1, user_id: 3)
+    @userteam1 = create(:user_team, team_id: @team1.id, user_id: @user.id)
+    @userteam2 = create(:user_team, team_id: @team1.id, user_id: @user2.id)
+    @userteam3 = create(:user_team, team_id: @team1.id, user_id: @user3.id)
 
-    @userteam4 = create(:user_team, team_id: 2, user_id: 4)
+    @userteam4 = create(:user_team, team_id: @team2.id, user_id: @user4.id)
 
-    @tmr = Tmr.create(team_id: 1)
-    @tmr2 = Tmr.create(team_id: 2, status: "submitted")
-    @tmr3 = Tmr.create(team_id: 3, status: "finished")
+    #create team meeting records with different status in each team
+    @tmr = Tmr.create(team_id: @team1.id)
+    @tmr2 = Tmr.create(team_id: @team2.id, status: "submitted")
+    @tmr3 = Tmr.create(team_id: @team3.id, status: "finished")
 
     @tmr_sign = create(:tmr_signature, signed_by: @user.username, tmr_id: @tmr.id)
     @tmr_sign2 = create(:tmr_signature, signed_by: @user2.username, tmr_id: @tmr.id)
     @tmr_sign3 = create(:tmr_signature, signed_by: @user3.username, tmr_id: @tmr.id)
 
     
-    @team5 = create(:team,  id: 5, size: 3, list_module_id: 1)
-    @tmr4 = Tmr.create(team_id: 5, status: "finished")
-    @tmr5 = Tmr.create(team_id: 5, status: "finished")
-    @tmr6 = Tmr.create(team_id: 5)
+    @team5 = create(:team, size: 3, list_module_id: @listmodule.id)
+    @tmr4 = Tmr.create(team_id: @team5.id, status: "finished")
+    @tmr5 = Tmr.create(team_id: @team5.id, status: "finished")
+    @tmr6 = Tmr.create(team_id: @team5.id)
   end
 
   describe '#get_unfinished_tmr' do

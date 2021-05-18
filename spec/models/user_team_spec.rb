@@ -32,11 +32,11 @@ RSpec.describe UserTeam, type: :model do
     @user5 = create(:user, givenname: 'Winky', sn: 'Tom', username: 'vdq3333', email: 'wtom41@sheffield.ac.uk')
     @user6 = create(:user, givenname: 'Ada', sn: 'Wong', username: 'vvvqa23', email: 'awong5@sheffield.ac.uk')
     @user7 = create(:user, givenname: 'David', sn: 'Jon', username: 'gngj112', email: 'djon2@sheffield.ac.uk')
-    @listmodule = create(:list_module, id: 1)
+    @listmodule = create(:list_module)
     
     #create teams
-    @team1 = create(:team, size: 3, list_module_id: 1)
-    @team2 = create(:team, size: 4, list_module_id: 1)
+    @team1 = create(:team, size: 3, list_module_id: @listmodule.id)
+    @team2 = create(:team, size: 4, list_module_id: @listmodule.id)
 
     #fill the teams
     @userteam1 = create(:user_team, team_id: @team1.id, user_id: @user.id, signed_agreement: true)
@@ -76,9 +76,10 @@ RSpec.describe UserTeam, type: :model do
     it 'returns false when user did NOT sign the agreemnt' do
       expect(UserTeam.check_student_sign_status(@user4.id, @team2.id)).to eq false
     end
-    # it 'returns false when user is not in the team' do
-    #   expect(UserTeam.check_student_sign_status(@user.id, @team2.id)).to eq false
-    # end
+    it 'returns false when user is not in the team' do
+      # the function did not run when the user is not in the team
+      expect(UserTeam.check_student_sign_status(@user.id, @team2.id)).to eq false
+    end
   end
 
   

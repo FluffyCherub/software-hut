@@ -27,24 +27,25 @@ RSpec.describe Problem, type: :model do
   
   before :all do
 
-    @user = create(:user, id: 1, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
-    @user2 = create(:user, id: 2, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
-    @user3 = create(:user, id: 3, givenname: 'Andy', sn: 'Brock', username: 'efg14ij', email: 'abrock1@sheffield.ac.uk')
-    @user4 = create(:user, id: 4, givenname: 'Wendy', sn: 'Boby', username: '123561', email: 'wboby2@sheffield.ac.uk')
-    @listmodule = create(:list_module, id: 1)
+    @user = create(:user, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
+    @user2 = create(:user, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
+    @user3 = create(:user, givenname: 'Andy', sn: 'Brock', username: 'efg14ij', email: 'abrock1@sheffield.ac.uk')
+    @user4 = create(:user, givenname: 'Wendy', sn: 'Boby', username: '123561', email: 'wboby2@sheffield.ac.uk')
+    @listmodule = create(:list_module)
     
     #create two teams
-    @team1 = create(:team,  id: 1, size: 3, list_module_id: 1)
-    @team2 = create(:team,  id: 2, size: 3, list_module_id: 1)
+    @team1 = create(:team, size: 3, list_module_id: @listmodule.id)
+    @team2 = create(:team, size: 3, list_module_id: @listmodule.id)
 
     #fill the teams
-    @userteam1 = create(:user_team, id: 1, team_id: 1, user_id: 1)
-    @userteam2 = create(:user_team, id: 2, team_id: 1, user_id: 2)
-    @userteam3 = create(:user_team, id: 3, team_id: 1, user_id: 3)
+    @userteam1 = create(:user_team, team_id: @team1.id, user_id: @user.id)
+    @userteam2 = create(:user_team, team_id: @team1.id, user_id: @user2.id)
+    @userteam3 = create(:user_team, team_id: @team1.id, user_id: @user3.id)
 
-    @problem1 = Problem.create(id: 1, team_id: 1)
-    @problem2 = Problem.create(id: 2, team_id: 1, status: "assigned", assigned_to: @user4.username)
-    @problem3 = Problem.create(id: 3, team_id: 1)
+    @problem1 = Problem.create(team_id: @team1.id)
+    @problem2 = Problem.create(team_id: @team1.id, status: "assigned", assigned_to: @user4.username)
+    @problem3 = Problem.create(team_id: @team1.id)
+    @solved_problems = Problem.create(team_id: @team1.id, status: 'solved')
   end
   
   describe '#get_problems_for_team' do
@@ -60,7 +61,9 @@ RSpec.describe Problem, type: :model do
     it 'assign the problem to a user' do
       expect(@problem1.assigned_to).to eq nil
       Problem.assign(@user4.username, @problem1.id)
-      expect(Problem.where(id: @problem1.id)[0].assigned_to).to eq @user4.username
+      expect(Problem.where(id: @problem1.id).first.assigned_to).to eq @user4.username
+      # it should change it to assigned after it is assigned
+      expect(Problem.where(id: @problem1.id).first.status).to eq "assigned"
     end
   end
 
@@ -68,12 +71,17 @@ RSpec.describe Problem, type: :model do
     it 'changes the status of the problem to assigned' do
       expect(@problem1.status).to eq "unsolved"
       Problem.change_status(@problem1.id, "assigned")
-      expect(Problem.where(id: @problem1.id)[0].status).to eq "assigned"
+      expect(Problem.where(id: @problem1.id).first.status).to eq "assigned"
     end
     it 'changes the status of the problem to unsolved' do
       expect(@problem2.status).to eq "assigned"
       Problem.change_status(@problem2.id, "unsolved")
-      expect(Problem.where(id: @problem2.id)[0].status).to eq "unsolved"
+      expect(Problem.where(id: @problem2.id).first.status).to eq "unsolved"
+    end
+    it 'changes the status of the problem to solved' do
+      expect(@problem2.status).to eq "assigned"
+      Problem.change_status(@problem2.id, "solved")
+      expect(Problem.where(id: @problem2.id).first.status).to eq "solved"
     end
   end
 
@@ -82,8 +90,10 @@ RSpec.describe Problem, type: :model do
       expect(@problem1.solved_by).to eq nil
       expect(@problem1.solved_on).to eq nil
       Problem.solve(@user4.username, @problem1.id, Time.new(2021, 5, 15))
-      expect(Problem.where(id: @problem1.id)[0].solved_by).to eq @user4.username
-      expect(Problem.where(id: @problem1.id)[0].solved_on).to eq Time.new(2021, 5, 15)
+      expect(Problem.where(id: @problem1.id).first.solved_by).to eq @user4.username
+      expect(Problem.where(id: @problem1.id).first.solved_on).to eq Time.new(2021, 5, 15)
+      # it should change it to solved after it is solved
+      expect(Problem.where(id: @problem1.id).first.status).to eq "solved"
     end
   end
 
@@ -93,6 +103,9 @@ RSpec.describe Problem, type: :model do
     end
     it 'returns false when the problem is NOT assigned' do
       expect(Problem.is_assigned(@problem3.id)).to eq false
+    end
+    it 'returns false when the problem is solved' do
+      expect(Problem.is_assigned(@solved_problems.id)).to eq false
     end
   end
 

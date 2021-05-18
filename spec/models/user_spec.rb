@@ -38,11 +38,12 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
 
   before :all do
-    @user = create(:user, id: 123, givenname: 'John', sn: 'Smith', username: 'abc12ef', email: 'jsmith1@sheffield.ac.uk')
-    @user2 = create(:user, id: 2, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
-    @listmodule = create(:list_module, id: 101, code: 'COM101', name: 'Intro to Java',
+    @user = create(:user, givenname: 'John', sn: 'Smith', username: 'abc321', email: 'jsmith1@sheffield.ac.uk')
+    @user2 = create(:user, givenname: 'Jean', sn: 'Doe', username: 'xyz13gh', email: 'jdoe1@sheffield.ac.uk')
+    @user3 = create(:user, givenname: 'David', sn: 'Tim', username: 'dtim13gh', email: 'asdd.ac.uk')
+    @listmodule = create(:list_module, code: 'COM101', name: 'Intro to Java',
        level: 1, created_at: DateTime.now(), updated_at: DateTime.now())
-    @usermodule = create(:user_list_module, id: 321, privilege: 'student', created_at: DateTime.now(), updated_at: DateTime.now(), list_module_id: 101, user_id: 123)
+    @usermodule = create(:user_list_module, privilege: 'student', created_at: DateTime.now(), updated_at: DateTime.now(), list_module_id: @listmodule.id, user_id: @user.id)
   end
   describe '#get_user_info_by_id' do
 
@@ -56,8 +57,11 @@ RSpec.describe User, type: :model do
   end
 
   describe '#check_if_email' do
-    it 'checks if email is valid' do
+    it 'return 0 if the email is valid' do
       expect(User.check_if_email(@user.email)).to eq 0
+    end
+    it 'return 1 if the email is invalid' do
+      expect(User.check_if_email(@user3.email)).to eq nil
     end
   end
 
@@ -73,7 +77,7 @@ RSpec.describe User, type: :model do
 
   describe '#get_user_id' do
     it 'returns id of a user from username' do
-      expect(User.get_user_id(@user.username)).to eq 123
+      expect(User.get_user_id(@user.username)).to eq @user.id
     end
   end
 
@@ -93,7 +97,8 @@ RSpec.describe User, type: :model do
     it 'checks status of John Smith in module 101' do
       expect(User.get_module_privilege(@listmodule.id, @user.id)).to eq 'student'
     end
-    it 'checks status of Jean Doe in module 101' do
+    it 'checks module privilege of a user who is not within the module' do
+      # the user has a privilege of student instead
       expect(User.get_module_privilege(@listmodule.id, @user2.id)).to eq nil
     end
   end
@@ -112,8 +117,9 @@ RSpec.describe User, type: :model do
       User.change_privilege_user_module(@user.username, @listmodule.id, 'teaching assistant')
       expect(User.get_module_privilege(@listmodule.id, @user.id)).to eq 'teaching assistant'
     end
-    it 'attempts to change priviledge of Jean Doe' do
+    it 'attempts to change privilege of a student who is not within the module' do
       User.change_privilege_user_module(@user2.username, @listmodule.id, 'student')
+      # a user who is not within the module obtain a student privilege instead
       expect(User.get_module_privilege(@listmodule, @user2.id)).to eq nil
     end
   end

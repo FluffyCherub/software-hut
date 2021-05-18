@@ -26,11 +26,11 @@ describe FeedbackDate do
 
   before :all do
 
-    @listmodule = FactoryBot.create :list_module, id: 1
-    @feedback_date1 = FactoryBot.create :feedback_date, id: 1, start_date: Time.new(2021, 5, 8),
-    end_date: Time.new(2021, 6, 8), list_module_id: 1
-    @feedback_date2 = FactoryBot.create :feedback_date, id: 2, start_date: Time.new(2021, 7, 8),
-    end_date: Time.new(2021, 9, 8), list_module_id: 1
+    @listmodule = FactoryBot.create :list_module
+    @feedback_date1 = FactoryBot.create :feedback_date, start_date: Time.new(2021, 5, 8),
+    end_date: Time.new(2021, 6, 8), list_module_id: @listmodule.id
+    @feedback_date2 = FactoryBot.create :feedback_date, start_date: Time.new(2021, 7, 8),
+    end_date: Time.new(2021, 9, 8), list_module_id: @listmodule.id
 
   end
 
