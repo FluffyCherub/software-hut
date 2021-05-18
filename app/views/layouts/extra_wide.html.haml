@@ -14,8 +14,6 @@
     = favicon_link_tag '/images/teamworks_icon2.png'
     = csrf_meta_tags
 
-
-  // %body{ class: environment_notice_body_class , onload: "myFunction()"}
   %body{ class: environment_notice_body_class, onload: "filterProfanity()"}
     = render 'layouts/environment_notice'    
   

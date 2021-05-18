@@ -15,9 +15,7 @@
     = csrf_meta_tags
     %script{src: "https://cdn.jsdelivr.net/npm/chart.js"}
 
-
-  // %body{ class: environment_notice_body_class , onload: "myFunction()"}
-  %body{ class: environment_notice_body_class, onload: "resizeGroup()"}
+  %body{ class: environment_notice_body_class}
     = render 'layouts/environment_notice'
     .flash-messages
       - flash.each do |name, msg|
@@ -36,7 +34,7 @@
         - # University logo
         %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top.top_line
           .container.nav_bar_logo
-            %img.logo_top_left{:src => "/assets/uni_logo-1329b75602ca87d0410c0ebe873b6698a79ddabed62396fe44d908aeb603a0ad.jpg", :alt => "University of Sheffield"}
+            = image_tag('uni_logo.jpg', alt: 'University of Sheffield', class: 'logo_top_left')
           .container.nav_bar_menu
             .navbar-header
               - if user_signed_in?
@@ -53,64 +51,65 @@
 
                 - # icons section
                 - profile_icon = 'user'
-                - documents_icon = 'user'
-                - feedback_hist_icon = 'user'
-                - module_list_icon = 'user'
-                - create_module_icon = 'user'
+                - documents_icon = 'file-alt'
+                - feedback_hist_icon = 'history'
+                - module_list_icon = 'list-ul'
+                - create_module_icon = 'plus-square'
 
-                - icon_type = 'fas'
+                - icon_type_fas = 'fas'
+                - icon_type_far = 'far'
 
                 %ul.nav.navbar-nav
                   - #-----------Admin section----------#
                   - if  highest_privilege == "admin"
                     - if is_student_in_any_module
                       = navbar_link_to :student_profile, title: "Go to your Profile", identifier: :home do
-                        = icon icon_type, profile_icon
+                        = icon icon_type_fas, profile_icon
                         Profile
                       = navbar_link_to :student_profile_feedback_old, title: "Go to your Feedback History", identifier: :home do
-                        = icon icon_type, feedback_hist_icon
+                        = icon icon_type_fas, feedback_hist_icon
                         Feedback History
                       = navbar_link_to :student_profile_docs_old, title: "Go to your Documents", identifier: :home do
-                        = icon icon_type, documents_icon
+                        = icon icon_type_fas, documents_icon
                         Documents
 
                   - #-----------Module Leader section----------#
                   - if  highest_privilege == "module_leader"
                     = navbar_link_to :admin_modules_create, title: "Create a Module", identifier: :home do
-                      = icon icon_type, create_module_icon
+                      = icon icon_type_fas, create_module_icon
                       Create Module
 
                     - if is_student_in_any_module
                       = navbar_link_to :student_profile, title: "Go to your Profile", identifier: :home do
-                        = icon icon_type, profile_icon
+                        = icon icon_type_fas, profile_icon
                         Profile
                       = navbar_link_to :student_profile_feedback_old, title: "Go to your Feedback History", identifier: :home do
-                        = icon icon_type, feedback_hist_icon
+                        = icon icon_type_fas, feedback_hist_icon
                         Feedback History
                       = navbar_link_to :student_profile_docs_old, title: "Go to your Documents", identifier: :home do
-                        = icon icon_type, documents_icon
+                        = icon icon_type_fas, documents_icon
                         Documents
 
                   - #-----------Teaching assistant section----------#
                   - if  highest_privilege == "teaching_assistant"
                     - if is_student_in_any_module
                       = navbar_link_to :student_profile, title: "Go to your Profile", identifier: :home do
-                        = icon icon_type, profile_icon
+                        = icon icon_type_fas, profile_icon
                         Profile
                       = navbar_link_to :student_profile_feedback_old, title: "Go to your Feedback History", identifier: :home do
-                        = icon icon_type, feedback_hist_icon
+                        = icon icon_type_fas, feedback_hist_icon
                         Feedback History
                       = navbar_link_to :student_profile_docs_old, title: "Go to your Documents", identifier: :home do
-                        = icon icon_type, documents_icon
+                        = icon icon_type_fas, documents_icon
                         Documents
 
                   - #-----------Student section----------#
                   - if  highest_privilege == "student"
                     = navbar_link_to :student_profile_feedback_old, title: "Go to your Feedback History", identifier: :home do
-                      = icon icon_type, feedback_hist_icon
+                      = icon icon_type_fas, feedback_hist_icon
                       Feedback History
                     = navbar_link_to :student_profile_docs_old, title: "Go to your Documents", identifier: :home do
-                      = icon icon_type, documents_icon
+                      = icon icon_type_fas, documents_icon
                       Documents
 
                   

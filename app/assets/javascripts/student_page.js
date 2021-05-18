@@ -32,16 +32,16 @@ function sameHeightGroup() {
 
 //Function that equalizes the height of two elements (prototype - change later)
 $(function resizeGroup(){
-  var element =  document.getElementById('module_feedback');
-  if (typeof(element) != 'undefined' && element != null)
-  {
-    setInterval(sameHeightGroup, 500);
-  }
+  // var element =  document.getElementById('module_feedback');
+  // if (typeof(element) != 'undefined' && element != null)
+  // {
+  //   setInterval(sameHeightGroup, 500);
+  // }
 
   var myLine =  document.getElementById('top_line');
   if (typeof(myLine) != 'undefined' && myLine != null)
   {
-    setInterval(createBlueLine, 500);
+    setInterval(createBlueLine, 50);
   }
 });
 
