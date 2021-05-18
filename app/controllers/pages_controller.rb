@@ -23,13 +23,18 @@ class PagesController < ApplicationController
   #admin/super admin => admin page
   #student/TA/module leader => modules page
   def index
-    if current_user.admin? || User.is_ta_or_mod_lead(current_user.username)
-      #redirect to the admin/super admin page
-      redirect_to admin_path
+    highest_privilege = User.highest_privilege(current_user.id)
+
+    if highest_privilege == "admin"
+      redirect_to admin_path()
+    elsif highest_privilege == "module_leader"
+      redirect_to admin_modules_path()
+    elsif highest_privilege == "teaching_assistant"
+      redirect_to admin_modules_path()
+    elsif highest_privilege == "student"
+      redirect_to student_profile_path()
     else
-      #redirect to the page for students/TA's/module leaders
-      #redirect_to modules_path
-      redirect_to student_profile_path
+      render "errors/error_403"
     end
   end
 

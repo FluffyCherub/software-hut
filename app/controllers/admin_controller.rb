@@ -38,6 +38,12 @@ class AdminController < ApplicationController
 
   #correlates with the view for changing system privileges
   def admin_privileges
+    current_ability = User.highest_privilege(current_user.id)
+    if current_ability == "teaching_assistant"
+      current_ability("teaching_assistant_16")
+    else
+      current_ability(current_ability)
+    end
     authorize! :manage, :admin_privileges
     
     #if the search button was pressed pass the users that match search input
@@ -208,6 +214,12 @@ class AdminController < ApplicationController
 
   #correlates with the view for module creation
   def admin_modules_create
+    current_ability = User.highest_privilege(current_user.id)
+    if current_ability == "teaching_assistant"
+      current_ability("teaching_assistant_15")
+    else
+      current_ability(current_ability)
+    end
     authorize! :manage, :admin_modules_create
 
     #generating academic years based on current year
@@ -1308,8 +1320,6 @@ class AdminController < ApplicationController
   end
 
   def assign_solve_problem
-    puts "BOI1"
-    #{"problem_id"=>"3", "team_number"=>"4", "problem_number"=>"2", "assign_list"=>"usernametest11", "solve_button"=>"solve_button", "module_id"=>"11"}
     @problem_id = params['problem_id']
     @team_number = params['team_number']
     @problem_number = params['problem_number']
@@ -1455,8 +1465,17 @@ class AdminController < ApplicationController
 
 
     if user_integrity
+
+      @div_name = "#module_users_table"
+      
+      #getting users for the correct module 
+      @current_module_users = User.joins(:list_modules)
+                                  .where("list_modules.id = ?", 
+                                          params[:module_id]) 
+                                  .order(:givenname, :sn)
+
       respond_to do |format|
-        format.js { render :js => "myAlertTopEditableSuccess(\"User added to module successfully!\")" }
+        format.js { render :file => "/admin/import_users_csv.js.erb" }
       end
     end
 

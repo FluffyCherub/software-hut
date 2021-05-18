@@ -179,6 +179,52 @@ class User < ApplicationRecord
     end
   end
 
+  #returns the highest privilege a user has(module or system)
+  #hierarchy:
+  # 1. admin
+  # 2. module leader
+  # 3. teaching assistant(all 16 of them)
+  # 4. student
+  # 5. suspended
+  def self.highest_privilege(user_id)
+    system_privilege = User.find(user_id.to_i)
+    is_admin = system_privilege.admin
+    is_suspended = system_privilege.suspended
 
+    if is_suspended
+      return "suspended"
+    elsif is_admin
+      return "admin"
+    else
+      #section for module privileges
+      #get all module connections that the user is connected to
+      module_privileges = UserListModule.where(user_id: user_id.to_i).pluck(:privilege)
+
+      if module_privileges.include? "module_leader"
+        return "module_leader"
+      elsif (module_privileges.select { |privilege| privilege.include? "teaching_assistant" }).length > 0
+        return "teaching_assistant"
+      elsif module_privileges.include? "student"
+        return "student"
+      else 
+        return nil
+      end
+
+    end
+
+  end
+
+  def self.is_student_in_any_module(user_id)
+    #get all module connections that the user is connected to
+    module_privileges = UserListModule.where(user_id: user_id.to_i).pluck(:privilege)
+
+    if module_privileges.include? "student"
+      return true
+    else
+      return false
+    end
+
+
+  end
 
 end

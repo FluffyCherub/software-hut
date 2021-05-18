@@ -140,7 +140,7 @@ ActiveRecord::Schema.define(version: 2021_05_12_215512) do
 
   create_table "teams", force: :cascade do |t|
     t.string "name"
-    t.string "topic"
+    t.string "topic", default: "none"
     t.integer "size"
     t.bigint "list_module_id"
     t.datetime "created_at", precision: 6, null: false
