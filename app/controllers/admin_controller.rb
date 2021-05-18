@@ -1391,6 +1391,8 @@ class AdminController < ApplicationController
     #check if all the fields were provided
     if add_username.length>0 && add_email.length>0 && add_first_name.length>0 && add_last_name.length>0 && add_email.include?('@') == false
 
+      add_email = add_email + "@sheffield.ac.uk"
+
       #check if user with this username doesn't exist in the system
       check_user_exist = User.where("username = ?",
                                     add_username
@@ -1467,7 +1469,7 @@ class AdminController < ApplicationController
     if user_integrity
 
       @div_name = "#module_users_table"
-      
+
       #getting users for the correct module 
       @current_module_users = User.joins(:list_modules)
                                   .where("list_modules.id = ?", 

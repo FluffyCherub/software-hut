@@ -6,24 +6,8 @@ function generateFeedbackChart(feedback_data, num_of_periods) {
   
   labels = []
   for(let i=0; i<parseInt(num_of_periods); i++) {
-    labels.push("Week" + (i+1).toString());
+    labels.push("Period " + (i+1).toString());
   }
-  console.log(labels);
-
-	// const labels = [
-	// 	'Week 1',
-	// 	'Week 2',
-	// 	'Week 3',
-	// 	'Week 4',
-	// 	'Week 5',
-	// 	'Week 6',
-	// 	'Week 7',
-	// 	'Week 8',
-	// 	'Week 9',
-	// 	'Week 10',
-	// 	'Week 11',
-	// 	'Week 12'
-	// ];
 
 	var yLabels = {
 		1 : 'Unsatisfactory', 2 : ['Needs', 'Improvement'], 3 : ['Meets', 'Expectations'], 4 : ['Exceeds', 'Expectations']
