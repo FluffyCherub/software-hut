@@ -83,3 +83,21 @@ function myAlertTopEditableError(message){
   $("#new_alert_error").fadeIn(300).delay(2000).fadeOut(400);
 }
 
+//Function to for fading error alert
+function myAlertTopEditableErrorPermanent(message){
+
+  $("#new_alert_error").remove();
+
+  let new_alert = document.createElement("div");
+  new_alert.id = "new_alert_error"
+  new_alert.classList.add("myAlert-top-error-1");
+  new_alert.classList.add("alert");
+  new_alert.classList.add("alert-danger");
+  new_alert.innerHTML = "<strong>" + message + "</strong>";
+
+  var body = document.querySelector('body');
+  body.appendChild(new_alert);
+
+  $("#new_alert_error").fadeIn(300).delay(999999).fadeOut(400);
+}
+
