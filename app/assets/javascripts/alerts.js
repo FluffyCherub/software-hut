@@ -87,17 +87,165 @@ function myAlertTopEditableError(message){
 function myAlertTopEditableErrorPermanent(message){
 
   $("#new_alert_error").remove();
+  //-------------------------------------------
+  //Array of Strings of all the error messages
+  //-------------------------------------------
+  // TLDR: Replace testArray everywhere with actual array
+  //-------------------------------------------
+  var testArray = ["Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14","Missing name in line: 14"]
 
   let new_alert = document.createElement("div");
   new_alert.id = "new_alert_error"
   new_alert.classList.add("myAlert-top-error-1");
   new_alert.classList.add("alert");
   new_alert.classList.add("alert-danger");
-  new_alert.innerHTML = "<strong>" + message + "</strong>";
+  new_alert.classList.add("alert-dismissible");
+  new_alert.classList.add("fade");
+  new_alert.classList.add("show");
+  //-------------------------------------------
+  //Replace testArary.length with actual array length
+  //-------------------------------------------
+  new_alert.innerHTML = "<strong>" + testArray.length + " errors found... " + "</strong>" + "<a data-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">" + "Click to expand" + "</a>";
 
+  let collapse_div = document.createElement("div");
+  collapse_div.classList.add("collapse");
+  collapse_div.id = "collapseExample"
+  new_alert.append(collapse_div)
+
+  let line_1 = document.createElement("hr");
+  line_1.id = "line_1"
+  line_1.classList.add("group_line");
+  line_1.classList.add("mt-1");
+  line_1.classList.add("mb-2");
+
+  collapse_div.append(line_1)
+  
+  let multiple_errorr_div_row = document.createElement("div");
+  multiple_errorr_div_row.id = "multiple_errors_div_row"
+  multiple_errorr_div_row.classList.add("row");
+  collapse_div.append(multiple_errorr_div_row)
+
+  //Breakpoints for generating columns. a.k.a Don't touch this
+  var breakpoint_1 = 6
+
+  var breakpointArray = [15,31,61,101]
+
+  var correctSize = false
+
+  var maxDisplayErrors = 61
+
+  //-------------------------------------------
+  // Replace testArray here with actual array
+  //-------------------------------------------
+  if (testArray.length < breakpoint_1) {
+    
+    var trueMessage = ""
+    
+    let single_col = document.createElement("div");
+    single_col.classList.add("col");
+
+    for(var i = 0; i < testArray.length; i++) {
+      trueMessage += testArray[i] + "<br>"
+    }
+
+    single_col.innerHTML = trueMessage;
+
+    multiple_errorr_div_row.append(single_col)
+  }
+
+  //-------------------------------------------
+  // Replace testArray here with acutal array
+  //-------------------------------------------
+  else {
+    for(var x = 0; x < breakpointArray.length; x++) {
+      if (testArray.length < maxDisplayErrors){
+        if ((testArray.length < breakpointArray[x]) && correctSize == false) {
+        
+          var trueMessageLeft = ""
+          var trueMessageRight = ""
+          
+          let col_left = document.createElement("div");
+          col_left.classList.add("col");
+  
+          let col_right = document.createElement("div");
+          col_right.classList.add("col");
+  
+          for(var i = 0; i < Math.ceil((testArray.length/2)); i++) {
+            trueMessageLeft += testArray[i] + "<br>"
+          }
+  
+          for(var z = Math.ceil((testArray.length/2)); z < testArray.length; z++) {
+            trueMessageRight += testArray[z] + "<br>"
+          }
+          
+          col_left.innerHTML = trueMessageLeft;
+          col_right.innerHTML = trueMessageRight;
+  
+          multiple_errorr_div_row.append(col_left)
+          multiple_errorr_div_row.append(col_right)
+  
+          correctSize = true
+        }
+      }
+      else {
+        if ((testArray.length < breakpointArray[x]) && correctSize == false) {
+          
+          var trueMessageLeft = ""
+          var trueMessageRight = ""
+          
+          let col_left = document.createElement("div");
+          col_left.classList.add("col");
+
+          let col_right = document.createElement("div");
+          col_right.classList.add("col");
+
+          for(var i = 0; i < Math.ceil(maxDisplayErrors/2); i++) {
+            trueMessageLeft += testArray[i] + "<br>"
+          }
+
+          for(var z = Math.ceil(maxDisplayErrors/2); z < maxDisplayErrors; z++) {
+            trueMessageRight += testArray[z] + "<br>"
+          }
+          
+          col_left.innerHTML = trueMessageLeft;
+          col_right.innerHTML = trueMessageRight;
+
+          multiple_errorr_div_row.append(col_left)
+          multiple_errorr_div_row.append(col_right)
+
+          correctSize = true
+        }
+      }
+    }
+
+    let line_2 = document.createElement("hr");
+    line_2.id = "over_100_line"
+    line_2.classList.add("group_line");
+    line_2.classList.add("mt-1");
+    line_2.classList.add("mb-2");
+
+    collapse_div.append(line_2)
+
+    //-------------------------------------------
+    // Replace testArray here with actual array
+    //-------------------------------------------
+    var errors_left = testArray.length - (maxDisplayErrors - 1)
+
+    let over_100_div = document.createElement("div");
+    over_100_div.id = "over_100_div"
+    over_100_div.innerHTML = "<strong>" + errors_left + " more errors! Please remove all errors and try again" + "</strong>";
+  
+    collapse_div.append(over_100_div)
+  }
+
+  new_alert.innerHTML += "<span type=\"button\" class=\"close alert_close\" data-dismiss=\"alert\" area-label=\"Close\" aria-hidden=\"true\">&times;</span>"
+  
   var body = document.querySelector('body');
   body.appendChild(new_alert);
 
   $("#new_alert_error").fadeIn(300).delay(999999).fadeOut(400);
+
 }
+
+$('.alert').alert()
 

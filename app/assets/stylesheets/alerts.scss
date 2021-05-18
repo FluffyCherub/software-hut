@@ -41,3 +41,16 @@
 .alert{
   display: none;
 }
+
+.alert_close:hover {
+  background-color: #f8d7da !important;
+}
+
+.alert_close:focus {
+  outline: none !important;
+}
+
+.alert_close {
+  padding: 0% !important;
+  margin: 0.75rem 1.25rem !important;
+}
