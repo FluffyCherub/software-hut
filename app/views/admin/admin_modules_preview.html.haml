@@ -154,7 +154,7 @@
                 .card-body
                   #accordion-2
                     .card-body
-                      = form_tag admin_modules_preview_path(:module_id => params[:module_id]), :method => :post, :id => 'add_user_form' do
+                      = form_tag add_individual_user_path(:module_id => params[:module_id]), :method => :post, :id => 'add_user_form', remote: true do
                         .input-group.mb-3
                           %span#basic-addon1.input-group-text @
                           %input.form-control.basic_username{"aria-describedby" => "basic-addon1", "aria-label" => "Username", placeholder: "Username", type: "text", name: "add_username"}
