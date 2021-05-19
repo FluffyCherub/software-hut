@@ -1,10 +1,10 @@
 # TeamWorks
 ## _University of Sheffield Feedback System_
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://facebook.com)
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)]
 
 TeamWorks is an automated system, made for managing student teams as well as 
-sending, editing and recieving feedback. It is made with the idea in mind
+sending, editing and receiving feedback. It is made with the idea in mind
 of reducing the administrative overhead that the staff currently has.
 
 ## Features
@@ -33,7 +33,7 @@ mobile-first front-end web development.
 
 ## Installation
 
-Dillinger requires [Ruby](https://rubyinstaller.org) v2.6.6 and [Rails](https://rubyonrails.org) 6.0.3.3 to run.
+TeamWorks requires [Ruby](https://rubyinstaller.org) v2.6.6 and [Rails](https://rubyonrails.org) 6.0.3.3 to run.
 
 Run this commands to start the project locally in that order:
 
