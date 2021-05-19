@@ -67,7 +67,7 @@ class User < ApplicationRecord
     if privilege != nil
       return privilege.privilege
     else
-      return "student"
+      return nil
     end
   end
 

@@ -200,7 +200,7 @@ class PeerFeedback < ApplicationRecord
     result = []
 
     for i in 1...feedback_int_array.length
-      if feedback_int_array[i].is_a? Numeric
+      if feedback_int_array[i] != (-1)
         case i
         when 1
           case feedback_int_array[1]
@@ -281,6 +281,35 @@ class PeerFeedback < ApplicationRecord
           end
         
         end
+      else
+        if i == 1
+          result.append([attendance[0], "You received no feedback for this criteria."])
+        end
+
+        if i == 2
+          result.append([attitude[0], "You received no feedback for this criteria."])
+        end
+
+        if i == 3
+          result.append([qac[0], "You received no feedback for this criteria."])
+        end
+
+        if i == 4
+          result.append([communication[0], "You received no feedback for this criteria."])
+        end
+
+        if i == 5
+          result.append([collaboration[0], "You received no feedback for this criteria."])
+        end
+
+        if i == 6
+          result.append([leadership[0], "You received no feedback for this criteria."])
+        end
+
+        if i == 7
+          result.append([ethics[0], "You received no feedback for this criteria."])
+        end
+          
       end
     end
     
@@ -288,7 +317,8 @@ class PeerFeedback < ApplicationRecord
   
     end
 
-  def self.get_average_feedback_data(username, team_id)
+  
+    def self.get_average_feedback_data(username, team_id)
     #get all team members for the selected team
     team_members = User.joins(:teams)
                         .where("teams.id = ?",
@@ -417,9 +447,18 @@ class PeerFeedback < ApplicationRecord
     average_feedback_data.prepend(average_for_every_period)
 
     #rounding all the averages
-    average_feedback_data = average_feedback_data.map { |average| average.round() }
+    #average_feedback_data = average_feedback_data.map { |average| average.round() }
+    for t in 0...average_feedback_data.length
+      if average_feedback_data[t].nan? == false
+        average_feedback_data[t] = average_feedback_data[t].round()
+      else
+        average_feedback_data[t] = (-1)
+      end
+    end
 
+    
     return average_feedback_data
+    
   end
 
   def self.get_appreciate_request_for_student(username, team_id, feedback_date_id)

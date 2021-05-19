@@ -60,9 +60,13 @@ class UserTeam < ApplicationRecord
   #takes user id(integer) and team id(integer)
   #returns UserTeam object
   def self.check_student_sign_status(user_id, team_id)
-    user_team = UserTeam.where(user_id: user_id, team_id: team_id).first.signed_agreement
+    user_team = UserTeam.where(user_id: user_id, team_id: team_id).first
 
-    return user_team
+    if user_team == nil
+      return false
+    else
+      return user_team.signed_agreement
+    end
   end
 
   #puts a student in a team

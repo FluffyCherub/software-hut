@@ -67,9 +67,14 @@ class ListModule < ApplicationRecord
     privilege = UserListModule.joins(:user).where("users.username = ? AND
                                                    user_list_modules.list_module_id = ?",
                                                    username,
-                                                   module_id).first.privilege
+                                                   module_id).first
 
-    return privilege
+    if privilege.nil?
+      return nil
+    else
+      return privilege.privilege
+    end
+   
   end
 
   #method for importing csv files and adding users to modules

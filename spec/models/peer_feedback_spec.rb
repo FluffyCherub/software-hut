@@ -180,10 +180,11 @@ RSpec.describe PeerFeedback, type: :model do
       expect(PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date)).to eq [4, 4, 4, 4, 4, 4, 3, 4]
 
     end
-    it 'return nil if there is no feedback of user i in team j at time k' do
+    it 'return [-1, -1, -1, -1, -1, -1, -1, -1] if there is no feedback of user i in team j at time k' do
       # the function did not run when there are NO feedback
       results = PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date2)
-      expect(results).to eq nil
+      nan = Float::NAN
+      expect(results).to eq [-1, -1, -1, -1, -1, -1, -1, -1]
     end
   end
 

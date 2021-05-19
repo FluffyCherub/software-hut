@@ -5,7 +5,7 @@
 - content_for :title, "Profile - Previous Feedback"
 
 .container-fluid.bg_none.no_padding
-  - if 5 > 3
+  - if @inactive_modules.length == 0
     .container-fluid.bg_none.no_padding.bg_border.margin_bottom_small.bg_white.text_black
       %h5.text_black.mb-3.mt-3.text_center 
         No feedback currently available
