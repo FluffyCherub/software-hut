@@ -134,27 +134,34 @@ class AdminController < ApplicationController
 
   #correlates with the view for looking at a certain module page
   def admin_modules_preview
-    current_ability(User.get_module_privilege(params[:module_id], current_user.id))
+    module_id = 0
+    if params[:module_id].nil?
+      module_id = params['search_form']['form_module_id']
+    else
+      module_id = params[:module_id]
+    end
+
+    current_ability(User.get_module_privilege(module_id, current_user.id))
     authorize! :manage, :admin_modules_preview
 
     #getting the module information about the currently displayed module
-    @module_info = ListModule.where("id = ?", params[:module_id]).first
+    @module_info = ListModule.where("id = ?", module_id).first
 
     #get the last feedback period which is closed
-    @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, params[:module_id])
+    @last_finished_period = FeedbackDate.get_last_finished_period(Time.now, module_id)
 
 
     #getting the module leader of the currently displayed module
     @module_leaders = User.joins(:list_modules).where("user_list_modules.privilege = ? AND
                                                       list_modules.id = ?",
                                                       "module_leader",
-                                                      params[:module_id]).order(:givenname, :sn)
+                                                      module_id).order(:givenname, :sn)
 
     #getting the teaching assistants of the currently displayed module
     @teaching_assistants = User.joins(:list_modules).where("user_list_modules.privilege LIKE ? AND
                                                             list_modules.id = ?",
                                                             "%teaching_assistant%",
-                                                            params[:module_id]).order(:givenname, :sn)
+                                                            module_id).order(:givenname, :sn)
 
     #setting the search input parameter to display the correct users
     if params['search_button'] == "Search"
@@ -173,7 +180,7 @@ class AdminController < ApplicationController
                                           users.sn LIKE ? OR 
                                           users.email LIKE ? OR 
                                           user_list_modules.privilege LIKE ?)", 
-                                            params[:module_id],
+                                          module_id,
                                             "%" + search_input + "%",
                                             "%" + search_input + "%",
                                             "%" + search_input + "%",
@@ -182,8 +189,7 @@ class AdminController < ApplicationController
                                 .order(:givenname, :sn)
 
     if params['search_button'] == "Search"
-      mod_id = params['search_form']['form_module_id']
-      redirect_to admin_modules_preview_path(module_id: mod_id, search_input: params['search_form']['search_input'])
+      redirect_to admin_modules_preview_path(module_id: module_id, search_input: params['search_form']['search_input'])
     end
   
   end
