@@ -87,11 +87,7 @@ function myAlertTopEditableError(message){
 function myAlertTopEditableErrorPermanent(message){
 
   $("#new_alert_error").remove();
-  //-------------------------------------------
-  //Array of Strings of all the error messages
-  //-------------------------------------------
-  // TLDR: Replace errorsArray everywhere with actual array
-  //-------------------------------------------
+
   var errorsArray = message
 
   let new_alert = document.createElement("div");
@@ -102,10 +98,8 @@ function myAlertTopEditableErrorPermanent(message){
   new_alert.classList.add("alert-dismissible");
   new_alert.classList.add("fade");
   new_alert.classList.add("show");
-  //-------------------------------------------
-  //Replace testArary.length with actual array length
-  //-------------------------------------------
-  new_alert.innerHTML = "<strong>" + errorsArray.length + " errors found... " + "</strong>" + "<a data-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">" + "Click to expand" + "</a>";
+
+  new_alert.innerHTML = "<strong>" + errorsArray.length + " error(s) found... " + "</strong>" + "<a data-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">" + "Click to expand" + "</a>";
 
   let collapse_div = document.createElement("div");
   collapse_div.classList.add("collapse");
@@ -125,7 +119,6 @@ function myAlertTopEditableErrorPermanent(message){
   multiple_errorr_div_row.classList.add("row");
   collapse_div.append(multiple_errorr_div_row)
 
-  //Breakpoints for generating columns. a.k.a Don't touch this
   var breakpoint_1 = 6
 
   var breakpointArray = [15,31,61,101]
@@ -134,9 +127,6 @@ function myAlertTopEditableErrorPermanent(message){
 
   var maxDisplayErrors = 61
 
-  //-------------------------------------------
-  // Replace errorsArray here with actual array
-  //-------------------------------------------
   if (errorsArray.length < breakpoint_1) {
     
     var trueMessage = ""
@@ -153,9 +143,6 @@ function myAlertTopEditableErrorPermanent(message){
     multiple_errorr_div_row.append(single_col)
   }
 
-  //-------------------------------------------
-  // Replace errorsArray here with acutal array
-  //-------------------------------------------
   else {
     for(var x = 0; x < breakpointArray.length; x++) {
       if (errorsArray.length < maxDisplayErrors){
@@ -223,9 +210,6 @@ function myAlertTopEditableErrorPermanent(message){
 
           collapse_div.append(line_2)
 
-          //-------------------------------------------
-          // Replace errorsArray here with actual array
-          //-------------------------------------------
           var errors_left = errorsArray.length - (maxDisplayErrors - 1)
 
           let over_100_div = document.createElement("div");
@@ -236,25 +220,6 @@ function myAlertTopEditableErrorPermanent(message){
         }
       }
     }
-
-    // let line_2 = document.createElement("hr");
-    // line_2.id = "over_100_line"
-    // line_2.classList.add("group_line");
-    // line_2.classList.add("mt-1");
-    // line_2.classList.add("mb-2");
-
-    // collapse_div.append(line_2)
-
-    // //-------------------------------------------
-    // // Replace errorsArray here with actual array
-    // //-------------------------------------------
-    // var errors_left = errorsArray.length - (maxDisplayErrors - 1)
-
-    // let over_100_div = document.createElement("div");
-    // over_100_div.id = "over_100_div"
-    // over_100_div.innerHTML = "<strong>" + errors_left + " more errors! Please remove all errors and try again" + "</strong>";
-  
-    // collapse_div.append(over_100_div)
   }
 
   new_alert.innerHTML += "<span type=\"button\" class=\"close alert_close\" data-dismiss=\"alert\" area-label=\"Close\" aria-hidden=\"true\">&times;</span>"
