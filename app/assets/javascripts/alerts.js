@@ -99,7 +99,7 @@ function myAlertTopEditableErrorPermanent(message){
   new_alert.classList.add("fade");
   new_alert.classList.add("show");
 
-  new_alert.innerHTML = "<strong>" + errorsArray.length + " error(s) found... " + "</strong>" + "<a data-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">" + "Click to expand" + "</a>";
+  new_alert.innerHTML = "<strong>" + errorsArray.length + " error(s) found in uploaded file... " + "</strong>" + "<a data-toggle=\"collapse\" href=\"#collapseExample\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapseExample\">" + "Click to expand" + "</a>";
 
   let collapse_div = document.createElement("div");
   collapse_div.classList.add("collapse");
@@ -125,7 +125,7 @@ function myAlertTopEditableErrorPermanent(message){
 
   var correctSize = false
 
-  var maxDisplayErrors = 61
+  var maxDisplayErrors = 25
 
   if (errorsArray.length < breakpoint_1) {
     
@@ -210,7 +210,7 @@ function myAlertTopEditableErrorPermanent(message){
 
           collapse_div.append(line_2)
 
-          var errors_left = errorsArray.length - (maxDisplayErrors - 1)
+          var errors_left = errorsArray.length - (maxDisplayErrors)
 
           let over_100_div = document.createElement("div");
           over_100_div.id = "over_100_div"
