@@ -21,11 +21,6 @@ class AdminController < ApplicationController
 
   #the default page which an admin user gets redirected to
   def admin_page
-    if User.is_mod_lead(current_user.username)
-      current_ability("module_leader")
-    elsif User.is_ta(current_user.username)
-      current_ability("teaching_assistant_16")
-    end
     authorize! :manage, :admin_page
 
     #redirect to different admin subpages based on the button pressed
