@@ -212,11 +212,11 @@ function myAlertTopEditableErrorPermanent(message){
 
           var errors_left = errorsArray.length - (maxDisplayErrors)
 
-          let over_100_div = document.createElement("div");
-          over_100_div.id = "over_100_div"
-          over_100_div.innerHTML = "<strong>" + errors_left + " more errors! Please remove all errors and try again" + "</strong>";
+          let over_limit = document.createElement("div");
+          over_limit.id = "over_limit"
+          over_limit.innerHTML = "<strong>" + errors_left + " more errors! Please remove all errors and try again" + "</strong>";
         
-          collapse_div.append(over_100_div)
+          collapse_div.append(over_limit)
         }
       }
     }
