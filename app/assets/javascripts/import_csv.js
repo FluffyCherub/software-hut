@@ -28,6 +28,8 @@ function readFile(input) {
             myAlertTopEditableError("There are missing headers in the provided file.");
         
       } else {
+        errors_array = []
+
         csv_integrity = true;
 
         surname_index = csv_headers.indexOf("Surname");
@@ -46,27 +48,33 @@ function readFile(input) {
 
             if (one_row[surname_index].length == 0) {
               csv_integrity = false;
-              myAlertTopEditableError("Missing Surname at line: " + (i+1).toString());
-              break;
+              //myAlertTopEditableError("Missing Surname at line: " + (i+1).toString());
+              errors_array.push("Missing Surname at line: " + (i+1).toString())
+              
             } else if (one_row[forename_index].length == 0) {
               csv_integrity = false;
-              myAlertTopEditableError("Missing Forename at line: " + (i+1).toString());
-              break;
+              //myAlertTopEditableError("Missing Forename at line: " + (i+1).toString());
+              errors_array.push("Missing Forename at line: " + (i+1).toString())
+           
             } else if (one_row[username_index].length == 0) {
               csv_integrity = false;
-              myAlertTopEditableError("Missing Username at line: " + (i+1).toString());
-              break;
+              //myAlertTopEditableError("Missing Username at line: " + (i+1).toString());
+              errors_array.push("Missing Username at line: " + (i+1).toString())
             } else if (one_row[email_index].length == 0) {
               csv_integrity = false;
-              myAlertTopEditableError("Missing Email at line: " + (i+1).toString());
-              break;
+              //myAlertTopEditableError("Missing Email at line: " + (i+1).toString());
+              errors_array.push("Missing Email at line: " + (i+1).toString())
             } else if (one_row[email_index].includes(email_domain) === false) {
               csv_integrity = false;
-              myAlertTopEditableError("Invalid Email at line: " + (i+1).toString());
-              break;
+              //myAlertTopEditableError("Invalid Email at line: " + (i+1).toString());
+              errors_array.push("Invalid Email at line: " + (i+1).toString())
             }
               
           }
+        }
+
+        if(csv_integrity == false) {
+          myAlertTopEditableErrorPermanent(errors_array)
         }
 
         //check if file is ok, if yes post request to import_csv
