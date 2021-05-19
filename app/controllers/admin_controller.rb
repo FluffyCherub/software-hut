@@ -78,14 +78,34 @@ class AdminController < ApplicationController
     end
     authorize! :manage, :admin_modules
 
+    #get the highest privilege of the current user
+    @highest_privilege = User.highest_privilege(current_user.id)
+
     #find the accroding entries in modules table based on search input
+    search_input = ""
     if params['search_button'] == "Search"
+      search_input = params['search_form']['search_input']
+    end
+
+    if @highest_privilege == "teaching_assistant"
+
+      search_input_modules = ListModule.joins(:users)
+                                        .where("(years LIKE ? OR name LIKE ? OR code LIKE ? OR description LIKE ? OR semester LIKE ?) AND
+                                                  users.id = ?", 
+                                                  "%" + search_input + "%",
+                                                  "%" + search_input + "%",
+                                                  "%" + search_input + "%",
+                                                  "%" + search_input + "%",
+                                                  "%" + search_input + "%",
+                                                  current_user.id)
+
+    else
       search_input_modules = ListModule.where("years LIKE ? OR name LIKE ? OR code LIKE ? OR description LIKE ? OR semester LIKE ?", 
-                                                "%" + params['search_form']['search_input'] + "%",
-                                                "%" + params['search_form']['search_input'] + "%",
-                                                "%" + params['search_form']['search_input'] + "%",
-                                                "%" + params['search_form']['search_input'] + "%",
-                                                "%" + params['search_form']['search_input'] + "%")
+                                                "%" + search_input + "%",
+                                                "%" + search_input + "%",
+                                                "%" + search_input + "%",
+                                                "%" + search_input + "%",
+                                                "%" + search_input + "%")
     end
 
     #getting all the distinct academic years from list of modules
@@ -94,11 +114,15 @@ class AdminController < ApplicationController
     if params['search_button'] == "Search"
       years_temp = search_input_modules.select(:years).distinct
     else
-      years_temp = ListModule.select(:years).distinct
+      if @highest_privilege == "teaching_assistant"
+        years_temp = search_input_modules.select(:years).distinct
+      else
+        years_temp = ListModule.select(:years).distinct
+      end
     end
 
     #creating an array of distinct academic years
-    for i in 0..(years_temp.length-1)
+    for i in 0...years_temp.length
       years.append(years_temp[i].years)
     end
     
@@ -107,13 +131,19 @@ class AdminController < ApplicationController
 
     #creating a 2d array of modules based on academic years(and search input)
     @modules_by_year = []
-    for i in 0..(years.length-1)
+    for i in 0...years.length
       current_year_modules = []
+     
       if params['search_button'] == "Search"
         current_year_modules = search_input_modules.where(years: years[i]).order(:code)
       else
-        current_year_modules = ListModule.where(years: years[i]).order(:code)
+        if @highest_privilege == "teaching_assistant"
+          current_year_modules = search_input_modules.where(years: years[i]).order(:code)
+        else
+          current_year_modules = ListModule.where(years: years[i]).order(:code)
+        end
       end
+     
       @modules_by_year.append(current_year_modules)
     end
 
@@ -122,7 +152,11 @@ class AdminController < ApplicationController
     if params['search_button'] == "Search"
       @num_of_modules = @modules_by_year.flatten.length
     else
-      @num_of_modules = ListModule.all.length
+      if @highest_privilege != "teaching_assistant"
+        @num_of_modules = search_input_modules.length
+      else
+        @num_of_modules = ListModule.all.length
+      end
     end
     
   end

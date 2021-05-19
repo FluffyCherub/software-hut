@@ -48,6 +48,9 @@
                 %ul.nav.navbar-nav
                   - #-----------Admin section----------#
                   - if  highest_privilege == "admin"
+                    = navbar_link_to :admin_privileges, title: "Manage system privileges", identifier: :home do
+                      = icon icon_type_fas, profile_icon
+                      System Privileges
                     - if is_student_in_any_module
                       = navbar_link_to :student_profile, title: "Go to your Profile", identifier: :home do
                         = icon icon_type_fas, profile_icon
