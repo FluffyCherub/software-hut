@@ -54,7 +54,7 @@
                         .card-body
                           - module_id_var = @modules_by_year[i-1][z-1].id
                           - privilege_for_module = ListModule.privilege_for_module(current_user.username, module_id_var)
-                          - if privilege_for_module != "student"
+                          - if privilege_for_module != "student" || @highest_privilege == "admin"
                             %li
                               %a.uni_purple{ :href => admin_modules_preview_path(module_id: module_id_var), :title => "Preview" }
                                 %strong
