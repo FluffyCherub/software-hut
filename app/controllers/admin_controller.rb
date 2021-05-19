@@ -335,6 +335,10 @@ class AdminController < ApplicationController
     current_ability(User.get_module_privilege(params[:module_id], current_user.id))
     authorize! :manage, :admin_modules_edit
 
+    max_module_name_length = 150
+    max_module_code_length = 20
+    max_module_description_length = 1000
+
     #check if edit button was clicked
     if params['edit_module_button'] == "Edit"
       module_name = params['module_edit_form']['module_name']
@@ -349,37 +353,51 @@ class AdminController < ApplicationController
       if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
           module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
         
-        #checking if a module with this name and year is in the system
-        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ? AND id != ?", 
-                                         module_name,
-                                         years,
-                                         module_code,
-                                         semester,
-                                         form_module_id
-                                         )
-
-        #check if module with this data doesnt already exist in the system
-        if module_check.length == 0
-          current_module = ListModule.find_by(id: form_module_id)
-          current_module.update(name: module_name,
-                                code: module_code,
-                                description: module_description,
-                                semester: semester,
-                                years: years,
-                                level: level)
-          
-          #popup that module was updated successfully
+        #validate all the fields
+        if module_name.length >= max_module_name_length
           respond_to do |format|
-            format.js { render :js => "myAlertTopEditableSuccess(\"Module edited successfully!\")" }
+            format.js { render :js => "myAlertTopEditableError(\"The Module Name has to have less than " + max_module_name_length.to_s + " characters!\");" }
+          end
+        elsif module_code.length >= max_module_code_length
+          respond_to do |format|
+            format.js { render :js => "myAlertTopEditableError(\"The Module Code has to have less than " + max_module_code_length.to_s + " characters!\");" }
+          end
+        elsif module_description.length >= max_module_description_length
+          respond_to do |format|
+            format.js { render :js => "myAlertTopEditableError(\"The Module Description has to have less than " + max_module_description_length.to_s + " characters!\");" }
           end
         else
-          #popup that this module already exists
-          respond_to do |format|
-            format.js { render :js => "myAlertTopEditableError(\"This Module already exists.\")" }
-          end
-        end
+          #checking if a module with this name and year is in the system
+          module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ? AND id != ?", 
+                                          module_name,
+                                          years,
+                                          module_code,
+                                          semester,
+                                          form_module_id
+                                          )
 
-        
+          #check if module with this data doesnt already exist in the system
+          if module_check.length == 0
+            current_module = ListModule.find_by(id: form_module_id)
+            current_module.update(name: module_name,
+                                  code: module_code,
+                                  description: module_description,
+                                  semester: semester,
+                                  years: years,
+                                  level: level)
+            
+            #popup that module was updated successfully
+            respond_to do |format|
+              format.js { render :js => "myAlertTopEditableSuccess(\"Module edited successfully!\")" }
+            end
+          else
+            #popup that this module already exists
+            respond_to do |format|
+              format.js { render :js => "myAlertTopEditableError(\"This Module already exists.\")" }
+            end
+          end
+
+        end
 
       else
         #popups for missing fields
@@ -412,61 +430,78 @@ class AdminController < ApplicationController
       if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
           module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
         
-        #checking if a module with this name and year is in the system
-        module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
-                                         module_name,
-                                         years,
-                                         module_code,
-                                         semester
-                                         )
-
-        #check if module with this data doesnt already exist in the system
-        if module_check.length == 0
-          cloned_module = ListModule.find_or_create_by(name: module_name,
-                                                      code: module_code,
-                                                      description: module_description,
-                                                      semester: semester,
-                                                      years: years,
-                                                      created_by: current_user.username,
-                                                      level: level)
-        
-          #adding module leaders to the cloned module if checkbox checked
-          if params['module_edit_form']['check_box_ml'] == "checked-value"
-            module_leaders = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege = ?",
-                                                              form_module_id,
-                                                              "module_leader")
-
-            for i in 0..(module_leaders.length-1)
-              UserListModule.create(user_id: module_leaders[i].id,
-                                    list_module_id: cloned_module.id,
-                                    privilege: "module_leader")
-            end
-          end
-
-          #inheriting teaching assistants if checkbox checked
-          if params['module_edit_form']['check_box_ta'] == "checked-value"
-            teaching_assistants = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege LIKE ?",
-                                                                  form_module_id,
-                                                                  "%teaching_assistant%")
-          
-
-            for i in 0..(teaching_assistants.length-1)
-              UserListModule.create(user_id: teaching_assistants[i].id,
-                                    list_module_id: cloned_module.id,
-                                    privilege: User.get_module_privilege(form_module_id, teaching_assistants[i].id))
-          
-            end
-          end
-
-          #popup that module was cloned successfully
+        #validate all the fields
+        if module_name.length >= max_module_name_length
           respond_to do |format|
-            format.js { render :js => "myAlertTopEditableSuccess(\"Module cloned successfully!\")" }
+            format.js { render :js => "myAlertTopEditableError(\"The Module Name has to have less than " + max_module_name_length.to_s + " characters!\");" }
+          end
+        elsif module_code.length >= max_module_code_length
+          respond_to do |format|
+            format.js { render :js => "myAlertTopEditableError(\"The Module Code has to have less than " + max_module_code_length.to_s + " characters!\");" }
+          end
+        elsif module_description.length >= max_module_description_length
+          respond_to do |format|
+            format.js { render :js => "myAlertTopEditableError(\"The Module Description has to have less than " + max_module_description_length.to_s + " characters!\");" }
           end
         else
-          #popup that this module already exists
-          respond_to do |format|
-            format.js { render :js => "myAlertTopEditableError(\"This Module already exists.\")" }
+
+          #checking if a module with this name and year is in the system
+          module_check = ListModule.where("name = ? AND years = ? AND code = ? AND semester = ?", 
+                                          module_name,
+                                          years,
+                                          module_code,
+                                          semester
+                                          )
+
+          #check if module with this data doesnt already exist in the system
+          if module_check.length == 0
+            cloned_module = ListModule.find_or_create_by(name: module_name,
+                                                        code: module_code,
+                                                        description: module_description,
+                                                        semester: semester,
+                                                        years: years,
+                                                        created_by: current_user.username,
+                                                        level: level)
+          
+            #adding module leaders to the cloned module if checkbox checked
+            if params['module_edit_form']['check_box_ml'] == "checked-value"
+              module_leaders = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege = ?",
+                                                                form_module_id,
+                                                                "module_leader")
+
+              for i in 0..(module_leaders.length-1)
+                UserListModule.create(user_id: module_leaders[i].id,
+                                      list_module_id: cloned_module.id,
+                                      privilege: "module_leader")
+              end
+            end
+
+            #inheriting teaching assistants if checkbox checked
+            if params['module_edit_form']['check_box_ta'] == "checked-value"
+              teaching_assistants = User.joins(:list_modules).where("list_modules.id = ? AND user_list_modules.privilege LIKE ?",
+                                                                    form_module_id,
+                                                                    "%teaching_assistant%")
+            
+
+              for i in 0..(teaching_assistants.length-1)
+                UserListModule.create(user_id: teaching_assistants[i].id,
+                                      list_module_id: cloned_module.id,
+                                      privilege: User.get_module_privilege(form_module_id, teaching_assistants[i].id))
+            
+              end
+            end
+
+            #popup that module was cloned successfully
+            respond_to do |format|
+              format.js { render :js => "myAlertTopEditableSuccess(\"Module cloned successfully!\")" }
+            end
+          else
+            #popup that this module already exists
+            respond_to do |format|
+              format.js { render :js => "myAlertTopEditableError(\"This Module already exists.\")" }
+            end
           end
+
         end
       else
         #popups if empty fields
