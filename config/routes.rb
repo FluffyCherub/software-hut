@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   match "/remove/student/from/team", to: "admin#remove_student_from_team", via: :all
   match "/assign/solve/problem", to: "admin#assign_solve_problem", via: :all
   match "/add/individual/user", to: "admin#add_individual_user", via: :all
+  match "/admin/modules/groups/docs", to: "admin#admin_modules_groups_docs", via: :all
   
   
 
