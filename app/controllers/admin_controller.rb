@@ -234,6 +234,10 @@ class AdminController < ApplicationController
       years = params['module_create_form']['years']
       level = params['module_create_form']['level']
 
+      max_module_name_length = 150
+      max_module_code_length = 20
+      max_module_description_length = 1000
+
       #check if there is no empty field supplied by the user
       if (module_name != nil && module_code != nil && module_description != nil && semester != nil && years != nil && level != nil &&
          module_name.length != 0 && module_code.length != 0 && module_description.length != 0 && semester.length != 0 && years.length != 0 && level.length != 0)
@@ -265,23 +269,40 @@ class AdminController < ApplicationController
                                                   privilege: "module_leader")
           end
 
-          #popup that module was created successfully
 
-          #wizard path for adding users to the created module
-          wizard_path = "\"" + "/admin/modules/preview?module_id=" + created_module.id.to_s + "\""
+          if module_name.length >= max_module_name_length
+            respond_to do |format|
+              format.js { render :js => "myAlertTopEditableError(\"The Module Name has to have less than " + max_module_name_length.to_s + " characters!\");" }
+            end
+          elsif module_code.length >= max_module_code_length
+            respond_to do |format|
+              format.js { render :js => "myAlertTopEditableError(\"The Module Code has to have less than " + max_module_code_length.to_s + " characters!\");" }
+            end
+          elsif module_description.length >= max_module_description_length
+            respond_to do |format|
+              format.js { render :js => "myAlertTopEditableError(\"The Module Description has to have less than " + max_module_description_length.to_s + " characters!\");" }
+            end
+          else
+            #popup that module was created successfully
 
-          #functions to alert and show wizard toast
-          call_alert_success = "myAlertTopSuccess();"
-          call_wizard_toast = "add_wizard_toast(\"You just created a new module!\",
-                                                \"The next step we suggest is to add users to the module using a <strong>.CSV</strong> file or by <strong>adding individual users</strong>.\", " +
-                                                wizard_path + ");"
-          respond_to do |format|
-            format.js { render :js => call_alert_success + call_wizard_toast }
+            #wizard path for adding users to the created module
+            wizard_path = "\"" + "/admin/modules/preview?module_id=" + created_module.id.to_s + "\""
+
+            #functions to alert and show wizard toast
+            call_alert_success = "myAlertTopEditableSuccess(\"Module created successfully!\");"
+            call_wizard_toast = "add_wizard_toast(\"You just created a new module!\",
+                                                  \"The next step we suggest is to add users to the module using a <strong>.CSV</strong> file or by <strong>adding individual users</strong>.\", " +
+                                                  wizard_path + ");"
+            respond_to do |format|
+              format.js { render :js => call_alert_success + call_wizard_toast }
+            end
           end
+
+
         else
           #popup that this module already exists
           respond_to do |format|
-            format.js { render :js => "myAlertTopError4();" }
+            format.js { render :js => "myAlertTopEditableError(\"This Module already exists!\");" }
           end
         end
       else
@@ -290,17 +311,17 @@ class AdminController < ApplicationController
         if module_name.nil? || module_name.length == 0
           #popup that module name was empty
           respond_to do |format|
-            format.js { render :js => "myAlertTopError1();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter a Module Name!\");" }
           end
         elsif module_code.nil? || module_code.length == 0
           #popup that module code was empty
           respond_to do |format|
-            format.js { render :js => "myAlertTopError2();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter a Module Code!\");" }
           end
         elsif module_description != nil || module_description.length == 0
           #popup that module description was empty
           respond_to do |format|
-            format.js { render :js => "myAlertTopError3();" }
+            format.js { render :js => "myAlertTopEditableError(\"Please enter a Description!\");" }
           end
         end
 
