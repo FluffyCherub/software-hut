@@ -208,13 +208,15 @@ class AdminController < ApplicationController
                                           users.givenname LIKE ? OR 
                                           users.sn LIKE ? OR 
                                           users.email LIKE ? OR 
-                                          user_list_modules.privilege LIKE ?)", 
+                                          user_list_modules.privilege LIKE ?) AND
+                                          user_list_modules.privilege != ?", 
                                           module_id,
                                             "%" + search_input + "%",
                                             "%" + search_input + "%",
                                             "%" + search_input + "%",
                                             "%" + search_input + "%",
-                                            "%" + search_input + "%") 
+                                            "%" + search_input + "%",
+                                            "suspended") 
                                 .order(:givenname, :sn)
 
     if params['search_button'] == "Search"
