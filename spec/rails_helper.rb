@@ -1,6 +1,18 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+
+  add_filter "/channels/"
+  add_filter "/controllers/"
+  add_filter "/decorators/"
+  add_filter "/helpers/"
+  add_filter "/inputs/"
+  add_filter "/jobs/"
+  add_filter "/mailers/"
+  add_filter "app/models/ability.rb"
+
+end
+
 
 ENV["RAILS_ENV"] ||= 'test'
 require 'spec_helper'
@@ -91,15 +103,15 @@ Capybara.register_driver :chrome do |app|
 
   # LTSP has multiple versions of Chrome installed, so prefer Chromium
   LTSP_BIN = '/usr/bin/chromium-browser'
-   if File.exist?(LTSP_BIN)
-     chrome_options.binary = LTSP_BIN
-   end
+  if File.exist?(LTSP_BIN)
+    chrome_options.binary = LTSP_BIN
+  end
 
-   # Rails takes a little time to start, so wait ~2 mins before failing
-   client = Selenium::WebDriver::Remote::Http::Default.new
-   client.read_timeout = 120 # seconds
+  # Rails takes a little time to start, so wait ~2 mins before failing
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  client.read_timeout = 120 # seconds
 
-   Capybara::Selenium::Driver.new app, browser: :chrome, options: chrome_options, http_client: client
+  Capybara::Selenium::Driver.new app, browser: :chrome, options: chrome_options, http_client: client
 end
 
 Capybara.configure do |config|

@@ -79,134 +79,137 @@ class ListModule < ApplicationRecord
 
   #method for importing csv files and adding users to modules
   #takes a file and module id, returns void
-  def self.import(file, module_id)
+  
+  # :nocov:
+    def self.import(file, module_id)
 
-    #variable for checking if all fields in the csv are input correctly
-    #and there arent any missing fields
-    integrity = true
+      #variable for checking if all fields in the csv are input correctly
+      #and there arent any missing fields
+      integrity = true
 
-    transaction do
-      if file != nil
-        #get an array of headers from the csv file
-        csv_headers = file[0].split(',')
+      transaction do
+        if file != nil
+          #get an array of headers from the csv file
+          csv_headers = file[0].split(',')
 
-        #store usernames of users in csv file
-        csv_usernames = []
+          #store usernames of users in csv file
+          csv_usernames = []
 
-        #get indexes of needed headers
-        surname_index = csv_headers.index("Surname")
-        forename_index = csv_headers.index("Forename")
-        username_index = csv_headers.index("Student Username")
-        email_index = csv_headers.index("Email")
+          #get indexes of needed headers
+          surname_index = csv_headers.index("Surname")
+          forename_index = csv_headers.index("Forename")
+          username_index = csv_headers.index("Student Username")
+          email_index = csv_headers.index("Email")
 
-        #check if all neccessary headers are present
-        if surname_index.nil? || forename_index.nil? || username_index.nil? || email_index.nil?
-          integrity = false
-        else
+          #check if all neccessary headers are present
+          if surname_index.nil? || forename_index.nil? || username_index.nil? || email_index.nil?
+            integrity = false
+          else
 
-          #looping through rows in the csv(every row is one user), starting from index 1(beacuse index 0 is headers)
-          for i in 1...(file.length)
+            #looping through rows in the csv(every row is one user), starting from index 1(beacuse index 0 is headers)
+            for i in 1...(file.length)
 
-            #get information about the user to add to the module
-            current_user_from_csv = file[i].split(',')
+              #get information about the user to add to the module
+              current_user_from_csv = file[i].split(',')
 
-            add_surname = current_user_from_csv[surname_index]
-            add_forename = current_user_from_csv[forename_index]
-            add_username = current_user_from_csv[username_index]
-            add_email = current_user_from_csv[email_index]
+              add_surname = current_user_from_csv[surname_index]
+              add_forename = current_user_from_csv[forename_index]
+              add_username = current_user_from_csv[username_index]
+              add_email = current_user_from_csv[email_index]
 
-            if(add_surname != nil && add_surname.length != 0) ||
-              (add_forename != nil && add_forename.length != 0) ||
-              (add_username != nil && add_username.length != 0) ||
-              (add_email != nil && add_email.length != 0)
+              if(add_surname != nil && add_surname.length != 0) ||
+                (add_forename != nil && add_forename.length != 0) ||
+                (add_username != nil && add_username.length != 0) ||
+                (add_email != nil && add_email.length != 0)
 
-              #if any of the forename, surname, username or email fields are missing, set integrity to false
-              if (add_forename.nil? || add_surname.nil? || add_username.nil? || add_email.nil? ||
-                add_forename.length == 0 || add_surname.length == 0 || add_username.length == 0 || add_email.length == 0)
+                #if any of the forename, surname, username or email fields are missing, set integrity to false
+                if (add_forename.nil? || add_surname.nil? || add_username.nil? || add_email.nil? ||
+                  add_forename.length == 0 || add_surname.length == 0 || add_username.length == 0 || add_email.length == 0)
 
-                integrity = false
-                break
-              end
+                  integrity = false
+                  break
+                end
 
-              #if university of sheffield domain missing from email set integrity to false
-              if add_email.include?("@sheffield.ac.uk") == false
-                integrity = false
-                break
+                #if university of sheffield domain missing from email set integrity to false
+                if add_email.include?("@sheffield.ac.uk") == false
+                  integrity = false
+                  break
+                end
               end
             end
           end
-        end
 
 
-        #if data is fine in the csv, add users to the database
-        if integrity
-          #looping through rows in the csv(every row is one user), starting from index 1(beacuse index 0 is headers)
-          for i in 1...(file.length)
+          #if data is fine in the csv, add users to the database
+          if integrity
+            #looping through rows in the csv(every row is one user), starting from index 1(beacuse index 0 is headers)
+            for i in 1...(file.length)
 
-            #get information about the user to add to the module
-            current_user_from_csv = file[i].split(',')
+              #get information about the user to add to the module
+              current_user_from_csv = file[i].split(',')
 
-            add_surname = current_user_from_csv[surname_index]
-            add_forename = current_user_from_csv[forename_index]
-            add_username = current_user_from_csv[username_index]
-            add_email = current_user_from_csv[email_index]
+              add_surname = current_user_from_csv[surname_index]
+              add_forename = current_user_from_csv[forename_index]
+              add_username = current_user_from_csv[username_index]
+              add_email = current_user_from_csv[email_index]
 
-            if ((add_surname == nil || add_surname.length == 0) ||
-              (add_forename == nil || add_forename.length == 0) ||
-              (add_username == nil || add_username.length == 0) ||
-              (add_email == nil || add_email.length == 0))
+              if ((add_surname == nil || add_surname.length == 0) ||
+                (add_forename == nil || add_forename.length == 0) ||
+                (add_username == nil || add_username.length == 0) ||
+                (add_email == nil || add_email.length == 0))
 
-              next
+                next
+              end
+
+              #check if this user is already in the system or in the module
+              is_user_in_system = User.is_user_in_system(add_username)
+              is_user_in_module = User.is_user_in_module(add_username, module_id)
+
+              #if he is already in the module and was suspended change his status to student
+              if (is_user_in_system == true) && (is_user_in_module == true) && (ListModule.privilege_for_module(add_username, module_id) == "suspended")
+                User.change_privilege_user_module(add_username, module_id, "student")
+              elsif (is_user_in_system == true) && (is_user_in_module == false)
+                #if user was in the system, but wasnt in the module, then link him to the module
+                UserListModule.create(user_id: User.get_user_id(add_username),
+                                      list_module_id: module_id,
+                                      privilege: "student")
+              elsif (is_user_in_system == false)
+                #if user wasnt in the system, then add him to the system and then to the module
+                created_user = User.create(givenname: add_forename,
+                                          sn: add_surname,
+                                          username: add_username,
+                                          email: add_email)
+
+                UserListModule.create(user_id: created_user.id,
+                                      list_module_id: module_id,
+                                      privilege: "student")
+              end
+
+
+              csv_usernames.append(add_username)
+
             end
 
-            #check if this user is already in the system or in the module
-            is_user_in_system = User.is_user_in_system(add_username)
-            is_user_in_module = User.is_user_in_module(add_username, module_id)
+            #users who are in the module but werent in the csv get privilege changed to suspended
+            in_module_users = ListModule.users_in_module(module_id)
 
-            #if he is already in the module and was suspended change his status to student
-            if (is_user_in_system == true) && (is_user_in_module == true) && (ListModule.privilege_for_module(add_username, module_id) == "suspended")
-              User.change_privilege_user_module(add_username, module_id, "student")
-            elsif (is_user_in_system == true) && (is_user_in_module == false)
-              #if user was in the system, but wasnt in the module, then link him to the module
-              UserListModule.create(user_id: User.get_user_id(add_username),
-                                    list_module_id: module_id,
-                                    privilege: "student")
-            elsif (is_user_in_system == false)
-              #if user wasnt in the system, then add him to the system and then to the module
-              created_user = User.create(givenname: add_forename,
-                                        sn: add_surname,
-                                        username: add_username,
-                                        email: add_email)
+            for i in 0..(in_module_users.length-1)
+              users_privilege = ListModule.privilege_for_module(in_module_users[i].username, module_id)
+              if (csv_usernames.include?(in_module_users[i].username) == false) && (users_privilege != "module_leader") && (users_privilege.include?("teaching_assistant") == false)
 
-              UserListModule.create(user_id: created_user.id,
-                                    list_module_id: module_id,
-                                    privilege: "student")
+                User.change_privilege_user_module(in_module_users[i].username, module_id, "suspended")
+              end
             end
 
-
-            csv_usernames.append(add_username)
-
-          end
-
-          #users who are in the module but werent in the csv get privilege changed to suspended
-          in_module_users = ListModule.users_in_module(module_id)
-
-          for i in 0..(in_module_users.length-1)
-            users_privilege = ListModule.privilege_for_module(in_module_users[i].username, module_id)
-            if (csv_usernames.include?(in_module_users[i].username) == false) && (users_privilege != "module_leader") && (users_privilege.include?("teaching_assistant") == false)
-
-              User.change_privilege_user_module(in_module_users[i].username, module_id, "suspended")
-            end
           end
 
         end
 
       end
 
+      return integrity
     end
-
-    return integrity
-  end
+  # :nocov:
 
   #get number of students in a module
   #takes module id, returns int with number of students
