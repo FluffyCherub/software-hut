@@ -2,14 +2,14 @@
 - # Authors: Anton Minkov && Laney Deveson
 - # Date: 16/05/2021
 
-- content_for :title, "Team XX - Previous Documents"
+- content_for :title, @team.name + "- Previous Documents"
 
 .container.body_whole_custom
   .container-fluid.text_black.bg_none.margin_top
     .container-fluid.bg_none.text_black
       .container-fluid.bg_none.text_black.text_center
         %h.bigger.width_100
-          Documents for Team XX
+          Documents for #{@team.name}
         %hr.group_line
       .container-fluid.bg_none.text_black.margin_top.bigger
         %p.small
