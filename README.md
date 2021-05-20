@@ -29,11 +29,11 @@ TeamWorks uses a number of open source projects to work properly:
 mobile-first front-end web development.
 - [AJAX] - A technique for creating better, faster, and more interactive web applications
 - [Chart.js] - Simple yet flexible JavaScript charting
-- [jQuery] -  jQuery is a lightweight, "write less, do more", JavaScript library.
+- [jQuery] -  jQuery is a lightweight, "write less, do more", JavaScript library
 
 ## Installation
 
-Dillinger requires [Ruby](https://rubyinstaller.org) v2.6.6 and [Rails](https://rubyonrails.org) 6.0.3.3 to run.
+Teamworks requires [Ruby](https://rubyinstaller.org) v2.6.6p146 and [Rails](https://rubyonrails.org) 6.0.3.3 to run.
 
 Run this commands to start the project locally in that order:
 
