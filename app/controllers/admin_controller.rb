@@ -1575,4 +1575,14 @@ class AdminController < ApplicationController
 
   end
 
+  def admin_modules_groups_docs
+    module_id = params['module_id']
+    team_id = params['team_id']
+
+    @team = Team.find(team_id.to_i)
+
+    @tmrs = Tmr.where(team_id: team_id.to_i)
+
+  end
+
 end

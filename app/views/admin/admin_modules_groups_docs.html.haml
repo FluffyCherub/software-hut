@@ -20,16 +20,29 @@
           %li
             - # Display the download TOP option
             %p.small
-              %i
-                No Team Operating Agreement recorded for this team.
+              - if @team.document.attached? && @team.toa_status == "finished"
+                %i
+                  = link_to 'Team Operating Agreement - ' + @team.document.created_at.strftime("%d/%m/%Y").to_s, rails_blob_path(@team.document, disposition: "attachment")
+              - else
+                %i
+                  No Team Operating Agreement recorded for this team.
         %hr
         %p.small
           %strong
             Team Meeting Records Download 
         %hr
         %ul
-          %li
-            %p.small
-              %i
-                No Team Meeting Records saved for this team.
-              %hr
+          - if @tmrs.length == 0
+            %li
+              %p.small
+                %i
+                  No Team Meeting Records saved for this team.
+                %hr
+          - for y in 0...@tmrs.length
+            %li
+              - # Display the download TMR option
+              %p.small
+                %i
+                  = link_to 'Team Meeting Record - ' + @tmrs[y].tmr_doc.created_at.strftime("%d/%m/%Y").to_s, rails_blob_path(@tmrs[y].tmr_doc, disposition: "attachment")
+              - if y != 7
+                %hr
