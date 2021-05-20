@@ -74,11 +74,11 @@
               - true_i = i + 1
             #heading-1.card-header
               %h5.mb-0
-                %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
+                %a.uni_purple.collapsed.no_after#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
                   #{@in_team_without_current_user[i-1].givenname} #{@in_team_without_current_user[i-1].sn}             
                   %p.float_right.margin_none
                              
-            #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
+            #collapse-1.collapse.no_after{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
               .card-body.no_padding
                 #accordion-1
                   .card-body.no_padding
@@ -263,7 +263,7 @@
             - appreciate_request_fields = PeerFeedback.get_feedback_for_user(current_user.username, @in_team_without_current_user[i-1].username, @feedback_date_id).first
             - appreciate_note = appreciate_request_fields.appreciate
             - request_note = appreciate_request_fields.request
-            - # Changing accordions id's to avoid dublication
+            - # Changing accordions id's to avoid duplication
             :javascript
               document.getElementById('heading-1').id = 'heading-#{i}';
               document.getElementById('collapse-1').id = 'collapse-#{i}';
