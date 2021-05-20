@@ -258,7 +258,7 @@ class AdminController < ApplicationController
     authorize! :manage, :admin_modules_create
 
     #generating academic years based on current year
-    @generated_years = ListModule.generate_years(Time.now.year, 5)
+    @generated_years = ListModule.generate_years(Time.now.year-1, 6)
     
     if params['create_module_button'] == "Create"
       #getting all the variables needed to create a module
