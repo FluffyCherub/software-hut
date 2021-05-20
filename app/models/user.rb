@@ -141,10 +141,12 @@ class User < ApplicationRecord
   #checks if user is a ta or mod lead for at least one module
   def self.is_ta_or_mod_lead(username)
     ta_or_mod_lead_modules = ListModule.joins(:users)
-                                       .where("user_list_modules.privilege = ? OR
-                                              user_list_modules.privilege LIKE ?",
+                                       .where("(user_list_modules.privilege = ? OR
+                                              user_list_modules.privilege LIKE ?) AND
+                                              users.username = ?",
                                               "module_leader",
-                                              "%teaching_assistant%")
+                                              "%teaching_assistant%",
+                                              username)
 
     if ta_or_mod_lead_modules.length > 0
       return true
@@ -156,8 +158,10 @@ class User < ApplicationRecord
   #checks if user is a mod lead for at least one module
   def self.is_mod_lead(username)
     mod_lead_modules = ListModule.joins(:users)
-                                  .where("user_list_modules.privilege = ?",
-                                        "module_leader")
+                                  .where("user_list_modules.privilege = ? AND
+                                          users.username = ?",
+                                          "module_leader",
+                                          username)
 
     if mod_lead_modules.length > 0
       return true
@@ -169,8 +173,10 @@ class User < ApplicationRecord
   #checks if user is a ta for at least one module
   def self.is_ta(username)
     ta_modules = ListModule.joins(:users)
-                            .where("user_list_modules.privilege LIKE ?",
-                                  "%teaching_assistant%")
+                            .where("user_list_modules.privilege LIKE ? AND
+                                    users.username = ?",
+                                    "%teaching_assistant%",
+                                    username)
 
     if ta_modules.length > 0
       return true

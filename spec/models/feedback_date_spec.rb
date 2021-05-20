@@ -106,7 +106,7 @@ describe FeedbackDate do
     end
     
     it 'returns correct output when there is no team in the module' do
-      expect(FeedbackDate.get_period_number(@feedback_date3.id)).to eq 1 # or nil
+      expect(FeedbackDate.get_period_number(@feedback_date3.id)).to eq nil # or nil
     end
   end
 

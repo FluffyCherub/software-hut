@@ -52,7 +52,7 @@ RSpec.describe User, type: :model do
        level: 1, created_at: DateTime.now(), updated_at: DateTime.now())
     @usermodule = create(:user_list_module, privilege: 'student', created_at: DateTime.now(), updated_at: DateTime.now(), list_module_id: @listmodule.id, user_id: @user.id)
     @usermodule2 = create(:user_list_module, privilege: 'module_leader', created_at: DateTime.now(), updated_at: DateTime.now(), list_module_id: @listmodule.id, user_id: @user4.id)
-    @usermodule3 = create(:user_list_module, privilege: '%teaching_assistant%', created_at: DateTime.now(), updated_at: DateTime.now(), list_module_id: @listmodule.id, user_id: @user5.id)
+    @usermodule3 = create(:user_list_module, privilege: 'teaching_assistant_5', created_at: DateTime.now(), updated_at: DateTime.now(), list_module_id: @listmodule.id, user_id: @user5.id)
   end
   describe '#get_user_info_by_id' do
 

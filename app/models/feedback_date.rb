@@ -112,6 +112,10 @@ class FeedbackDate < ApplicationRecord
     #get a team connected to this feedback date
     team = Team.joins(:feedback_dates).where("feedback_dates.id = ?", feedback_date_id).first
 
+    if team.nil?
+      return nil
+    end
+
     #get all feedback dates connected to this team
     f_dates = FeedbackDate.joins(:teams).where("teams.id = ?", team.id).order("end_date DESC")
 

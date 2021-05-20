@@ -317,7 +317,7 @@ class ListModule < ApplicationRecord
 
   def self.get_inactive_modules_for_years(years, username)
     inactive_modules = ListModule.joins(:teams, :users)
-                                  .where("teams.status = ?
+                                  .where("teams.status = ? AND
                                           users.username = ? AND
                                           list_modules.years = ?", 
                                           "inactive",

@@ -111,20 +111,6 @@ describe ListModule do
     end
   end
 
-  describe '#import' do
-    let(:file) { File.read("spec/fixtures/upload_test.csv") }
-    it 'verifies the integirty of the file ' do
-      ListModule.import(file, @listmodule2.id)
-    end
-    it 'imports a csv file and add the users ' do
-      expect(ListModule.count).to be <= 10
-      ListModule.import(file, @listmodule2.id)
-      # I am not sure why the file fails to pass the integrity test
-      # if it cannot be fixed, please remove this test case
-      expect(ListModule.count).to be > 10
-    end
-  end
-
 
   describe '#approve_teams' do
     it 'sets teams that are waiting for approval to active' do

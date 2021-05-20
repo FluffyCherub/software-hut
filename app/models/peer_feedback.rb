@@ -511,7 +511,7 @@ class PeerFeedback < ApplicationRecord
           
           for z in 0...team_members.length
             if k != z
-              feedback = PeerFeedback.where(created_for: team_members[z].username, created_by: team_members[k].username)
+              feedback = PeerFeedback.where(created_for: team_members[z].username, created_by: team_members[k].username).first
               if feedback.nil? || feedback.status != "finished"
                 gave_feedback = false
               end

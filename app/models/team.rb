@@ -145,8 +145,10 @@ class Team < ApplicationRecord
       end_date = get_feedback_end_date(team.id)
 
       #check if the active teams end date is in the past, if yes change teams status to inactive
-      if current_date - end_date > 0
-        team.update(status: "inactive")
+      if end_date != nil
+        if current_date - end_date > 0
+          team.update(status: "inactive")
+        end
       end
     end
 
