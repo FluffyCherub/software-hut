@@ -12,7 +12,9 @@ function readFile(input) {
 
     let email_domain = "@sheffield.ac.uk"
 
-    if (file.type !== "application/vnd.ms-excel") {
+    let allowed_types = ["application/vnd.ms-excel","text/plain","text/csv","text/tsv"]
+
+    if (allowed_types.includes(file.type) == false) {
       //alert wrong file type
       myAlertTopEditableError("The provided file is not a .csv file.");
 
