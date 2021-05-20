@@ -295,7 +295,7 @@
       .container.col-xs-6.col-sm-4.no_padding
         - if can? :manage, :admin_modules_periods_edit
           - if ListModule.get_future_feedback_periods(params['module_id'], Time.now).length == 0 
-            %a.button{class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2 button_off"}Edit Feedback periods
+            %a.button{class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2 button_off"}Edit Feedback Periods
           - else
             %a.button{:href => admin_modules_periods_edit_path(:module_id => params[:module_id]), type: "button", name: "edit_periods_button",  class: "btn btn-primary agreement_buttons justify-content-center button_go_back_2", id:"edit_periods_button"}Edit Feedback periods
 
