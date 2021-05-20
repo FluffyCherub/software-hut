@@ -801,15 +801,11 @@ class AdminController < ApplicationController
     @current_team_users = User.joins(:teams).where("teams.id = ?", team_id)
 
     #getting a list of ta's and modules leaders for assigning problems
-    @ta_and_mod_lead = []
-    users_in_module = ListModule.users_in_module(params['module_id'])
-    for i in 0..(users_in_module.length-1) 
-      current_user_privilege = ListModule.privilege_for_module(users_in_module[i].username, params['module_id'])
-      current_user_names = users_in_module[i].givenname + " " + users_in_module[i].sn + " - " + users_in_module[i].username
-      if current_user_privilege.include?("teaching_assistant") || current_user_privilege.include?("module_leader")
-        @ta_and_mod_lead.append(current_user_names)
-      end
-    end
+    ta_and_mod_lead_object = ListModule.get_ta_and_mod_lead(module_id)
+
+    @ta_and_mod_lead = ta_and_mod_lead_object.pluck("users.givenname || ' ' || users.sn || ' - ' || users.username")
+
+    @ta_and_mod_lead_usernames = ta_and_mod_lead_object.pluck(:username)
 
     #assigning and solving problems
     if params['problem_form'] != nil
@@ -819,7 +815,6 @@ class AdminController < ApplicationController
         
         #assigning a problem to the selected user
         Problem.assign(user_to_assign, problem_id)
-        Problem.change_status(problem_id, "assigned")
       end
 
       #marking the selected problem as solved by the current user
@@ -828,8 +823,7 @@ class AdminController < ApplicationController
           Problem.assign(current_user.username, problem_id)
         end
 
-        Problem.solve(current_user.username, problem_id)
-        Problem.change_status(problem_id, "solved")
+        Problem.solve(current_user.username, problem_id, Time.now)
       end
 
       redirect_back(fallback_location: root_path)

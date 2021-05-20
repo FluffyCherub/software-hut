@@ -54,7 +54,7 @@
             #heading-1.card-header
               %h5.mb-0
                 %a.uni_purple.collapsed.no_after#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
-                  - if @groups_for_module[i-1].topic == "none"
+                  - if @groups_for_module[i-1].topic == "none" || groups_for_module[i-1].topic == nil
                     - group_topic = ""
                   - else
                     - group_topic = "- " + @groups_for_module[i-1].topic
