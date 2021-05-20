@@ -11,8 +11,9 @@ user3 = User.create(givenname: 'Laney', sn: 'Deveson', username: 'eia17ld', emai
 user4 = User.create(givenname: 'Ling', sn: 'Lai', username: 'aca18ll', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 user5 = User.create(givenname: 'Seth', sn: 'Roberts', username: 'eib18sr', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 user6 = User.create(givenname: 'Zijian', sn: 'He', username: 'aca19zh', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
+user7 = User.create(givenname: 'Gary', sn: 'Wood', username: 'me1gcw', email: 'g.c.wood@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
 
-NUM_OF_TEST_USERS = 78
+NUM_OF_TEST_USERS = 77
 
 #creating test_users
 test_users = []
@@ -55,9 +56,9 @@ modules = ListModule.create([
 #adding real people to software hut
 UserListModule.create(list_module: modules[0], user: user1, privilege: 'teaching_assistant_16')
 UserListModule.create(list_module: modules[0], user: user2, privilege: 'student')
+UserListModule.create(list_module: modules[0], user: user7, privilege: 'module_leader')
 
 #adding mod lead and ta's to soft hut
-UserListModule.create(list_module: modules[0], user: mod_lead_soft, privilege: 'module_leader')
 UserListModule.create(list_module: modules[0], user: ta_1_soft, privilege: 'teaching_assistant')
 UserListModule.create(list_module: modules[0], user: ta_2_soft, privilege: 'teaching_assistant')
 UserListModule.create(list_module: modules[0], user: ta_3_soft, privilege: 'teaching_assistant')
@@ -65,13 +66,14 @@ UserListModule.create(list_module: modules[0], user: ta_3_soft, privilege: 'teac
 #adding real people to robotics
 UserListModule.create(list_module: modules[1], user: user1, privilege: 'student')
 UserListModule.create(list_module: modules[1], user: user2, privilege: 'student')
+UserListModule.create(list_module: modules[1], user: user7, privilege: 'module_leader')
 
 #adding real people to automata
 UserListModule.create(list_module: modules[2], user: user1, privilege: 'student')
 UserListModule.create(list_module: modules[2], user: user2, privilege: 'student')
+UserListModule.create(list_module: modules[2], user: user7, privilege: 'module_leader')
 
 #adding mod lead and ta's to automata
-UserListModule.create(list_module: modules[2], user: mod_lead_soft, privilege: 'module_leader')
 UserListModule.create(list_module: modules[2], user: ta_1_soft, privilege: 'teaching_assistant')
 UserListModule.create(list_module: modules[2], user: ta_2_soft, privilege: 'teaching_assistant')
 UserListModule.create(list_module: modules[2], user: ta_3_soft, privilege: 'teaching_assistant')
@@ -79,6 +81,7 @@ UserListModule.create(list_module: modules[2], user: ta_3_soft, privilege: 'teac
 #adding real people to functional
 UserListModule.create(list_module: modules[3], user: user1, privilege: 'student')
 UserListModule.create(list_module: modules[3], user: user2, privilege: 'student')
+UserListModule.create(list_module: modules[3], user: user7, privilege: 'module_leader')
 
 
 #putting test_users in software hut
@@ -111,6 +114,7 @@ NUM_OF_TEAMS = 16
 shuffled_test_users_soft = test_users.shuffle
 shuffled_test_users_soft.append(user1)
 shuffled_test_users_soft.append(user2)
+shuffled_test_users_soft.append(user7)
 
 test_teams_soft = []
 
@@ -133,6 +137,7 @@ end
 shuffled_test_users_robot = test_users.shuffle
 shuffled_test_users_robot.append(user1)
 shuffled_test_users_robot.append(user2)
+shuffled_test_users_robot.append(user7)
 
 test_teams_robot = []
 
@@ -155,6 +160,7 @@ end
 shuffled_test_users_automata = test_users.shuffle
 shuffled_test_users_automata.append(user1)
 shuffled_test_users_automata.append(user2)
+shuffled_test_users_automata.append(user7)
 
 test_teams_automata = []
 
@@ -177,6 +183,7 @@ end
 shuffled_test_users_functional = test_users.shuffle
 shuffled_test_users_functional.append(user1)
 shuffled_test_users_functional.append(user2)
+shuffled_test_users_functional.append(user7)
 
 test_teams_functional = []
 

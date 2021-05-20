@@ -1,0 +1,48 @@
+- # View for previous documents
+- # Authors: Anton Minkov && Laney Deveson
+- # Date: 16/05/2021
+
+- content_for :title, @team.name + " - Previous Documents"
+
+.container.body_whole_custom
+  .container-fluid.text_black.bg_none.margin_top
+    .container-fluid.bg_none.text_black
+      .container-fluid.bg_none.text_black.text_center
+        %h.bigger.width_100
+          Documents for #{@team.name}
+        %hr.group_line
+      .container-fluid.bg_none.text_black.margin_top.bigger
+        %p.small
+          %strong
+            Team Operating Agreement Download 
+        %hr
+        %ul
+          %li
+            - # Display the download TOP option
+            %p.small
+              - if @team.document.attached? && @team.toa_status == "finished"
+                %i
+                  = link_to 'Team Operating Agreement - ' + @team.document.created_at.strftime("%d/%m/%Y").to_s, rails_blob_path(@team.document, disposition: "attachment")
+              - else
+                %i
+                  No Team Operating Agreement recorded for this team.
+        %hr
+        %p.small
+          %strong
+            Team Meeting Records Download 
+        %hr
+        %ul
+          - if @tmrs.length == 0
+            %li
+              %p.small
+                %i
+                  No Team Meeting Records saved for this team.
+                %hr
+          - for y in 0...@tmrs.length
+            %li
+              - # Display the download TMR option
+              %p.small
+                %i
+                  = link_to 'Team Meeting Record - ' + @tmrs[y].tmr_doc.created_at.strftime("%d/%m/%Y").to_s, rails_blob_path(@tmrs[y].tmr_doc, disposition: "attachment")
+              - if y != 7
+                %hr

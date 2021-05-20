@@ -13,6 +13,10 @@ class Ability
   def initialize(user, module_privilege = "student")
     user ||= User.new
 
+    if module_privilege == nil
+      module_privilege = "no_privilege"
+    end
+
     #check if user is not suspended(otherwise has no permission to do anything in the system)
     if !user.suspended
 

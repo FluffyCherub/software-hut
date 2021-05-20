@@ -156,7 +156,9 @@ class Team < ApplicationRecord
     user_team_connection = UserTeam.where(user_id: user_id,
                                           team_id: team_id)
 
-    user_team_connection.first.destroy
+    if user_team_connection != nil
+      user_team_connection.destroy_all
+    end
   end
 
   #check if team has at least one unsolved problem(red dot)

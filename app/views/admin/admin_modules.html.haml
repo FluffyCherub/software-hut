@@ -37,7 +37,7 @@
             - # Sort modules in academic years
             #heading-1.card-header
               %h5.mb-0
-                %a.uni_purple.collapsed#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
+                %a.uni_purple.collapsed.no_after#a_tag{"aria-controls" => "collapse-#{true_i}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}", role: "button"}
                   ACADEMIC YEAR #{@modules_by_year[i-1].first.years}
             #collapse-1.collapse{"aria-labelledby" => "heading-#{true_i}", "data-parent" => "#accordion"}
               .card-body
@@ -47,17 +47,19 @@
                     .card
                       #heading-1-1.card-header.header_bad
                         %h5.mb-0
-                          %a.uni_purple.collapsed{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
+                          %a.uni_purple.collapsed.no_after{"aria-controls" => "collapse-#{true_i}-#{z}", "aria-expanded" => "false", "data-toggle" => "collapse", href: "#collapse-#{true_i}-#{z}", role: "button"}
                             #{@modules_by_year[i-1][z-1].code} #{@modules_by_year[i-1][z-1].name} (#{@modules_by_year[i-1][z-1].semester}) - Level #{@modules_by_year[i-1][z-1].level}
                       - # Generate module content
                       #collapse-1-1.collapse.collapse_bad{"aria-labelledby" => "heading-#{true_i}-#{z}", "data-parent" => "#accordion-#{true_i}"}
                         .card-body
-                          %li
-                            - module_id_var = @modules_by_year[i-1][z-1].id
-                            %a.uni_purple{ :href => admin_modules_preview_path(module_id: module_id_var), :title => "Preview" }
-                              %strong
-                                Preview Module Page
-                          %hr.group_line
+                          - module_id_var = @modules_by_year[i-1][z-1].id
+                          - privilege_for_module = ListModule.privilege_for_module(current_user.username, module_id_var)
+                          - if privilege_for_module != "student" || @highest_privilege == "admin"
+                            %li
+                              %a.uni_purple{ :href => admin_modules_preview_path(module_id: module_id_var), :title => "Preview" }
+                                %strong
+                                  Preview Module Page
+                            %hr.group_line
                           #{@modules_by_year[i-1][z-1].description}
                     
                     - # Change accordion id's to avoid dublication
