@@ -67,10 +67,7 @@ class Team < ApplicationRecord
                                                   module_id,
                                                   "student",
                                                   teams_in_module).group(:id).pluck(:id)
-
-    #students_in_any_team_in_module = students_in_module.joins(:teams).group("users.id").pluck("users.username")
-
-    puts students_in_any_team_in_module
+   
     if students_in_any_team_in_module.length == 0
       students_in_module = User.joins(:list_modules)
                                .where("list_modules.id = ? AND
