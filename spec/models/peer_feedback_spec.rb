@@ -42,15 +42,18 @@ RSpec.describe PeerFeedback, type: :model do
     
     #create team
     @team1 = create(:team, size: 3, list_module_id: @listmodule.id)
+    @team2 = create(:team, size: 3, list_module_id: @listmodule.id)
 
     #fill the teams
     @userteam1 = create(:user_team, team_id: @team1.id, user_id: @user.id)
     @userteam2 = create(:user_team, team_id: @team1.id, user_id: @user2.id)
     @userteam3 = create(:user_team, team_id: @team1.id, user_id: @user3.id)
+    @userteam3 = create(:user_team, team_id: @team2.id, user_id: @user9.id)
 
 
-    # creates some feedbacks
-    @feedback_date = create(:feedback_date, created_at: Time.new(2021, 5, 8) ,updated_at: Time.new(2021, 5, 15), list_module_id: @listmodule.id)
+    # creates a feedback date that is going to end soon (so it has to send a reminder)
+    @feedback_date = FeedbackDate.create( created_at: Time.now ,updated_at: Time.now, end_date: Time.now + 1.hours, list_module_id: @listmodule.id)
+
     @team_feedback_date1 = create(:team_feedback_date, feedback_date_id: @feedback_date.id, team_id: @team1.id)
 
     @feedback13 = create(:peer_feedback, created_by: @user.username, created_for: @user3.username, feedback_date_id: @feedback_date.id,\
@@ -58,23 +61,29 @@ RSpec.describe PeerFeedback, type: :model do
       appreciate_edited: 'good job!', request_edited:'no'
       )
     @feedback23 = create(:peer_feedback, created_by: @user2.username, created_for: @user3.username, feedback_date_id: @feedback_date.id,\
-      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete', \
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'finished', \
       appreciate_edited: 'good job2!', request_edited:'no2')
     @feedback21 = create(:peer_feedback, created_by: @user2.username, created_for: @user.username, feedback_date_id: @feedback_date.id,\
-      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'finished')
     @feedback22 = create(:peer_feedback, created_by: @user2.username, created_for: @user2.username, feedback_date_id: @feedback_date.id,\
-      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'finished')
       
     @feedback31 = create(:peer_feedback, created_by: @user3.username, created_for: @user.username, feedback_date_id: @feedback_date.id,\
-    attendance:4, attitude:4, qac:4, communication:4, collaboration:4, leadership:4, ethics:4, status: 'complete')
+    attendance:4, attitude:4, qac:4, communication:4, collaboration:4, leadership:4, ethics:4, status: 'finished')
     @feedback32 = create(:peer_feedback, created_by: @user3.username, created_for: @user2.username, feedback_date_id: @feedback_date.id,\
-      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'complete')
+      attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'finished')
     @feedback33 = create(:peer_feedback,  created_by: @user3.username, created_for: @user3.username, feedback_date_id: @feedback_date.id,\
       attendance:3, attitude:3, qac:3, communication:4, collaboration:4, leadership:2, ethics:3, status: 'in_progress')
 
-    # unused feedback date
+    # unused feedback date (only for checking edge cases)
     @feedback_date2 = create(:feedback_date, created_at: Time.new(2021, 5, 22) ,updated_at: Time.new(2021, 5, 29), list_module_id: @listmodule.id)
 
+    # feedback date that is currenly active (but haven't sent a reminder about it has opened)
+    @feedback_date3 = FeedbackDate.create(start_date: Time.now - 1.days, end_date: Time.now + 1.days, list_module_id: @listmodule.id, period_open_sent: false)
+    @team_feedback_date2 = create(:team_feedback_date, feedback_date_id: @feedback_date3.id, team_id: @team2.id)
+    @feedback99 = create(:peer_feedback, created_by: @user9.username, created_for: @user9.username, feedback_date_id: @feedback_date3.id,\
+      attendance:1, attitude:2, qac:3, communication:4, collaboration:4, leadership:2, ethics:3
+      )
   end
   describe '#feedback_to_int' do
     it 'return the id of the feedback type' do
@@ -133,12 +142,32 @@ RSpec.describe PeerFeedback, type: :model do
     end
   end
 
+  describe '#get_feedback_for_team_period' do
+    it 'returns the list of peer feebdback of the team within the period' do
+      expect(PeerFeedback.get_feedback_for_team_period(@team1.id, @feedback_date.id).flatten).to \
+        include(@feedback13, @feedback21, @feedback22, @feedback23, @feedback31, @feedback32, @feedback33)
+    end
+  end
+
+  describe '#array_int_to_feedback' do
+    it 'returns a simple feedback given the int array' do
+      expect(PeerFeedback.array_int_to_feedback([1.4, 1, 3, 2, 2, 2, 2, 4]).flatten).to \
+        eq [nil, "Unsatisfactory", "Meets Expectations", "Needs Improvement", "Needs Improvement", "Needs Improvement", "Needs Improvement", "Exceeds Expectations"]
+    end
+    it 'returns nil when it does not recieve the feedback' do
+      expect(PeerFeedback.array_int_to_feedback([-1,-1,-1,-1,-1,-1,-1,-1]).flatten).to \
+        eq [nil,nil,nil,nil,nil,nil,nil,nil,]
+    end
+    it 'returns correct output given empty array' do
+      expect(PeerFeedback.array_int_to_feedback([]).flatten).to \
+        eq []
+    end
+  end
 
   describe '#array_int_to_feedback_long' do
     it 'return the text of the feedback' do
       expect(PeerFeedback.array_int_to_feedback_long(
-        [0,1, 3, 2, 2, \
-        2, 2, 4]
+        [2.4,1, 3, 2, 2, 2, 2, 4]
       )).to eq [
         ["Attendance and Punctuality", "You have had one of more absences or late arrivals to scheduled team activities and have not explained these to the team. You may have let other commitments impact your contribution. Your performance is detracting from the team’s work."],
         ["Attitude and Commitment",     "You bring a positive attitude to the team, are generally focused, and work hard most of the time. You you are undertaking your fair share of the workload, and complete work to the agreed schedule."],
@@ -147,6 +176,19 @@ RSpec.describe PeerFeedback, type: :model do
         ["Collaboration",     "You come across abrupt and offhand, and tend to work in isolation without consulting the team. You are not receptive to feedback from others. You may sometimes cause conflicts within the team and could do more to help the team work together."],
         ["Leadership",     "You did not make much contribution to setting team goals, and focus on your own contributions rather than the overall objectives. Your input to idea generation and problem solving is minimal."],
         ["Professionalism and ethics",     "You are a role model for others, behaving professionally and ethically even in difficult circumstances. You take great care to ensure that your interactions with others are positive and do not have a negative impact."]
+      ]
+    end
+    it 'return a text representing no feedback is received when there is no feedback' do
+      expect(PeerFeedback.array_int_to_feedback_long(
+        [2.4, -1, -1, -1, -1, -1, -1, -1]
+      )).to eq [
+        ["Attendance and Punctuality", "You received no feedback for this criteria."],
+        ["Attitude and Commitment",  "You received no feedback for this criteria."],
+        ["Quality, accuracy and completeness", "You received no feedback for this criteria."],
+        ["Communication", "You received no feedback for this criteria."],
+        ["Collaboration", "You received no feedback for this criteria."],
+        ["Leadership", "You received no feedback for this criteria."],
+        ["Professionalism and ethics", "You received no feedback for this criteria."]
       ]
     end
   end
@@ -181,7 +223,6 @@ RSpec.describe PeerFeedback, type: :model do
 
     end
     it 'return [-1, -1, -1, -1, -1, -1, -1, -1] if there is no feedback of user i in team j at time k' do
-      # the function did not run when there are NO feedback
       results = PeerFeedback.get_average_feedback_data_for_period(@user.username, @team1.id, @feedback_date2)
       nan = Float::NAN
       expect(results).to eq [-1, -1, -1, -1, -1, -1, -1, -1]
@@ -191,11 +232,47 @@ RSpec.describe PeerFeedback, type: :model do
   
   describe '#get_appreciate_request_for_student' do
     it 'return the appreciate/request from other students in the team' do
-      expect(PeerFeedback.get_appreciate_request_for_student(@user3.username, @team1.id, @feedback_date)).to include(["good job2!","good job!", ], ["no2","no", ])
+      expect(PeerFeedback.get_appreciate_request_for_student(@user3.username, @team1.id, @feedback_date).flatten).to include("good job2!","good job!", "no2","no")
     end
     it 'return an empty feedback if no appreciate/request get' do
       expect(PeerFeedback.get_appreciate_request_for_student(@user.username, @team1.id, @feedback_date)).to eq [["", ""], ["", ""]]
     end
   end
 
+  describe '#get_appreciate_request_for_student' do
+    it 'return the appreciate/request from other students in the team' do
+      expect(PeerFeedback.get_appreciate_request_for_student(@user3.username, @team1.id, @feedback_date).flatten).to include("good job2!","good job!", "no2","no")
+    end
+    it 'return an empty feedback if no appreciate/request get' do
+      expect(PeerFeedback.get_appreciate_request_for_student(@user.username, @team1.id, @feedback_date)).to eq [["", ""], ["", ""]]
+    end
+  end
+
+  
+  describe '#get_appreciate_request_for_student' do
+    it 'return the appreciate/request from other students in the team' do
+      expect(PeerFeedback.get_appreciate_request_for_student(@user3.username, @team1.id, @feedback_date).flatten).to include("good job2!","good job!", "no2","no")
+    end
+    it 'return an empty feedback if no appreciate/request get' do
+      expect(PeerFeedback.get_appreciate_request_for_student(@user.username, @team1.id, @feedback_date)).to eq [["", ""], ["", ""]]
+    end
+  end
+
+  
+  describe '#remind' do
+    it 'sends an email to the user, and after that it sets the reminder sent flag to true' do
+      expect(@feedback_date.reminder_sent).to eq false
+      # I think the where clause return a list of feedback, so feedback.nil? cannot capture the case when there are no feedback received
+      PeerFeedback.remind()
+      expect(FeedbackDate.where(id: @feedback_date.id).first.reminder_sent).to eq true
+    end
+  end
+
+  describe '#feedback_period_open' do
+    it 'opens a feedback period that is currently active (but havent sent an email to remind users)' do
+      expect(@feedback_date3.period_open_sent).to eq false
+      PeerFeedback.feedback_period_open()
+      expect(FeedbackDate.where(id: @feedback_date3.id).first.period_open_sent).to eq true
+    end
+  end
 end

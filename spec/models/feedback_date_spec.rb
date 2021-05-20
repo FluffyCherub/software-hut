@@ -27,11 +27,35 @@ describe FeedbackDate do
   before :all do
 
     @listmodule = FactoryBot.create :list_module
+    @listmodule2 = FactoryBot.create :list_module
+    @listmodule3 = FactoryBot.create :list_module
     @feedback_date1 = FactoryBot.create :feedback_date, start_date: Time.new(2021, 5, 8),
     end_date: Time.new(2021, 6, 8), list_module_id: @listmodule.id
     @feedback_date2 = FactoryBot.create :feedback_date, start_date: Time.new(2021, 7, 8),
     end_date: Time.new(2021, 9, 8), list_module_id: @listmodule.id
 
+    @feedback_date3 = FactoryBot.create :feedback_date, start_date: Time.new(2021, 7, 8),
+    end_date: Time.new(2021, 9, 8), list_module_id: @listmodule2.id # a feedback date in a module that has no team
+
+
+    @user1 = FactoryBot.create :user, username: 'abc12ef'
+    @user2 = FactoryBot.create :user, username: 'def34gh'
+    @user3 = FactoryBot.create :user, username: 'def34g2'
+    
+    #create teams
+    @team1 = FactoryBot.create :team, size: 6, list_module_id: @listmodule.id
+    @team2 = FactoryBot.create :team, size: 6, list_module_id: @listmodule.id
+
+    @team1_feedback_date1 = FactoryBot.create :team_feedback_date, feedback_date_id: @feedback_date1.id, team_id: @team1.id
+    @team1_feedback_date2 = FactoryBot.create :team_feedback_date, feedback_date_id: @feedback_date2.id, team_id: @team1.id
+    @team1_feedback_date1 = FactoryBot.create :team_feedback_date, feedback_date_id: @feedback_date1.id, team_id: @team2.id
+    @team1_feedback_date2 = FactoryBot.create :team_feedback_date, feedback_date_id: @feedback_date2.id, team_id: @team2.id
+
+
+    #fill the team
+    @userteam1 = FactoryBot.create :user_team, team_id: @team1.id, user_id: @user1.id
+    @userteam2 = FactoryBot.create :user_team, team_id: @team1.id, user_id: @user2.id
+    @userteam3 = FactoryBot.create :user_team, team_id: @team2.id, user_id: @user3.id
   end
 
   describe '#get_closest_date' do
@@ -74,5 +98,23 @@ describe FeedbackDate do
     it 'returns last window after window 2' do
       expect(FeedbackDate.get_last_finished_period(Time.new(2021, 12, 23), @listmodule.id)).to eq @feedback_date2
     end
+  end
+
+  describe '#get_period_number' do
+    it 'returns period number of the feedback date id' do
+      expect(FeedbackDate.get_period_number(@feedback_date1.id)).to eq 2
+    end
+    
+    it 'returns correct output when there is no team in the module' do
+      expect(FeedbackDate.get_period_number(@feedback_date3.id)).to eq 1 # or nil
+    end
+  end
+
+
+  describe '#get_all_connected_students' do
+    it 'returns the connected students of the feedback date id' do
+      expect(FeedbackDate.get_all_connected_students(@feedback_date1.id)).to include(@user1, @user2, @user3)
+    end
+    
   end
 end

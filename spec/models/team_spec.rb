@@ -35,9 +35,13 @@ describe Team do
     @listmodule1 = FactoryBot.create :list_module
     @listmodule2 = FactoryBot.create :list_module
 
-    #create two teams
+    #create teams
     @team1 = FactoryBot.create :team, size: 6, list_module_id: @listmodule1.id
     @team2 = FactoryBot.create :team, size: 5, list_module_id: @listmodule1.id, status: 'inactive'
+    @team3 = FactoryBot.create :team, size: 5, list_module_id: @listmodule1.id # a team with an old feedback date
+    @team4 = FactoryBot.create :team, size: 5, list_module_id: @listmodule1.id, status: 'inactive' # a team with an unsolved problem
+    @team5 = FactoryBot.create :team, size: 5, list_module_id: @listmodule1.id, status: 'inactive' # a team with an assigned problem
+    @team6 = FactoryBot.create :team, size: 5, list_module_id: @listmodule1.id, status: 'inactive' # a team with a solved problem
 
     #create 4 students and a TA
     @usermodule1 = FactoryBot.create :user_list_module, privilege: 'student',
@@ -61,10 +65,21 @@ describe Team do
     end_date: Time.new(2021, 6, 8), list_module_id: @listmodule1.id
     @feedback_date2 = FactoryBot.create :feedback_date, start_date: Time.new(2021, 7, 8),
     end_date: Time.new(2021, 9, 8), list_module_id: @listmodule1.id
+    
+    @feedback_date3 = FactoryBot.create :feedback_date, start_date: Time.new(2020, 1, 8),
+    end_date: Time.new(2020, 2, 8), list_module_id: @listmodule1.id
 
     #add feedback windows to team 1
     @team_feedback_date1 = FactoryBot.create :team_feedback_date, feedback_date_id: @feedback_date1.id, team_id: @team1.id
     @team_feedback_date2 = FactoryBot.create :team_feedback_date, feedback_date_id: @feedback_date2.id, team_id: @team1.id
+    
+    #add an old feedback windows to team 3
+    @team_feedback_date3 = FactoryBot.create :team_feedback_date, feedback_date_id: @feedback_date3.id, team_id: @team3.id
+
+    #assign problem with different status to teams
+    @problem1 = FactoryBot.create :problem, team_id: @team4.id, status: "unsolved"
+    @problem2 = FactoryBot.create :problem, team_id: @team5.id, status: "assigned"
+    @problem3 = FactoryBot.create :problem, team_id: @team6.id, status: "solved"
 
   end
 
@@ -101,6 +116,67 @@ describe Team do
     end
     it 'returns very last end date for team 2 feedback' do
       expect(Team.get_feedback_end_date(@team2.id)).to eq nil
+    end
+  end
+
+
+
+  describe '#update_status' do
+    it 'check if the status of a team with old feedback end date is changed to inactive' do
+      expect(@team3.status).to eq 'waiting_for_approval'
+      Team.update_status()
+      expect(Team.where(id: @team3.id).first.status).to eq 'inactive'
+    end
+    
+    it 'check if the status of a team with a current feedback end date is not updated' do
+      expect(@team1.status).to eq 'waiting_for_approval'
+      Team.update_status()
+      expect(Team.where(id: @team1.id).first.status).to eq 'waiting_for_approval'
+    end
+  end
+
+  describe '#remove_student' do
+    it 'remove a student from a team' do
+      expect(Team.get_current_team_members(@team1.id).to_a).to include(@user1, @user2)
+      Team.remove_student(@user1.id, @team1.id)
+      expect(Team.get_current_team_members(@team1.id).to_a).to include(@user2)
+    end
+    
+    it 'no error when removing a student who is not in the team' do
+      expect(Team.get_current_team_members(@team1.id).to_a).not_to include(@user3)
+      Team.remove_student(@user3.id, @team1.id)
+      expect(Team.get_current_team_members(@team1.id).to_a).not_to include(@user3)
+    end
+  end
+
+  
+  describe '#has_unsolved_problems' do
+    it 'return true when there are unsolved problem in the team' do
+      expect(Team.has_unsolved_problems(@team4.id)).to eq true
+    end
+    it 'return false when there are only assigned problem in the team' do
+      expect(Team.has_unsolved_problems(@team5.id)).to eq false
+    end
+    it 'return false when there are only solved problem in the team' do
+      expect(Team.has_unsolved_problems(@team6.id)).to eq false
+    end
+    it 'return false when there are no problem in the team' do
+      expect(Team.has_unsolved_problems(@team1.id)).to eq false
+    end
+  end
+
+  describe '#has_assigned_problems' do
+    it 'return true when there are assigned problem in the team' do
+      expect(Team.has_assigned_problems(@team5.id)).to eq true
+    end
+    it 'return false when there are only unsolved problem in the team' do
+      expect(Team.has_assigned_problems(@team4.id)).to eq false
+    end
+    it 'return false when there are only solved problem in the team' do
+      expect(Team.has_assigned_problems(@team6.id)).to eq false
+    end
+    it 'return false when there are no problem in the team' do
+      expect(Team.has_assigned_problems(@team1.id)).to eq false
     end
   end
 end

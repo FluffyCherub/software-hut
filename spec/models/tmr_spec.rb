@@ -73,6 +73,16 @@ RSpec.describe Tmr, type: :model do
     end
   end
 
+  describe '#add_tmr' do
+    # let(:file) { File.read("spec/fixtures/tmr_template.pdf") }
+    # it 'adds the team meeting record to the team' do
+    #   upload_file = Hash.new
+    #   upload_file['datafile'] = file
+    #   Tmr.add_tmr(@team1.id, file)
+    # end
+  end
+
+
   describe '#check_tmr_completion' do
     it 'returns true when team meeting record has signatures from all users' do
       expect(Tmr.check_tmr_completion(@tmr.id, @team1.id)).to eq true
