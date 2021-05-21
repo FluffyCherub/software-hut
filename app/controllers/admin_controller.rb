@@ -238,8 +238,10 @@ class AdminController < ApplicationController
 
       #getting users for the correct module 
       @current_module_users = User.joins(:list_modules)
-                                  .where("list_modules.id = ?", 
-                                          params[:module_id]) 
+                                  .where("list_modules.id = ? AND
+                                          user_list_modules.privilege != ?", 
+                                          params[:module_id],
+                                          "suspended") 
                                   .order(:givenname, :sn)
 
       respond_to do |format|
@@ -1512,6 +1514,8 @@ class AdminController < ApplicationController
                                               user_id: user_to_add.id
                                               )
 
+        puts "----------------------------------------"
+
         get_privilege.update(privilege: "student")
         
       else
@@ -1559,8 +1563,10 @@ class AdminController < ApplicationController
 
       #getting users for the correct module 
       @current_module_users = User.joins(:list_modules)
-                                  .where("list_modules.id = ?", 
-                                          params[:module_id]) 
+                                  .where("list_modules.id = ? AND
+                                          user_list_modules.privilege != ?", 
+                                          params[:module_id],
+                                          "suspended") 
                                   .order(:givenname, :sn)
 
       respond_to do |format|
