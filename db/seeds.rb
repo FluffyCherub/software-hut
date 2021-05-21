@@ -5,13 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-user1 = User.create(givenname: 'Dominik', sn: 'Laszczyk', username: 'aca19dl', email: 'dlaszczyk1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
-user2 = User.create(givenname: 'Anton', sn: 'Minkov', username: 'acc19am', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
-user3 = User.create(givenname: 'Laney', sn: 'Deveson', username: 'eia17ld', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
-user4 = User.create(givenname: 'Ling', sn: 'Lai', username: 'aca18ll', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
-user5 = User.create(givenname: 'Seth', sn: 'Roberts', username: 'eib18sr', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
-user6 = User.create(givenname: 'Zijian', sn: 'He', username: 'aca19zh', email: 'aminkov1@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
-user7 = User.create(givenname: 'Gary', sn: 'Wood', username: 'me1gcw', email: 'g.c.wood@sheffield.ac.uk', password:'1234', password_confirmation: '1234', admin: true)
+user1 = User.create(givenname: 'Dominik', sn: 'Laszczyk', username: 'aca19dl', email: 'dlaszczyk1@sheffield.ac.uk', admin: true)
+user2 = User.create(givenname: 'Anton', sn: 'Minkov', username: 'acc19am', email: 'aminkov1@sheffield.ac.uk', admin: true)
+user3 = User.create(givenname: 'Laney', sn: 'Deveson', username: 'eia17ld', email: 'aminkov1@sheffield.ac.uk', admin: true)
+user4 = User.create(givenname: 'Ling', sn: 'Lai', username: 'aca18ll', email: 'aminkov1@sheffield.ac.uk', admin: true)
+user5 = User.create(givenname: 'Seth', sn: 'Roberts', username: 'eib18sr', email: 'aminkov1@sheffield.ac.uk', admin: true)
+user6 = User.create(givenname: 'Zijian', sn: 'He', username: 'aca19zh', email: 'aminkov1@sheffield.ac.uk', admin: true)
+user7 = User.create(givenname: 'Gary', sn: 'Wood', username: 'me1gcw', email: 'g.c.wood@sheffield.ac.uk', admin: true)
 
 NUM_OF_TEST_USERS = 77
 
@@ -23,16 +23,16 @@ for i in 1..NUM_OF_TEST_USERS
   new_test_username = "test_user" + i.to_s
   new_test_email = new_test_username + "@sheffield.ac.uk"
 
-  new_test_user = User.create(givenname: new_test_givenname, sn: new_test_sn, username: new_test_username, email: new_test_email, password:'1234', password_confirmation: '1234')
+  new_test_user = User.create(givenname: new_test_givenname, sn: new_test_sn, username: new_test_username, email: new_test_email)
 
   test_users.append(new_test_user)
 end
 
 #module leader and ta's for software hut
-mod_lead_soft = User.create(givenname: "Test", sn: "User123", username: "test_user123", email: "test_user123@sheffield.ac.uk", password:'1234', password_confirmation: '1234')
-ta_1_soft = User.create(givenname: "Test", sn: "User425", username: "test_user425", email: "test_user425@sheffield.ac.uk", password:'1234', password_confirmation: '1234')
-ta_2_soft = User.create(givenname: "Test", sn: "User426", username: "test_user426", email: "test_user426@sheffield.ac.uk", password:'1234', password_confirmation: '1234')
-ta_3_soft = User.create(givenname: "Test", sn: "User427", username: "test_user427", email: "test_user427@sheffield.ac.uk", password:'1234', password_confirmation: '1234')
+mod_lead_soft = User.create(givenname: "Test", sn: "User123", username: "test_user123", email: "test_user123@sheffield.ac.uk")
+ta_1_soft = User.create(givenname: "Test", sn: "User425", username: "test_user425", email: "test_user425@sheffield.ac.uk")
+ta_2_soft = User.create(givenname: "Test", sn: "User426", username: "test_user426", email: "test_user426@sheffield.ac.uk")
+ta_3_soft = User.create(givenname: "Test", sn: "User427", username: "test_user427", email: "test_user427@sheffield.ac.uk")
 
 modules = ListModule.create([
   {name: 'Software Hut', code: 'COM3420', description: 'The Software Hut (a microcosm of a real Software House) gives students an opportunity to experience the processes of engineering a real software system for a real client in a competitive environment. The taught element covers the tools and technologies needed to manage software development projects successfully and to deliver software products that meet both client expectations and quality standards. Topics that are put into practice include: the requirements engineering process; software modelling and testing; using specific software development framework(s); group project management etc. Tutorials take the form of project meetings, and so are concerned with team management, conduct of meetings and action minutes.', created_by: 'aca19dl', semester: 'SPRING', years: '2020/2021', level: '5'},
