@@ -3,7 +3,7 @@
 - if @team_info.nil?
   You are not in an active team in this module.
   - if @module_info.team_type == "free_join" && @unapproved_team_info.nil?
-    %a.button{:href => student_groups_path(:module_id => @module_info.id), type: "button", name: "join_groups_button",  class: "btn btn-primary agreement_buttons justify-content-center button_add_module", id:"submit_choice"}Join Teams
+    %a.button{:href => student_groups_path(:module_id => @module_info.id), type: "button", name: "join_groups_button",  class: "btn btn-primary justify-content-center special_join_teams_button_center", id:"submit_choice"}Join Teams
 - else
   %h6.d-flex.align-items-center.mb-3
     %i.material-icons.text-info.mr-2> #{@team_info.name}
