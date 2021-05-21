@@ -1514,8 +1514,6 @@ class AdminController < ApplicationController
                                               user_id: user_to_add.id
                                               )
 
-        puts "----------------------------------------"
-
         get_privilege.update(privilege: "student")
         
       else
