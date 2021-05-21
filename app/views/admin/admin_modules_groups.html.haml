@@ -84,10 +84,7 @@
                   .card-body
                     - if can? :manage, :admin_modules_groups_preview
                       %li
-                        %a.uni_purple{ :href => admin_modules_groups_preview_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), :title => "Preview" }
-                          %strong
-                            View Team Page
-                        %a.uni_purple.float_right{ :href => admin_modules_groups_docs_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), :title => "Documents" }
+                        %a.uni_purple{ :href => admin_modules_groups_docs_path(module_id: params[:module_id], team_id: @groups_for_module[i-1].id), :title => "Documents" }
                           %strong
                             View documents
                       %hr.group_line
