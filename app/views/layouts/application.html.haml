@@ -122,7 +122,7 @@
                       = icon 'fas', 'user', current_user.email
                       %b.caret
                     .dropdown-menu{ aria: { labelledby: '#navbar-user-link' } }
-                      = link_to destroy_user_session_path, class: 'dropdown-item', method: :delete, title: "Log out of the system" do
+                      = link_to destroy_user_session_path, class: 'dropdown-item', :data => { :no_turbolink => true }, method: :delete, title: "Log out of the system" do
                         = icon 'fas', 'sign-out-alt', 'Log out'
       %nav.blue_line.small#bottom_line
         %p blue line
