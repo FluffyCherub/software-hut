@@ -13,7 +13,7 @@ Devise.setup do |config|
   # Use CAS to log in, location configured in epi_cas_settings.yml
   config.cas_base_url = EpiCas::Settings.cas_base_url
   # Redirect log out to app logout page, which then uses CAS to log out
-  config.cas_logout_url = EpiCas::Settings.app_logout_url
+  config.cas_logout_url = EpiCas::Settings.cas_logout_url
   config.cas_logout_url_param = 'destination'
   config.cas_enable_single_sign_out = true
   # By default, devise_cas_authenticatable will create users.  If you would rather
