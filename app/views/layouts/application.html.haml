@@ -16,7 +16,6 @@
     %script{src: "https://cdn.jsdelivr.net/npm/chart.js"}
 
   %body{ class: environment_notice_body_class}
-    = render 'layouts/environment_notice'
     .flash-messages
       - flash.each do |name, msg|
         - next unless name == 'alert' || name == 'notice'

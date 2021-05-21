@@ -14,9 +14,7 @@
     = favicon_link_tag '/images/teamworks_icon2.png'
     = csrf_meta_tags
 
-  %body{ class: environment_notice_body_class, onload: "filterProfanity()"}
-    = render 'layouts/environment_notice'    
-  
+  %body{ class: environment_notice_body_class, onload: "filterProfanity()"}   
     #wrap
       %header#top_line
         %nav#main-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg.fixed-top.top_line
